@@ -409,114 +409,114 @@ export class VtlParser extends Parser {
 	public static readonly RULE_defineDataStructure = 127;
 	// tslint:disable:no-trailing-whitespace
 	public static readonly ruleNames: string[] = [
-		"start", "statement", "persistentAssignment", "optionalExpr", "expr", 
-		"exprComplex", "timeExpr", "defHierarchical", "ruleClauseHierarchical", 
-		"ruleItemHierarchical", "hierRuleSignature", "valueDomainSignature", "codeItemRelation", 
-		"codeItemRelationClause", "codeItemRef", "defDatapoint", "ruleClauseDatapoint", 
-		"ruleItemDatapoint", "rulesetSignature", "varSignature", "defExpr", "defOperator", 
-		"parameterItem", "callFunction", "exprAtom", "ref", "identifierList", 
-		"lists", "evalExpr", "castExpr", "periodExpr", "timeShiftExpr", "timeSeriesExpr", 
-		"timeAggExpr", "validationExpr", "validationDatapoint", "validationHierarchical", 
-		"erCode", "erLevel", "hierarchyExpr", "datasetClause", "anFunctionClause", 
-		"partitionByClause", "orderByClause", "windowingClause", "limitClauseItem", 
-		"joinExpr", "joinClause", "joinBody", "joinCalcClause", "joinCalcClauseItem", 
-		"joinCalcExpr", "joinAggClause", "joinAggClauseItem", "joinAggExpr", "joinKeepClause", 
-		"joinDropClause", "joinFilterClause", "joinRenameClause", "joinApplyClause", 
-		"anFunction", "aggregateClause", "aggrFunctionClause", "getFiltersClause", 
-		"getFilterClause", "aggrClause", "filterClause", "renameClause", "aggrFunction", 
-		"calcClause", "calcClauseItem", "calcExpr", "dropClause", "dropClauseItem", 
-		"keepClause", "keepClauseItem", "unpivotExpr", "pivotExpr", "subspaceExpr", 
-		"inBetweenClause", "setExpr", "subscriptExpr", "aggrInvocation", "aggrInvocationCompExpr", 
-		"aggrFunctionName", "groupingClause", "havingClause", "returnAll", "componentRole", 
-		"viralAttribute", "logBase", "exponent", "persistentDatasetID", "datasetID", 
-		"rulesetID", "varID", "componentID", "operatorID", "routineName", "joinKeyword", 
-		"groupKeyword", "constant", "componentType2", "scalarType", "basicScalarType", 
-		"valueDomainName", "setName", "scalarTypeConstraint", "dataType", "componentType", 
-		"datasetType", "compConstraint", "multModifier", "rulesetType", "dpRuleset", 
-		"hrRuleset", "prodValueDomains", "prodVariables", "operatorType", "inputParameterType", 
-		"outputParameterType", "scalarSetType", "retainType", "defineDatapointRuleset", 
-		"defineHierarchicalRuleset", "endDatapointRuleset", "endHierarchicalRuleset", 
+		"start", "statement", "persistentAssignment", "optionalExpr", "expr",
+		"exprComplex", "timeExpr", "defHierarchical", "ruleClauseHierarchical",
+		"ruleItemHierarchical", "hierRuleSignature", "valueDomainSignature", "codeItemRelation",
+		"codeItemRelationClause", "codeItemRef", "defDatapoint", "ruleClauseDatapoint",
+		"ruleItemDatapoint", "rulesetSignature", "varSignature", "defExpr", "defOperator",
+		"parameterItem", "callFunction", "exprAtom", "ref", "identifierList",
+		"lists", "evalExpr", "castExpr", "periodExpr", "timeShiftExpr", "timeSeriesExpr",
+		"timeAggExpr", "validationExpr", "validationDatapoint", "validationHierarchical",
+		"erCode", "erLevel", "hierarchyExpr", "datasetClause", "anFunctionClause",
+		"partitionByClause", "orderByClause", "windowingClause", "limitClauseItem",
+		"joinExpr", "joinClause", "joinBody", "joinCalcClause", "joinCalcClauseItem",
+		"joinCalcExpr", "joinAggClause", "joinAggClauseItem", "joinAggExpr", "joinKeepClause",
+		"joinDropClause", "joinFilterClause", "joinRenameClause", "joinApplyClause",
+		"anFunction", "aggregateClause", "aggrFunctionClause", "getFiltersClause",
+		"getFilterClause", "aggrClause", "filterClause", "renameClause", "aggrFunction",
+		"calcClause", "calcClauseItem", "calcExpr", "dropClause", "dropClauseItem",
+		"keepClause", "keepClauseItem", "unpivotExpr", "pivotExpr", "subspaceExpr",
+		"inBetweenClause", "setExpr", "subscriptExpr", "aggrInvocation", "aggrInvocationCompExpr",
+		"aggrFunctionName", "groupingClause", "havingClause", "returnAll", "componentRole",
+		"viralAttribute", "logBase", "exponent", "persistentDatasetID", "datasetID",
+		"rulesetID", "varID", "componentID", "operatorID", "routineName", "joinKeyword",
+		"groupKeyword", "constant", "componentType2", "scalarType", "basicScalarType",
+		"valueDomainName", "setName", "scalarTypeConstraint", "dataType", "componentType",
+		"datasetType", "compConstraint", "multModifier", "rulesetType", "dpRuleset",
+		"hrRuleset", "prodValueDomains", "prodVariables", "operatorType", "inputParameterType",
+		"outputParameterType", "scalarSetType", "retainType", "defineDatapointRuleset",
+		"defineHierarchicalRuleset", "endDatapointRuleset", "endHierarchicalRuleset",
 		"defineDataStructure",
 	];
 
 	private static readonly _LITERAL_NAMES: Array<string | undefined> = [
-		undefined, "'['", "']'", "'+'", "'-'", "'*'", "'/'", "'>'", "'<'", "'<='", 
-		"'>='", "'='", "'<>'", "'('", "')'", "':'", "'{'", "'}'", "'->'", "':='", 
-		"'#'", "'eval'", "'if'", "'then'", "'else'", "'using'", "'with'", "'current_date'", 
-		"'on'", "'drop'", "'keep'", "'calc'", "'attrcalc'", "'rename'", "'as'", 
-		"'and'", "'or'", "'xor'", "'not'", "'between'", "'in'", "'not_in'", "'isnull'", 
-		"'ex'", "'union'", "'diff'", "'symdiff'", "'intersect'", "'keys'", "','", 
-		"'intyear'", "'intmonth'", "'intday'", "'check'", "'exists_in'", "'to'", 
-		"'return'", "'imbalance'", "'errorcode'", "'all'", "'aggr'", "'errorlevel'", 
-		"'order'", "'by'", "'rank'", "'asc'", "'desc'", "'min'", "'max'", "'first'", 
-		"'last'", "'indexof'", "'abs'", "'key'", "'ln'", "'log'", "'trunc'", "'round'", 
-		"'power'", "'mod'", "'length'", "'||'", "'trim'", "'upper'", "'lower'", 
-		"'substr'", "'sum'", "'avg'", "'median'", "'count'", "'identifier'", "'measure'", 
-		"'attribute'", "'filter'", "'merge'", "'exp'", "'role'", "'viral'", "'match_characters'", 
-		"'type'", "'nvl'", "'hierarchy'", "'_'", "'invalid'", "'valuedomain'", 
-		"'variable'", "'data'", "'structure'", "'dataset'", "'operator'", "'define'", 
-		"'<-'", "'datapoint'", "'hierarchical'", "'ruleset'", "'rule'", "'end'", 
-		"'alterDataset'", "'ltrim'", "'rtrim'", "'instr'", "'replace'", "'ceil'", 
-		"'floor'", "'sqrt'", "'any'", "'setdiff'", "'stddev_pop'", "'stddev_samp'", 
-		"'var_pop'", "'var_samp'", "'group'", "'except'", "'having'", "'first_value'", 
-		"'last_value'", "'lag'", "'lead'", "'ratio_to_report'", "'over'", "'preceding'", 
-		"'following'", "'unbounded'", "'partition'", "'rows'", "'range'", "'current'", 
-		"'valid'", "'fill_time_series'", "'flow_to_stock'", "'stock_to_flow'", 
-		"'timeshift'", "'measures'", "'no_measures'", "'condition'", "'boolean'", 
-		"'date'", "'time_period'", "'number'", "'string'", "'integer'", "'float'", 
-		"'list'", "'record'", "'restrict'", "'yyyy'", "'mm'", "'dd'", "'maxLength'", 
-		"'regexp'", "'is'", "'when'", "'from'", "'aggregates'", "'points'", "'point'", 
-		"'total'", "'partial'", "'always'", "'inner_join'", "'left_join'", "'cross_join'", 
-		"'full_join'", "'maps_from'", "'maps_to'", "'map_to'", "'map_from'", "'returns'", 
-		"'pivot'", "'unpivot'", "'sub'", "'apply'", "'conditioned'", "'period_indicator'", 
-		"'single'", "'duration'", "'time_agg'", "'unit'", "'Value'", "'valuedomains'", 
-		"'variables'", "'input'", "'output'", "'cast'", "'rule_priority'", "'dataset_priority'", 
-		"'default'", "'check_datapoint'", "'check_hierarchy'", "'computed'", "'non_null'", 
-		"'non_zero'", "'partial_null'", "'partial_zero'", "'always_null'", "'always_zero'", 
-		"'components'", "'all_measures'", "'scalar'", "'component'", "'datapoint_on_valuedomains'", 
-		"'datapoint_on_variables'", "'hierarchical_on_valuedomains'", "'hierarchical_on_variables'", 
-		"'set'", "'language'", undefined, undefined, undefined, undefined, undefined, 
-		"'null'", undefined, undefined, undefined, undefined, undefined, undefined, 
-		undefined, undefined, undefined, undefined, undefined, undefined, undefined, 
+		undefined, "'['", "']'", "'+'", "'-'", "'*'", "'/'", "'>'", "'<'", "'<='",
+		"'>='", "'='", "'<>'", "'('", "')'", "':'", "'{'", "'}'", "'->'", "':='",
+		"'#'", "'eval'", "'if'", "'then'", "'else'", "'using'", "'with'", "'current_date'",
+		"'on'", "'drop'", "'keep'", "'calc'", "'attrcalc'", "'rename'", "'as'",
+		"'and'", "'or'", "'xor'", "'not'", "'between'", "'in'", "'not_in'", "'isnull'",
+		"'ex'", "'union'", "'diff'", "'symdiff'", "'intersect'", "'keys'", "','",
+		"'intyear'", "'intmonth'", "'intday'", "'check'", "'exists_in'", "'to'",
+		"'return'", "'imbalance'", "'errorcode'", "'all'", "'aggr'", "'errorlevel'",
+		"'order'", "'by'", "'rank'", "'asc'", "'desc'", "'min'", "'max'", "'first'",
+		"'last'", "'indexof'", "'abs'", "'key'", "'ln'", "'log'", "'trunc'", "'round'",
+		"'power'", "'mod'", "'length'", "'||'", "'trim'", "'upper'", "'lower'",
+		"'substr'", "'sum'", "'avg'", "'median'", "'count'", "'identifier'", "'measure'",
+		"'attribute'", "'filter'", "'merge'", "'exp'", "'role'", "'viral'", "'match_characters'",
+		"'type'", "'nvl'", "'hierarchy'", "'_'", "'invalid'", "'valuedomain'",
+		"'variable'", "'data'", "'structure'", "'dataset'", "'operator'", "'define'",
+		"'<-'", "'datapoint'", "'hierarchical'", "'ruleset'", "'rule'", "'end'",
+		"'alterDataset'", "'ltrim'", "'rtrim'", "'instr'", "'replace'", "'ceil'",
+		"'floor'", "'sqrt'", "'any'", "'setdiff'", "'stddev_pop'", "'stddev_samp'",
+		"'var_pop'", "'var_samp'", "'group'", "'except'", "'having'", "'first_value'",
+		"'last_value'", "'lag'", "'lead'", "'ratio_to_report'", "'over'", "'preceding'",
+		"'following'", "'unbounded'", "'partition'", "'rows'", "'range'", "'current'",
+		"'valid'", "'fill_time_series'", "'flow_to_stock'", "'stock_to_flow'",
+		"'timeshift'", "'measures'", "'no_measures'", "'condition'", "'boolean'",
+		"'date'", "'time_period'", "'number'", "'string'", "'integer'", "'float'",
+		"'list'", "'record'", "'restrict'", "'yyyy'", "'mm'", "'dd'", "'maxLength'",
+		"'regexp'", "'is'", "'when'", "'from'", "'aggregates'", "'points'", "'point'",
+		"'total'", "'partial'", "'always'", "'inner_join'", "'left_join'", "'cross_join'",
+		"'full_join'", "'maps_from'", "'maps_to'", "'map_to'", "'map_from'", "'returns'",
+		"'pivot'", "'unpivot'", "'sub'", "'apply'", "'conditioned'", "'period_indicator'",
+		"'single'", "'duration'", "'time_agg'", "'unit'", "'Value'", "'valuedomains'",
+		"'variables'", "'input'", "'output'", "'cast'", "'rule_priority'", "'dataset_priority'",
+		"'default'", "'check_datapoint'", "'check_hierarchy'", "'computed'", "'non_null'",
+		"'non_zero'", "'partial_null'", "'partial_zero'", "'always_null'", "'always_zero'",
+		"'components'", "'all_measures'", "'scalar'", "'component'", "'datapoint_on_valuedomains'",
+		"'datapoint_on_variables'", "'hierarchical_on_valuedomains'", "'hierarchical_on_variables'",
+		"'set'", "'language'", undefined, undefined, undefined, undefined, undefined,
+		"'null'", undefined, undefined, undefined, undefined, undefined, undefined,
+		undefined, undefined, undefined, undefined, undefined, undefined, undefined,
 		undefined, undefined, "';'",
 	];
 	private static readonly _SYMBOLIC_NAMES: Array<string | undefined> = [
-		undefined, undefined, undefined, undefined, undefined, undefined, undefined, 
-		undefined, undefined, undefined, undefined, undefined, undefined, undefined, 
-		undefined, undefined, undefined, undefined, undefined, "ASSIGN", "MEMBERSHIP", 
-		"EVAL", "IF", "THEN", "ELSE", "USING", "WITH", "CURRENT_DATE", "ON", "DROP", 
-		"KEEP", "CALC", "ATTRCALC", "RENAME", "AS", "AND", "OR", "XOR", "NOT", 
-		"BETWEEN", "IN", "NOT_IN", "ISNULL", "EX", "UNION", "DIFF", "SYMDIFF", 
-		"INTERSECT", "KEYS", "CARTESIAN_PER", "INTYEAR", "INTMONTH", "INTDAY", 
-		"CHECK", "EXISTS_IN", "TO", "RETURN", "IMBALANCE", "ERRORCODE", "ALL", 
-		"AGGREGATE", "ERRORLEVEL", "ORDER", "BY", "RANK", "ASC", "DESC", "MIN", 
-		"MAX", "FIRST", "LAST", "INDEXOF", "ABS", "KEY", "LN", "LOG", "TRUNC", 
-		"ROUND", "POWER", "MOD", "LEN", "CONCAT", "TRIM", "UCASE", "LCASE", "SUBSTR", 
-		"SUM", "AVG", "MEDIAN", "COUNT", "DIMENSION", "MEASURE", "ATTRIBUTE", 
-		"FILTER", "MERGE", "EXP", "ROLE", "VIRAL", "CHARSET_MATCH", "TYPE", "NVL", 
-		"HIERARCHY", "OPTIONAL", "INVALID", "VALUE_DOMAIN", "VARIABLE", "DATA", 
-		"STRUCTURE", "DATASET", "OPERATOR", "DEFINE", "PUT_SYMBOL", "DATAPOINT", 
-		"HIERARCHICAL", "RULESET", "RULE", "END", "ALTER_DATASET", "LTRIM", "RTRIM", 
-		"INSTR", "REPLACE", "CEIL", "FLOOR", "SQRT", "ANY", "SETDIFF", "STDDEV_POP", 
-		"STDDEV_SAMP", "VAR_POP", "VAR_SAMP", "GROUP", "EXCEPT", "HAVING", "FIRST_VALUE", 
-		"LAST_VALUE", "LAG", "LEAD", "RATIO_TO_REPORT", "OVER", "PRECEDING", "FOLLOWING", 
-		"UNBOUNDED", "PARTITION", "ROWS", "RANGE", "CURRENT", "VALID", "FILL_TIME_SERIES", 
-		"FLOW_TO_STOCK", "STOCK_TO_FLOW", "TIMESHIFT", "MEASURES", "NO_MEASURES", 
-		"CONDITION", "BOOLEAN", "DATE", "TIME_PERIOD", "NUMBER", "STRING", "INTEGER", 
-		"FLOAT", "LIST", "RECORD", "RESTRICT", "YYYY", "MM", "DD", "MAX_LENGTH", 
-		"REGEXP", "IS", "WHEN", "FROM", "AGGREGATES", "POINTS", "POINT", "TOTAL", 
-		"PARTIAL", "ALWAYS", "INNER_JOIN", "LEFT_JOIN", "CROSS_JOIN", "FULL_JOIN", 
-		"MAPS_FROM", "MAPS_TO", "MAP_TO", "MAP_FROM", "RETURNS", "PIVOT", "UNPIVOT", 
-		"SUBSPACE", "APPLY", "CONDITIONED", "PERIOD_INDICATOR", "SINGLE", "DURATION", 
-		"TIME_AGG", "UNIT", "VALUE", "VALUEDOMAINS", "VARIABLES", "INPUT", "OUTPUT", 
-		"CAST", "RULE_PRIORITY", "DATASET_PRIORITY", "DEFAULT", "CHECK_DATAPOINT", 
-		"CHECK_HIERARCHY", "COMPUTED", "NON_NULL", "NON_ZERO", "PARTIAL_NULL", 
-		"PARTIAL_ZERO", "ALWAYS_NULL", "ALWAYS_ZERO", "COMPONENTS", "ALL_MEASURES", 
-		"SCALAR", "COMPONENT", "DATAPOINT_ON_VD", "DATAPOINT_ON_VAR", "HIERARCHICAL_ON_VD", 
-		"HIERARCHICAL_ON_VAR", "SET", "LANGUAGE", "INTEGER_CONSTANT", "POSITIVE_CONSTANT", 
-		"NEGATIVE_CONSTANT", "FLOAT_CONSTANT", "BOOLEAN_CONSTANT", "NULL_CONSTANT", 
-		"STRING_CONSTANT", "IDENTIFIER", "DIGITS0_9", "MONTH", "DAY", "YEAR", 
-		"WEEK", "HOURS", "MINUTES", "SECONDS", "DATE_FORMAT", "TIME_FORMAT", "TIME_UNIT", 
+		undefined, undefined, undefined, undefined, undefined, undefined, undefined,
+		undefined, undefined, undefined, undefined, undefined, undefined, undefined,
+		undefined, undefined, undefined, undefined, undefined, "ASSIGN", "MEMBERSHIP",
+		"EVAL", "IF", "THEN", "ELSE", "USING", "WITH", "CURRENT_DATE", "ON", "DROP",
+		"KEEP", "CALC", "ATTRCALC", "RENAME", "AS", "AND", "OR", "XOR", "NOT",
+		"BETWEEN", "IN", "NOT_IN", "ISNULL", "EX", "UNION", "DIFF", "SYMDIFF",
+		"INTERSECT", "KEYS", "CARTESIAN_PER", "INTYEAR", "INTMONTH", "INTDAY",
+		"CHECK", "EXISTS_IN", "TO", "RETURN", "IMBALANCE", "ERRORCODE", "ALL",
+		"AGGREGATE", "ERRORLEVEL", "ORDER", "BY", "RANK", "ASC", "DESC", "MIN",
+		"MAX", "FIRST", "LAST", "INDEXOF", "ABS", "KEY", "LN", "LOG", "TRUNC",
+		"ROUND", "POWER", "MOD", "LEN", "CONCAT", "TRIM", "UCASE", "LCASE", "SUBSTR",
+		"SUM", "AVG", "MEDIAN", "COUNT", "DIMENSION", "MEASURE", "ATTRIBUTE",
+		"FILTER", "MERGE", "EXP", "ROLE", "VIRAL", "CHARSET_MATCH", "TYPE", "NVL",
+		"HIERARCHY", "OPTIONAL", "INVALID", "VALUE_DOMAIN", "VARIABLE", "DATA",
+		"STRUCTURE", "DATASET", "OPERATOR", "DEFINE", "PUT_SYMBOL", "DATAPOINT",
+		"HIERARCHICAL", "RULESET", "RULE", "END", "ALTER_DATASET", "LTRIM", "RTRIM",
+		"INSTR", "REPLACE", "CEIL", "FLOOR", "SQRT", "ANY", "SETDIFF", "STDDEV_POP",
+		"STDDEV_SAMP", "VAR_POP", "VAR_SAMP", "GROUP", "EXCEPT", "HAVING", "FIRST_VALUE",
+		"LAST_VALUE", "LAG", "LEAD", "RATIO_TO_REPORT", "OVER", "PRECEDING", "FOLLOWING",
+		"UNBOUNDED", "PARTITION", "ROWS", "RANGE", "CURRENT", "VALID", "FILL_TIME_SERIES",
+		"FLOW_TO_STOCK", "STOCK_TO_FLOW", "TIMESHIFT", "MEASURES", "NO_MEASURES",
+		"CONDITION", "BOOLEAN", "DATE", "TIME_PERIOD", "NUMBER", "STRING", "INTEGER",
+		"FLOAT", "LIST", "RECORD", "RESTRICT", "YYYY", "MM", "DD", "MAX_LENGTH",
+		"REGEXP", "IS", "WHEN", "FROM", "AGGREGATES", "POINTS", "POINT", "TOTAL",
+		"PARTIAL", "ALWAYS", "INNER_JOIN", "LEFT_JOIN", "CROSS_JOIN", "FULL_JOIN",
+		"MAPS_FROM", "MAPS_TO", "MAP_TO", "MAP_FROM", "RETURNS", "PIVOT", "UNPIVOT",
+		"SUBSPACE", "APPLY", "CONDITIONED", "PERIOD_INDICATOR", "SINGLE", "DURATION",
+		"TIME_AGG", "UNIT", "VALUE", "VALUEDOMAINS", "VARIABLES", "INPUT", "OUTPUT",
+		"CAST", "RULE_PRIORITY", "DATASET_PRIORITY", "DEFAULT", "CHECK_DATAPOINT",
+		"CHECK_HIERARCHY", "COMPUTED", "NON_NULL", "NON_ZERO", "PARTIAL_NULL",
+		"PARTIAL_ZERO", "ALWAYS_NULL", "ALWAYS_ZERO", "COMPONENTS", "ALL_MEASURES",
+		"SCALAR", "COMPONENT", "DATAPOINT_ON_VD", "DATAPOINT_ON_VAR", "HIERARCHICAL_ON_VD",
+		"HIERARCHICAL_ON_VAR", "SET", "LANGUAGE", "INTEGER_CONSTANT", "POSITIVE_CONSTANT",
+		"NEGATIVE_CONSTANT", "FLOAT_CONSTANT", "BOOLEAN_CONSTANT", "NULL_CONSTANT",
+		"STRING_CONSTANT", "IDENTIFIER", "DIGITS0_9", "MONTH", "DAY", "YEAR",
+		"WEEK", "HOURS", "MINUTES", "SECONDS", "DATE_FORMAT", "TIME_FORMAT", "TIME_UNIT",
 		"TIME", "WS", "EOL", "ML_COMMENT", "SL_COMMENT", "COMPARISON_OP", "FREQUENCY",
 	];
 	public static readonly VOCABULARY: Vocabulary = new VocabularyImpl(VtlParser._LITERAL_NAMES, VtlParser._SYMBOLIC_NAMES, []);
@@ -550,94 +550,94 @@ export class VtlParser extends Parser {
 			let _alt: number;
 			this.state = 283;
 			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 5, this._ctx) ) {
-			case 1:
-				this.enterOuterAlt(_localctx, 1);
-				{
-				this.state = 274;
-				this._errHandler.sync(this);
-				_alt = this.interpreter.adaptivePredict(this._input, 3, this._ctx);
-				while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
-					if (_alt === 1) {
-						{
-						{
-						this.state = 257;
+			switch (this.interpreter.adaptivePredict(this._input, 5, this._ctx)) {
+				case 1:
+					this.enterOuterAlt(_localctx, 1);
+					{
+						this.state = 274;
+						this._errHandler.sync(this);
+						_alt = this.interpreter.adaptivePredict(this._input, 3, this._ctx);
+						while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
+							if (_alt === 1) {
+								{
+									{
+										this.state = 257;
+										this._errHandler.sync(this);
+										_la = this._input.LA(1);
+										if ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << VtlParser.T__2) | (1 << VtlParser.T__3) | (1 << VtlParser.T__12) | (1 << VtlParser.EVAL) | (1 << VtlParser.IF) | (1 << VtlParser.CURRENT_DATE))) !== 0) || ((((_la - 38)) & ~0x1F) === 0 && ((1 << (_la - 38)) & ((1 << (VtlParser.NOT - 38)) | (1 << (VtlParser.BETWEEN - 38)) | (1 << (VtlParser.ISNULL - 38)) | (1 << (VtlParser.UNION - 38)) | (1 << (VtlParser.SYMDIFF - 38)) | (1 << (VtlParser.INTERSECT - 38)) | (1 << (VtlParser.CHECK - 38)) | (1 << (VtlParser.EXISTS_IN - 38)) | (1 << (VtlParser.RANK - 38)) | (1 << (VtlParser.MIN - 38)) | (1 << (VtlParser.MAX - 38)))) !== 0) || ((((_la - 72)) & ~0x1F) === 0 && ((1 << (_la - 72)) & ((1 << (VtlParser.ABS - 72)) | (1 << (VtlParser.LN - 72)) | (1 << (VtlParser.LOG - 72)) | (1 << (VtlParser.TRUNC - 72)) | (1 << (VtlParser.ROUND - 72)) | (1 << (VtlParser.POWER - 72)) | (1 << (VtlParser.MOD - 72)) | (1 << (VtlParser.LEN - 72)) | (1 << (VtlParser.TRIM - 72)) | (1 << (VtlParser.UCASE - 72)) | (1 << (VtlParser.LCASE - 72)) | (1 << (VtlParser.SUBSTR - 72)) | (1 << (VtlParser.SUM - 72)) | (1 << (VtlParser.AVG - 72)) | (1 << (VtlParser.MEDIAN - 72)) | (1 << (VtlParser.COUNT - 72)) | (1 << (VtlParser.EXP - 72)) | (1 << (VtlParser.CHARSET_MATCH - 72)) | (1 << (VtlParser.NVL - 72)) | (1 << (VtlParser.HIERARCHY - 72)))) !== 0) || ((((_la - 110)) & ~0x1F) === 0 && ((1 << (_la - 110)) & ((1 << (VtlParser.DEFINE - 110)) | (1 << (VtlParser.LTRIM - 110)) | (1 << (VtlParser.RTRIM - 110)) | (1 << (VtlParser.INSTR - 110)) | (1 << (VtlParser.REPLACE - 110)) | (1 << (VtlParser.CEIL - 110)) | (1 << (VtlParser.FLOOR - 110)) | (1 << (VtlParser.SQRT - 110)) | (1 << (VtlParser.SETDIFF - 110)) | (1 << (VtlParser.STDDEV_POP - 110)) | (1 << (VtlParser.STDDEV_SAMP - 110)) | (1 << (VtlParser.VAR_POP - 110)) | (1 << (VtlParser.VAR_SAMP - 110)) | (1 << (VtlParser.FIRST_VALUE - 110)) | (1 << (VtlParser.LAST_VALUE - 110)) | (1 << (VtlParser.LAG - 110)) | (1 << (VtlParser.LEAD - 110)) | (1 << (VtlParser.RATIO_TO_REPORT - 110)))) !== 0) || ((((_la - 148)) & ~0x1F) === 0 && ((1 << (_la - 148)) & ((1 << (VtlParser.FILL_TIME_SERIES - 148)) | (1 << (VtlParser.FLOW_TO_STOCK - 148)) | (1 << (VtlParser.STOCK_TO_FLOW - 148)) | (1 << (VtlParser.TIMESHIFT - 148)) | (1 << (VtlParser.INNER_JOIN - 148)))) !== 0) || ((((_la - 180)) & ~0x1F) === 0 && ((1 << (_la - 180)) & ((1 << (VtlParser.LEFT_JOIN - 180)) | (1 << (VtlParser.CROSS_JOIN - 180)) | (1 << (VtlParser.FULL_JOIN - 180)) | (1 << (VtlParser.PERIOD_INDICATOR - 180)) | (1 << (VtlParser.TIME_AGG - 180)) | (1 << (VtlParser.CAST - 180)) | (1 << (VtlParser.CHECK_DATAPOINT - 180)) | (1 << (VtlParser.CHECK_HIERARCHY - 180)))) !== 0) || ((((_la - 226)) & ~0x1F) === 0 && ((1 << (_la - 226)) & ((1 << (VtlParser.INTEGER_CONSTANT - 226)) | (1 << (VtlParser.FLOAT_CONSTANT - 226)) | (1 << (VtlParser.BOOLEAN_CONSTANT - 226)) | (1 << (VtlParser.NULL_CONSTANT - 226)) | (1 << (VtlParser.STRING_CONSTANT - 226)) | (1 << (VtlParser.IDENTIFIER - 226)))) !== 0)) {
+											{
+												this.state = 256;
+												this.statement();
+											}
+										}
+
+										this.state = 262;
+										this._errHandler.sync(this);
+										_la = this._input.LA(1);
+										while (_la === VtlParser.ML_COMMENT) {
+											{
+												{
+													this.state = 259;
+													this.match(VtlParser.ML_COMMENT);
+												}
+											}
+											this.state = 264;
+											this._errHandler.sync(this);
+											_la = this._input.LA(1);
+										}
+										this.state = 268;
+										this._errHandler.sync(this);
+										_la = this._input.LA(1);
+										while (_la === VtlParser.SL_COMMENT) {
+											{
+												{
+													this.state = 265;
+													this.match(VtlParser.SL_COMMENT);
+												}
+											}
+											this.state = 270;
+											this._errHandler.sync(this);
+											_la = this._input.LA(1);
+										}
+										this.state = 271;
+										this.match(VtlParser.EOL);
+									}
+								}
+							}
+							this.state = 276;
+							this._errHandler.sync(this);
+							_alt = this.interpreter.adaptivePredict(this._input, 3, this._ctx);
+						}
+						this.state = 278;
 						this._errHandler.sync(this);
 						_la = this._input.LA(1);
 						if ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << VtlParser.T__2) | (1 << VtlParser.T__3) | (1 << VtlParser.T__12) | (1 << VtlParser.EVAL) | (1 << VtlParser.IF) | (1 << VtlParser.CURRENT_DATE))) !== 0) || ((((_la - 38)) & ~0x1F) === 0 && ((1 << (_la - 38)) & ((1 << (VtlParser.NOT - 38)) | (1 << (VtlParser.BETWEEN - 38)) | (1 << (VtlParser.ISNULL - 38)) | (1 << (VtlParser.UNION - 38)) | (1 << (VtlParser.SYMDIFF - 38)) | (1 << (VtlParser.INTERSECT - 38)) | (1 << (VtlParser.CHECK - 38)) | (1 << (VtlParser.EXISTS_IN - 38)) | (1 << (VtlParser.RANK - 38)) | (1 << (VtlParser.MIN - 38)) | (1 << (VtlParser.MAX - 38)))) !== 0) || ((((_la - 72)) & ~0x1F) === 0 && ((1 << (_la - 72)) & ((1 << (VtlParser.ABS - 72)) | (1 << (VtlParser.LN - 72)) | (1 << (VtlParser.LOG - 72)) | (1 << (VtlParser.TRUNC - 72)) | (1 << (VtlParser.ROUND - 72)) | (1 << (VtlParser.POWER - 72)) | (1 << (VtlParser.MOD - 72)) | (1 << (VtlParser.LEN - 72)) | (1 << (VtlParser.TRIM - 72)) | (1 << (VtlParser.UCASE - 72)) | (1 << (VtlParser.LCASE - 72)) | (1 << (VtlParser.SUBSTR - 72)) | (1 << (VtlParser.SUM - 72)) | (1 << (VtlParser.AVG - 72)) | (1 << (VtlParser.MEDIAN - 72)) | (1 << (VtlParser.COUNT - 72)) | (1 << (VtlParser.EXP - 72)) | (1 << (VtlParser.CHARSET_MATCH - 72)) | (1 << (VtlParser.NVL - 72)) | (1 << (VtlParser.HIERARCHY - 72)))) !== 0) || ((((_la - 110)) & ~0x1F) === 0 && ((1 << (_la - 110)) & ((1 << (VtlParser.DEFINE - 110)) | (1 << (VtlParser.LTRIM - 110)) | (1 << (VtlParser.RTRIM - 110)) | (1 << (VtlParser.INSTR - 110)) | (1 << (VtlParser.REPLACE - 110)) | (1 << (VtlParser.CEIL - 110)) | (1 << (VtlParser.FLOOR - 110)) | (1 << (VtlParser.SQRT - 110)) | (1 << (VtlParser.SETDIFF - 110)) | (1 << (VtlParser.STDDEV_POP - 110)) | (1 << (VtlParser.STDDEV_SAMP - 110)) | (1 << (VtlParser.VAR_POP - 110)) | (1 << (VtlParser.VAR_SAMP - 110)) | (1 << (VtlParser.FIRST_VALUE - 110)) | (1 << (VtlParser.LAST_VALUE - 110)) | (1 << (VtlParser.LAG - 110)) | (1 << (VtlParser.LEAD - 110)) | (1 << (VtlParser.RATIO_TO_REPORT - 110)))) !== 0) || ((((_la - 148)) & ~0x1F) === 0 && ((1 << (_la - 148)) & ((1 << (VtlParser.FILL_TIME_SERIES - 148)) | (1 << (VtlParser.FLOW_TO_STOCK - 148)) | (1 << (VtlParser.STOCK_TO_FLOW - 148)) | (1 << (VtlParser.TIMESHIFT - 148)) | (1 << (VtlParser.INNER_JOIN - 148)))) !== 0) || ((((_la - 180)) & ~0x1F) === 0 && ((1 << (_la - 180)) & ((1 << (VtlParser.LEFT_JOIN - 180)) | (1 << (VtlParser.CROSS_JOIN - 180)) | (1 << (VtlParser.FULL_JOIN - 180)) | (1 << (VtlParser.PERIOD_INDICATOR - 180)) | (1 << (VtlParser.TIME_AGG - 180)) | (1 << (VtlParser.CAST - 180)) | (1 << (VtlParser.CHECK_DATAPOINT - 180)) | (1 << (VtlParser.CHECK_HIERARCHY - 180)))) !== 0) || ((((_la - 226)) & ~0x1F) === 0 && ((1 << (_la - 226)) & ((1 << (VtlParser.INTEGER_CONSTANT - 226)) | (1 << (VtlParser.FLOAT_CONSTANT - 226)) | (1 << (VtlParser.BOOLEAN_CONSTANT - 226)) | (1 << (VtlParser.NULL_CONSTANT - 226)) | (1 << (VtlParser.STRING_CONSTANT - 226)) | (1 << (VtlParser.IDENTIFIER - 226)))) !== 0)) {
 							{
-							this.state = 256;
-							this.statement();
+								this.state = 277;
+								this.statement();
 							}
 						}
 
-						this.state = 262;
-						this._errHandler.sync(this);
-						_la = this._input.LA(1);
-						while (_la === VtlParser.ML_COMMENT) {
-							{
-							{
-							this.state = 259;
-							this.match(VtlParser.ML_COMMENT);
-							}
-							}
-							this.state = 264;
-							this._errHandler.sync(this);
-							_la = this._input.LA(1);
-						}
-						this.state = 268;
-						this._errHandler.sync(this);
-						_la = this._input.LA(1);
-						while (_la === VtlParser.SL_COMMENT) {
-							{
-							{
-							this.state = 265;
-							this.match(VtlParser.SL_COMMENT);
-							}
-							}
-							this.state = 270;
-							this._errHandler.sync(this);
-							_la = this._input.LA(1);
-						}
-						this.state = 271;
-						this.match(VtlParser.EOL);
-						}
-						}
+						this.state = 280;
+						this.match(VtlParser.EOF);
 					}
-					this.state = 276;
-					this._errHandler.sync(this);
-					_alt = this.interpreter.adaptivePredict(this._input, 3, this._ctx);
-				}
-				this.state = 278;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-				if ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << VtlParser.T__2) | (1 << VtlParser.T__3) | (1 << VtlParser.T__12) | (1 << VtlParser.EVAL) | (1 << VtlParser.IF) | (1 << VtlParser.CURRENT_DATE))) !== 0) || ((((_la - 38)) & ~0x1F) === 0 && ((1 << (_la - 38)) & ((1 << (VtlParser.NOT - 38)) | (1 << (VtlParser.BETWEEN - 38)) | (1 << (VtlParser.ISNULL - 38)) | (1 << (VtlParser.UNION - 38)) | (1 << (VtlParser.SYMDIFF - 38)) | (1 << (VtlParser.INTERSECT - 38)) | (1 << (VtlParser.CHECK - 38)) | (1 << (VtlParser.EXISTS_IN - 38)) | (1 << (VtlParser.RANK - 38)) | (1 << (VtlParser.MIN - 38)) | (1 << (VtlParser.MAX - 38)))) !== 0) || ((((_la - 72)) & ~0x1F) === 0 && ((1 << (_la - 72)) & ((1 << (VtlParser.ABS - 72)) | (1 << (VtlParser.LN - 72)) | (1 << (VtlParser.LOG - 72)) | (1 << (VtlParser.TRUNC - 72)) | (1 << (VtlParser.ROUND - 72)) | (1 << (VtlParser.POWER - 72)) | (1 << (VtlParser.MOD - 72)) | (1 << (VtlParser.LEN - 72)) | (1 << (VtlParser.TRIM - 72)) | (1 << (VtlParser.UCASE - 72)) | (1 << (VtlParser.LCASE - 72)) | (1 << (VtlParser.SUBSTR - 72)) | (1 << (VtlParser.SUM - 72)) | (1 << (VtlParser.AVG - 72)) | (1 << (VtlParser.MEDIAN - 72)) | (1 << (VtlParser.COUNT - 72)) | (1 << (VtlParser.EXP - 72)) | (1 << (VtlParser.CHARSET_MATCH - 72)) | (1 << (VtlParser.NVL - 72)) | (1 << (VtlParser.HIERARCHY - 72)))) !== 0) || ((((_la - 110)) & ~0x1F) === 0 && ((1 << (_la - 110)) & ((1 << (VtlParser.DEFINE - 110)) | (1 << (VtlParser.LTRIM - 110)) | (1 << (VtlParser.RTRIM - 110)) | (1 << (VtlParser.INSTR - 110)) | (1 << (VtlParser.REPLACE - 110)) | (1 << (VtlParser.CEIL - 110)) | (1 << (VtlParser.FLOOR - 110)) | (1 << (VtlParser.SQRT - 110)) | (1 << (VtlParser.SETDIFF - 110)) | (1 << (VtlParser.STDDEV_POP - 110)) | (1 << (VtlParser.STDDEV_SAMP - 110)) | (1 << (VtlParser.VAR_POP - 110)) | (1 << (VtlParser.VAR_SAMP - 110)) | (1 << (VtlParser.FIRST_VALUE - 110)) | (1 << (VtlParser.LAST_VALUE - 110)) | (1 << (VtlParser.LAG - 110)) | (1 << (VtlParser.LEAD - 110)) | (1 << (VtlParser.RATIO_TO_REPORT - 110)))) !== 0) || ((((_la - 148)) & ~0x1F) === 0 && ((1 << (_la - 148)) & ((1 << (VtlParser.FILL_TIME_SERIES - 148)) | (1 << (VtlParser.FLOW_TO_STOCK - 148)) | (1 << (VtlParser.STOCK_TO_FLOW - 148)) | (1 << (VtlParser.TIMESHIFT - 148)) | (1 << (VtlParser.INNER_JOIN - 148)))) !== 0) || ((((_la - 180)) & ~0x1F) === 0 && ((1 << (_la - 180)) & ((1 << (VtlParser.LEFT_JOIN - 180)) | (1 << (VtlParser.CROSS_JOIN - 180)) | (1 << (VtlParser.FULL_JOIN - 180)) | (1 << (VtlParser.PERIOD_INDICATOR - 180)) | (1 << (VtlParser.TIME_AGG - 180)) | (1 << (VtlParser.CAST - 180)) | (1 << (VtlParser.CHECK_DATAPOINT - 180)) | (1 << (VtlParser.CHECK_HIERARCHY - 180)))) !== 0) || ((((_la - 226)) & ~0x1F) === 0 && ((1 << (_la - 226)) & ((1 << (VtlParser.INTEGER_CONSTANT - 226)) | (1 << (VtlParser.FLOAT_CONSTANT - 226)) | (1 << (VtlParser.BOOLEAN_CONSTANT - 226)) | (1 << (VtlParser.NULL_CONSTANT - 226)) | (1 << (VtlParser.STRING_CONSTANT - 226)) | (1 << (VtlParser.IDENTIFIER - 226)))) !== 0)) {
+					break;
+
+				case 2:
+					this.enterOuterAlt(_localctx, 2);
 					{
-					this.state = 277;
-					this.statement();
+						this.state = 281;
+						this.match(VtlParser.ML_COMMENT);
 					}
-				}
+					break;
 
-				this.state = 280;
-				this.match(VtlParser.EOF);
-				}
-				break;
-
-			case 2:
-				this.enterOuterAlt(_localctx, 2);
-				{
-				this.state = 281;
-				this.match(VtlParser.ML_COMMENT);
-				}
-				break;
-
-			case 3:
-				this.enterOuterAlt(_localctx, 3);
-				{
-				this.state = 282;
-				this.match(VtlParser.SL_COMMENT);
-				}
-				break;
+				case 3:
+					this.enterOuterAlt(_localctx, 3);
+					{
+						this.state = 282;
+						this.match(VtlParser.SL_COMMENT);
+					}
+					break;
 			}
 		}
 		catch (re) {
@@ -661,36 +661,36 @@ export class VtlParser extends Parser {
 		try {
 			this.state = 292;
 			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 7, this._ctx) ) {
-			case 1:
-				this.enterOuterAlt(_localctx, 1);
-				{
-				{
-				this.state = 288;
-				this._errHandler.sync(this);
-				switch ( this.interpreter.adaptivePredict(this._input, 6, this._ctx) ) {
+			switch (this.interpreter.adaptivePredict(this._input, 7, this._ctx)) {
 				case 1:
+					this.enterOuterAlt(_localctx, 1);
 					{
-					this.state = 285;
-					this.varID();
-					this.state = 286;
-					this.match(VtlParser.ASSIGN);
+						{
+							this.state = 288;
+							this._errHandler.sync(this);
+							switch (this.interpreter.adaptivePredict(this._input, 6, this._ctx)) {
+								case 1:
+									{
+										this.state = 285;
+										this.varID();
+										this.state = 286;
+										this.match(VtlParser.ASSIGN);
+									}
+									break;
+							}
+							this.state = 290;
+							this.expr(0);
+						}
 					}
 					break;
-				}
-				this.state = 290;
-				this.expr(0);
-				}
-				}
-				break;
 
-			case 2:
-				this.enterOuterAlt(_localctx, 2);
-				{
-				this.state = 291;
-				this.persistentAssignment();
-				}
-				break;
+				case 2:
+					this.enterOuterAlt(_localctx, 2);
+					{
+						this.state = 291;
+						this.persistentAssignment();
+					}
+					break;
 			}
 		}
 		catch (re) {
@@ -714,12 +714,12 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 294;
-			this.varID();
-			this.state = 295;
-			this.match(VtlParser.PUT_SYMBOL);
-			this.state = 296;
-			this.expr(0);
+				this.state = 294;
+				this.varID();
+				this.state = 295;
+				this.match(VtlParser.PUT_SYMBOL);
+				this.state = 296;
+				this.expr(0);
 			}
 		}
 		catch (re) {
@@ -744,2844 +744,6 @@ export class VtlParser extends Parser {
 			this.state = 300;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
-			case VtlParser.T__2:
-			case VtlParser.T__3:
-			case VtlParser.T__12:
-			case VtlParser.EVAL:
-			case VtlParser.IF:
-			case VtlParser.CURRENT_DATE:
-			case VtlParser.NOT:
-			case VtlParser.BETWEEN:
-			case VtlParser.ISNULL:
-			case VtlParser.UNION:
-			case VtlParser.SYMDIFF:
-			case VtlParser.INTERSECT:
-			case VtlParser.CHECK:
-			case VtlParser.EXISTS_IN:
-			case VtlParser.RANK:
-			case VtlParser.MIN:
-			case VtlParser.MAX:
-			case VtlParser.ABS:
-			case VtlParser.LN:
-			case VtlParser.LOG:
-			case VtlParser.TRUNC:
-			case VtlParser.ROUND:
-			case VtlParser.POWER:
-			case VtlParser.MOD:
-			case VtlParser.LEN:
-			case VtlParser.TRIM:
-			case VtlParser.UCASE:
-			case VtlParser.LCASE:
-			case VtlParser.SUBSTR:
-			case VtlParser.SUM:
-			case VtlParser.AVG:
-			case VtlParser.MEDIAN:
-			case VtlParser.COUNT:
-			case VtlParser.EXP:
-			case VtlParser.CHARSET_MATCH:
-			case VtlParser.NVL:
-			case VtlParser.HIERARCHY:
-			case VtlParser.DEFINE:
-			case VtlParser.LTRIM:
-			case VtlParser.RTRIM:
-			case VtlParser.INSTR:
-			case VtlParser.REPLACE:
-			case VtlParser.CEIL:
-			case VtlParser.FLOOR:
-			case VtlParser.SQRT:
-			case VtlParser.SETDIFF:
-			case VtlParser.STDDEV_POP:
-			case VtlParser.STDDEV_SAMP:
-			case VtlParser.VAR_POP:
-			case VtlParser.VAR_SAMP:
-			case VtlParser.FIRST_VALUE:
-			case VtlParser.LAST_VALUE:
-			case VtlParser.LAG:
-			case VtlParser.LEAD:
-			case VtlParser.RATIO_TO_REPORT:
-			case VtlParser.FILL_TIME_SERIES:
-			case VtlParser.FLOW_TO_STOCK:
-			case VtlParser.STOCK_TO_FLOW:
-			case VtlParser.TIMESHIFT:
-			case VtlParser.INNER_JOIN:
-			case VtlParser.LEFT_JOIN:
-			case VtlParser.CROSS_JOIN:
-			case VtlParser.FULL_JOIN:
-			case VtlParser.PERIOD_INDICATOR:
-			case VtlParser.TIME_AGG:
-			case VtlParser.CAST:
-			case VtlParser.CHECK_DATAPOINT:
-			case VtlParser.CHECK_HIERARCHY:
-			case VtlParser.INTEGER_CONSTANT:
-			case VtlParser.FLOAT_CONSTANT:
-			case VtlParser.BOOLEAN_CONSTANT:
-			case VtlParser.NULL_CONSTANT:
-			case VtlParser.STRING_CONSTANT:
-			case VtlParser.IDENTIFIER:
-				this.enterOuterAlt(_localctx, 1);
-				{
-				this.state = 298;
-				this.expr(0);
-				}
-				break;
-			case VtlParser.OPTIONAL:
-				this.enterOuterAlt(_localctx, 2);
-				{
-				this.state = 299;
-				this.match(VtlParser.OPTIONAL);
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-
-	public expr(): ExprContext;
-	public expr(_p: number): ExprContext;
-	// @RuleVersion(0)
-	public expr(_p?: number): ExprContext {
-		if (_p === undefined) {
-			_p = 0;
-		}
-
-		let _parentctx: ParserRuleContext = this._ctx;
-		let _parentState: number = this.state;
-		let _localctx: ExprContext = new ExprContext(this._ctx, _parentState);
-		let _prevctx: ExprContext = _localctx;
-		let _startState: number = 8;
-		this.enterRecursionRule(_localctx, 8, VtlParser.RULE_expr, _p);
-		let _la: number;
-		try {
-			let _alt: number;
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 347;
-			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 13, this._ctx) ) {
-			case 1:
-				{
-				this.state = 303;
-				this.exprAtom();
-				this.state = 316;
-				this._errHandler.sync(this);
-				_alt = this.interpreter.adaptivePredict(this._input, 10, this._ctx);
-				while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
-					if (_alt === 1) {
-						{
-						{
-						this.state = 304;
-						this.match(VtlParser.T__0);
-						this.state = 310;
-						this._errHandler.sync(this);
-						switch (this._input.LA(1)) {
-						case VtlParser.DROP:
-						case VtlParser.KEEP:
-						case VtlParser.CALC:
-						case VtlParser.RENAME:
-						case VtlParser.AGGREGATE:
-						case VtlParser.FILTER:
-						case VtlParser.PIVOT:
-						case VtlParser.UNPIVOT:
-						case VtlParser.SUBSPACE:
-							{
-							this.state = 305;
-							this.datasetClause();
-							}
-							break;
-						case VtlParser.T__2:
-						case VtlParser.T__3:
-						case VtlParser.T__12:
-						case VtlParser.EVAL:
-						case VtlParser.IF:
-						case VtlParser.CURRENT_DATE:
-						case VtlParser.NOT:
-						case VtlParser.BETWEEN:
-						case VtlParser.ISNULL:
-						case VtlParser.UNION:
-						case VtlParser.SYMDIFF:
-						case VtlParser.INTERSECT:
-						case VtlParser.CHECK:
-						case VtlParser.EXISTS_IN:
-						case VtlParser.RANK:
-						case VtlParser.MIN:
-						case VtlParser.MAX:
-						case VtlParser.ABS:
-						case VtlParser.LN:
-						case VtlParser.LOG:
-						case VtlParser.TRUNC:
-						case VtlParser.ROUND:
-						case VtlParser.POWER:
-						case VtlParser.MOD:
-						case VtlParser.LEN:
-						case VtlParser.TRIM:
-						case VtlParser.UCASE:
-						case VtlParser.LCASE:
-						case VtlParser.SUBSTR:
-						case VtlParser.SUM:
-						case VtlParser.AVG:
-						case VtlParser.MEDIAN:
-						case VtlParser.COUNT:
-						case VtlParser.EXP:
-						case VtlParser.CHARSET_MATCH:
-						case VtlParser.NVL:
-						case VtlParser.HIERARCHY:
-						case VtlParser.DEFINE:
-						case VtlParser.LTRIM:
-						case VtlParser.RTRIM:
-						case VtlParser.INSTR:
-						case VtlParser.REPLACE:
-						case VtlParser.CEIL:
-						case VtlParser.FLOOR:
-						case VtlParser.SQRT:
-						case VtlParser.SETDIFF:
-						case VtlParser.STDDEV_POP:
-						case VtlParser.STDDEV_SAMP:
-						case VtlParser.VAR_POP:
-						case VtlParser.VAR_SAMP:
-						case VtlParser.FIRST_VALUE:
-						case VtlParser.LAST_VALUE:
-						case VtlParser.LAG:
-						case VtlParser.LEAD:
-						case VtlParser.RATIO_TO_REPORT:
-						case VtlParser.FILL_TIME_SERIES:
-						case VtlParser.FLOW_TO_STOCK:
-						case VtlParser.STOCK_TO_FLOW:
-						case VtlParser.TIMESHIFT:
-						case VtlParser.INNER_JOIN:
-						case VtlParser.LEFT_JOIN:
-						case VtlParser.CROSS_JOIN:
-						case VtlParser.FULL_JOIN:
-						case VtlParser.PERIOD_INDICATOR:
-						case VtlParser.TIME_AGG:
-						case VtlParser.CAST:
-						case VtlParser.CHECK_DATAPOINT:
-						case VtlParser.CHECK_HIERARCHY:
-						case VtlParser.INTEGER_CONSTANT:
-						case VtlParser.FLOAT_CONSTANT:
-						case VtlParser.BOOLEAN_CONSTANT:
-						case VtlParser.NULL_CONSTANT:
-						case VtlParser.STRING_CONSTANT:
-						case VtlParser.IDENTIFIER:
-							{
-							{
-							this.state = 306;
-							this.expr(0);
-							this.state = 307;
-							this.match(VtlParser.ASSIGN);
-							this.state = 308;
-							this.expr(0);
-							}
-							}
-							break;
-						default:
-							throw new NoViableAltException(this);
-						}
-						this.state = 312;
-						this.match(VtlParser.T__1);
-						}
-						}
-					}
-					this.state = 318;
-					this._errHandler.sync(this);
-					_alt = this.interpreter.adaptivePredict(this._input, 10, this._ctx);
-				}
-				this.state = 321;
-				this._errHandler.sync(this);
-				switch ( this.interpreter.adaptivePredict(this._input, 11, this._ctx) ) {
-				case 1:
-					{
-					this.state = 319;
-					this.match(VtlParser.MEMBERSHIP);
-					this.state = 320;
-					this.componentID();
-					}
-					break;
-				}
-				}
-				break;
-
-			case 2:
-				{
-				this.state = 323;
-				_la = this._input.LA(1);
-				if (!(_la === VtlParser.T__2 || _la === VtlParser.T__3 || _la === VtlParser.NOT)) {
-				this._errHandler.recoverInline(this);
-				} else {
-					if (this._input.LA(1) === Token.EOF) {
-						this.matchedEOF = true;
-					}
-
-					this._errHandler.reportMatch(this);
-					this.consume();
-				}
-				this.state = 324;
-				this.expr(16);
-				}
-				break;
-
-			case 3:
-				{
-				this.state = 325;
-				this.match(VtlParser.EXISTS_IN);
-				this.state = 326;
-				this.match(VtlParser.T__12);
-				this.state = 327;
-				this.expr(0);
-				this.state = 328;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 329;
-				this.expr(0);
-				this.state = 332;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-				if (_la === VtlParser.CARTESIAN_PER) {
-					{
-					this.state = 330;
-					this.match(VtlParser.CARTESIAN_PER);
-					this.state = 331;
-					this.retainType();
-					}
-				}
-
-				this.state = 334;
-				this.match(VtlParser.T__13);
-				}
-				break;
-
-			case 4:
-				{
-				this.state = 336;
-				this.match(VtlParser.IF);
-				this.state = 337;
-				this.expr(0);
-				this.state = 338;
-				this.match(VtlParser.THEN);
-				this.state = 339;
-				this.expr(0);
-				this.state = 340;
-				this.match(VtlParser.ELSE);
-				this.state = 341;
-				this.expr(6);
-				}
-				break;
-
-			case 5:
-				{
-				this.state = 343;
-				this.exprComplex();
-				}
-				break;
-
-			case 6:
-				{
-				this.state = 344;
-				this.exprAtom();
-				}
-				break;
-
-			case 7:
-				{
-				this.state = 345;
-				this.constant();
-				}
-				break;
-
-			case 8:
-				{
-				this.state = 346;
-				this.match(VtlParser.IDENTIFIER);
-				}
-				break;
-			}
-			this._ctx._stop = this._input.tryLT(-1);
-			this.state = 384;
-			this._errHandler.sync(this);
-			_alt = this.interpreter.adaptivePredict(this._input, 17, this._ctx);
-			while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
-				if (_alt === 1) {
-					if (this._parseListeners != null) {
-						this.triggerExitRuleEvent();
-					}
-					_prevctx = _localctx;
-					{
-					this.state = 382;
-					this._errHandler.sync(this);
-					switch ( this.interpreter.adaptivePredict(this._input, 16, this._ctx) ) {
-					case 1:
-						{
-						_localctx = new ExprContext(_parentctx, _parentState);
-						this.pushNewRecursionContext(_localctx, _startState, VtlParser.RULE_expr);
-						this.state = 349;
-						if (!(this.precpred(this._ctx, 15))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 15)");
-						}
-						this.state = 350;
-						_la = this._input.LA(1);
-						if (!(_la === VtlParser.T__4 || _la === VtlParser.T__5)) {
-						this._errHandler.recoverInline(this);
-						} else {
-							if (this._input.LA(1) === Token.EOF) {
-								this.matchedEOF = true;
-							}
-
-							this._errHandler.reportMatch(this);
-							this.consume();
-						}
-						this.state = 351;
-						this.expr(16);
-						}
-						break;
-
-					case 2:
-						{
-						_localctx = new ExprContext(_parentctx, _parentState);
-						this.pushNewRecursionContext(_localctx, _startState, VtlParser.RULE_expr);
-						this.state = 352;
-						if (!(this.precpred(this._ctx, 14))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 14)");
-						}
-						this.state = 353;
-						_la = this._input.LA(1);
-						if (!(_la === VtlParser.T__2 || _la === VtlParser.T__3)) {
-						this._errHandler.recoverInline(this);
-						} else {
-							if (this._input.LA(1) === Token.EOF) {
-								this.matchedEOF = true;
-							}
-
-							this._errHandler.reportMatch(this);
-							this.consume();
-						}
-						this.state = 354;
-						this.expr(15);
-						}
-						break;
-
-					case 3:
-						{
-						_localctx = new ExprContext(_parentctx, _parentState);
-						this.pushNewRecursionContext(_localctx, _startState, VtlParser.RULE_expr);
-						this.state = 355;
-						if (!(this.precpred(this._ctx, 13))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 13)");
-						}
-						this.state = 356;
-						_la = this._input.LA(1);
-						if (!((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << VtlParser.T__6) | (1 << VtlParser.T__7) | (1 << VtlParser.T__8) | (1 << VtlParser.T__9) | (1 << VtlParser.T__10) | (1 << VtlParser.T__11))) !== 0))) {
-						this._errHandler.recoverInline(this);
-						} else {
-							if (this._input.LA(1) === Token.EOF) {
-								this.matchedEOF = true;
-							}
-
-							this._errHandler.reportMatch(this);
-							this.consume();
-						}
-						this.state = 357;
-						this.expr(14);
-						}
-						break;
-
-					case 4:
-						{
-						_localctx = new ExprContext(_parentctx, _parentState);
-						this.pushNewRecursionContext(_localctx, _startState, VtlParser.RULE_expr);
-						this.state = 358;
-						if (!(this.precpred(this._ctx, 9))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 9)");
-						}
-						this.state = 359;
-						_la = this._input.LA(1);
-						if (!(_la === VtlParser.T__10 || _la === VtlParser.T__11)) {
-						this._errHandler.recoverInline(this);
-						} else {
-							if (this._input.LA(1) === Token.EOF) {
-								this.matchedEOF = true;
-							}
-
-							this._errHandler.reportMatch(this);
-							this.consume();
-						}
-						this.state = 360;
-						this.expr(10);
-						}
-						break;
-
-					case 5:
-						{
-						_localctx = new ExprContext(_parentctx, _parentState);
-						this.pushNewRecursionContext(_localctx, _startState, VtlParser.RULE_expr);
-						this.state = 361;
-						if (!(this.precpred(this._ctx, 8))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 8)");
-						}
-						this.state = 362;
-						this.match(VtlParser.AND);
-						this.state = 363;
-						this.expr(9);
-						}
-						break;
-
-					case 6:
-						{
-						_localctx = new ExprContext(_parentctx, _parentState);
-						this.pushNewRecursionContext(_localctx, _startState, VtlParser.RULE_expr);
-						this.state = 364;
-						if (!(this.precpred(this._ctx, 7))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 7)");
-						}
-						this.state = 365;
-						_la = this._input.LA(1);
-						if (!(_la === VtlParser.OR || _la === VtlParser.XOR)) {
-						this._errHandler.recoverInline(this);
-						} else {
-							if (this._input.LA(1) === Token.EOF) {
-								this.matchedEOF = true;
-							}
-
-							this._errHandler.reportMatch(this);
-							this.consume();
-						}
-						this.state = 366;
-						this.expr(8);
-						}
-						break;
-
-					case 7:
-						{
-						_localctx = new ExprContext(_parentctx, _parentState);
-						this.pushNewRecursionContext(_localctx, _startState, VtlParser.RULE_expr);
-						this.state = 367;
-						if (!(this.precpred(this._ctx, 3))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 3)");
-						}
-						this.state = 368;
-						this.match(VtlParser.CONCAT);
-						this.state = 369;
-						this.expr(4);
-						}
-						break;
-
-					case 8:
-						{
-						_localctx = new ExprContext(_parentctx, _parentState);
-						this.pushNewRecursionContext(_localctx, _startState, VtlParser.RULE_expr);
-						this.state = 370;
-						if (!(this.precpred(this._ctx, 12))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 12)");
-						}
-						this.state = 371;
-						_la = this._input.LA(1);
-						if (!(_la === VtlParser.IN || _la === VtlParser.NOT_IN)) {
-						this._errHandler.recoverInline(this);
-						} else {
-							if (this._input.LA(1) === Token.EOF) {
-								this.matchedEOF = true;
-							}
-
-							this._errHandler.reportMatch(this);
-							this.consume();
-						}
-						this.state = 374;
-						this._errHandler.sync(this);
-						switch (this._input.LA(1)) {
-						case VtlParser.T__15:
-							{
-							this.state = 372;
-							this.lists();
-							}
-							break;
-						case VtlParser.IDENTIFIER:
-							{
-							this.state = 373;
-							this.match(VtlParser.IDENTIFIER);
-							}
-							break;
-						default:
-							throw new NoViableAltException(this);
-						}
-						}
-						break;
-
-					case 9:
-						{
-						_localctx = new ExprContext(_parentctx, _parentState);
-						this.pushNewRecursionContext(_localctx, _startState, VtlParser.RULE_expr);
-						this.state = 376;
-						if (!(this.precpred(this._ctx, 11))) {
-							throw new FailedPredicateException(this, "this.precpred(this._ctx, 11)");
-						}
-						this.state = 377;
-						this.match(VtlParser.EXISTS_IN);
-						this.state = 378;
-						this.expr(0);
-						this.state = 380;
-						this._errHandler.sync(this);
-						switch ( this.interpreter.adaptivePredict(this._input, 15, this._ctx) ) {
-						case 1:
-							{
-							this.state = 379;
-							this.match(VtlParser.ALL);
-							}
-							break;
-						}
-						}
-						break;
-					}
-					}
-				}
-				this.state = 386;
-				this._errHandler.sync(this);
-				_alt = this.interpreter.adaptivePredict(this._input, 17, this._ctx);
-			}
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.unrollRecursionContexts(_parentctx);
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public exprComplex(): ExprComplexContext {
-		let _localctx: ExprComplexContext = new ExprComplexContext(this._ctx, this.state);
-		this.enterRule(_localctx, 10, VtlParser.RULE_exprComplex);
-		try {
-			this.state = 397;
-			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 18, this._ctx) ) {
-			case 1:
-				_localctx = new ExprValidationExprContext(_localctx);
-				this.enterOuterAlt(_localctx, 1);
-				{
-				this.state = 387;
-				this.validationExpr();
-				}
-				break;
-
-			case 2:
-				_localctx = new DefinitionExpressionsContext(_localctx);
-				this.enterOuterAlt(_localctx, 2);
-				{
-				this.state = 388;
-				this.defExpr();
-				}
-				break;
-
-			case 3:
-				_localctx = new StandaloneAggregateFunctionContext(_localctx);
-				this.enterOuterAlt(_localctx, 3);
-				{
-				this.state = 389;
-				this.aggrInvocation();
-				}
-				break;
-
-			case 4:
-				_localctx = new ComponentExpressionwithAggrClauseContext(_localctx);
-				this.enterOuterAlt(_localctx, 4);
-				{
-				this.state = 390;
-				this.aggrInvocationCompExpr();
-				}
-				break;
-
-			case 5:
-				_localctx = new StandaloneAnalyticFunctionContext(_localctx);
-				this.enterOuterAlt(_localctx, 5);
-				{
-				this.state = 391;
-				this.anFunctionClause();
-				}
-				break;
-
-			case 6:
-				_localctx = new SimpleaggregateFunctionsContext(_localctx);
-				this.enterOuterAlt(_localctx, 6);
-				{
-				this.state = 392;
-				this.aggrFunction();
-				}
-				break;
-
-			case 7:
-				_localctx = new TimeexpressionsContext(_localctx);
-				this.enterOuterAlt(_localctx, 7);
-				{
-				this.state = 393;
-				this.timeExpr();
-				}
-				break;
-
-			case 8:
-				_localctx = new SetExpressionsContext(_localctx);
-				this.enterOuterAlt(_localctx, 8);
-				{
-				this.state = 394;
-				this.setExpr();
-				}
-				break;
-
-			case 9:
-				_localctx = new CallFunctionExpressionContext(_localctx);
-				this.enterOuterAlt(_localctx, 9);
-				{
-				this.state = 395;
-				this.callFunction();
-				}
-				break;
-
-			case 10:
-				_localctx = new JoinExpressionContext(_localctx);
-				this.enterOuterAlt(_localctx, 10);
-				{
-				this.state = 396;
-				this.joinExpr();
-				}
-				break;
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public timeExpr(): TimeExprContext {
-		let _localctx: TimeExprContext = new TimeExprContext(this._ctx, this.state);
-		this.enterRule(_localctx, 12, VtlParser.RULE_timeExpr);
-		let _la: number;
-		try {
-			this.state = 408;
-			this._errHandler.sync(this);
-			switch (this._input.LA(1)) {
-			case VtlParser.FILL_TIME_SERIES:
-				this.enterOuterAlt(_localctx, 1);
-				{
-				this.state = 399;
-				this.timeSeriesExpr();
-				}
-				break;
-			case VtlParser.PERIOD_INDICATOR:
-				this.enterOuterAlt(_localctx, 2);
-				{
-				this.state = 400;
-				this.periodExpr();
-				this.state = 403;
-				this._errHandler.sync(this);
-				switch ( this.interpreter.adaptivePredict(this._input, 19, this._ctx) ) {
-				case 1:
-					{
-					this.state = 401;
-					_localctx._opComp = this._input.LT(1);
-					_la = this._input.LA(1);
-					if (!((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << VtlParser.T__6) | (1 << VtlParser.T__7) | (1 << VtlParser.T__8) | (1 << VtlParser.T__9) | (1 << VtlParser.T__10) | (1 << VtlParser.T__11))) !== 0))) {
-						_localctx._opComp = this._errHandler.recoverInline(this);
-					} else {
-						if (this._input.LA(1) === Token.EOF) {
-							this.matchedEOF = true;
-						}
-
-						this._errHandler.reportMatch(this);
-						this.consume();
-					}
-					this.state = 402;
-					this.expr(0);
-					}
-					break;
-				}
-				}
-				break;
-			case VtlParser.TIMESHIFT:
-				this.enterOuterAlt(_localctx, 3);
-				{
-				this.state = 405;
-				this.timeShiftExpr();
-				}
-				break;
-			case VtlParser.TIME_AGG:
-				this.enterOuterAlt(_localctx, 4);
-				{
-				this.state = 406;
-				this.timeAggExpr();
-				}
-				break;
-			case VtlParser.CURRENT_DATE:
-				this.enterOuterAlt(_localctx, 5);
-				{
-				this.state = 407;
-				this.match(VtlParser.CURRENT_DATE);
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public defHierarchical(): DefHierarchicalContext {
-		let _localctx: DefHierarchicalContext = new DefHierarchicalContext(this._ctx, this.state);
-		this.enterRule(_localctx, 14, VtlParser.RULE_defHierarchical);
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 410;
-			this.defineHierarchicalRuleset();
-			this.state = 411;
-			this.rulesetID();
-			this.state = 412;
-			this.match(VtlParser.T__12);
-			this.state = 413;
-			this.hierRuleSignature();
-			this.state = 414;
-			this.match(VtlParser.T__13);
-			this.state = 415;
-			this.match(VtlParser.IS);
-			this.state = 416;
-			this.ruleClauseHierarchical();
-			this.state = 417;
-			this.endHierarchicalRuleset();
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public ruleClauseHierarchical(): RuleClauseHierarchicalContext {
-		let _localctx: RuleClauseHierarchicalContext = new RuleClauseHierarchicalContext(this._ctx, this.state);
-		this.enterRule(_localctx, 16, VtlParser.RULE_ruleClauseHierarchical);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 419;
-			this.ruleItemHierarchical();
-			this.state = 424;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === VtlParser.EOL) {
-				{
-				{
-				this.state = 420;
-				this.match(VtlParser.EOL);
-				this.state = 421;
-				this.ruleItemHierarchical();
-				}
-				}
-				this.state = 426;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-			}
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public ruleItemHierarchical(): RuleItemHierarchicalContext {
-		let _localctx: RuleItemHierarchicalContext = new RuleItemHierarchicalContext(this._ctx, this.state);
-		this.enterRule(_localctx, 18, VtlParser.RULE_ruleItemHierarchical);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 429;
-			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 22, this._ctx) ) {
-			case 1:
-				{
-				this.state = 427;
-				this.match(VtlParser.IDENTIFIER);
-				this.state = 428;
-				this.match(VtlParser.T__14);
-				}
-				break;
-			}
-			this.state = 431;
-			this.codeItemRelation();
-			this.state = 433;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.ERRORCODE) {
-				{
-				this.state = 432;
-				this.erCode();
-				}
-			}
-
-			this.state = 436;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.ERRORLEVEL) {
-				{
-				this.state = 435;
-				this.erLevel();
-				}
-			}
-
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public hierRuleSignature(): HierRuleSignatureContext {
-		let _localctx: HierRuleSignatureContext = new HierRuleSignatureContext(this._ctx, this.state);
-		this.enterRule(_localctx, 20, VtlParser.RULE_hierRuleSignature);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 438;
-			_la = this._input.LA(1);
-			if (!(_la === VtlParser.VALUE_DOMAIN || _la === VtlParser.VARIABLE)) {
-			this._errHandler.recoverInline(this);
-			} else {
-				if (this._input.LA(1) === Token.EOF) {
-					this.matchedEOF = true;
-				}
-
-				this._errHandler.reportMatch(this);
-				this.consume();
-			}
-			this.state = 440;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.CONDITION) {
-				{
-				this.state = 439;
-				this.valueDomainSignature();
-				}
-			}
-
-			this.state = 442;
-			this.match(VtlParser.RULE);
-			this.state = 443;
-			this.match(VtlParser.IDENTIFIER);
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public valueDomainSignature(): ValueDomainSignatureContext {
-		let _localctx: ValueDomainSignatureContext = new ValueDomainSignatureContext(this._ctx, this.state);
-		this.enterRule(_localctx, 22, VtlParser.RULE_valueDomainSignature);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 445;
-			this.match(VtlParser.CONDITION);
-			this.state = 446;
-			this.match(VtlParser.IDENTIFIER);
-			this.state = 449;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.AS) {
-				{
-				this.state = 447;
-				this.match(VtlParser.AS);
-				this.state = 448;
-				this.match(VtlParser.IDENTIFIER);
-				}
-			}
-
-			this.state = 459;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === VtlParser.CARTESIAN_PER) {
-				{
-				{
-				this.state = 451;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 452;
-				this.match(VtlParser.IDENTIFIER);
-				this.state = 455;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-				if (_la === VtlParser.AS) {
-					{
-					this.state = 453;
-					this.match(VtlParser.AS);
-					this.state = 454;
-					this.match(VtlParser.IDENTIFIER);
-					}
-				}
-
-				}
-				}
-				this.state = 461;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-			}
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public codeItemRelation(): CodeItemRelationContext {
-		let _localctx: CodeItemRelationContext = new CodeItemRelationContext(this._ctx, this.state);
-		this.enterRule(_localctx, 24, VtlParser.RULE_codeItemRelation);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 466;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.WHEN) {
-				{
-				this.state = 462;
-				this.match(VtlParser.WHEN);
-				this.state = 463;
-				this.expr(0);
-				this.state = 464;
-				this.match(VtlParser.THEN);
-				}
-			}
-
-			this.state = 468;
-			this.codeItemRef();
-			this.state = 469;
-			this.codeItemRelationClause();
-			this.state = 473;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === VtlParser.T__2 || _la === VtlParser.T__3 || _la === VtlParser.IDENTIFIER) {
-				{
-				{
-				this.state = 470;
-				this.codeItemRelationClause();
-				}
-				}
-				this.state = 475;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-			}
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public codeItemRelationClause(): CodeItemRelationClauseContext {
-		let _localctx: CodeItemRelationClauseContext = new CodeItemRelationClauseContext(this._ctx, this.state);
-		this.enterRule(_localctx, 26, VtlParser.RULE_codeItemRelationClause);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 477;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.T__2 || _la === VtlParser.T__3) {
-				{
-				this.state = 476;
-				_localctx._opAdd = this._input.LT(1);
-				_la = this._input.LA(1);
-				if (!(_la === VtlParser.T__2 || _la === VtlParser.T__3)) {
-					_localctx._opAdd = this._errHandler.recoverInline(this);
-				} else {
-					if (this._input.LA(1) === Token.EOF) {
-						this.matchedEOF = true;
-					}
-
-					this._errHandler.reportMatch(this);
-					this.consume();
-				}
-				}
-			}
-
-			this.state = 479;
-			this.match(VtlParser.IDENTIFIER);
-			this.state = 484;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.T__0) {
-				{
-				this.state = 480;
-				this.match(VtlParser.T__0);
-				this.state = 481;
-				this.expr(0);
-				this.state = 482;
-				this.match(VtlParser.T__1);
-				}
-			}
-
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public codeItemRef(): CodeItemRefContext {
-		let _localctx: CodeItemRefContext = new CodeItemRefContext(this._ctx, this.state);
-		this.enterRule(_localctx, 28, VtlParser.RULE_codeItemRef);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 486;
-			this.match(VtlParser.IDENTIFIER);
-			this.state = 488;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << VtlParser.T__6) | (1 << VtlParser.T__7) | (1 << VtlParser.T__8) | (1 << VtlParser.T__9) | (1 << VtlParser.T__10))) !== 0)) {
-				{
-				this.state = 487;
-				_localctx._opComp = this._input.LT(1);
-				_la = this._input.LA(1);
-				if (!((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << VtlParser.T__6) | (1 << VtlParser.T__7) | (1 << VtlParser.T__8) | (1 << VtlParser.T__9) | (1 << VtlParser.T__10))) !== 0))) {
-					_localctx._opComp = this._errHandler.recoverInline(this);
-				} else {
-					if (this._input.LA(1) === Token.EOF) {
-						this.matchedEOF = true;
-					}
-
-					this._errHandler.reportMatch(this);
-					this.consume();
-				}
-				}
-			}
-
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public defDatapoint(): DefDatapointContext {
-		let _localctx: DefDatapointContext = new DefDatapointContext(this._ctx, this.state);
-		this.enterRule(_localctx, 30, VtlParser.RULE_defDatapoint);
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 490;
-			this.defineDatapointRuleset();
-			this.state = 491;
-			this.rulesetID();
-			this.state = 492;
-			this.match(VtlParser.T__12);
-			this.state = 493;
-			this.rulesetSignature();
-			this.state = 494;
-			this.match(VtlParser.T__13);
-			this.state = 495;
-			this.match(VtlParser.IS);
-			this.state = 496;
-			this.ruleClauseDatapoint();
-			this.state = 497;
-			this.endDatapointRuleset();
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public ruleClauseDatapoint(): RuleClauseDatapointContext {
-		let _localctx: RuleClauseDatapointContext = new RuleClauseDatapointContext(this._ctx, this.state);
-		this.enterRule(_localctx, 32, VtlParser.RULE_ruleClauseDatapoint);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 499;
-			this.ruleItemDatapoint();
-			this.state = 504;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === VtlParser.EOL) {
-				{
-				{
-				this.state = 500;
-				this.match(VtlParser.EOL);
-				this.state = 501;
-				this.ruleItemDatapoint();
-				}
-				}
-				this.state = 506;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-			}
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public ruleItemDatapoint(): RuleItemDatapointContext {
-		let _localctx: RuleItemDatapointContext = new RuleItemDatapointContext(this._ctx, this.state);
-		this.enterRule(_localctx, 34, VtlParser.RULE_ruleItemDatapoint);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 509;
-			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 35, this._ctx) ) {
-			case 1:
-				{
-				this.state = 507;
-				this.match(VtlParser.IDENTIFIER);
-				this.state = 508;
-				this.match(VtlParser.T__14);
-				}
-				break;
-			}
-			this.state = 515;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.WHEN) {
-				{
-				this.state = 511;
-				this.match(VtlParser.WHEN);
-				this.state = 512;
-				this.expr(0);
-				this.state = 513;
-				this.match(VtlParser.THEN);
-				}
-			}
-
-			this.state = 517;
-			this.expr(0);
-			this.state = 519;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.ERRORCODE) {
-				{
-				this.state = 518;
-				this.erCode();
-				}
-			}
-
-			this.state = 522;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.ERRORLEVEL) {
-				{
-				this.state = 521;
-				this.erLevel();
-				}
-			}
-
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public rulesetSignature(): RulesetSignatureContext {
-		let _localctx: RulesetSignatureContext = new RulesetSignatureContext(this._ctx, this.state);
-		this.enterRule(_localctx, 36, VtlParser.RULE_rulesetSignature);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 524;
-			_la = this._input.LA(1);
-			if (!(_la === VtlParser.VALUE_DOMAIN || _la === VtlParser.VARIABLE)) {
-			this._errHandler.recoverInline(this);
-			} else {
-				if (this._input.LA(1) === Token.EOF) {
-					this.matchedEOF = true;
-				}
-
-				this._errHandler.reportMatch(this);
-				this.consume();
-			}
-			this.state = 525;
-			this.varSignature();
-			this.state = 530;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === VtlParser.CARTESIAN_PER) {
-				{
-				{
-				this.state = 526;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 527;
-				this.varSignature();
-				}
-				}
-				this.state = 532;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-			}
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public varSignature(): VarSignatureContext {
-		let _localctx: VarSignatureContext = new VarSignatureContext(this._ctx, this.state);
-		this.enterRule(_localctx, 38, VtlParser.RULE_varSignature);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 533;
-			this.varID();
-			this.state = 536;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.AS) {
-				{
-				this.state = 534;
-				this.match(VtlParser.AS);
-				this.state = 535;
-				this.match(VtlParser.IDENTIFIER);
-				}
-			}
-
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public defExpr(): DefExprContext {
-		let _localctx: DefExprContext = new DefExprContext(this._ctx, this.state);
-		this.enterRule(_localctx, 40, VtlParser.RULE_defExpr);
-		try {
-			this.state = 541;
-			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 41, this._ctx) ) {
-			case 1:
-				this.enterOuterAlt(_localctx, 1);
-				{
-				this.state = 538;
-				this.defOperator();
-				}
-				break;
-
-			case 2:
-				this.enterOuterAlt(_localctx, 2);
-				{
-				this.state = 539;
-				this.defDatapoint();
-				}
-				break;
-
-			case 3:
-				this.enterOuterAlt(_localctx, 3);
-				{
-				this.state = 540;
-				this.defHierarchical();
-				}
-				break;
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public defOperator(): DefOperatorContext {
-		let _localctx: DefOperatorContext = new DefOperatorContext(this._ctx, this.state);
-		this.enterRule(_localctx, 42, VtlParser.RULE_defOperator);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 543;
-			this.match(VtlParser.DEFINE);
-			this.state = 544;
-			this.match(VtlParser.OPERATOR);
-			this.state = 545;
-			this.operatorID();
-			this.state = 546;
-			this.match(VtlParser.T__12);
-			this.state = 555;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.IDENTIFIER) {
-				{
-				this.state = 547;
-				this.parameterItem();
-				this.state = 552;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-				while (_la === VtlParser.CARTESIAN_PER) {
-					{
-					{
-					this.state = 548;
-					this.match(VtlParser.CARTESIAN_PER);
-					this.state = 549;
-					this.parameterItem();
-					}
-					}
-					this.state = 554;
-					this._errHandler.sync(this);
-					_la = this._input.LA(1);
-				}
-				}
-			}
-
-			this.state = 557;
-			this.match(VtlParser.T__13);
-			this.state = 560;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.RETURNS) {
-				{
-				this.state = 558;
-				this.match(VtlParser.RETURNS);
-				this.state = 559;
-				this.dataType();
-				}
-			}
-
-			this.state = 562;
-			this.match(VtlParser.IS);
-			this.state = 563;
-			this.expr(0);
-			this.state = 564;
-			this.match(VtlParser.END);
-			this.state = 565;
-			this.match(VtlParser.OPERATOR);
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public parameterItem(): ParameterItemContext {
-		let _localctx: ParameterItemContext = new ParameterItemContext(this._ctx, this.state);
-		this.enterRule(_localctx, 44, VtlParser.RULE_parameterItem);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 567;
-			this.varID();
-			this.state = 568;
-			this.dataType();
-			this.state = 571;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.DEFAULT) {
-				{
-				this.state = 569;
-				this.match(VtlParser.DEFAULT);
-				this.state = 570;
-				this.constant();
-				}
-			}
-
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public callFunction(): CallFunctionContext {
-		let _localctx: CallFunctionContext = new CallFunctionContext(this._ctx, this.state);
-		this.enterRule(_localctx, 46, VtlParser.RULE_callFunction);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 573;
-			this.operatorID();
-			this.state = 574;
-			this.match(VtlParser.T__12);
-			this.state = 589;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.OPTIONAL || ((((_la - 226)) & ~0x1F) === 0 && ((1 << (_la - 226)) & ((1 << (VtlParser.INTEGER_CONSTANT - 226)) | (1 << (VtlParser.FLOAT_CONSTANT - 226)) | (1 << (VtlParser.BOOLEAN_CONSTANT - 226)) | (1 << (VtlParser.NULL_CONSTANT - 226)) | (1 << (VtlParser.STRING_CONSTANT - 226)))) !== 0)) {
-				{
-				this.state = 577;
-				this._errHandler.sync(this);
-				switch (this._input.LA(1)) {
-				case VtlParser.INTEGER_CONSTANT:
-				case VtlParser.FLOAT_CONSTANT:
-				case VtlParser.BOOLEAN_CONSTANT:
-				case VtlParser.NULL_CONSTANT:
-				case VtlParser.STRING_CONSTANT:
-					{
-					this.state = 575;
-					this.constant();
-					}
-					break;
-				case VtlParser.OPTIONAL:
-					{
-					this.state = 576;
-					this.match(VtlParser.OPTIONAL);
-					}
-					break;
-				default:
-					throw new NoViableAltException(this);
-				}
-				this.state = 586;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-				while (_la === VtlParser.CARTESIAN_PER) {
-					{
-					{
-					this.state = 579;
-					this.match(VtlParser.CARTESIAN_PER);
-					this.state = 582;
-					this._errHandler.sync(this);
-					switch (this._input.LA(1)) {
-					case VtlParser.INTEGER_CONSTANT:
-					case VtlParser.FLOAT_CONSTANT:
-					case VtlParser.BOOLEAN_CONSTANT:
-					case VtlParser.NULL_CONSTANT:
-					case VtlParser.STRING_CONSTANT:
-						{
-						this.state = 580;
-						this.constant();
-						}
-						break;
-					case VtlParser.OPTIONAL:
-						{
-						this.state = 581;
-						this.match(VtlParser.OPTIONAL);
-						}
-						break;
-					default:
-						throw new NoViableAltException(this);
-					}
-					}
-					}
-					this.state = 588;
-					this._errHandler.sync(this);
-					_la = this._input.LA(1);
-				}
-				}
-			}
-
-			this.state = 591;
-			this.match(VtlParser.T__13);
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public exprAtom(): ExprAtomContext {
-		let _localctx: ExprAtomContext = new ExprAtomContext(this._ctx, this.state);
-		this.enterRule(_localctx, 48, VtlParser.RULE_exprAtom);
-		let _la: number;
-		try {
-			this.state = 776;
-			this._errHandler.sync(this);
-			switch (this._input.LA(1)) {
-			case VtlParser.ROUND:
-				_localctx = new RoundAtomContext(_localctx);
-				this.enterOuterAlt(_localctx, 1);
-				{
-				this.state = 593;
-				this.match(VtlParser.ROUND);
-				this.state = 594;
-				this.match(VtlParser.T__12);
-				this.state = 595;
-				this.expr(0);
-				this.state = 598;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-				if (_la === VtlParser.CARTESIAN_PER) {
-					{
-					this.state = 596;
-					this.match(VtlParser.CARTESIAN_PER);
-					this.state = 597;
-					this.optionalExpr();
-					}
-				}
-
-				this.state = 600;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.CEIL:
-				_localctx = new CeilAtomContext(_localctx);
-				this.enterOuterAlt(_localctx, 2);
-				{
-				this.state = 602;
-				this.match(VtlParser.CEIL);
-				this.state = 603;
-				this.match(VtlParser.T__12);
-				this.state = 604;
-				this.expr(0);
-				this.state = 605;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.FLOOR:
-				_localctx = new FloorAtomContext(_localctx);
-				this.enterOuterAlt(_localctx, 3);
-				{
-				this.state = 607;
-				this.match(VtlParser.FLOOR);
-				this.state = 608;
-				this.match(VtlParser.T__12);
-				this.state = 609;
-				this.expr(0);
-				this.state = 610;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.ABS:
-				_localctx = new MinAtomContext(_localctx);
-				this.enterOuterAlt(_localctx, 4);
-				{
-				this.state = 612;
-				this.match(VtlParser.ABS);
-				this.state = 613;
-				this.match(VtlParser.T__12);
-				this.state = 614;
-				this.expr(0);
-				this.state = 615;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.EXP:
-				_localctx = new ExpAtomContext(_localctx);
-				this.enterOuterAlt(_localctx, 5);
-				{
-				this.state = 617;
-				this.match(VtlParser.EXP);
-				this.state = 618;
-				this.match(VtlParser.T__12);
-				this.state = 619;
-				this.expr(0);
-				this.state = 620;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.LN:
-				_localctx = new LnAtomContext(_localctx);
-				this.enterOuterAlt(_localctx, 6);
-				{
-				this.state = 622;
-				this.match(VtlParser.LN);
-				this.state = 623;
-				this.match(VtlParser.T__12);
-				this.state = 624;
-				this.expr(0);
-				this.state = 625;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.LOG:
-				_localctx = new LogAtomContext(_localctx);
-				this.enterOuterAlt(_localctx, 7);
-				{
-				this.state = 627;
-				this.match(VtlParser.LOG);
-				this.state = 628;
-				this.match(VtlParser.T__12);
-				this.state = 629;
-				this.expr(0);
-				this.state = 630;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 631;
-				this.expr(0);
-				this.state = 632;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.TRUNC:
-				_localctx = new LnAtomContext(_localctx);
-				this.enterOuterAlt(_localctx, 8);
-				{
-				this.state = 634;
-				this.match(VtlParser.TRUNC);
-				this.state = 635;
-				this.match(VtlParser.T__12);
-				this.state = 636;
-				this.expr(0);
-				this.state = 639;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-				if (_la === VtlParser.CARTESIAN_PER) {
-					{
-					this.state = 637;
-					this.match(VtlParser.CARTESIAN_PER);
-					this.state = 638;
-					this.optionalExpr();
-					}
-				}
-
-				this.state = 641;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.POWER:
-				_localctx = new PowerAtomContext(_localctx);
-				this.enterOuterAlt(_localctx, 9);
-				{
-				this.state = 643;
-				this.match(VtlParser.POWER);
-				this.state = 644;
-				this.match(VtlParser.T__12);
-				this.state = 645;
-				this.expr(0);
-				this.state = 646;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 647;
-				this.expr(0);
-				this.state = 648;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.SQRT:
-				_localctx = new SqrtAtomContext(_localctx);
-				this.enterOuterAlt(_localctx, 10);
-				{
-				this.state = 650;
-				this.match(VtlParser.SQRT);
-				this.state = 651;
-				this.match(VtlParser.T__12);
-				this.state = 652;
-				this.expr(0);
-				this.state = 653;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.LEN:
-				_localctx = new LenAtomContext(_localctx);
-				this.enterOuterAlt(_localctx, 11);
-				{
-				this.state = 655;
-				this.match(VtlParser.LEN);
-				this.state = 656;
-				this.match(VtlParser.T__12);
-				this.state = 657;
-				this.expr(0);
-				this.state = 658;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.BETWEEN:
-				_localctx = new BetweenAtomContext(_localctx);
-				this.enterOuterAlt(_localctx, 12);
-				{
-				this.state = 660;
-				this.match(VtlParser.BETWEEN);
-				this.state = 661;
-				this.match(VtlParser.T__12);
-				this.state = 662;
-				this.expr(0);
-				this.state = 663;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 664;
-				this.expr(0);
-				this.state = 665;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 666;
-				this.expr(0);
-				this.state = 667;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.TRIM:
-				_localctx = new TrimAtomContext(_localctx);
-				this.enterOuterAlt(_localctx, 13);
-				{
-				this.state = 669;
-				this.match(VtlParser.TRIM);
-				this.state = 670;
-				this.match(VtlParser.T__12);
-				this.state = 671;
-				this.expr(0);
-				this.state = 672;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.LTRIM:
-				_localctx = new LtrimAtomContext(_localctx);
-				this.enterOuterAlt(_localctx, 14);
-				{
-				this.state = 674;
-				this.match(VtlParser.LTRIM);
-				this.state = 675;
-				this.match(VtlParser.T__12);
-				this.state = 676;
-				this.expr(0);
-				this.state = 677;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.RTRIM:
-				_localctx = new RtrimAtomContext(_localctx);
-				this.enterOuterAlt(_localctx, 15);
-				{
-				this.state = 679;
-				this.match(VtlParser.RTRIM);
-				this.state = 680;
-				this.match(VtlParser.T__12);
-				this.state = 681;
-				this.expr(0);
-				this.state = 682;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.UCASE:
-				_localctx = new UcaseAtomContext(_localctx);
-				this.enterOuterAlt(_localctx, 16);
-				{
-				this.state = 684;
-				this.match(VtlParser.UCASE);
-				this.state = 685;
-				this.match(VtlParser.T__12);
-				this.state = 686;
-				this.expr(0);
-				this.state = 687;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.LCASE:
-				_localctx = new LcaseAtomContext(_localctx);
-				this.enterOuterAlt(_localctx, 17);
-				{
-				this.state = 689;
-				this.match(VtlParser.LCASE);
-				this.state = 690;
-				this.match(VtlParser.T__12);
-				this.state = 691;
-				this.expr(0);
-				this.state = 692;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.SUBSTR:
-				_localctx = new SubstrAtomContext(_localctx);
-				this.enterOuterAlt(_localctx, 18);
-				{
-				this.state = 694;
-				this.match(VtlParser.SUBSTR);
-				this.state = 695;
-				this.match(VtlParser.T__12);
-				this.state = 696;
-				this.expr(0);
-				this.state = 699;
-				this._errHandler.sync(this);
-				switch ( this.interpreter.adaptivePredict(this._input, 52, this._ctx) ) {
-				case 1:
-					{
-					this.state = 697;
-					this.match(VtlParser.CARTESIAN_PER);
-					this.state = 698;
-					this.optionalExpr();
-					}
-					break;
-				}
-				this.state = 703;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-				if (_la === VtlParser.CARTESIAN_PER) {
-					{
-					this.state = 701;
-					this.match(VtlParser.CARTESIAN_PER);
-					this.state = 702;
-					this.optionalExpr();
-					}
-				}
-
-				this.state = 705;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.INSTR:
-				_localctx = new InstrAtomContext(_localctx);
-				this.enterOuterAlt(_localctx, 19);
-				{
-				this.state = 707;
-				this.match(VtlParser.INSTR);
-				this.state = 708;
-				this.match(VtlParser.T__12);
-				this.state = 709;
-				this.expr(0);
-				this.state = 710;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 711;
-				this.expr(0);
-				this.state = 714;
-				this._errHandler.sync(this);
-				switch ( this.interpreter.adaptivePredict(this._input, 54, this._ctx) ) {
-				case 1:
-					{
-					this.state = 712;
-					this.match(VtlParser.CARTESIAN_PER);
-					this.state = 713;
-					this.optionalExpr();
-					}
-					break;
-				}
-				this.state = 718;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-				if (_la === VtlParser.CARTESIAN_PER) {
-					{
-					this.state = 716;
-					this.match(VtlParser.CARTESIAN_PER);
-					this.state = 717;
-					this.optionalExpr();
-					}
-				}
-
-				this.state = 720;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.REPLACE:
-				_localctx = new ReplaceAtomContext(_localctx);
-				this.enterOuterAlt(_localctx, 20);
-				{
-				this.state = 722;
-				this.match(VtlParser.REPLACE);
-				this.state = 723;
-				this.match(VtlParser.T__12);
-				this.state = 724;
-				this.expr(0);
-				this.state = 725;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 726;
-				this.expr(0);
-				this.state = 729;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-				if (_la === VtlParser.CARTESIAN_PER) {
-					{
-					this.state = 727;
-					this.match(VtlParser.CARTESIAN_PER);
-					this.state = 728;
-					this.optionalExpr();
-					}
-				}
-
-				this.state = 731;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.CHARSET_MATCH:
-				_localctx = new CharsetMatchAtomContext(_localctx);
-				this.enterOuterAlt(_localctx, 21);
-				{
-				this.state = 733;
-				this.match(VtlParser.CHARSET_MATCH);
-				this.state = 734;
-				this.match(VtlParser.T__12);
-				this.state = 735;
-				this.expr(0);
-				this.state = 736;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 737;
-				this.expr(0);
-				this.state = 738;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.ISNULL:
-				_localctx = new IsNullAtomContext(_localctx);
-				this.enterOuterAlt(_localctx, 22);
-				{
-				this.state = 740;
-				this.match(VtlParser.ISNULL);
-				this.state = 741;
-				this.match(VtlParser.T__12);
-				this.state = 742;
-				this.expr(0);
-				this.state = 743;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.NVL:
-				_localctx = new NvlAtomContext(_localctx);
-				this.enterOuterAlt(_localctx, 23);
-				{
-				this.state = 745;
-				this.match(VtlParser.NVL);
-				this.state = 746;
-				this.match(VtlParser.T__12);
-				this.state = 747;
-				this.expr(0);
-				this.state = 748;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 749;
-				this.expr(0);
-				this.state = 750;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.MOD:
-				_localctx = new ModAtomContext(_localctx);
-				this.enterOuterAlt(_localctx, 24);
-				{
-				this.state = 752;
-				this.match(VtlParser.MOD);
-				this.state = 753;
-				this.match(VtlParser.T__12);
-				this.state = 754;
-				this.expr(0);
-				this.state = 755;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 756;
-				this.expr(0);
-				this.state = 757;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.T__12:
-			case VtlParser.INTEGER_CONSTANT:
-			case VtlParser.FLOAT_CONSTANT:
-			case VtlParser.BOOLEAN_CONSTANT:
-			case VtlParser.NULL_CONSTANT:
-			case VtlParser.STRING_CONSTANT:
-			case VtlParser.IDENTIFIER:
-				_localctx = new RefAtomContext(_localctx);
-				this.enterOuterAlt(_localctx, 25);
-				{
-				this.state = 759;
-				this.ref();
-				}
-				break;
-			case VtlParser.EVAL:
-				_localctx = new EvalExprAtomContext(_localctx);
-				this.enterOuterAlt(_localctx, 26);
-				{
-				this.state = 760;
-				this.evalExpr();
-				}
-				break;
-			case VtlParser.CAST:
-				_localctx = new CastExprAtomContext(_localctx);
-				this.enterOuterAlt(_localctx, 27);
-				{
-				this.state = 761;
-				this.castExpr();
-				}
-				break;
-			case VtlParser.HIERARCHY:
-				_localctx = new HierarchyExprAtomContext(_localctx);
-				this.enterOuterAlt(_localctx, 28);
-				{
-				this.state = 762;
-				this.hierarchyExpr();
-				}
-				break;
-			case VtlParser.FLOW_TO_STOCK:
-				_localctx = new FlowToStockAtomContext(_localctx);
-				this.enterOuterAlt(_localctx, 29);
-				{
-				this.state = 763;
-				this.match(VtlParser.FLOW_TO_STOCK);
-				this.state = 764;
-				this.match(VtlParser.T__12);
-				this.state = 765;
-				this.expr(0);
-				this.state = 766;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.STOCK_TO_FLOW:
-				_localctx = new StockToFlowAtomContext(_localctx);
-				this.enterOuterAlt(_localctx, 30);
-				{
-				this.state = 768;
-				this.match(VtlParser.STOCK_TO_FLOW);
-				this.state = 769;
-				this.match(VtlParser.T__12);
-				this.state = 770;
-				this.expr(0);
-				this.state = 771;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.CHECK_DATAPOINT:
-				_localctx = new ValidateDPrulesetContext(_localctx);
-				this.enterOuterAlt(_localctx, 31);
-				{
-				this.state = 773;
-				this.validationDatapoint();
-				}
-				break;
-			case VtlParser.CHECK_HIERARCHY:
-				_localctx = new ValidateHRrulesetContext(_localctx);
-				this.enterOuterAlt(_localctx, 32);
-				{
-				this.state = 774;
-				this.validationHierarchical();
-				}
-				break;
-			case VtlParser.CHECK:
-				_localctx = new ValidationSimpleContext(_localctx);
-				this.enterOuterAlt(_localctx, 33);
-				{
-				this.state = 775;
-				this.validationExpr();
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public ref(): RefContext {
-		let _localctx: RefContext = new RefContext(this._ctx, this.state);
-		this.enterRule(_localctx, 50, VtlParser.RULE_ref);
-		try {
-			this.state = 784;
-			this._errHandler.sync(this);
-			switch (this._input.LA(1)) {
-			case VtlParser.T__12:
-				_localctx = new ParenthesisExprRefContext(_localctx);
-				this.enterOuterAlt(_localctx, 1);
-				{
-				this.state = 778;
-				this.match(VtlParser.T__12);
-				this.state = 779;
-				this.expr(0);
-				this.state = 780;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.IDENTIFIER:
-				_localctx = new VarIdRefContext(_localctx);
-				this.enterOuterAlt(_localctx, 2);
-				{
-				this.state = 782;
-				this.varID();
-				}
-				break;
-			case VtlParser.INTEGER_CONSTANT:
-			case VtlParser.FLOAT_CONSTANT:
-			case VtlParser.BOOLEAN_CONSTANT:
-			case VtlParser.NULL_CONSTANT:
-			case VtlParser.STRING_CONSTANT:
-				_localctx = new ConstantRefContext(_localctx);
-				this.enterOuterAlt(_localctx, 3);
-				{
-				this.state = 783;
-				this.constant();
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public identifierList(): IdentifierListContext {
-		let _localctx: IdentifierListContext = new IdentifierListContext(this._ctx, this.state);
-		this.enterRule(_localctx, 52, VtlParser.RULE_identifierList);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 786;
-			this.match(VtlParser.T__0);
-			this.state = 787;
-			this.match(VtlParser.IDENTIFIER);
-			this.state = 792;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === VtlParser.CARTESIAN_PER) {
-				{
-				{
-				this.state = 788;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 789;
-				this.match(VtlParser.IDENTIFIER);
-				}
-				}
-				this.state = 794;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-			}
-			this.state = 795;
-			this.match(VtlParser.T__1);
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public lists(): ListsContext {
-		let _localctx: ListsContext = new ListsContext(this._ctx, this.state);
-		this.enterRule(_localctx, 54, VtlParser.RULE_lists);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 797;
-			this.match(VtlParser.T__15);
-			this.state = 798;
-			this.constant();
-			this.state = 803;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === VtlParser.CARTESIAN_PER) {
-				{
-				{
-				this.state = 799;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 800;
-				this.constant();
-				}
-				}
-				this.state = 805;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-			}
-			this.state = 806;
-			this.match(VtlParser.T__16);
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public evalExpr(): EvalExprContext {
-		let _localctx: EvalExprContext = new EvalExprContext(this._ctx, this.state);
-		this.enterRule(_localctx, 56, VtlParser.RULE_evalExpr);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 808;
-			this.match(VtlParser.EVAL);
-			this.state = 809;
-			this.match(VtlParser.T__12);
-			this.state = 810;
-			this.routineName();
-			this.state = 811;
-			this.match(VtlParser.T__12);
-			this.state = 814;
-			this._errHandler.sync(this);
-			switch (this._input.LA(1)) {
-			case VtlParser.IDENTIFIER:
-				{
-				this.state = 812;
-				this.componentID();
-				}
-				break;
-			case VtlParser.INTEGER_CONSTANT:
-			case VtlParser.FLOAT_CONSTANT:
-			case VtlParser.BOOLEAN_CONSTANT:
-			case VtlParser.NULL_CONSTANT:
-			case VtlParser.STRING_CONSTANT:
-				{
-				this.state = 813;
-				this.constant();
-				}
-				break;
-			case VtlParser.T__13:
-			case VtlParser.CARTESIAN_PER:
-				break;
-			default:
-				break;
-			}
-			this.state = 823;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === VtlParser.CARTESIAN_PER) {
-				{
-				{
-				this.state = 816;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 819;
-				this._errHandler.sync(this);
-				switch (this._input.LA(1)) {
-				case VtlParser.IDENTIFIER:
-					{
-					this.state = 817;
-					this.componentID();
-					}
-					break;
-				case VtlParser.INTEGER_CONSTANT:
-				case VtlParser.FLOAT_CONSTANT:
-				case VtlParser.BOOLEAN_CONSTANT:
-				case VtlParser.NULL_CONSTANT:
-				case VtlParser.STRING_CONSTANT:
-					{
-					this.state = 818;
-					this.constant();
-					}
-					break;
-				default:
-					throw new NoViableAltException(this);
-				}
-				}
-				}
-				this.state = 825;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-			}
-			this.state = 826;
-			this.match(VtlParser.T__13);
-			this.state = 829;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.LANGUAGE) {
-				{
-				this.state = 827;
-				this.match(VtlParser.LANGUAGE);
-				this.state = 828;
-				this.match(VtlParser.STRING_CONSTANT);
-				}
-			}
-
-			this.state = 833;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.RETURNS) {
-				{
-				this.state = 831;
-				this.match(VtlParser.RETURNS);
-				this.state = 832;
-				this.outputParameterType();
-				}
-			}
-
-			this.state = 835;
-			this.match(VtlParser.T__13);
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public castExpr(): CastExprContext {
-		let _localctx: CastExprContext = new CastExprContext(this._ctx, this.state);
-		this.enterRule(_localctx, 58, VtlParser.RULE_castExpr);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 837;
-			this.match(VtlParser.CAST);
-			this.state = 838;
-			this.match(VtlParser.T__12);
-			this.state = 839;
-			this.expr(0);
-			this.state = 840;
-			this.match(VtlParser.CARTESIAN_PER);
-			this.state = 843;
-			this._errHandler.sync(this);
-			switch (this._input.LA(1)) {
-			case VtlParser.BOOLEAN:
-			case VtlParser.DATE:
-			case VtlParser.TIME_PERIOD:
-			case VtlParser.NUMBER:
-			case VtlParser.STRING:
-			case VtlParser.INTEGER:
-			case VtlParser.DURATION:
-			case VtlParser.SCALAR:
-			case VtlParser.TIME:
-				{
-				this.state = 841;
-				this.basicScalarType();
-				}
-				break;
-			case VtlParser.IDENTIFIER:
-				{
-				this.state = 842;
-				this.valueDomainName();
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
-			}
-			this.state = 847;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.CARTESIAN_PER) {
-				{
-				this.state = 845;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 846;
-				this.match(VtlParser.STRING_CONSTANT);
-				}
-			}
-
-			this.state = 849;
-			this.match(VtlParser.T__13);
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public periodExpr(): PeriodExprContext {
-		let _localctx: PeriodExprContext = new PeriodExprContext(this._ctx, this.state);
-		this.enterRule(_localctx, 60, VtlParser.RULE_periodExpr);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 851;
-			this.match(VtlParser.PERIOD_INDICATOR);
-			this.state = 852;
-			this.match(VtlParser.T__12);
-			this.state = 854;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << VtlParser.T__2) | (1 << VtlParser.T__3) | (1 << VtlParser.T__12) | (1 << VtlParser.EVAL) | (1 << VtlParser.IF) | (1 << VtlParser.CURRENT_DATE))) !== 0) || ((((_la - 38)) & ~0x1F) === 0 && ((1 << (_la - 38)) & ((1 << (VtlParser.NOT - 38)) | (1 << (VtlParser.BETWEEN - 38)) | (1 << (VtlParser.ISNULL - 38)) | (1 << (VtlParser.UNION - 38)) | (1 << (VtlParser.SYMDIFF - 38)) | (1 << (VtlParser.INTERSECT - 38)) | (1 << (VtlParser.CHECK - 38)) | (1 << (VtlParser.EXISTS_IN - 38)) | (1 << (VtlParser.RANK - 38)) | (1 << (VtlParser.MIN - 38)) | (1 << (VtlParser.MAX - 38)))) !== 0) || ((((_la - 72)) & ~0x1F) === 0 && ((1 << (_la - 72)) & ((1 << (VtlParser.ABS - 72)) | (1 << (VtlParser.LN - 72)) | (1 << (VtlParser.LOG - 72)) | (1 << (VtlParser.TRUNC - 72)) | (1 << (VtlParser.ROUND - 72)) | (1 << (VtlParser.POWER - 72)) | (1 << (VtlParser.MOD - 72)) | (1 << (VtlParser.LEN - 72)) | (1 << (VtlParser.TRIM - 72)) | (1 << (VtlParser.UCASE - 72)) | (1 << (VtlParser.LCASE - 72)) | (1 << (VtlParser.SUBSTR - 72)) | (1 << (VtlParser.SUM - 72)) | (1 << (VtlParser.AVG - 72)) | (1 << (VtlParser.MEDIAN - 72)) | (1 << (VtlParser.COUNT - 72)) | (1 << (VtlParser.EXP - 72)) | (1 << (VtlParser.CHARSET_MATCH - 72)) | (1 << (VtlParser.NVL - 72)) | (1 << (VtlParser.HIERARCHY - 72)))) !== 0) || ((((_la - 110)) & ~0x1F) === 0 && ((1 << (_la - 110)) & ((1 << (VtlParser.DEFINE - 110)) | (1 << (VtlParser.LTRIM - 110)) | (1 << (VtlParser.RTRIM - 110)) | (1 << (VtlParser.INSTR - 110)) | (1 << (VtlParser.REPLACE - 110)) | (1 << (VtlParser.CEIL - 110)) | (1 << (VtlParser.FLOOR - 110)) | (1 << (VtlParser.SQRT - 110)) | (1 << (VtlParser.SETDIFF - 110)) | (1 << (VtlParser.STDDEV_POP - 110)) | (1 << (VtlParser.STDDEV_SAMP - 110)) | (1 << (VtlParser.VAR_POP - 110)) | (1 << (VtlParser.VAR_SAMP - 110)) | (1 << (VtlParser.FIRST_VALUE - 110)) | (1 << (VtlParser.LAST_VALUE - 110)) | (1 << (VtlParser.LAG - 110)) | (1 << (VtlParser.LEAD - 110)) | (1 << (VtlParser.RATIO_TO_REPORT - 110)))) !== 0) || ((((_la - 148)) & ~0x1F) === 0 && ((1 << (_la - 148)) & ((1 << (VtlParser.FILL_TIME_SERIES - 148)) | (1 << (VtlParser.FLOW_TO_STOCK - 148)) | (1 << (VtlParser.STOCK_TO_FLOW - 148)) | (1 << (VtlParser.TIMESHIFT - 148)) | (1 << (VtlParser.INNER_JOIN - 148)))) !== 0) || ((((_la - 180)) & ~0x1F) === 0 && ((1 << (_la - 180)) & ((1 << (VtlParser.LEFT_JOIN - 180)) | (1 << (VtlParser.CROSS_JOIN - 180)) | (1 << (VtlParser.FULL_JOIN - 180)) | (1 << (VtlParser.PERIOD_INDICATOR - 180)) | (1 << (VtlParser.TIME_AGG - 180)) | (1 << (VtlParser.CAST - 180)) | (1 << (VtlParser.CHECK_DATAPOINT - 180)) | (1 << (VtlParser.CHECK_HIERARCHY - 180)))) !== 0) || ((((_la - 226)) & ~0x1F) === 0 && ((1 << (_la - 226)) & ((1 << (VtlParser.INTEGER_CONSTANT - 226)) | (1 << (VtlParser.FLOAT_CONSTANT - 226)) | (1 << (VtlParser.BOOLEAN_CONSTANT - 226)) | (1 << (VtlParser.NULL_CONSTANT - 226)) | (1 << (VtlParser.STRING_CONSTANT - 226)) | (1 << (VtlParser.IDENTIFIER - 226)))) !== 0)) {
-				{
-				this.state = 853;
-				this.expr(0);
-				}
-			}
-
-			this.state = 856;
-			this.match(VtlParser.T__13);
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public timeShiftExpr(): TimeShiftExprContext {
-		let _localctx: TimeShiftExprContext = new TimeShiftExprContext(this._ctx, this.state);
-		this.enterRule(_localctx, 62, VtlParser.RULE_timeShiftExpr);
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 858;
-			this.match(VtlParser.TIMESHIFT);
-			this.state = 859;
-			this.match(VtlParser.T__12);
-			this.state = 860;
-			this.expr(0);
-			this.state = 861;
-			this.match(VtlParser.CARTESIAN_PER);
-			this.state = 862;
-			this.match(VtlParser.INTEGER_CONSTANT);
-			this.state = 863;
-			this.match(VtlParser.T__13);
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public timeSeriesExpr(): TimeSeriesExprContext {
-		let _localctx: TimeSeriesExprContext = new TimeSeriesExprContext(this._ctx, this.state);
-		this.enterRule(_localctx, 64, VtlParser.RULE_timeSeriesExpr);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 865;
-			this.match(VtlParser.FILL_TIME_SERIES);
-			this.state = 866;
-			this.match(VtlParser.T__12);
-			this.state = 867;
-			this.expr(0);
-			this.state = 870;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.CARTESIAN_PER) {
-				{
-				this.state = 868;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 869;
-				_la = this._input.LA(1);
-				if (!(_la === VtlParser.ALL || _la === VtlParser.SINGLE)) {
-				this._errHandler.recoverInline(this);
-				} else {
-					if (this._input.LA(1) === Token.EOF) {
-						this.matchedEOF = true;
-					}
-
-					this._errHandler.reportMatch(this);
-					this.consume();
-				}
-				}
-			}
-
-			this.state = 872;
-			this.match(VtlParser.T__13);
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public timeAggExpr(): TimeAggExprContext {
-		let _localctx: TimeAggExprContext = new TimeAggExprContext(this._ctx, this.state);
-		this.enterRule(_localctx, 66, VtlParser.RULE_timeAggExpr);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 874;
-			this.match(VtlParser.TIME_AGG);
-			this.state = 875;
-			this.match(VtlParser.T__12);
-			this.state = 876;
-			this.match(VtlParser.STRING_CONSTANT);
-			this.state = 879;
-			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 70, this._ctx) ) {
-			case 1:
-				{
-				this.state = 877;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 878;
-				_la = this._input.LA(1);
-				if (!(_la === VtlParser.OPTIONAL || _la === VtlParser.STRING_CONSTANT)) {
-				this._errHandler.recoverInline(this);
-				} else {
-					if (this._input.LA(1) === Token.EOF) {
-						this.matchedEOF = true;
-					}
-
-					this._errHandler.reportMatch(this);
-					this.consume();
-				}
-				}
-				break;
-			}
-			this.state = 886;
-			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 72, this._ctx) ) {
-			case 1:
-				{
-				this.state = 881;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 884;
-				this._errHandler.sync(this);
-				switch (this._input.LA(1)) {
 				case VtlParser.T__2:
 				case VtlParser.T__3:
 				case VtlParser.T__12:
@@ -3656,34 +818,901 @@ export class VtlParser extends Parser {
 				case VtlParser.NULL_CONSTANT:
 				case VtlParser.STRING_CONSTANT:
 				case VtlParser.IDENTIFIER:
+					this.enterOuterAlt(_localctx, 1);
 					{
-					this.state = 882;
-					this.expr(0);
+						this.state = 298;
+						this.expr(0);
 					}
 					break;
 				case VtlParser.OPTIONAL:
+					this.enterOuterAlt(_localctx, 2);
 					{
-					this.state = 883;
-					this.match(VtlParser.OPTIONAL);
+						this.state = 299;
+						this.match(VtlParser.OPTIONAL);
 					}
 					break;
 				default:
 					throw new NoViableAltException(this);
-				}
-				}
-				break;
 			}
-			this.state = 890;
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+
+	public expr(): ExprContext;
+	public expr(_p: number): ExprContext;
+	// @RuleVersion(0)
+	public expr(_p?: number): ExprContext {
+		if (_p === undefined) {
+			_p = 0;
+		}
+
+		let _parentctx: ParserRuleContext = this._ctx;
+		let _parentState: number = this.state;
+		let _localctx: ExprContext = new ExprContext(this._ctx, _parentState);
+		let _prevctx: ExprContext = _localctx;
+		let _startState: number = 8;
+		this.enterRecursionRule(_localctx, 8, VtlParser.RULE_expr, _p);
+		let _la: number;
+		try {
+			let _alt: number;
+			this.enterOuterAlt(_localctx, 1);
+			{
+				this.state = 347;
+				this._errHandler.sync(this);
+				switch (this.interpreter.adaptivePredict(this._input, 13, this._ctx)) {
+					case 1:
+						{
+							this.state = 303;
+							this.exprAtom();
+							this.state = 316;
+							this._errHandler.sync(this);
+							_alt = this.interpreter.adaptivePredict(this._input, 10, this._ctx);
+							while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
+								if (_alt === 1) {
+									{
+										{
+											this.state = 304;
+											this.match(VtlParser.T__0);
+											this.state = 310;
+											this._errHandler.sync(this);
+											switch (this._input.LA(1)) {
+												case VtlParser.DROP:
+												case VtlParser.KEEP:
+												case VtlParser.CALC:
+												case VtlParser.RENAME:
+												case VtlParser.AGGREGATE:
+												case VtlParser.FILTER:
+												case VtlParser.PIVOT:
+												case VtlParser.UNPIVOT:
+												case VtlParser.SUBSPACE:
+													{
+														this.state = 305;
+														this.datasetClause();
+													}
+													break;
+												case VtlParser.T__2:
+												case VtlParser.T__3:
+												case VtlParser.T__12:
+												case VtlParser.EVAL:
+												case VtlParser.IF:
+												case VtlParser.CURRENT_DATE:
+												case VtlParser.NOT:
+												case VtlParser.BETWEEN:
+												case VtlParser.ISNULL:
+												case VtlParser.UNION:
+												case VtlParser.SYMDIFF:
+												case VtlParser.INTERSECT:
+												case VtlParser.CHECK:
+												case VtlParser.EXISTS_IN:
+												case VtlParser.RANK:
+												case VtlParser.MIN:
+												case VtlParser.MAX:
+												case VtlParser.ABS:
+												case VtlParser.LN:
+												case VtlParser.LOG:
+												case VtlParser.TRUNC:
+												case VtlParser.ROUND:
+												case VtlParser.POWER:
+												case VtlParser.MOD:
+												case VtlParser.LEN:
+												case VtlParser.TRIM:
+												case VtlParser.UCASE:
+												case VtlParser.LCASE:
+												case VtlParser.SUBSTR:
+												case VtlParser.SUM:
+												case VtlParser.AVG:
+												case VtlParser.MEDIAN:
+												case VtlParser.COUNT:
+												case VtlParser.EXP:
+												case VtlParser.CHARSET_MATCH:
+												case VtlParser.NVL:
+												case VtlParser.HIERARCHY:
+												case VtlParser.DEFINE:
+												case VtlParser.LTRIM:
+												case VtlParser.RTRIM:
+												case VtlParser.INSTR:
+												case VtlParser.REPLACE:
+												case VtlParser.CEIL:
+												case VtlParser.FLOOR:
+												case VtlParser.SQRT:
+												case VtlParser.SETDIFF:
+												case VtlParser.STDDEV_POP:
+												case VtlParser.STDDEV_SAMP:
+												case VtlParser.VAR_POP:
+												case VtlParser.VAR_SAMP:
+												case VtlParser.FIRST_VALUE:
+												case VtlParser.LAST_VALUE:
+												case VtlParser.LAG:
+												case VtlParser.LEAD:
+												case VtlParser.RATIO_TO_REPORT:
+												case VtlParser.FILL_TIME_SERIES:
+												case VtlParser.FLOW_TO_STOCK:
+												case VtlParser.STOCK_TO_FLOW:
+												case VtlParser.TIMESHIFT:
+												case VtlParser.INNER_JOIN:
+												case VtlParser.LEFT_JOIN:
+												case VtlParser.CROSS_JOIN:
+												case VtlParser.FULL_JOIN:
+												case VtlParser.PERIOD_INDICATOR:
+												case VtlParser.TIME_AGG:
+												case VtlParser.CAST:
+												case VtlParser.CHECK_DATAPOINT:
+												case VtlParser.CHECK_HIERARCHY:
+												case VtlParser.INTEGER_CONSTANT:
+												case VtlParser.FLOAT_CONSTANT:
+												case VtlParser.BOOLEAN_CONSTANT:
+												case VtlParser.NULL_CONSTANT:
+												case VtlParser.STRING_CONSTANT:
+												case VtlParser.IDENTIFIER:
+													{
+														{
+															this.state = 306;
+															this.expr(0);
+															this.state = 307;
+															this.match(VtlParser.ASSIGN);
+															this.state = 308;
+															this.expr(0);
+														}
+													}
+													break;
+												default:
+													throw new NoViableAltException(this);
+											}
+											this.state = 312;
+											this.match(VtlParser.T__1);
+										}
+									}
+								}
+								this.state = 318;
+								this._errHandler.sync(this);
+								_alt = this.interpreter.adaptivePredict(this._input, 10, this._ctx);
+							}
+							this.state = 321;
+							this._errHandler.sync(this);
+							switch (this.interpreter.adaptivePredict(this._input, 11, this._ctx)) {
+								case 1:
+									{
+										this.state = 319;
+										this.match(VtlParser.MEMBERSHIP);
+										this.state = 320;
+										this.componentID();
+									}
+									break;
+							}
+						}
+						break;
+
+					case 2:
+						{
+							this.state = 323;
+							_la = this._input.LA(1);
+							if (!(_la === VtlParser.T__2 || _la === VtlParser.T__3 || _la === VtlParser.NOT)) {
+								this._errHandler.recoverInline(this);
+							} else {
+								if (this._input.LA(1) === Token.EOF) {
+									this.matchedEOF = true;
+								}
+
+								this._errHandler.reportMatch(this);
+								this.consume();
+							}
+							this.state = 324;
+							this.expr(16);
+						}
+						break;
+
+					case 3:
+						{
+							this.state = 325;
+							this.match(VtlParser.EXISTS_IN);
+							this.state = 326;
+							this.match(VtlParser.T__12);
+							this.state = 327;
+							this.expr(0);
+							this.state = 328;
+							this.match(VtlParser.CARTESIAN_PER);
+							this.state = 329;
+							this.expr(0);
+							this.state = 332;
+							this._errHandler.sync(this);
+							_la = this._input.LA(1);
+							if (_la === VtlParser.CARTESIAN_PER) {
+								{
+									this.state = 330;
+									this.match(VtlParser.CARTESIAN_PER);
+									this.state = 331;
+									this.retainType();
+								}
+							}
+
+							this.state = 334;
+							this.match(VtlParser.T__13);
+						}
+						break;
+
+					case 4:
+						{
+							this.state = 336;
+							this.match(VtlParser.IF);
+							this.state = 337;
+							this.expr(0);
+							this.state = 338;
+							this.match(VtlParser.THEN);
+							this.state = 339;
+							this.expr(0);
+							this.state = 340;
+							this.match(VtlParser.ELSE);
+							this.state = 341;
+							this.expr(6);
+						}
+						break;
+
+					case 5:
+						{
+							this.state = 343;
+							this.exprComplex();
+						}
+						break;
+
+					case 6:
+						{
+							this.state = 344;
+							this.exprAtom();
+						}
+						break;
+
+					case 7:
+						{
+							this.state = 345;
+							this.constant();
+						}
+						break;
+
+					case 8:
+						{
+							this.state = 346;
+							this.match(VtlParser.IDENTIFIER);
+						}
+						break;
+				}
+				this._ctx._stop = this._input.tryLT(-1);
+				this.state = 384;
+				this._errHandler.sync(this);
+				_alt = this.interpreter.adaptivePredict(this._input, 17, this._ctx);
+				while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
+					if (_alt === 1) {
+						if (this._parseListeners != null) {
+							this.triggerExitRuleEvent();
+						}
+						_prevctx = _localctx;
+						{
+							this.state = 382;
+							this._errHandler.sync(this);
+							switch (this.interpreter.adaptivePredict(this._input, 16, this._ctx)) {
+								case 1:
+									{
+										_localctx = new ExprContext(_parentctx, _parentState);
+										this.pushNewRecursionContext(_localctx, _startState, VtlParser.RULE_expr);
+										this.state = 349;
+										if (!(this.precpred(this._ctx, 15))) {
+											throw new FailedPredicateException(this, "this.precpred(this._ctx, 15)");
+										}
+										this.state = 350;
+										_la = this._input.LA(1);
+										if (!(_la === VtlParser.T__4 || _la === VtlParser.T__5)) {
+											this._errHandler.recoverInline(this);
+										} else {
+											if (this._input.LA(1) === Token.EOF) {
+												this.matchedEOF = true;
+											}
+
+											this._errHandler.reportMatch(this);
+											this.consume();
+										}
+										this.state = 351;
+										this.expr(16);
+									}
+									break;
+
+								case 2:
+									{
+										_localctx = new ExprContext(_parentctx, _parentState);
+										this.pushNewRecursionContext(_localctx, _startState, VtlParser.RULE_expr);
+										this.state = 352;
+										if (!(this.precpred(this._ctx, 14))) {
+											throw new FailedPredicateException(this, "this.precpred(this._ctx, 14)");
+										}
+										this.state = 353;
+										_la = this._input.LA(1);
+										if (!(_la === VtlParser.T__2 || _la === VtlParser.T__3)) {
+											this._errHandler.recoverInline(this);
+										} else {
+											if (this._input.LA(1) === Token.EOF) {
+												this.matchedEOF = true;
+											}
+
+											this._errHandler.reportMatch(this);
+											this.consume();
+										}
+										this.state = 354;
+										this.expr(15);
+									}
+									break;
+
+								case 3:
+									{
+										_localctx = new ExprContext(_parentctx, _parentState);
+										this.pushNewRecursionContext(_localctx, _startState, VtlParser.RULE_expr);
+										this.state = 355;
+										if (!(this.precpred(this._ctx, 13))) {
+											throw new FailedPredicateException(this, "this.precpred(this._ctx, 13)");
+										}
+										this.state = 356;
+										_la = this._input.LA(1);
+										if (!((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << VtlParser.T__6) | (1 << VtlParser.T__7) | (1 << VtlParser.T__8) | (1 << VtlParser.T__9) | (1 << VtlParser.T__10) | (1 << VtlParser.T__11))) !== 0))) {
+											this._errHandler.recoverInline(this);
+										} else {
+											if (this._input.LA(1) === Token.EOF) {
+												this.matchedEOF = true;
+											}
+
+											this._errHandler.reportMatch(this);
+											this.consume();
+										}
+										this.state = 357;
+										this.expr(14);
+									}
+									break;
+
+								case 4:
+									{
+										_localctx = new ExprContext(_parentctx, _parentState);
+										this.pushNewRecursionContext(_localctx, _startState, VtlParser.RULE_expr);
+										this.state = 358;
+										if (!(this.precpred(this._ctx, 9))) {
+											throw new FailedPredicateException(this, "this.precpred(this._ctx, 9)");
+										}
+										this.state = 359;
+										_la = this._input.LA(1);
+										if (!(_la === VtlParser.T__10 || _la === VtlParser.T__11)) {
+											this._errHandler.recoverInline(this);
+										} else {
+											if (this._input.LA(1) === Token.EOF) {
+												this.matchedEOF = true;
+											}
+
+											this._errHandler.reportMatch(this);
+											this.consume();
+										}
+										this.state = 360;
+										this.expr(10);
+									}
+									break;
+
+								case 5:
+									{
+										_localctx = new ExprContext(_parentctx, _parentState);
+										this.pushNewRecursionContext(_localctx, _startState, VtlParser.RULE_expr);
+										this.state = 361;
+										if (!(this.precpred(this._ctx, 8))) {
+											throw new FailedPredicateException(this, "this.precpred(this._ctx, 8)");
+										}
+										this.state = 362;
+										this.match(VtlParser.AND);
+										this.state = 363;
+										this.expr(9);
+									}
+									break;
+
+								case 6:
+									{
+										_localctx = new ExprContext(_parentctx, _parentState);
+										this.pushNewRecursionContext(_localctx, _startState, VtlParser.RULE_expr);
+										this.state = 364;
+										if (!(this.precpred(this._ctx, 7))) {
+											throw new FailedPredicateException(this, "this.precpred(this._ctx, 7)");
+										}
+										this.state = 365;
+										_la = this._input.LA(1);
+										if (!(_la === VtlParser.OR || _la === VtlParser.XOR)) {
+											this._errHandler.recoverInline(this);
+										} else {
+											if (this._input.LA(1) === Token.EOF) {
+												this.matchedEOF = true;
+											}
+
+											this._errHandler.reportMatch(this);
+											this.consume();
+										}
+										this.state = 366;
+										this.expr(8);
+									}
+									break;
+
+								case 7:
+									{
+										_localctx = new ExprContext(_parentctx, _parentState);
+										this.pushNewRecursionContext(_localctx, _startState, VtlParser.RULE_expr);
+										this.state = 367;
+										if (!(this.precpred(this._ctx, 3))) {
+											throw new FailedPredicateException(this, "this.precpred(this._ctx, 3)");
+										}
+										this.state = 368;
+										this.match(VtlParser.CONCAT);
+										this.state = 369;
+										this.expr(4);
+									}
+									break;
+
+								case 8:
+									{
+										_localctx = new ExprContext(_parentctx, _parentState);
+										this.pushNewRecursionContext(_localctx, _startState, VtlParser.RULE_expr);
+										this.state = 370;
+										if (!(this.precpred(this._ctx, 12))) {
+											throw new FailedPredicateException(this, "this.precpred(this._ctx, 12)");
+										}
+										this.state = 371;
+										_la = this._input.LA(1);
+										if (!(_la === VtlParser.IN || _la === VtlParser.NOT_IN)) {
+											this._errHandler.recoverInline(this);
+										} else {
+											if (this._input.LA(1) === Token.EOF) {
+												this.matchedEOF = true;
+											}
+
+											this._errHandler.reportMatch(this);
+											this.consume();
+										}
+										this.state = 374;
+										this._errHandler.sync(this);
+										switch (this._input.LA(1)) {
+											case VtlParser.T__15:
+												{
+													this.state = 372;
+													this.lists();
+												}
+												break;
+											case VtlParser.IDENTIFIER:
+												{
+													this.state = 373;
+													this.match(VtlParser.IDENTIFIER);
+												}
+												break;
+											default:
+												throw new NoViableAltException(this);
+										}
+									}
+									break;
+
+								case 9:
+									{
+										_localctx = new ExprContext(_parentctx, _parentState);
+										this.pushNewRecursionContext(_localctx, _startState, VtlParser.RULE_expr);
+										this.state = 376;
+										if (!(this.precpred(this._ctx, 11))) {
+											throw new FailedPredicateException(this, "this.precpred(this._ctx, 11)");
+										}
+										this.state = 377;
+										this.match(VtlParser.EXISTS_IN);
+										this.state = 378;
+										this.expr(0);
+										this.state = 380;
+										this._errHandler.sync(this);
+										switch (this.interpreter.adaptivePredict(this._input, 15, this._ctx)) {
+											case 1:
+												{
+													this.state = 379;
+													this.match(VtlParser.ALL);
+												}
+												break;
+										}
+									}
+									break;
+							}
+						}
+					}
+					this.state = 386;
+					this._errHandler.sync(this);
+					_alt = this.interpreter.adaptivePredict(this._input, 17, this._ctx);
+				}
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.unrollRecursionContexts(_parentctx);
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public exprComplex(): ExprComplexContext {
+		let _localctx: ExprComplexContext = new ExprComplexContext(this._ctx, this.state);
+		this.enterRule(_localctx, 10, VtlParser.RULE_exprComplex);
+		try {
+			this.state = 397;
 			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.CARTESIAN_PER) {
-				{
-				this.state = 888;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 889;
+			switch (this.interpreter.adaptivePredict(this._input, 18, this._ctx)) {
+				case 1:
+					_localctx = new ExprValidationExprContext(_localctx);
+					this.enterOuterAlt(_localctx, 1);
+					{
+						this.state = 387;
+						this.validationExpr();
+					}
+					break;
+
+				case 2:
+					_localctx = new DefinitionExpressionsContext(_localctx);
+					this.enterOuterAlt(_localctx, 2);
+					{
+						this.state = 388;
+						this.defExpr();
+					}
+					break;
+
+				case 3:
+					_localctx = new StandaloneAggregateFunctionContext(_localctx);
+					this.enterOuterAlt(_localctx, 3);
+					{
+						this.state = 389;
+						this.aggrInvocation();
+					}
+					break;
+
+				case 4:
+					_localctx = new ComponentExpressionwithAggrClauseContext(_localctx);
+					this.enterOuterAlt(_localctx, 4);
+					{
+						this.state = 390;
+						this.aggrInvocationCompExpr();
+					}
+					break;
+
+				case 5:
+					_localctx = new StandaloneAnalyticFunctionContext(_localctx);
+					this.enterOuterAlt(_localctx, 5);
+					{
+						this.state = 391;
+						this.anFunctionClause();
+					}
+					break;
+
+				case 6:
+					_localctx = new SimpleaggregateFunctionsContext(_localctx);
+					this.enterOuterAlt(_localctx, 6);
+					{
+						this.state = 392;
+						this.aggrFunction();
+					}
+					break;
+
+				case 7:
+					_localctx = new TimeexpressionsContext(_localctx);
+					this.enterOuterAlt(_localctx, 7);
+					{
+						this.state = 393;
+						this.timeExpr();
+					}
+					break;
+
+				case 8:
+					_localctx = new SetExpressionsContext(_localctx);
+					this.enterOuterAlt(_localctx, 8);
+					{
+						this.state = 394;
+						this.setExpr();
+					}
+					break;
+
+				case 9:
+					_localctx = new CallFunctionExpressionContext(_localctx);
+					this.enterOuterAlt(_localctx, 9);
+					{
+						this.state = 395;
+						this.callFunction();
+					}
+					break;
+
+				case 10:
+					_localctx = new JoinExpressionContext(_localctx);
+					this.enterOuterAlt(_localctx, 10);
+					{
+						this.state = 396;
+						this.joinExpr();
+					}
+					break;
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public timeExpr(): TimeExprContext {
+		let _localctx: TimeExprContext = new TimeExprContext(this._ctx, this.state);
+		this.enterRule(_localctx, 12, VtlParser.RULE_timeExpr);
+		let _la: number;
+		try {
+			this.state = 408;
+			this._errHandler.sync(this);
+			switch (this._input.LA(1)) {
+				case VtlParser.FILL_TIME_SERIES:
+					this.enterOuterAlt(_localctx, 1);
+					{
+						this.state = 399;
+						this.timeSeriesExpr();
+					}
+					break;
+				case VtlParser.PERIOD_INDICATOR:
+					this.enterOuterAlt(_localctx, 2);
+					{
+						this.state = 400;
+						this.periodExpr();
+						this.state = 403;
+						this._errHandler.sync(this);
+						switch (this.interpreter.adaptivePredict(this._input, 19, this._ctx)) {
+							case 1:
+								{
+									this.state = 401;
+									_localctx._opComp = this._input.LT(1);
+									_la = this._input.LA(1);
+									if (!((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << VtlParser.T__6) | (1 << VtlParser.T__7) | (1 << VtlParser.T__8) | (1 << VtlParser.T__9) | (1 << VtlParser.T__10) | (1 << VtlParser.T__11))) !== 0))) {
+										_localctx._opComp = this._errHandler.recoverInline(this);
+									} else {
+										if (this._input.LA(1) === Token.EOF) {
+											this.matchedEOF = true;
+										}
+
+										this._errHandler.reportMatch(this);
+										this.consume();
+									}
+									this.state = 402;
+									this.expr(0);
+								}
+								break;
+						}
+					}
+					break;
+				case VtlParser.TIMESHIFT:
+					this.enterOuterAlt(_localctx, 3);
+					{
+						this.state = 405;
+						this.timeShiftExpr();
+					}
+					break;
+				case VtlParser.TIME_AGG:
+					this.enterOuterAlt(_localctx, 4);
+					{
+						this.state = 406;
+						this.timeAggExpr();
+					}
+					break;
+				case VtlParser.CURRENT_DATE:
+					this.enterOuterAlt(_localctx, 5);
+					{
+						this.state = 407;
+						this.match(VtlParser.CURRENT_DATE);
+					}
+					break;
+				default:
+					throw new NoViableAltException(this);
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public defHierarchical(): DefHierarchicalContext {
+		let _localctx: DefHierarchicalContext = new DefHierarchicalContext(this._ctx, this.state);
+		this.enterRule(_localctx, 14, VtlParser.RULE_defHierarchical);
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+				this.state = 410;
+				this.defineHierarchicalRuleset();
+				this.state = 411;
+				this.rulesetID();
+				this.state = 412;
+				this.match(VtlParser.T__12);
+				this.state = 413;
+				this.hierRuleSignature();
+				this.state = 414;
+				this.match(VtlParser.T__13);
+				this.state = 415;
+				this.match(VtlParser.IS);
+				this.state = 416;
+				this.ruleClauseHierarchical();
+				this.state = 417;
+				this.endHierarchicalRuleset();
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public ruleClauseHierarchical(): RuleClauseHierarchicalContext {
+		let _localctx: RuleClauseHierarchicalContext = new RuleClauseHierarchicalContext(this._ctx, this.state);
+		this.enterRule(_localctx, 16, VtlParser.RULE_ruleClauseHierarchical);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+				this.state = 419;
+				this.ruleItemHierarchical();
+				this.state = 424;
+				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-				if (!(_la === VtlParser.FIRST || _la === VtlParser.LAST)) {
-				this._errHandler.recoverInline(this);
+				while (_la === VtlParser.EOL) {
+					{
+						{
+							this.state = 420;
+							this.match(VtlParser.EOL);
+							this.state = 421;
+							this.ruleItemHierarchical();
+						}
+					}
+					this.state = 426;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
+				}
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public ruleItemHierarchical(): RuleItemHierarchicalContext {
+		let _localctx: RuleItemHierarchicalContext = new RuleItemHierarchicalContext(this._ctx, this.state);
+		this.enterRule(_localctx, 18, VtlParser.RULE_ruleItemHierarchical);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+				this.state = 429;
+				this._errHandler.sync(this);
+				switch (this.interpreter.adaptivePredict(this._input, 22, this._ctx)) {
+					case 1:
+						{
+							this.state = 427;
+							this.match(VtlParser.IDENTIFIER);
+							this.state = 428;
+							this.match(VtlParser.T__14);
+						}
+						break;
+				}
+				this.state = 431;
+				this.codeItemRelation();
+				this.state = 433;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.ERRORCODE) {
+					{
+						this.state = 432;
+						this.erCode();
+					}
+				}
+
+				this.state = 436;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.ERRORLEVEL) {
+					{
+						this.state = 435;
+						this.erLevel();
+					}
+				}
+
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public hierRuleSignature(): HierRuleSignatureContext {
+		let _localctx: HierRuleSignatureContext = new HierRuleSignatureContext(this._ctx, this.state);
+		this.enterRule(_localctx, 20, VtlParser.RULE_hierRuleSignature);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+				this.state = 438;
+				_la = this._input.LA(1);
+				if (!(_la === VtlParser.VALUE_DOMAIN || _la === VtlParser.VARIABLE)) {
+					this._errHandler.recoverInline(this);
 				} else {
 					if (this._input.LA(1) === Token.EOF) {
 						this.matchedEOF = true;
@@ -3692,11 +1721,1982 @@ export class VtlParser extends Parser {
 					this._errHandler.reportMatch(this);
 					this.consume();
 				}
+				this.state = 440;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.CONDITION) {
+					{
+						this.state = 439;
+						this.valueDomainSignature();
+					}
+				}
+
+				this.state = 442;
+				this.match(VtlParser.RULE);
+				this.state = 443;
+				this.match(VtlParser.IDENTIFIER);
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public valueDomainSignature(): ValueDomainSignatureContext {
+		let _localctx: ValueDomainSignatureContext = new ValueDomainSignatureContext(this._ctx, this.state);
+		this.enterRule(_localctx, 22, VtlParser.RULE_valueDomainSignature);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+				this.state = 445;
+				this.match(VtlParser.CONDITION);
+				this.state = 446;
+				this.match(VtlParser.IDENTIFIER);
+				this.state = 449;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.AS) {
+					{
+						this.state = 447;
+						this.match(VtlParser.AS);
+						this.state = 448;
+						this.match(VtlParser.IDENTIFIER);
+					}
+				}
+
+				this.state = 459;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				while (_la === VtlParser.CARTESIAN_PER) {
+					{
+						{
+							this.state = 451;
+							this.match(VtlParser.CARTESIAN_PER);
+							this.state = 452;
+							this.match(VtlParser.IDENTIFIER);
+							this.state = 455;
+							this._errHandler.sync(this);
+							_la = this._input.LA(1);
+							if (_la === VtlParser.AS) {
+								{
+									this.state = 453;
+									this.match(VtlParser.AS);
+									this.state = 454;
+									this.match(VtlParser.IDENTIFIER);
+								}
+							}
+
+						}
+					}
+					this.state = 461;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
 				}
 			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public codeItemRelation(): CodeItemRelationContext {
+		let _localctx: CodeItemRelationContext = new CodeItemRelationContext(this._ctx, this.state);
+		this.enterRule(_localctx, 24, VtlParser.RULE_codeItemRelation);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+				this.state = 466;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.WHEN) {
+					{
+						this.state = 462;
+						this.match(VtlParser.WHEN);
+						this.state = 463;
+						this.expr(0);
+						this.state = 464;
+						this.match(VtlParser.THEN);
+					}
+				}
 
-			this.state = 892;
-			this.match(VtlParser.T__13);
+				this.state = 468;
+				this.codeItemRef();
+				this.state = 469;
+				this.codeItemRelationClause();
+				this.state = 473;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				while (_la === VtlParser.T__2 || _la === VtlParser.T__3 || _la === VtlParser.IDENTIFIER) {
+					{
+						{
+							this.state = 470;
+							this.codeItemRelationClause();
+						}
+					}
+					this.state = 475;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
+				}
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public codeItemRelationClause(): CodeItemRelationClauseContext {
+		let _localctx: CodeItemRelationClauseContext = new CodeItemRelationClauseContext(this._ctx, this.state);
+		this.enterRule(_localctx, 26, VtlParser.RULE_codeItemRelationClause);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+				this.state = 477;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.T__2 || _la === VtlParser.T__3) {
+					{
+						this.state = 476;
+						_localctx._opAdd = this._input.LT(1);
+						_la = this._input.LA(1);
+						if (!(_la === VtlParser.T__2 || _la === VtlParser.T__3)) {
+							_localctx._opAdd = this._errHandler.recoverInline(this);
+						} else {
+							if (this._input.LA(1) === Token.EOF) {
+								this.matchedEOF = true;
+							}
+
+							this._errHandler.reportMatch(this);
+							this.consume();
+						}
+					}
+				}
+
+				this.state = 479;
+				this.match(VtlParser.IDENTIFIER);
+				this.state = 484;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.T__0) {
+					{
+						this.state = 480;
+						this.match(VtlParser.T__0);
+						this.state = 481;
+						this.expr(0);
+						this.state = 482;
+						this.match(VtlParser.T__1);
+					}
+				}
+
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public codeItemRef(): CodeItemRefContext {
+		let _localctx: CodeItemRefContext = new CodeItemRefContext(this._ctx, this.state);
+		this.enterRule(_localctx, 28, VtlParser.RULE_codeItemRef);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+				this.state = 486;
+				this.match(VtlParser.IDENTIFIER);
+				this.state = 488;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << VtlParser.T__6) | (1 << VtlParser.T__7) | (1 << VtlParser.T__8) | (1 << VtlParser.T__9) | (1 << VtlParser.T__10))) !== 0)) {
+					{
+						this.state = 487;
+						_localctx._opComp = this._input.LT(1);
+						_la = this._input.LA(1);
+						if (!((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << VtlParser.T__6) | (1 << VtlParser.T__7) | (1 << VtlParser.T__8) | (1 << VtlParser.T__9) | (1 << VtlParser.T__10))) !== 0))) {
+							_localctx._opComp = this._errHandler.recoverInline(this);
+						} else {
+							if (this._input.LA(1) === Token.EOF) {
+								this.matchedEOF = true;
+							}
+
+							this._errHandler.reportMatch(this);
+							this.consume();
+						}
+					}
+				}
+
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public defDatapoint(): DefDatapointContext {
+		let _localctx: DefDatapointContext = new DefDatapointContext(this._ctx, this.state);
+		this.enterRule(_localctx, 30, VtlParser.RULE_defDatapoint);
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+				this.state = 490;
+				this.defineDatapointRuleset();
+				this.state = 491;
+				this.rulesetID();
+				this.state = 492;
+				this.match(VtlParser.T__12);
+				this.state = 493;
+				this.rulesetSignature();
+				this.state = 494;
+				this.match(VtlParser.T__13);
+				this.state = 495;
+				this.match(VtlParser.IS);
+				this.state = 496;
+				this.ruleClauseDatapoint();
+				this.state = 497;
+				this.endDatapointRuleset();
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public ruleClauseDatapoint(): RuleClauseDatapointContext {
+		let _localctx: RuleClauseDatapointContext = new RuleClauseDatapointContext(this._ctx, this.state);
+		this.enterRule(_localctx, 32, VtlParser.RULE_ruleClauseDatapoint);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+				this.state = 499;
+				this.ruleItemDatapoint();
+				this.state = 504;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				while (_la === VtlParser.EOL) {
+					{
+						{
+							this.state = 500;
+							this.match(VtlParser.EOL);
+							this.state = 501;
+							this.ruleItemDatapoint();
+						}
+					}
+					this.state = 506;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
+				}
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public ruleItemDatapoint(): RuleItemDatapointContext {
+		let _localctx: RuleItemDatapointContext = new RuleItemDatapointContext(this._ctx, this.state);
+		this.enterRule(_localctx, 34, VtlParser.RULE_ruleItemDatapoint);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+				this.state = 509;
+				this._errHandler.sync(this);
+				switch (this.interpreter.adaptivePredict(this._input, 35, this._ctx)) {
+					case 1:
+						{
+							this.state = 507;
+							this.match(VtlParser.IDENTIFIER);
+							this.state = 508;
+							this.match(VtlParser.T__14);
+						}
+						break;
+				}
+				this.state = 515;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.WHEN) {
+					{
+						this.state = 511;
+						this.match(VtlParser.WHEN);
+						this.state = 512;
+						this.expr(0);
+						this.state = 513;
+						this.match(VtlParser.THEN);
+					}
+				}
+
+				this.state = 517;
+				this.expr(0);
+				this.state = 519;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.ERRORCODE) {
+					{
+						this.state = 518;
+						this.erCode();
+					}
+				}
+
+				this.state = 522;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.ERRORLEVEL) {
+					{
+						this.state = 521;
+						this.erLevel();
+					}
+				}
+
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public rulesetSignature(): RulesetSignatureContext {
+		let _localctx: RulesetSignatureContext = new RulesetSignatureContext(this._ctx, this.state);
+		this.enterRule(_localctx, 36, VtlParser.RULE_rulesetSignature);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+				this.state = 524;
+				_la = this._input.LA(1);
+				if (!(_la === VtlParser.VALUE_DOMAIN || _la === VtlParser.VARIABLE)) {
+					this._errHandler.recoverInline(this);
+				} else {
+					if (this._input.LA(1) === Token.EOF) {
+						this.matchedEOF = true;
+					}
+
+					this._errHandler.reportMatch(this);
+					this.consume();
+				}
+				this.state = 525;
+				this.varSignature();
+				this.state = 530;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				while (_la === VtlParser.CARTESIAN_PER) {
+					{
+						{
+							this.state = 526;
+							this.match(VtlParser.CARTESIAN_PER);
+							this.state = 527;
+							this.varSignature();
+						}
+					}
+					this.state = 532;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
+				}
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public varSignature(): VarSignatureContext {
+		let _localctx: VarSignatureContext = new VarSignatureContext(this._ctx, this.state);
+		this.enterRule(_localctx, 38, VtlParser.RULE_varSignature);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+				this.state = 533;
+				this.varID();
+				this.state = 536;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.AS) {
+					{
+						this.state = 534;
+						this.match(VtlParser.AS);
+						this.state = 535;
+						this.match(VtlParser.IDENTIFIER);
+					}
+				}
+
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public defExpr(): DefExprContext {
+		let _localctx: DefExprContext = new DefExprContext(this._ctx, this.state);
+		this.enterRule(_localctx, 40, VtlParser.RULE_defExpr);
+		try {
+			this.state = 541;
+			this._errHandler.sync(this);
+			switch (this.interpreter.adaptivePredict(this._input, 41, this._ctx)) {
+				case 1:
+					this.enterOuterAlt(_localctx, 1);
+					{
+						this.state = 538;
+						this.defOperator();
+					}
+					break;
+
+				case 2:
+					this.enterOuterAlt(_localctx, 2);
+					{
+						this.state = 539;
+						this.defDatapoint();
+					}
+					break;
+
+				case 3:
+					this.enterOuterAlt(_localctx, 3);
+					{
+						this.state = 540;
+						this.defHierarchical();
+					}
+					break;
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public defOperator(): DefOperatorContext {
+		let _localctx: DefOperatorContext = new DefOperatorContext(this._ctx, this.state);
+		this.enterRule(_localctx, 42, VtlParser.RULE_defOperator);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+				this.state = 543;
+				this.match(VtlParser.DEFINE);
+				this.state = 544;
+				this.match(VtlParser.OPERATOR);
+				this.state = 545;
+				this.operatorID();
+				this.state = 546;
+				this.match(VtlParser.T__12);
+				this.state = 555;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.IDENTIFIER) {
+					{
+						this.state = 547;
+						this.parameterItem();
+						this.state = 552;
+						this._errHandler.sync(this);
+						_la = this._input.LA(1);
+						while (_la === VtlParser.CARTESIAN_PER) {
+							{
+								{
+									this.state = 548;
+									this.match(VtlParser.CARTESIAN_PER);
+									this.state = 549;
+									this.parameterItem();
+								}
+							}
+							this.state = 554;
+							this._errHandler.sync(this);
+							_la = this._input.LA(1);
+						}
+					}
+				}
+
+				this.state = 557;
+				this.match(VtlParser.T__13);
+				this.state = 560;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.RETURNS) {
+					{
+						this.state = 558;
+						this.match(VtlParser.RETURNS);
+						this.state = 559;
+						this.dataType();
+					}
+				}
+
+				this.state = 562;
+				this.match(VtlParser.IS);
+				this.state = 563;
+				this.expr(0);
+				this.state = 564;
+				this.match(VtlParser.END);
+				this.state = 565;
+				this.match(VtlParser.OPERATOR);
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public parameterItem(): ParameterItemContext {
+		let _localctx: ParameterItemContext = new ParameterItemContext(this._ctx, this.state);
+		this.enterRule(_localctx, 44, VtlParser.RULE_parameterItem);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+				this.state = 567;
+				this.varID();
+				this.state = 568;
+				this.dataType();
+				this.state = 571;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.DEFAULT) {
+					{
+						this.state = 569;
+						this.match(VtlParser.DEFAULT);
+						this.state = 570;
+						this.constant();
+					}
+				}
+
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public callFunction(): CallFunctionContext {
+		let _localctx: CallFunctionContext = new CallFunctionContext(this._ctx, this.state);
+		this.enterRule(_localctx, 46, VtlParser.RULE_callFunction);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+				this.state = 573;
+				this.operatorID();
+				this.state = 574;
+				this.match(VtlParser.T__12);
+				this.state = 589;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.OPTIONAL || ((((_la - 226)) & ~0x1F) === 0 && ((1 << (_la - 226)) & ((1 << (VtlParser.INTEGER_CONSTANT - 226)) | (1 << (VtlParser.FLOAT_CONSTANT - 226)) | (1 << (VtlParser.BOOLEAN_CONSTANT - 226)) | (1 << (VtlParser.NULL_CONSTANT - 226)) | (1 << (VtlParser.STRING_CONSTANT - 226)))) !== 0)) {
+					{
+						this.state = 577;
+						this._errHandler.sync(this);
+						switch (this._input.LA(1)) {
+							case VtlParser.INTEGER_CONSTANT:
+							case VtlParser.FLOAT_CONSTANT:
+							case VtlParser.BOOLEAN_CONSTANT:
+							case VtlParser.NULL_CONSTANT:
+							case VtlParser.STRING_CONSTANT:
+								{
+									this.state = 575;
+									this.constant();
+								}
+								break;
+							case VtlParser.OPTIONAL:
+								{
+									this.state = 576;
+									this.match(VtlParser.OPTIONAL);
+								}
+								break;
+							default:
+								throw new NoViableAltException(this);
+						}
+						this.state = 586;
+						this._errHandler.sync(this);
+						_la = this._input.LA(1);
+						while (_la === VtlParser.CARTESIAN_PER) {
+							{
+								{
+									this.state = 579;
+									this.match(VtlParser.CARTESIAN_PER);
+									this.state = 582;
+									this._errHandler.sync(this);
+									switch (this._input.LA(1)) {
+										case VtlParser.INTEGER_CONSTANT:
+										case VtlParser.FLOAT_CONSTANT:
+										case VtlParser.BOOLEAN_CONSTANT:
+										case VtlParser.NULL_CONSTANT:
+										case VtlParser.STRING_CONSTANT:
+											{
+												this.state = 580;
+												this.constant();
+											}
+											break;
+										case VtlParser.OPTIONAL:
+											{
+												this.state = 581;
+												this.match(VtlParser.OPTIONAL);
+											}
+											break;
+										default:
+											throw new NoViableAltException(this);
+									}
+								}
+							}
+							this.state = 588;
+							this._errHandler.sync(this);
+							_la = this._input.LA(1);
+						}
+					}
+				}
+
+				this.state = 591;
+				this.match(VtlParser.T__13);
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public exprAtom(): ExprAtomContext {
+		let _localctx: ExprAtomContext = new ExprAtomContext(this._ctx, this.state);
+		this.enterRule(_localctx, 48, VtlParser.RULE_exprAtom);
+		let _la: number;
+		try {
+			this.state = 776;
+			this._errHandler.sync(this);
+			switch (this._input.LA(1)) {
+				case VtlParser.ROUND:
+					_localctx = new RoundAtomContext(_localctx);
+					this.enterOuterAlt(_localctx, 1);
+					{
+						this.state = 593;
+						this.match(VtlParser.ROUND);
+						this.state = 594;
+						this.match(VtlParser.T__12);
+						this.state = 595;
+						this.expr(0);
+						this.state = 598;
+						this._errHandler.sync(this);
+						_la = this._input.LA(1);
+						if (_la === VtlParser.CARTESIAN_PER) {
+							{
+								this.state = 596;
+								this.match(VtlParser.CARTESIAN_PER);
+								this.state = 597;
+								this.optionalExpr();
+							}
+						}
+
+						this.state = 600;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.CEIL:
+					_localctx = new CeilAtomContext(_localctx);
+					this.enterOuterAlt(_localctx, 2);
+					{
+						this.state = 602;
+						this.match(VtlParser.CEIL);
+						this.state = 603;
+						this.match(VtlParser.T__12);
+						this.state = 604;
+						this.expr(0);
+						this.state = 605;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.FLOOR:
+					_localctx = new FloorAtomContext(_localctx);
+					this.enterOuterAlt(_localctx, 3);
+					{
+						this.state = 607;
+						this.match(VtlParser.FLOOR);
+						this.state = 608;
+						this.match(VtlParser.T__12);
+						this.state = 609;
+						this.expr(0);
+						this.state = 610;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.ABS:
+					_localctx = new MinAtomContext(_localctx);
+					this.enterOuterAlt(_localctx, 4);
+					{
+						this.state = 612;
+						this.match(VtlParser.ABS);
+						this.state = 613;
+						this.match(VtlParser.T__12);
+						this.state = 614;
+						this.expr(0);
+						this.state = 615;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.EXP:
+					_localctx = new ExpAtomContext(_localctx);
+					this.enterOuterAlt(_localctx, 5);
+					{
+						this.state = 617;
+						this.match(VtlParser.EXP);
+						this.state = 618;
+						this.match(VtlParser.T__12);
+						this.state = 619;
+						this.expr(0);
+						this.state = 620;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.LN:
+					_localctx = new LnAtomContext(_localctx);
+					this.enterOuterAlt(_localctx, 6);
+					{
+						this.state = 622;
+						this.match(VtlParser.LN);
+						this.state = 623;
+						this.match(VtlParser.T__12);
+						this.state = 624;
+						this.expr(0);
+						this.state = 625;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.LOG:
+					_localctx = new LogAtomContext(_localctx);
+					this.enterOuterAlt(_localctx, 7);
+					{
+						this.state = 627;
+						this.match(VtlParser.LOG);
+						this.state = 628;
+						this.match(VtlParser.T__12);
+						this.state = 629;
+						this.expr(0);
+						this.state = 630;
+						this.match(VtlParser.CARTESIAN_PER);
+						this.state = 631;
+						this.expr(0);
+						this.state = 632;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.TRUNC:
+					_localctx = new LnAtomContext(_localctx);
+					this.enterOuterAlt(_localctx, 8);
+					{
+						this.state = 634;
+						this.match(VtlParser.TRUNC);
+						this.state = 635;
+						this.match(VtlParser.T__12);
+						this.state = 636;
+						this.expr(0);
+						this.state = 639;
+						this._errHandler.sync(this);
+						_la = this._input.LA(1);
+						if (_la === VtlParser.CARTESIAN_PER) {
+							{
+								this.state = 637;
+								this.match(VtlParser.CARTESIAN_PER);
+								this.state = 638;
+								this.optionalExpr();
+							}
+						}
+
+						this.state = 641;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.POWER:
+					_localctx = new PowerAtomContext(_localctx);
+					this.enterOuterAlt(_localctx, 9);
+					{
+						this.state = 643;
+						this.match(VtlParser.POWER);
+						this.state = 644;
+						this.match(VtlParser.T__12);
+						this.state = 645;
+						this.expr(0);
+						this.state = 646;
+						this.match(VtlParser.CARTESIAN_PER);
+						this.state = 647;
+						this.expr(0);
+						this.state = 648;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.SQRT:
+					_localctx = new SqrtAtomContext(_localctx);
+					this.enterOuterAlt(_localctx, 10);
+					{
+						this.state = 650;
+						this.match(VtlParser.SQRT);
+						this.state = 651;
+						this.match(VtlParser.T__12);
+						this.state = 652;
+						this.expr(0);
+						this.state = 653;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.LEN:
+					_localctx = new LenAtomContext(_localctx);
+					this.enterOuterAlt(_localctx, 11);
+					{
+						this.state = 655;
+						this.match(VtlParser.LEN);
+						this.state = 656;
+						this.match(VtlParser.T__12);
+						this.state = 657;
+						this.expr(0);
+						this.state = 658;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.BETWEEN:
+					_localctx = new BetweenAtomContext(_localctx);
+					this.enterOuterAlt(_localctx, 12);
+					{
+						this.state = 660;
+						this.match(VtlParser.BETWEEN);
+						this.state = 661;
+						this.match(VtlParser.T__12);
+						this.state = 662;
+						this.expr(0);
+						this.state = 663;
+						this.match(VtlParser.CARTESIAN_PER);
+						this.state = 664;
+						this.expr(0);
+						this.state = 665;
+						this.match(VtlParser.CARTESIAN_PER);
+						this.state = 666;
+						this.expr(0);
+						this.state = 667;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.TRIM:
+					_localctx = new TrimAtomContext(_localctx);
+					this.enterOuterAlt(_localctx, 13);
+					{
+						this.state = 669;
+						this.match(VtlParser.TRIM);
+						this.state = 670;
+						this.match(VtlParser.T__12);
+						this.state = 671;
+						this.expr(0);
+						this.state = 672;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.LTRIM:
+					_localctx = new LtrimAtomContext(_localctx);
+					this.enterOuterAlt(_localctx, 14);
+					{
+						this.state = 674;
+						this.match(VtlParser.LTRIM);
+						this.state = 675;
+						this.match(VtlParser.T__12);
+						this.state = 676;
+						this.expr(0);
+						this.state = 677;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.RTRIM:
+					_localctx = new RtrimAtomContext(_localctx);
+					this.enterOuterAlt(_localctx, 15);
+					{
+						this.state = 679;
+						this.match(VtlParser.RTRIM);
+						this.state = 680;
+						this.match(VtlParser.T__12);
+						this.state = 681;
+						this.expr(0);
+						this.state = 682;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.UCASE:
+					_localctx = new UcaseAtomContext(_localctx);
+					this.enterOuterAlt(_localctx, 16);
+					{
+						this.state = 684;
+						this.match(VtlParser.UCASE);
+						this.state = 685;
+						this.match(VtlParser.T__12);
+						this.state = 686;
+						this.expr(0);
+						this.state = 687;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.LCASE:
+					_localctx = new LcaseAtomContext(_localctx);
+					this.enterOuterAlt(_localctx, 17);
+					{
+						this.state = 689;
+						this.match(VtlParser.LCASE);
+						this.state = 690;
+						this.match(VtlParser.T__12);
+						this.state = 691;
+						this.expr(0);
+						this.state = 692;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.SUBSTR:
+					_localctx = new SubstrAtomContext(_localctx);
+					this.enterOuterAlt(_localctx, 18);
+					{
+						this.state = 694;
+						this.match(VtlParser.SUBSTR);
+						this.state = 695;
+						this.match(VtlParser.T__12);
+						this.state = 696;
+						this.expr(0);
+						this.state = 699;
+						this._errHandler.sync(this);
+						switch (this.interpreter.adaptivePredict(this._input, 52, this._ctx)) {
+							case 1:
+								{
+									this.state = 697;
+									this.match(VtlParser.CARTESIAN_PER);
+									this.state = 698;
+									this.optionalExpr();
+								}
+								break;
+						}
+						this.state = 703;
+						this._errHandler.sync(this);
+						_la = this._input.LA(1);
+						if (_la === VtlParser.CARTESIAN_PER) {
+							{
+								this.state = 701;
+								this.match(VtlParser.CARTESIAN_PER);
+								this.state = 702;
+								this.optionalExpr();
+							}
+						}
+
+						this.state = 705;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.INSTR:
+					_localctx = new InstrAtomContext(_localctx);
+					this.enterOuterAlt(_localctx, 19);
+					{
+						this.state = 707;
+						this.match(VtlParser.INSTR);
+						this.state = 708;
+						this.match(VtlParser.T__12);
+						this.state = 709;
+						this.expr(0);
+						this.state = 710;
+						this.match(VtlParser.CARTESIAN_PER);
+						this.state = 711;
+						this.expr(0);
+						this.state = 714;
+						this._errHandler.sync(this);
+						switch (this.interpreter.adaptivePredict(this._input, 54, this._ctx)) {
+							case 1:
+								{
+									this.state = 712;
+									this.match(VtlParser.CARTESIAN_PER);
+									this.state = 713;
+									this.optionalExpr();
+								}
+								break;
+						}
+						this.state = 718;
+						this._errHandler.sync(this);
+						_la = this._input.LA(1);
+						if (_la === VtlParser.CARTESIAN_PER) {
+							{
+								this.state = 716;
+								this.match(VtlParser.CARTESIAN_PER);
+								this.state = 717;
+								this.optionalExpr();
+							}
+						}
+
+						this.state = 720;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.REPLACE:
+					_localctx = new ReplaceAtomContext(_localctx);
+					this.enterOuterAlt(_localctx, 20);
+					{
+						this.state = 722;
+						this.match(VtlParser.REPLACE);
+						this.state = 723;
+						this.match(VtlParser.T__12);
+						this.state = 724;
+						this.expr(0);
+						this.state = 725;
+						this.match(VtlParser.CARTESIAN_PER);
+						this.state = 726;
+						this.expr(0);
+						this.state = 729;
+						this._errHandler.sync(this);
+						_la = this._input.LA(1);
+						if (_la === VtlParser.CARTESIAN_PER) {
+							{
+								this.state = 727;
+								this.match(VtlParser.CARTESIAN_PER);
+								this.state = 728;
+								this.optionalExpr();
+							}
+						}
+
+						this.state = 731;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.CHARSET_MATCH:
+					_localctx = new CharsetMatchAtomContext(_localctx);
+					this.enterOuterAlt(_localctx, 21);
+					{
+						this.state = 733;
+						this.match(VtlParser.CHARSET_MATCH);
+						this.state = 734;
+						this.match(VtlParser.T__12);
+						this.state = 735;
+						this.expr(0);
+						this.state = 736;
+						this.match(VtlParser.CARTESIAN_PER);
+						this.state = 737;
+						this.expr(0);
+						this.state = 738;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.ISNULL:
+					_localctx = new IsNullAtomContext(_localctx);
+					this.enterOuterAlt(_localctx, 22);
+					{
+						this.state = 740;
+						this.match(VtlParser.ISNULL);
+						this.state = 741;
+						this.match(VtlParser.T__12);
+						this.state = 742;
+						this.expr(0);
+						this.state = 743;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.NVL:
+					_localctx = new NvlAtomContext(_localctx);
+					this.enterOuterAlt(_localctx, 23);
+					{
+						this.state = 745;
+						this.match(VtlParser.NVL);
+						this.state = 746;
+						this.match(VtlParser.T__12);
+						this.state = 747;
+						this.expr(0);
+						this.state = 748;
+						this.match(VtlParser.CARTESIAN_PER);
+						this.state = 749;
+						this.expr(0);
+						this.state = 750;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.MOD:
+					_localctx = new ModAtomContext(_localctx);
+					this.enterOuterAlt(_localctx, 24);
+					{
+						this.state = 752;
+						this.match(VtlParser.MOD);
+						this.state = 753;
+						this.match(VtlParser.T__12);
+						this.state = 754;
+						this.expr(0);
+						this.state = 755;
+						this.match(VtlParser.CARTESIAN_PER);
+						this.state = 756;
+						this.expr(0);
+						this.state = 757;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.T__12:
+				case VtlParser.INTEGER_CONSTANT:
+				case VtlParser.FLOAT_CONSTANT:
+				case VtlParser.BOOLEAN_CONSTANT:
+				case VtlParser.NULL_CONSTANT:
+				case VtlParser.STRING_CONSTANT:
+				case VtlParser.IDENTIFIER:
+					_localctx = new RefAtomContext(_localctx);
+					this.enterOuterAlt(_localctx, 25);
+					{
+						this.state = 759;
+						this.ref();
+					}
+					break;
+				case VtlParser.EVAL:
+					_localctx = new EvalExprAtomContext(_localctx);
+					this.enterOuterAlt(_localctx, 26);
+					{
+						this.state = 760;
+						this.evalExpr();
+					}
+					break;
+				case VtlParser.CAST:
+					_localctx = new CastExprAtomContext(_localctx);
+					this.enterOuterAlt(_localctx, 27);
+					{
+						this.state = 761;
+						this.castExpr();
+					}
+					break;
+				case VtlParser.HIERARCHY:
+					_localctx = new HierarchyExprAtomContext(_localctx);
+					this.enterOuterAlt(_localctx, 28);
+					{
+						this.state = 762;
+						this.hierarchyExpr();
+					}
+					break;
+				case VtlParser.FLOW_TO_STOCK:
+					_localctx = new FlowToStockAtomContext(_localctx);
+					this.enterOuterAlt(_localctx, 29);
+					{
+						this.state = 763;
+						this.match(VtlParser.FLOW_TO_STOCK);
+						this.state = 764;
+						this.match(VtlParser.T__12);
+						this.state = 765;
+						this.expr(0);
+						this.state = 766;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.STOCK_TO_FLOW:
+					_localctx = new StockToFlowAtomContext(_localctx);
+					this.enterOuterAlt(_localctx, 30);
+					{
+						this.state = 768;
+						this.match(VtlParser.STOCK_TO_FLOW);
+						this.state = 769;
+						this.match(VtlParser.T__12);
+						this.state = 770;
+						this.expr(0);
+						this.state = 771;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.CHECK_DATAPOINT:
+					_localctx = new ValidateDPrulesetContext(_localctx);
+					this.enterOuterAlt(_localctx, 31);
+					{
+						this.state = 773;
+						this.validationDatapoint();
+					}
+					break;
+				case VtlParser.CHECK_HIERARCHY:
+					_localctx = new ValidateHRrulesetContext(_localctx);
+					this.enterOuterAlt(_localctx, 32);
+					{
+						this.state = 774;
+						this.validationHierarchical();
+					}
+					break;
+				case VtlParser.CHECK:
+					_localctx = new ValidationSimpleContext(_localctx);
+					this.enterOuterAlt(_localctx, 33);
+					{
+						this.state = 775;
+						this.validationExpr();
+					}
+					break;
+				default:
+					throw new NoViableAltException(this);
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public ref(): RefContext {
+		let _localctx: RefContext = new RefContext(this._ctx, this.state);
+		this.enterRule(_localctx, 50, VtlParser.RULE_ref);
+		try {
+			this.state = 784;
+			this._errHandler.sync(this);
+			switch (this._input.LA(1)) {
+				case VtlParser.T__12:
+					_localctx = new ParenthesisExprRefContext(_localctx);
+					this.enterOuterAlt(_localctx, 1);
+					{
+						this.state = 778;
+						this.match(VtlParser.T__12);
+						this.state = 779;
+						this.expr(0);
+						this.state = 780;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.IDENTIFIER:
+					_localctx = new VarIdRefContext(_localctx);
+					this.enterOuterAlt(_localctx, 2);
+					{
+						this.state = 782;
+						this.varID();
+					}
+					break;
+				case VtlParser.INTEGER_CONSTANT:
+				case VtlParser.FLOAT_CONSTANT:
+				case VtlParser.BOOLEAN_CONSTANT:
+				case VtlParser.NULL_CONSTANT:
+				case VtlParser.STRING_CONSTANT:
+					_localctx = new ConstantRefContext(_localctx);
+					this.enterOuterAlt(_localctx, 3);
+					{
+						this.state = 783;
+						this.constant();
+					}
+					break;
+				default:
+					throw new NoViableAltException(this);
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public identifierList(): IdentifierListContext {
+		let _localctx: IdentifierListContext = new IdentifierListContext(this._ctx, this.state);
+		this.enterRule(_localctx, 52, VtlParser.RULE_identifierList);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+				this.state = 786;
+				this.match(VtlParser.T__0);
+				this.state = 787;
+				this.match(VtlParser.IDENTIFIER);
+				this.state = 792;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				while (_la === VtlParser.CARTESIAN_PER) {
+					{
+						{
+							this.state = 788;
+							this.match(VtlParser.CARTESIAN_PER);
+							this.state = 789;
+							this.match(VtlParser.IDENTIFIER);
+						}
+					}
+					this.state = 794;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
+				}
+				this.state = 795;
+				this.match(VtlParser.T__1);
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public lists(): ListsContext {
+		let _localctx: ListsContext = new ListsContext(this._ctx, this.state);
+		this.enterRule(_localctx, 54, VtlParser.RULE_lists);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+				this.state = 797;
+				this.match(VtlParser.T__15);
+				this.state = 798;
+				this.constant();
+				this.state = 803;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				while (_la === VtlParser.CARTESIAN_PER) {
+					{
+						{
+							this.state = 799;
+							this.match(VtlParser.CARTESIAN_PER);
+							this.state = 800;
+							this.constant();
+						}
+					}
+					this.state = 805;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
+				}
+				this.state = 806;
+				this.match(VtlParser.T__16);
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public evalExpr(): EvalExprContext {
+		let _localctx: EvalExprContext = new EvalExprContext(this._ctx, this.state);
+		this.enterRule(_localctx, 56, VtlParser.RULE_evalExpr);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+				this.state = 808;
+				this.match(VtlParser.EVAL);
+				this.state = 809;
+				this.match(VtlParser.T__12);
+				this.state = 810;
+				this.routineName();
+				this.state = 811;
+				this.match(VtlParser.T__12);
+				this.state = 814;
+				this._errHandler.sync(this);
+				switch (this._input.LA(1)) {
+					case VtlParser.IDENTIFIER:
+						{
+							this.state = 812;
+							this.componentID();
+						}
+						break;
+					case VtlParser.INTEGER_CONSTANT:
+					case VtlParser.FLOAT_CONSTANT:
+					case VtlParser.BOOLEAN_CONSTANT:
+					case VtlParser.NULL_CONSTANT:
+					case VtlParser.STRING_CONSTANT:
+						{
+							this.state = 813;
+							this.constant();
+						}
+						break;
+					case VtlParser.T__13:
+					case VtlParser.CARTESIAN_PER:
+						break;
+					default:
+						break;
+				}
+				this.state = 823;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				while (_la === VtlParser.CARTESIAN_PER) {
+					{
+						{
+							this.state = 816;
+							this.match(VtlParser.CARTESIAN_PER);
+							this.state = 819;
+							this._errHandler.sync(this);
+							switch (this._input.LA(1)) {
+								case VtlParser.IDENTIFIER:
+									{
+										this.state = 817;
+										this.componentID();
+									}
+									break;
+								case VtlParser.INTEGER_CONSTANT:
+								case VtlParser.FLOAT_CONSTANT:
+								case VtlParser.BOOLEAN_CONSTANT:
+								case VtlParser.NULL_CONSTANT:
+								case VtlParser.STRING_CONSTANT:
+									{
+										this.state = 818;
+										this.constant();
+									}
+									break;
+								default:
+									throw new NoViableAltException(this);
+							}
+						}
+					}
+					this.state = 825;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
+				}
+				this.state = 826;
+				this.match(VtlParser.T__13);
+				this.state = 829;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.LANGUAGE) {
+					{
+						this.state = 827;
+						this.match(VtlParser.LANGUAGE);
+						this.state = 828;
+						this.match(VtlParser.STRING_CONSTANT);
+					}
+				}
+
+				this.state = 833;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.RETURNS) {
+					{
+						this.state = 831;
+						this.match(VtlParser.RETURNS);
+						this.state = 832;
+						this.outputParameterType();
+					}
+				}
+
+				this.state = 835;
+				this.match(VtlParser.T__13);
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public castExpr(): CastExprContext {
+		let _localctx: CastExprContext = new CastExprContext(this._ctx, this.state);
+		this.enterRule(_localctx, 58, VtlParser.RULE_castExpr);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+				this.state = 837;
+				this.match(VtlParser.CAST);
+				this.state = 838;
+				this.match(VtlParser.T__12);
+				this.state = 839;
+				this.expr(0);
+				this.state = 840;
+				this.match(VtlParser.CARTESIAN_PER);
+				this.state = 843;
+				this._errHandler.sync(this);
+				switch (this._input.LA(1)) {
+					case VtlParser.BOOLEAN:
+					case VtlParser.DATE:
+					case VtlParser.TIME_PERIOD:
+					case VtlParser.NUMBER:
+					case VtlParser.STRING:
+					case VtlParser.INTEGER:
+					case VtlParser.DURATION:
+					case VtlParser.SCALAR:
+					case VtlParser.TIME:
+						{
+							this.state = 841;
+							this.basicScalarType();
+						}
+						break;
+					case VtlParser.IDENTIFIER:
+						{
+							this.state = 842;
+							this.valueDomainName();
+						}
+						break;
+					default:
+						throw new NoViableAltException(this);
+				}
+				this.state = 847;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.CARTESIAN_PER) {
+					{
+						this.state = 845;
+						this.match(VtlParser.CARTESIAN_PER);
+						this.state = 846;
+						this.match(VtlParser.STRING_CONSTANT);
+					}
+				}
+
+				this.state = 849;
+				this.match(VtlParser.T__13);
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public periodExpr(): PeriodExprContext {
+		let _localctx: PeriodExprContext = new PeriodExprContext(this._ctx, this.state);
+		this.enterRule(_localctx, 60, VtlParser.RULE_periodExpr);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+				this.state = 851;
+				this.match(VtlParser.PERIOD_INDICATOR);
+				this.state = 852;
+				this.match(VtlParser.T__12);
+				this.state = 854;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << VtlParser.T__2) | (1 << VtlParser.T__3) | (1 << VtlParser.T__12) | (1 << VtlParser.EVAL) | (1 << VtlParser.IF) | (1 << VtlParser.CURRENT_DATE))) !== 0) || ((((_la - 38)) & ~0x1F) === 0 && ((1 << (_la - 38)) & ((1 << (VtlParser.NOT - 38)) | (1 << (VtlParser.BETWEEN - 38)) | (1 << (VtlParser.ISNULL - 38)) | (1 << (VtlParser.UNION - 38)) | (1 << (VtlParser.SYMDIFF - 38)) | (1 << (VtlParser.INTERSECT - 38)) | (1 << (VtlParser.CHECK - 38)) | (1 << (VtlParser.EXISTS_IN - 38)) | (1 << (VtlParser.RANK - 38)) | (1 << (VtlParser.MIN - 38)) | (1 << (VtlParser.MAX - 38)))) !== 0) || ((((_la - 72)) & ~0x1F) === 0 && ((1 << (_la - 72)) & ((1 << (VtlParser.ABS - 72)) | (1 << (VtlParser.LN - 72)) | (1 << (VtlParser.LOG - 72)) | (1 << (VtlParser.TRUNC - 72)) | (1 << (VtlParser.ROUND - 72)) | (1 << (VtlParser.POWER - 72)) | (1 << (VtlParser.MOD - 72)) | (1 << (VtlParser.LEN - 72)) | (1 << (VtlParser.TRIM - 72)) | (1 << (VtlParser.UCASE - 72)) | (1 << (VtlParser.LCASE - 72)) | (1 << (VtlParser.SUBSTR - 72)) | (1 << (VtlParser.SUM - 72)) | (1 << (VtlParser.AVG - 72)) | (1 << (VtlParser.MEDIAN - 72)) | (1 << (VtlParser.COUNT - 72)) | (1 << (VtlParser.EXP - 72)) | (1 << (VtlParser.CHARSET_MATCH - 72)) | (1 << (VtlParser.NVL - 72)) | (1 << (VtlParser.HIERARCHY - 72)))) !== 0) || ((((_la - 110)) & ~0x1F) === 0 && ((1 << (_la - 110)) & ((1 << (VtlParser.DEFINE - 110)) | (1 << (VtlParser.LTRIM - 110)) | (1 << (VtlParser.RTRIM - 110)) | (1 << (VtlParser.INSTR - 110)) | (1 << (VtlParser.REPLACE - 110)) | (1 << (VtlParser.CEIL - 110)) | (1 << (VtlParser.FLOOR - 110)) | (1 << (VtlParser.SQRT - 110)) | (1 << (VtlParser.SETDIFF - 110)) | (1 << (VtlParser.STDDEV_POP - 110)) | (1 << (VtlParser.STDDEV_SAMP - 110)) | (1 << (VtlParser.VAR_POP - 110)) | (1 << (VtlParser.VAR_SAMP - 110)) | (1 << (VtlParser.FIRST_VALUE - 110)) | (1 << (VtlParser.LAST_VALUE - 110)) | (1 << (VtlParser.LAG - 110)) | (1 << (VtlParser.LEAD - 110)) | (1 << (VtlParser.RATIO_TO_REPORT - 110)))) !== 0) || ((((_la - 148)) & ~0x1F) === 0 && ((1 << (_la - 148)) & ((1 << (VtlParser.FILL_TIME_SERIES - 148)) | (1 << (VtlParser.FLOW_TO_STOCK - 148)) | (1 << (VtlParser.STOCK_TO_FLOW - 148)) | (1 << (VtlParser.TIMESHIFT - 148)) | (1 << (VtlParser.INNER_JOIN - 148)))) !== 0) || ((((_la - 180)) & ~0x1F) === 0 && ((1 << (_la - 180)) & ((1 << (VtlParser.LEFT_JOIN - 180)) | (1 << (VtlParser.CROSS_JOIN - 180)) | (1 << (VtlParser.FULL_JOIN - 180)) | (1 << (VtlParser.PERIOD_INDICATOR - 180)) | (1 << (VtlParser.TIME_AGG - 180)) | (1 << (VtlParser.CAST - 180)) | (1 << (VtlParser.CHECK_DATAPOINT - 180)) | (1 << (VtlParser.CHECK_HIERARCHY - 180)))) !== 0) || ((((_la - 226)) & ~0x1F) === 0 && ((1 << (_la - 226)) & ((1 << (VtlParser.INTEGER_CONSTANT - 226)) | (1 << (VtlParser.FLOAT_CONSTANT - 226)) | (1 << (VtlParser.BOOLEAN_CONSTANT - 226)) | (1 << (VtlParser.NULL_CONSTANT - 226)) | (1 << (VtlParser.STRING_CONSTANT - 226)) | (1 << (VtlParser.IDENTIFIER - 226)))) !== 0)) {
+					{
+						this.state = 853;
+						this.expr(0);
+					}
+				}
+
+				this.state = 856;
+				this.match(VtlParser.T__13);
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public timeShiftExpr(): TimeShiftExprContext {
+		let _localctx: TimeShiftExprContext = new TimeShiftExprContext(this._ctx, this.state);
+		this.enterRule(_localctx, 62, VtlParser.RULE_timeShiftExpr);
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+				this.state = 858;
+				this.match(VtlParser.TIMESHIFT);
+				this.state = 859;
+				this.match(VtlParser.T__12);
+				this.state = 860;
+				this.expr(0);
+				this.state = 861;
+				this.match(VtlParser.CARTESIAN_PER);
+				this.state = 862;
+				this.match(VtlParser.INTEGER_CONSTANT);
+				this.state = 863;
+				this.match(VtlParser.T__13);
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public timeSeriesExpr(): TimeSeriesExprContext {
+		let _localctx: TimeSeriesExprContext = new TimeSeriesExprContext(this._ctx, this.state);
+		this.enterRule(_localctx, 64, VtlParser.RULE_timeSeriesExpr);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+				this.state = 865;
+				this.match(VtlParser.FILL_TIME_SERIES);
+				this.state = 866;
+				this.match(VtlParser.T__12);
+				this.state = 867;
+				this.expr(0);
+				this.state = 870;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.CARTESIAN_PER) {
+					{
+						this.state = 868;
+						this.match(VtlParser.CARTESIAN_PER);
+						this.state = 869;
+						_la = this._input.LA(1);
+						if (!(_la === VtlParser.ALL || _la === VtlParser.SINGLE)) {
+							this._errHandler.recoverInline(this);
+						} else {
+							if (this._input.LA(1) === Token.EOF) {
+								this.matchedEOF = true;
+							}
+
+							this._errHandler.reportMatch(this);
+							this.consume();
+						}
+					}
+				}
+
+				this.state = 872;
+				this.match(VtlParser.T__13);
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public timeAggExpr(): TimeAggExprContext {
+		let _localctx: TimeAggExprContext = new TimeAggExprContext(this._ctx, this.state);
+		this.enterRule(_localctx, 66, VtlParser.RULE_timeAggExpr);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+				this.state = 874;
+				this.match(VtlParser.TIME_AGG);
+				this.state = 875;
+				this.match(VtlParser.T__12);
+				this.state = 876;
+				this.match(VtlParser.STRING_CONSTANT);
+				this.state = 879;
+				this._errHandler.sync(this);
+				switch (this.interpreter.adaptivePredict(this._input, 70, this._ctx)) {
+					case 1:
+						{
+							this.state = 877;
+							this.match(VtlParser.CARTESIAN_PER);
+							this.state = 878;
+							_la = this._input.LA(1);
+							if (!(_la === VtlParser.OPTIONAL || _la === VtlParser.STRING_CONSTANT)) {
+								this._errHandler.recoverInline(this);
+							} else {
+								if (this._input.LA(1) === Token.EOF) {
+									this.matchedEOF = true;
+								}
+
+								this._errHandler.reportMatch(this);
+								this.consume();
+							}
+						}
+						break;
+				}
+				this.state = 886;
+				this._errHandler.sync(this);
+				switch (this.interpreter.adaptivePredict(this._input, 72, this._ctx)) {
+					case 1:
+						{
+							this.state = 881;
+							this.match(VtlParser.CARTESIAN_PER);
+							this.state = 884;
+							this._errHandler.sync(this);
+							switch (this._input.LA(1)) {
+								case VtlParser.T__2:
+								case VtlParser.T__3:
+								case VtlParser.T__12:
+								case VtlParser.EVAL:
+								case VtlParser.IF:
+								case VtlParser.CURRENT_DATE:
+								case VtlParser.NOT:
+								case VtlParser.BETWEEN:
+								case VtlParser.ISNULL:
+								case VtlParser.UNION:
+								case VtlParser.SYMDIFF:
+								case VtlParser.INTERSECT:
+								case VtlParser.CHECK:
+								case VtlParser.EXISTS_IN:
+								case VtlParser.RANK:
+								case VtlParser.MIN:
+								case VtlParser.MAX:
+								case VtlParser.ABS:
+								case VtlParser.LN:
+								case VtlParser.LOG:
+								case VtlParser.TRUNC:
+								case VtlParser.ROUND:
+								case VtlParser.POWER:
+								case VtlParser.MOD:
+								case VtlParser.LEN:
+								case VtlParser.TRIM:
+								case VtlParser.UCASE:
+								case VtlParser.LCASE:
+								case VtlParser.SUBSTR:
+								case VtlParser.SUM:
+								case VtlParser.AVG:
+								case VtlParser.MEDIAN:
+								case VtlParser.COUNT:
+								case VtlParser.EXP:
+								case VtlParser.CHARSET_MATCH:
+								case VtlParser.NVL:
+								case VtlParser.HIERARCHY:
+								case VtlParser.DEFINE:
+								case VtlParser.LTRIM:
+								case VtlParser.RTRIM:
+								case VtlParser.INSTR:
+								case VtlParser.REPLACE:
+								case VtlParser.CEIL:
+								case VtlParser.FLOOR:
+								case VtlParser.SQRT:
+								case VtlParser.SETDIFF:
+								case VtlParser.STDDEV_POP:
+								case VtlParser.STDDEV_SAMP:
+								case VtlParser.VAR_POP:
+								case VtlParser.VAR_SAMP:
+								case VtlParser.FIRST_VALUE:
+								case VtlParser.LAST_VALUE:
+								case VtlParser.LAG:
+								case VtlParser.LEAD:
+								case VtlParser.RATIO_TO_REPORT:
+								case VtlParser.FILL_TIME_SERIES:
+								case VtlParser.FLOW_TO_STOCK:
+								case VtlParser.STOCK_TO_FLOW:
+								case VtlParser.TIMESHIFT:
+								case VtlParser.INNER_JOIN:
+								case VtlParser.LEFT_JOIN:
+								case VtlParser.CROSS_JOIN:
+								case VtlParser.FULL_JOIN:
+								case VtlParser.PERIOD_INDICATOR:
+								case VtlParser.TIME_AGG:
+								case VtlParser.CAST:
+								case VtlParser.CHECK_DATAPOINT:
+								case VtlParser.CHECK_HIERARCHY:
+								case VtlParser.INTEGER_CONSTANT:
+								case VtlParser.FLOAT_CONSTANT:
+								case VtlParser.BOOLEAN_CONSTANT:
+								case VtlParser.NULL_CONSTANT:
+								case VtlParser.STRING_CONSTANT:
+								case VtlParser.IDENTIFIER:
+									{
+										this.state = 882;
+										this.expr(0);
+									}
+									break;
+								case VtlParser.OPTIONAL:
+									{
+										this.state = 883;
+										this.match(VtlParser.OPTIONAL);
+									}
+									break;
+								default:
+									throw new NoViableAltException(this);
+							}
+						}
+						break;
+				}
+				this.state = 890;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.CARTESIAN_PER) {
+					{
+						this.state = 888;
+						this.match(VtlParser.CARTESIAN_PER);
+						this.state = 889;
+						_la = this._input.LA(1);
+						if (!(_la === VtlParser.FIRST || _la === VtlParser.LAST)) {
+							this._errHandler.recoverInline(this);
+						} else {
+							if (this._input.LA(1) === Token.EOF) {
+								this.matchedEOF = true;
+							}
+
+							this._errHandler.reportMatch(this);
+							this.consume();
+						}
+					}
+				}
+
+				this.state = 892;
+				this.match(VtlParser.T__13);
 			}
 		}
 		catch (re) {
@@ -3721,66 +3721,66 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 894;
-			this.match(VtlParser.CHECK);
-			this.state = 895;
-			this.match(VtlParser.T__12);
-			this.state = 896;
-			this.expr(0);
-			this.state = 898;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.ERRORCODE) {
-				{
-				this.state = 897;
-				this.erCode();
-				}
-			}
-
-			this.state = 901;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.ERRORLEVEL) {
-				{
-				this.state = 900;
-				this.erLevel();
-				}
-			}
-
-			this.state = 905;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.IMBALANCE) {
-				{
-				this.state = 903;
-				this.match(VtlParser.IMBALANCE);
-				this.state = 904;
+				this.state = 894;
+				this.match(VtlParser.CHECK);
+				this.state = 895;
+				this.match(VtlParser.T__12);
+				this.state = 896;
 				this.expr(0);
-				}
-			}
-
-			this.state = 908;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.ALL || _la === VtlParser.INVALID) {
-				{
-				this.state = 907;
+				this.state = 898;
+				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-				if (!(_la === VtlParser.ALL || _la === VtlParser.INVALID)) {
-				this._errHandler.recoverInline(this);
-				} else {
-					if (this._input.LA(1) === Token.EOF) {
-						this.matchedEOF = true;
+				if (_la === VtlParser.ERRORCODE) {
+					{
+						this.state = 897;
+						this.erCode();
 					}
-
-					this._errHandler.reportMatch(this);
-					this.consume();
 				}
-				}
-			}
 
-			this.state = 910;
-			this.match(VtlParser.T__13);
+				this.state = 901;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.ERRORLEVEL) {
+					{
+						this.state = 900;
+						this.erLevel();
+					}
+				}
+
+				this.state = 905;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.IMBALANCE) {
+					{
+						this.state = 903;
+						this.match(VtlParser.IMBALANCE);
+						this.state = 904;
+						this.expr(0);
+					}
+				}
+
+				this.state = 908;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.ALL || _la === VtlParser.INVALID) {
+					{
+						this.state = 907;
+						_la = this._input.LA(1);
+						if (!(_la === VtlParser.ALL || _la === VtlParser.INVALID)) {
+							this._errHandler.recoverInline(this);
+						} else {
+							if (this._input.LA(1) === Token.EOF) {
+								this.matchedEOF = true;
+							}
+
+							this._errHandler.reportMatch(this);
+							this.consume();
+						}
+					}
+				}
+
+				this.state = 910;
+				this.match(VtlParser.T__13);
 			}
 		}
 		catch (re) {
@@ -3805,66 +3805,66 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 912;
-			this.match(VtlParser.CHECK_DATAPOINT);
-			this.state = 913;
-			this.match(VtlParser.T__12);
-			this.state = 914;
-			this.expr(0);
-			this.state = 915;
-			this.match(VtlParser.CARTESIAN_PER);
-			this.state = 916;
-			this.match(VtlParser.IDENTIFIER);
-			this.state = 926;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.COMPONENTS) {
-				{
-				this.state = 917;
-				this.match(VtlParser.COMPONENTS);
-				this.state = 918;
-				this.componentID();
-				this.state = 923;
+				this.state = 912;
+				this.match(VtlParser.CHECK_DATAPOINT);
+				this.state = 913;
+				this.match(VtlParser.T__12);
+				this.state = 914;
+				this.expr(0);
+				this.state = 915;
+				this.match(VtlParser.CARTESIAN_PER);
+				this.state = 916;
+				this.match(VtlParser.IDENTIFIER);
+				this.state = 926;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-				while (_la === VtlParser.CARTESIAN_PER) {
+				if (_la === VtlParser.COMPONENTS) {
 					{
-					{
-					this.state = 919;
-					this.match(VtlParser.CARTESIAN_PER);
-					this.state = 920;
-					this.componentID();
+						this.state = 917;
+						this.match(VtlParser.COMPONENTS);
+						this.state = 918;
+						this.componentID();
+						this.state = 923;
+						this._errHandler.sync(this);
+						_la = this._input.LA(1);
+						while (_la === VtlParser.CARTESIAN_PER) {
+							{
+								{
+									this.state = 919;
+									this.match(VtlParser.CARTESIAN_PER);
+									this.state = 920;
+									this.componentID();
+								}
+							}
+							this.state = 925;
+							this._errHandler.sync(this);
+							_la = this._input.LA(1);
+						}
 					}
-					}
-					this.state = 925;
-					this._errHandler.sync(this);
-					_la = this._input.LA(1);
 				}
-				}
-			}
 
-			this.state = 929;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.ALL || _la === VtlParser.INVALID || _la === VtlParser.ALL_MEASURES) {
-				{
-				this.state = 928;
+				this.state = 929;
+				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-				if (!(_la === VtlParser.ALL || _la === VtlParser.INVALID || _la === VtlParser.ALL_MEASURES)) {
-				this._errHandler.recoverInline(this);
-				} else {
-					if (this._input.LA(1) === Token.EOF) {
-						this.matchedEOF = true;
+				if (_la === VtlParser.ALL || _la === VtlParser.INVALID || _la === VtlParser.ALL_MEASURES) {
+					{
+						this.state = 928;
+						_la = this._input.LA(1);
+						if (!(_la === VtlParser.ALL || _la === VtlParser.INVALID || _la === VtlParser.ALL_MEASURES)) {
+							this._errHandler.recoverInline(this);
+						} else {
+							if (this._input.LA(1) === Token.EOF) {
+								this.matchedEOF = true;
+							}
+
+							this._errHandler.reportMatch(this);
+							this.consume();
+						}
 					}
-
-					this._errHandler.reportMatch(this);
-					this.consume();
 				}
-				}
-			}
 
-			this.state = 931;
-			this.match(VtlParser.T__13);
+				this.state = 931;
+				this.match(VtlParser.T__13);
 			}
 		}
 		catch (re) {
@@ -3889,118 +3889,118 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 933;
-			this.match(VtlParser.CHECK_HIERARCHY);
-			this.state = 934;
-			this.match(VtlParser.T__12);
-			this.state = 935;
-			this.expr(0);
-			this.state = 936;
-			this.match(VtlParser.CARTESIAN_PER);
-			this.state = 937;
-			this.match(VtlParser.IDENTIFIER);
-			this.state = 947;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.CONDITION) {
-				{
-				this.state = 938;
-				this.match(VtlParser.CONDITION);
-				this.state = 939;
-				this.componentID();
-				this.state = 944;
+				this.state = 933;
+				this.match(VtlParser.CHECK_HIERARCHY);
+				this.state = 934;
+				this.match(VtlParser.T__12);
+				this.state = 935;
+				this.expr(0);
+				this.state = 936;
+				this.match(VtlParser.CARTESIAN_PER);
+				this.state = 937;
+				this.match(VtlParser.IDENTIFIER);
+				this.state = 947;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-				while (_la === VtlParser.CARTESIAN_PER) {
+				if (_la === VtlParser.CONDITION) {
 					{
+						this.state = 938;
+						this.match(VtlParser.CONDITION);
+						this.state = 939;
+						this.componentID();
+						this.state = 944;
+						this._errHandler.sync(this);
+						_la = this._input.LA(1);
+						while (_la === VtlParser.CARTESIAN_PER) {
+							{
+								{
+									this.state = 940;
+									this.match(VtlParser.CARTESIAN_PER);
+									this.state = 941;
+									this.componentID();
+								}
+							}
+							this.state = 946;
+							this._errHandler.sync(this);
+							_la = this._input.LA(1);
+						}
+					}
+				}
+
+				this.state = 951;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.RULE) {
 					{
-					this.state = 940;
-					this.match(VtlParser.CARTESIAN_PER);
-					this.state = 941;
-					this.componentID();
+						this.state = 949;
+						this.match(VtlParser.RULE);
+						this.state = 950;
+						this.match(VtlParser.IDENTIFIER);
 					}
-					}
-					this.state = 946;
-					this._errHandler.sync(this);
-					_la = this._input.LA(1);
 				}
-				}
-			}
 
-			this.state = 951;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.RULE) {
-				{
-				this.state = 949;
-				this.match(VtlParser.RULE);
-				this.state = 950;
-				this.match(VtlParser.IDENTIFIER);
-				}
-			}
-
-			this.state = 954;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (((((_la - 210)) & ~0x1F) === 0 && ((1 << (_la - 210)) & ((1 << (VtlParser.NON_NULL - 210)) | (1 << (VtlParser.NON_ZERO - 210)) | (1 << (VtlParser.PARTIAL_NULL - 210)) | (1 << (VtlParser.PARTIAL_ZERO - 210)) | (1 << (VtlParser.ALWAYS_NULL - 210)) | (1 << (VtlParser.ALWAYS_ZERO - 210)))) !== 0)) {
-				{
-				this.state = 953;
+				this.state = 954;
+				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-				if (!(((((_la - 210)) & ~0x1F) === 0 && ((1 << (_la - 210)) & ((1 << (VtlParser.NON_NULL - 210)) | (1 << (VtlParser.NON_ZERO - 210)) | (1 << (VtlParser.PARTIAL_NULL - 210)) | (1 << (VtlParser.PARTIAL_ZERO - 210)) | (1 << (VtlParser.ALWAYS_NULL - 210)) | (1 << (VtlParser.ALWAYS_ZERO - 210)))) !== 0))) {
-				this._errHandler.recoverInline(this);
-				} else {
-					if (this._input.LA(1) === Token.EOF) {
-						this.matchedEOF = true;
+				if (((((_la - 210)) & ~0x1F) === 0 && ((1 << (_la - 210)) & ((1 << (VtlParser.NON_NULL - 210)) | (1 << (VtlParser.NON_ZERO - 210)) | (1 << (VtlParser.PARTIAL_NULL - 210)) | (1 << (VtlParser.PARTIAL_ZERO - 210)) | (1 << (VtlParser.ALWAYS_NULL - 210)) | (1 << (VtlParser.ALWAYS_ZERO - 210)))) !== 0)) {
+					{
+						this.state = 953;
+						_la = this._input.LA(1);
+						if (!(((((_la - 210)) & ~0x1F) === 0 && ((1 << (_la - 210)) & ((1 << (VtlParser.NON_NULL - 210)) | (1 << (VtlParser.NON_ZERO - 210)) | (1 << (VtlParser.PARTIAL_NULL - 210)) | (1 << (VtlParser.PARTIAL_ZERO - 210)) | (1 << (VtlParser.ALWAYS_NULL - 210)) | (1 << (VtlParser.ALWAYS_ZERO - 210)))) !== 0))) {
+							this._errHandler.recoverInline(this);
+						} else {
+							if (this._input.LA(1) === Token.EOF) {
+								this.matchedEOF = true;
+							}
+
+							this._errHandler.reportMatch(this);
+							this.consume();
+						}
 					}
-
-					this._errHandler.reportMatch(this);
-					this.consume();
 				}
-				}
-			}
 
-			this.state = 957;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.DATASET || _la === VtlParser.DATASET_PRIORITY) {
-				{
-				this.state = 956;
+				this.state = 957;
+				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-				if (!(_la === VtlParser.DATASET || _la === VtlParser.DATASET_PRIORITY)) {
-				this._errHandler.recoverInline(this);
-				} else {
-					if (this._input.LA(1) === Token.EOF) {
-						this.matchedEOF = true;
+				if (_la === VtlParser.DATASET || _la === VtlParser.DATASET_PRIORITY) {
+					{
+						this.state = 956;
+						_la = this._input.LA(1);
+						if (!(_la === VtlParser.DATASET || _la === VtlParser.DATASET_PRIORITY)) {
+							this._errHandler.recoverInline(this);
+						} else {
+							if (this._input.LA(1) === Token.EOF) {
+								this.matchedEOF = true;
+							}
+
+							this._errHandler.reportMatch(this);
+							this.consume();
+						}
 					}
-
-					this._errHandler.reportMatch(this);
-					this.consume();
 				}
-				}
-			}
 
-			this.state = 960;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.ALL || _la === VtlParser.INVALID || _la === VtlParser.ALL_MEASURES) {
-				{
-				this.state = 959;
+				this.state = 960;
+				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-				if (!(_la === VtlParser.ALL || _la === VtlParser.INVALID || _la === VtlParser.ALL_MEASURES)) {
-				this._errHandler.recoverInline(this);
-				} else {
-					if (this._input.LA(1) === Token.EOF) {
-						this.matchedEOF = true;
+				if (_la === VtlParser.ALL || _la === VtlParser.INVALID || _la === VtlParser.ALL_MEASURES) {
+					{
+						this.state = 959;
+						_la = this._input.LA(1);
+						if (!(_la === VtlParser.ALL || _la === VtlParser.INVALID || _la === VtlParser.ALL_MEASURES)) {
+							this._errHandler.recoverInline(this);
+						} else {
+							if (this._input.LA(1) === Token.EOF) {
+								this.matchedEOF = true;
+							}
+
+							this._errHandler.reportMatch(this);
+							this.consume();
+						}
 					}
-
-					this._errHandler.reportMatch(this);
-					this.consume();
 				}
-				}
-			}
 
-			this.state = 962;
-			this.match(VtlParser.T__13);
+				this.state = 962;
+				this.match(VtlParser.T__13);
 			}
 		}
 		catch (re) {
@@ -4024,10 +4024,10 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 964;
-			this.match(VtlParser.ERRORCODE);
-			this.state = 965;
-			this.constant();
+				this.state = 964;
+				this.match(VtlParser.ERRORCODE);
+				this.state = 965;
+				this.constant();
 			}
 		}
 		catch (re) {
@@ -4051,10 +4051,10 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 967;
-			this.match(VtlParser.ERRORLEVEL);
-			this.state = 968;
-			this.constant();
+				this.state = 967;
+				this.match(VtlParser.ERRORLEVEL);
+				this.state = 968;
+				this.constant();
 			}
 		}
 		catch (re) {
@@ -4079,143 +4079,143 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 970;
-			this.match(VtlParser.HIERARCHY);
-			this.state = 971;
-			this.match(VtlParser.T__12);
-			this.state = 972;
-			this.expr(0);
-			this.state = 973;
-			this.match(VtlParser.CARTESIAN_PER);
-			this.state = 974;
-			this.match(VtlParser.IDENTIFIER);
-			this.state = 984;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.CONDITION) {
-				{
-				this.state = 975;
-				this.match(VtlParser.CONDITION);
-				this.state = 976;
-				this.componentID();
-				this.state = 981;
+				this.state = 970;
+				this.match(VtlParser.HIERARCHY);
+				this.state = 971;
+				this.match(VtlParser.T__12);
+				this.state = 972;
+				this.expr(0);
+				this.state = 973;
+				this.match(VtlParser.CARTESIAN_PER);
+				this.state = 974;
+				this.match(VtlParser.IDENTIFIER);
+				this.state = 984;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-				while (_la === VtlParser.CARTESIAN_PER) {
+				if (_la === VtlParser.CONDITION) {
 					{
-					{
-					this.state = 977;
-					this.match(VtlParser.CARTESIAN_PER);
-					this.state = 978;
-					this.componentID();
+						this.state = 975;
+						this.match(VtlParser.CONDITION);
+						this.state = 976;
+						this.componentID();
+						this.state = 981;
+						this._errHandler.sync(this);
+						_la = this._input.LA(1);
+						while (_la === VtlParser.CARTESIAN_PER) {
+							{
+								{
+									this.state = 977;
+									this.match(VtlParser.CARTESIAN_PER);
+									this.state = 978;
+									this.componentID();
+								}
+							}
+							this.state = 983;
+							this._errHandler.sync(this);
+							_la = this._input.LA(1);
+						}
 					}
-					}
-					this.state = 983;
-					this._errHandler.sync(this);
-					_la = this._input.LA(1);
 				}
-				}
-			}
 
-			this.state = 988;
-			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 89, this._ctx) ) {
-			case 1:
-				{
-				this.state = 986;
-				this.match(VtlParser.RULE);
-				this.state = 987;
-				this.match(VtlParser.IDENTIFIER);
+				this.state = 988;
+				this._errHandler.sync(this);
+				switch (this.interpreter.adaptivePredict(this._input, 89, this._ctx)) {
+					case 1:
+						{
+							this.state = 986;
+							this.match(VtlParser.RULE);
+							this.state = 987;
+							this.match(VtlParser.IDENTIFIER);
+						}
+						break;
 				}
-				break;
-			}
-			this.state = 992;
-			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 90, this._ctx) ) {
-			case 1:
-				{
-				this.state = 990;
-				_la = this._input.LA(1);
-				if (!(((((_la - 210)) & ~0x1F) === 0 && ((1 << (_la - 210)) & ((1 << (VtlParser.NON_NULL - 210)) | (1 << (VtlParser.NON_ZERO - 210)) | (1 << (VtlParser.PARTIAL_NULL - 210)) | (1 << (VtlParser.PARTIAL_ZERO - 210)) | (1 << (VtlParser.ALWAYS_NULL - 210)) | (1 << (VtlParser.ALWAYS_ZERO - 210)))) !== 0))) {
-				this._errHandler.recoverInline(this);
-				} else {
-					if (this._input.LA(1) === Token.EOF) {
-						this.matchedEOF = true;
-					}
+				this.state = 992;
+				this._errHandler.sync(this);
+				switch (this.interpreter.adaptivePredict(this._input, 90, this._ctx)) {
+					case 1:
+						{
+							this.state = 990;
+							_la = this._input.LA(1);
+							if (!(((((_la - 210)) & ~0x1F) === 0 && ((1 << (_la - 210)) & ((1 << (VtlParser.NON_NULL - 210)) | (1 << (VtlParser.NON_ZERO - 210)) | (1 << (VtlParser.PARTIAL_NULL - 210)) | (1 << (VtlParser.PARTIAL_ZERO - 210)) | (1 << (VtlParser.ALWAYS_NULL - 210)) | (1 << (VtlParser.ALWAYS_ZERO - 210)))) !== 0))) {
+								this._errHandler.recoverInline(this);
+							} else {
+								if (this._input.LA(1) === Token.EOF) {
+									this.matchedEOF = true;
+								}
 
-					this._errHandler.reportMatch(this);
-					this.consume();
-				}
-				}
-				break;
+								this._errHandler.reportMatch(this);
+								this.consume();
+							}
+						}
+						break;
 
-			case 2:
-				{
-				this.state = 991;
-				this.match(VtlParser.OPTIONAL);
+					case 2:
+						{
+							this.state = 991;
+							this.match(VtlParser.OPTIONAL);
+						}
+						break;
 				}
-				break;
-			}
-			this.state = 996;
-			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 91, this._ctx) ) {
-			case 1:
-				{
-				this.state = 994;
-				_la = this._input.LA(1);
-				if (!(_la === VtlParser.DATASET || _la === VtlParser.RULE || _la === VtlParser.RULE_PRIORITY)) {
-				this._errHandler.recoverInline(this);
-				} else {
-					if (this._input.LA(1) === Token.EOF) {
-						this.matchedEOF = true;
-					}
+				this.state = 996;
+				this._errHandler.sync(this);
+				switch (this.interpreter.adaptivePredict(this._input, 91, this._ctx)) {
+					case 1:
+						{
+							this.state = 994;
+							_la = this._input.LA(1);
+							if (!(_la === VtlParser.DATASET || _la === VtlParser.RULE || _la === VtlParser.RULE_PRIORITY)) {
+								this._errHandler.recoverInline(this);
+							} else {
+								if (this._input.LA(1) === Token.EOF) {
+									this.matchedEOF = true;
+								}
 
-					this._errHandler.reportMatch(this);
-					this.consume();
-				}
-				}
-				break;
+								this._errHandler.reportMatch(this);
+								this.consume();
+							}
+						}
+						break;
 
-			case 2:
-				{
-				this.state = 995;
-				this.match(VtlParser.OPTIONAL);
+					case 2:
+						{
+							this.state = 995;
+							this.match(VtlParser.OPTIONAL);
+						}
+						break;
 				}
-				break;
-			}
-			this.state = 1000;
-			this._errHandler.sync(this);
-			switch (this._input.LA(1)) {
-			case VtlParser.ALL:
-			case VtlParser.COMPUTED:
-				{
-				this.state = 998;
-				_la = this._input.LA(1);
-				if (!(_la === VtlParser.ALL || _la === VtlParser.COMPUTED)) {
-				this._errHandler.recoverInline(this);
-				} else {
-					if (this._input.LA(1) === Token.EOF) {
-						this.matchedEOF = true;
-					}
+				this.state = 1000;
+				this._errHandler.sync(this);
+				switch (this._input.LA(1)) {
+					case VtlParser.ALL:
+					case VtlParser.COMPUTED:
+						{
+							this.state = 998;
+							_la = this._input.LA(1);
+							if (!(_la === VtlParser.ALL || _la === VtlParser.COMPUTED)) {
+								this._errHandler.recoverInline(this);
+							} else {
+								if (this._input.LA(1) === Token.EOF) {
+									this.matchedEOF = true;
+								}
 
-					this._errHandler.reportMatch(this);
-					this.consume();
+								this._errHandler.reportMatch(this);
+								this.consume();
+							}
+						}
+						break;
+					case VtlParser.OPTIONAL:
+						{
+							this.state = 999;
+							this.match(VtlParser.OPTIONAL);
+						}
+						break;
+					case VtlParser.T__13:
+						break;
+					default:
+						break;
 				}
-				}
-				break;
-			case VtlParser.OPTIONAL:
-				{
-				this.state = 999;
-				this.match(VtlParser.OPTIONAL);
-				}
-				break;
-			case VtlParser.T__13:
-				break;
-			default:
-				break;
-			}
-			this.state = 1002;
-			this.match(VtlParser.T__13);
+				this.state = 1002;
+				this.match(VtlParser.T__13);
 			}
 		}
 		catch (re) {
@@ -4240,73 +4240,73 @@ export class VtlParser extends Parser {
 			this.state = 1014;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
-			case VtlParser.RENAME:
-				this.enterOuterAlt(_localctx, 1);
-				{
-				this.state = 1004;
-				this.match(VtlParser.RENAME);
-				this.state = 1005;
-				this.renameClause();
-				}
-				break;
-			case VtlParser.AGGREGATE:
-				this.enterOuterAlt(_localctx, 2);
-				{
-				this.state = 1006;
-				this.aggrClause();
-				}
-				break;
-			case VtlParser.FILTER:
-				this.enterOuterAlt(_localctx, 3);
-				{
-				this.state = 1007;
-				this.filterClause();
-				}
-				break;
-			case VtlParser.CALC:
-				this.enterOuterAlt(_localctx, 4);
-				{
-				this.state = 1008;
-				this.calcClause();
-				}
-				break;
-			case VtlParser.KEEP:
-				this.enterOuterAlt(_localctx, 5);
-				{
-				this.state = 1009;
-				this.keepClause();
-				}
-				break;
-			case VtlParser.DROP:
-				this.enterOuterAlt(_localctx, 6);
-				{
-				this.state = 1010;
-				this.dropClause();
-				}
-				break;
-			case VtlParser.PIVOT:
-				this.enterOuterAlt(_localctx, 7);
-				{
-				this.state = 1011;
-				this.pivotExpr();
-				}
-				break;
-			case VtlParser.UNPIVOT:
-				this.enterOuterAlt(_localctx, 8);
-				{
-				this.state = 1012;
-				this.unpivotExpr();
-				}
-				break;
-			case VtlParser.SUBSPACE:
-				this.enterOuterAlt(_localctx, 9);
-				{
-				this.state = 1013;
-				this.subspaceExpr();
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
+				case VtlParser.RENAME:
+					this.enterOuterAlt(_localctx, 1);
+					{
+						this.state = 1004;
+						this.match(VtlParser.RENAME);
+						this.state = 1005;
+						this.renameClause();
+					}
+					break;
+				case VtlParser.AGGREGATE:
+					this.enterOuterAlt(_localctx, 2);
+					{
+						this.state = 1006;
+						this.aggrClause();
+					}
+					break;
+				case VtlParser.FILTER:
+					this.enterOuterAlt(_localctx, 3);
+					{
+						this.state = 1007;
+						this.filterClause();
+					}
+					break;
+				case VtlParser.CALC:
+					this.enterOuterAlt(_localctx, 4);
+					{
+						this.state = 1008;
+						this.calcClause();
+					}
+					break;
+				case VtlParser.KEEP:
+					this.enterOuterAlt(_localctx, 5);
+					{
+						this.state = 1009;
+						this.keepClause();
+					}
+					break;
+				case VtlParser.DROP:
+					this.enterOuterAlt(_localctx, 6);
+					{
+						this.state = 1010;
+						this.dropClause();
+					}
+					break;
+				case VtlParser.PIVOT:
+					this.enterOuterAlt(_localctx, 7);
+					{
+						this.state = 1011;
+						this.pivotExpr();
+					}
+					break;
+				case VtlParser.UNPIVOT:
+					this.enterOuterAlt(_localctx, 8);
+					{
+						this.state = 1012;
+						this.unpivotExpr();
+					}
+					break;
+				case VtlParser.SUBSPACE:
+					this.enterOuterAlt(_localctx, 9);
+					{
+						this.state = 1013;
+						this.subspaceExpr();
+					}
+					break;
+				default:
+					throw new NoViableAltException(this);
 			}
 		}
 		catch (re) {
@@ -4331,106 +4331,106 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1018;
-			this._errHandler.sync(this);
-			switch (this._input.LA(1)) {
-			case VtlParser.MIN:
-			case VtlParser.MAX:
-			case VtlParser.SUM:
-			case VtlParser.AVG:
-			case VtlParser.MEDIAN:
-			case VtlParser.COUNT:
-			case VtlParser.STDDEV_POP:
-			case VtlParser.STDDEV_SAMP:
-			case VtlParser.VAR_POP:
-			case VtlParser.VAR_SAMP:
-				{
-				this.state = 1016;
-				this.aggrFunctionName();
+				this.state = 1018;
+				this._errHandler.sync(this);
+				switch (this._input.LA(1)) {
+					case VtlParser.MIN:
+					case VtlParser.MAX:
+					case VtlParser.SUM:
+					case VtlParser.AVG:
+					case VtlParser.MEDIAN:
+					case VtlParser.COUNT:
+					case VtlParser.STDDEV_POP:
+					case VtlParser.STDDEV_SAMP:
+					case VtlParser.VAR_POP:
+					case VtlParser.VAR_SAMP:
+						{
+							this.state = 1016;
+							this.aggrFunctionName();
+						}
+						break;
+					case VtlParser.RANK:
+					case VtlParser.FIRST_VALUE:
+					case VtlParser.LAST_VALUE:
+					case VtlParser.LAG:
+					case VtlParser.LEAD:
+					case VtlParser.RATIO_TO_REPORT:
+						{
+							this.state = 1017;
+							this.anFunction();
+						}
+						break;
+					case VtlParser.T__12:
+						break;
+					default:
+						break;
 				}
-				break;
-			case VtlParser.RANK:
-			case VtlParser.FIRST_VALUE:
-			case VtlParser.LAST_VALUE:
-			case VtlParser.LAG:
-			case VtlParser.LEAD:
-			case VtlParser.RATIO_TO_REPORT:
-				{
-				this.state = 1017;
-				this.anFunction();
-				}
-				break;
-			case VtlParser.T__12:
-				break;
-			default:
-				break;
-			}
-			this.state = 1020;
-			this.match(VtlParser.T__12);
-			this.state = 1022;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << VtlParser.T__2) | (1 << VtlParser.T__3) | (1 << VtlParser.T__12) | (1 << VtlParser.EVAL) | (1 << VtlParser.IF) | (1 << VtlParser.CURRENT_DATE))) !== 0) || ((((_la - 38)) & ~0x1F) === 0 && ((1 << (_la - 38)) & ((1 << (VtlParser.NOT - 38)) | (1 << (VtlParser.BETWEEN - 38)) | (1 << (VtlParser.ISNULL - 38)) | (1 << (VtlParser.UNION - 38)) | (1 << (VtlParser.SYMDIFF - 38)) | (1 << (VtlParser.INTERSECT - 38)) | (1 << (VtlParser.CHECK - 38)) | (1 << (VtlParser.EXISTS_IN - 38)) | (1 << (VtlParser.RANK - 38)) | (1 << (VtlParser.MIN - 38)) | (1 << (VtlParser.MAX - 38)))) !== 0) || ((((_la - 72)) & ~0x1F) === 0 && ((1 << (_la - 72)) & ((1 << (VtlParser.ABS - 72)) | (1 << (VtlParser.LN - 72)) | (1 << (VtlParser.LOG - 72)) | (1 << (VtlParser.TRUNC - 72)) | (1 << (VtlParser.ROUND - 72)) | (1 << (VtlParser.POWER - 72)) | (1 << (VtlParser.MOD - 72)) | (1 << (VtlParser.LEN - 72)) | (1 << (VtlParser.TRIM - 72)) | (1 << (VtlParser.UCASE - 72)) | (1 << (VtlParser.LCASE - 72)) | (1 << (VtlParser.SUBSTR - 72)) | (1 << (VtlParser.SUM - 72)) | (1 << (VtlParser.AVG - 72)) | (1 << (VtlParser.MEDIAN - 72)) | (1 << (VtlParser.COUNT - 72)) | (1 << (VtlParser.EXP - 72)) | (1 << (VtlParser.CHARSET_MATCH - 72)) | (1 << (VtlParser.NVL - 72)) | (1 << (VtlParser.HIERARCHY - 72)))) !== 0) || ((((_la - 110)) & ~0x1F) === 0 && ((1 << (_la - 110)) & ((1 << (VtlParser.DEFINE - 110)) | (1 << (VtlParser.LTRIM - 110)) | (1 << (VtlParser.RTRIM - 110)) | (1 << (VtlParser.INSTR - 110)) | (1 << (VtlParser.REPLACE - 110)) | (1 << (VtlParser.CEIL - 110)) | (1 << (VtlParser.FLOOR - 110)) | (1 << (VtlParser.SQRT - 110)) | (1 << (VtlParser.SETDIFF - 110)) | (1 << (VtlParser.STDDEV_POP - 110)) | (1 << (VtlParser.STDDEV_SAMP - 110)) | (1 << (VtlParser.VAR_POP - 110)) | (1 << (VtlParser.VAR_SAMP - 110)) | (1 << (VtlParser.FIRST_VALUE - 110)) | (1 << (VtlParser.LAST_VALUE - 110)) | (1 << (VtlParser.LAG - 110)) | (1 << (VtlParser.LEAD - 110)) | (1 << (VtlParser.RATIO_TO_REPORT - 110)))) !== 0) || ((((_la - 148)) & ~0x1F) === 0 && ((1 << (_la - 148)) & ((1 << (VtlParser.FILL_TIME_SERIES - 148)) | (1 << (VtlParser.FLOW_TO_STOCK - 148)) | (1 << (VtlParser.STOCK_TO_FLOW - 148)) | (1 << (VtlParser.TIMESHIFT - 148)) | (1 << (VtlParser.INNER_JOIN - 148)))) !== 0) || ((((_la - 180)) & ~0x1F) === 0 && ((1 << (_la - 180)) & ((1 << (VtlParser.LEFT_JOIN - 180)) | (1 << (VtlParser.CROSS_JOIN - 180)) | (1 << (VtlParser.FULL_JOIN - 180)) | (1 << (VtlParser.PERIOD_INDICATOR - 180)) | (1 << (VtlParser.TIME_AGG - 180)) | (1 << (VtlParser.CAST - 180)) | (1 << (VtlParser.CHECK_DATAPOINT - 180)) | (1 << (VtlParser.CHECK_HIERARCHY - 180)))) !== 0) || ((((_la - 226)) & ~0x1F) === 0 && ((1 << (_la - 226)) & ((1 << (VtlParser.INTEGER_CONSTANT - 226)) | (1 << (VtlParser.FLOAT_CONSTANT - 226)) | (1 << (VtlParser.BOOLEAN_CONSTANT - 226)) | (1 << (VtlParser.NULL_CONSTANT - 226)) | (1 << (VtlParser.STRING_CONSTANT - 226)) | (1 << (VtlParser.IDENTIFIER - 226)))) !== 0)) {
-				{
-				this.state = 1021;
-				this.expr(0);
-				}
-			}
-
-			this.state = 1028;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === VtlParser.CARTESIAN_PER) {
-				{
-				{
-				this.state = 1024;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 1025;
-				this.expr(0);
-				}
-				}
-				this.state = 1030;
+				this.state = 1020;
+				this.match(VtlParser.T__12);
+				this.state = 1022;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-			}
-			this.state = 1031;
-			this.match(VtlParser.OVER);
-			this.state = 1032;
-			this.match(VtlParser.T__12);
-			this.state = 1034;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.PARTITION) {
-				{
-				this.state = 1033;
-				this.partitionByClause();
+				if ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << VtlParser.T__2) | (1 << VtlParser.T__3) | (1 << VtlParser.T__12) | (1 << VtlParser.EVAL) | (1 << VtlParser.IF) | (1 << VtlParser.CURRENT_DATE))) !== 0) || ((((_la - 38)) & ~0x1F) === 0 && ((1 << (_la - 38)) & ((1 << (VtlParser.NOT - 38)) | (1 << (VtlParser.BETWEEN - 38)) | (1 << (VtlParser.ISNULL - 38)) | (1 << (VtlParser.UNION - 38)) | (1 << (VtlParser.SYMDIFF - 38)) | (1 << (VtlParser.INTERSECT - 38)) | (1 << (VtlParser.CHECK - 38)) | (1 << (VtlParser.EXISTS_IN - 38)) | (1 << (VtlParser.RANK - 38)) | (1 << (VtlParser.MIN - 38)) | (1 << (VtlParser.MAX - 38)))) !== 0) || ((((_la - 72)) & ~0x1F) === 0 && ((1 << (_la - 72)) & ((1 << (VtlParser.ABS - 72)) | (1 << (VtlParser.LN - 72)) | (1 << (VtlParser.LOG - 72)) | (1 << (VtlParser.TRUNC - 72)) | (1 << (VtlParser.ROUND - 72)) | (1 << (VtlParser.POWER - 72)) | (1 << (VtlParser.MOD - 72)) | (1 << (VtlParser.LEN - 72)) | (1 << (VtlParser.TRIM - 72)) | (1 << (VtlParser.UCASE - 72)) | (1 << (VtlParser.LCASE - 72)) | (1 << (VtlParser.SUBSTR - 72)) | (1 << (VtlParser.SUM - 72)) | (1 << (VtlParser.AVG - 72)) | (1 << (VtlParser.MEDIAN - 72)) | (1 << (VtlParser.COUNT - 72)) | (1 << (VtlParser.EXP - 72)) | (1 << (VtlParser.CHARSET_MATCH - 72)) | (1 << (VtlParser.NVL - 72)) | (1 << (VtlParser.HIERARCHY - 72)))) !== 0) || ((((_la - 110)) & ~0x1F) === 0 && ((1 << (_la - 110)) & ((1 << (VtlParser.DEFINE - 110)) | (1 << (VtlParser.LTRIM - 110)) | (1 << (VtlParser.RTRIM - 110)) | (1 << (VtlParser.INSTR - 110)) | (1 << (VtlParser.REPLACE - 110)) | (1 << (VtlParser.CEIL - 110)) | (1 << (VtlParser.FLOOR - 110)) | (1 << (VtlParser.SQRT - 110)) | (1 << (VtlParser.SETDIFF - 110)) | (1 << (VtlParser.STDDEV_POP - 110)) | (1 << (VtlParser.STDDEV_SAMP - 110)) | (1 << (VtlParser.VAR_POP - 110)) | (1 << (VtlParser.VAR_SAMP - 110)) | (1 << (VtlParser.FIRST_VALUE - 110)) | (1 << (VtlParser.LAST_VALUE - 110)) | (1 << (VtlParser.LAG - 110)) | (1 << (VtlParser.LEAD - 110)) | (1 << (VtlParser.RATIO_TO_REPORT - 110)))) !== 0) || ((((_la - 148)) & ~0x1F) === 0 && ((1 << (_la - 148)) & ((1 << (VtlParser.FILL_TIME_SERIES - 148)) | (1 << (VtlParser.FLOW_TO_STOCK - 148)) | (1 << (VtlParser.STOCK_TO_FLOW - 148)) | (1 << (VtlParser.TIMESHIFT - 148)) | (1 << (VtlParser.INNER_JOIN - 148)))) !== 0) || ((((_la - 180)) & ~0x1F) === 0 && ((1 << (_la - 180)) & ((1 << (VtlParser.LEFT_JOIN - 180)) | (1 << (VtlParser.CROSS_JOIN - 180)) | (1 << (VtlParser.FULL_JOIN - 180)) | (1 << (VtlParser.PERIOD_INDICATOR - 180)) | (1 << (VtlParser.TIME_AGG - 180)) | (1 << (VtlParser.CAST - 180)) | (1 << (VtlParser.CHECK_DATAPOINT - 180)) | (1 << (VtlParser.CHECK_HIERARCHY - 180)))) !== 0) || ((((_la - 226)) & ~0x1F) === 0 && ((1 << (_la - 226)) & ((1 << (VtlParser.INTEGER_CONSTANT - 226)) | (1 << (VtlParser.FLOAT_CONSTANT - 226)) | (1 << (VtlParser.BOOLEAN_CONSTANT - 226)) | (1 << (VtlParser.NULL_CONSTANT - 226)) | (1 << (VtlParser.STRING_CONSTANT - 226)) | (1 << (VtlParser.IDENTIFIER - 226)))) !== 0)) {
+					{
+						this.state = 1021;
+						this.expr(0);
+					}
 				}
-			}
 
-			this.state = 1037;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.ORDER) {
-				{
-				this.state = 1036;
-				this.orderByClause();
+				this.state = 1028;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				while (_la === VtlParser.CARTESIAN_PER) {
+					{
+						{
+							this.state = 1024;
+							this.match(VtlParser.CARTESIAN_PER);
+							this.state = 1025;
+							this.expr(0);
+						}
+					}
+					this.state = 1030;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
 				}
-			}
-
-			this.state = 1040;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.DATA || _la === VtlParser.RANGE) {
-				{
-				this.state = 1039;
-				this.windowingClause();
+				this.state = 1031;
+				this.match(VtlParser.OVER);
+				this.state = 1032;
+				this.match(VtlParser.T__12);
+				this.state = 1034;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.PARTITION) {
+					{
+						this.state = 1033;
+						this.partitionByClause();
+					}
 				}
-			}
 
-			this.state = 1042;
-			this.match(VtlParser.T__13);
-			this.state = 1043;
-			this.match(VtlParser.T__13);
+				this.state = 1037;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.ORDER) {
+					{
+						this.state = 1036;
+						this.orderByClause();
+					}
+				}
+
+				this.state = 1040;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.DATA || _la === VtlParser.RANGE) {
+					{
+						this.state = 1039;
+						this.windowingClause();
+					}
+				}
+
+				this.state = 1042;
+				this.match(VtlParser.T__13);
+				this.state = 1043;
+				this.match(VtlParser.T__13);
 			}
 		}
 		catch (re) {
@@ -4455,28 +4455,28 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1045;
-			this.match(VtlParser.PARTITION);
-			this.state = 1046;
-			this.match(VtlParser.BY);
-			this.state = 1047;
-			this.match(VtlParser.IDENTIFIER);
-			this.state = 1052;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === VtlParser.CARTESIAN_PER) {
-				{
-				{
-				this.state = 1048;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 1049;
+				this.state = 1045;
+				this.match(VtlParser.PARTITION);
+				this.state = 1046;
+				this.match(VtlParser.BY);
+				this.state = 1047;
 				this.match(VtlParser.IDENTIFIER);
-				}
-				}
-				this.state = 1054;
+				this.state = 1052;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-			}
+				while (_la === VtlParser.CARTESIAN_PER) {
+					{
+						{
+							this.state = 1048;
+							this.match(VtlParser.CARTESIAN_PER);
+							this.state = 1049;
+							this.match(VtlParser.IDENTIFIER);
+						}
+					}
+					this.state = 1054;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
+				}
 			}
 		}
 		catch (re) {
@@ -4501,68 +4501,68 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1055;
-			this.match(VtlParser.ORDER);
-			this.state = 1056;
-			this.match(VtlParser.BY);
-			this.state = 1057;
-			this.componentID();
-			this.state = 1059;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.ASC || _la === VtlParser.DESC) {
-				{
-				this.state = 1058;
-				_la = this._input.LA(1);
-				if (!(_la === VtlParser.ASC || _la === VtlParser.DESC)) {
-				this._errHandler.recoverInline(this);
-				} else {
-					if (this._input.LA(1) === Token.EOF) {
-						this.matchedEOF = true;
-					}
-
-					this._errHandler.reportMatch(this);
-					this.consume();
-				}
-				}
-			}
-
-			this.state = 1068;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === VtlParser.CARTESIAN_PER) {
-				{
-				{
-				this.state = 1061;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 1062;
+				this.state = 1055;
+				this.match(VtlParser.ORDER);
+				this.state = 1056;
+				this.match(VtlParser.BY);
+				this.state = 1057;
 				this.componentID();
-				this.state = 1064;
+				this.state = 1059;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 				if (_la === VtlParser.ASC || _la === VtlParser.DESC) {
 					{
-					this.state = 1063;
-					_la = this._input.LA(1);
-					if (!(_la === VtlParser.ASC || _la === VtlParser.DESC)) {
-					this._errHandler.recoverInline(this);
-					} else {
-						if (this._input.LA(1) === Token.EOF) {
-							this.matchedEOF = true;
+						this.state = 1058;
+						_la = this._input.LA(1);
+						if (!(_la === VtlParser.ASC || _la === VtlParser.DESC)) {
+							this._errHandler.recoverInline(this);
+						} else {
+							if (this._input.LA(1) === Token.EOF) {
+								this.matchedEOF = true;
+							}
+
+							this._errHandler.reportMatch(this);
+							this.consume();
 						}
-
-						this._errHandler.reportMatch(this);
-						this.consume();
-					}
 					}
 				}
 
-				}
-				}
-				this.state = 1070;
+				this.state = 1068;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-			}
+				while (_la === VtlParser.CARTESIAN_PER) {
+					{
+						{
+							this.state = 1061;
+							this.match(VtlParser.CARTESIAN_PER);
+							this.state = 1062;
+							this.componentID();
+							this.state = 1064;
+							this._errHandler.sync(this);
+							_la = this._input.LA(1);
+							if (_la === VtlParser.ASC || _la === VtlParser.DESC) {
+								{
+									this.state = 1063;
+									_la = this._input.LA(1);
+									if (!(_la === VtlParser.ASC || _la === VtlParser.DESC)) {
+										this._errHandler.recoverInline(this);
+									} else {
+										if (this._input.LA(1) === Token.EOF) {
+											this.matchedEOF = true;
+										}
+
+										this._errHandler.reportMatch(this);
+										this.consume();
+									}
+								}
+							}
+
+						}
+					}
+					this.state = 1070;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
+				}
 			}
 		}
 		catch (re) {
@@ -4586,36 +4586,36 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1074;
-			this._errHandler.sync(this);
-			switch (this._input.LA(1)) {
-			case VtlParser.DATA:
-				{
-				{
-				this.state = 1071;
-				this.match(VtlParser.DATA);
-				this.state = 1072;
-				this.match(VtlParser.POINTS);
+				this.state = 1074;
+				this._errHandler.sync(this);
+				switch (this._input.LA(1)) {
+					case VtlParser.DATA:
+						{
+							{
+								this.state = 1071;
+								this.match(VtlParser.DATA);
+								this.state = 1072;
+								this.match(VtlParser.POINTS);
+							}
+						}
+						break;
+					case VtlParser.RANGE:
+						{
+							this.state = 1073;
+							this.match(VtlParser.RANGE);
+						}
+						break;
+					default:
+						throw new NoViableAltException(this);
 				}
-				}
-				break;
-			case VtlParser.RANGE:
-				{
-				this.state = 1073;
-				this.match(VtlParser.RANGE);
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
-			}
-			this.state = 1076;
-			this.match(VtlParser.BETWEEN);
-			this.state = 1077;
-			this.limitClauseItem();
-			this.state = 1078;
-			this.match(VtlParser.AND);
-			this.state = 1079;
-			this.limitClauseItem();
+				this.state = 1076;
+				this.match(VtlParser.BETWEEN);
+				this.state = 1077;
+				this.limitClauseItem();
+				this.state = 1078;
+				this.match(VtlParser.AND);
+				this.state = 1079;
+				this.limitClauseItem();
 			}
 		}
 		catch (re) {
@@ -4639,68 +4639,68 @@ export class VtlParser extends Parser {
 		try {
 			this.state = 1092;
 			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 105, this._ctx) ) {
-			case 1:
-				this.enterOuterAlt(_localctx, 1);
-				{
-				{
-				this.state = 1081;
-				this.match(VtlParser.INTEGER_CONSTANT);
-				this.state = 1082;
-				this.match(VtlParser.PRECEDING);
-				}
-				}
-				break;
+			switch (this.interpreter.adaptivePredict(this._input, 105, this._ctx)) {
+				case 1:
+					this.enterOuterAlt(_localctx, 1);
+					{
+						{
+							this.state = 1081;
+							this.match(VtlParser.INTEGER_CONSTANT);
+							this.state = 1082;
+							this.match(VtlParser.PRECEDING);
+						}
+					}
+					break;
 
-			case 2:
-				this.enterOuterAlt(_localctx, 2);
-				{
-				{
-				this.state = 1083;
-				this.match(VtlParser.INTEGER_CONSTANT);
-				this.state = 1084;
-				this.match(VtlParser.FOLLOWING);
-				}
-				}
-				break;
+				case 2:
+					this.enterOuterAlt(_localctx, 2);
+					{
+						{
+							this.state = 1083;
+							this.match(VtlParser.INTEGER_CONSTANT);
+							this.state = 1084;
+							this.match(VtlParser.FOLLOWING);
+						}
+					}
+					break;
 
-			case 3:
-				this.enterOuterAlt(_localctx, 3);
-				{
-				{
-				this.state = 1085;
-				this.match(VtlParser.CURRENT);
-				this.state = 1086;
-				this.match(VtlParser.DATA);
-				this.state = 1087;
-				this.match(VtlParser.POINT);
-				}
-				}
-				break;
+				case 3:
+					this.enterOuterAlt(_localctx, 3);
+					{
+						{
+							this.state = 1085;
+							this.match(VtlParser.CURRENT);
+							this.state = 1086;
+							this.match(VtlParser.DATA);
+							this.state = 1087;
+							this.match(VtlParser.POINT);
+						}
+					}
+					break;
 
-			case 4:
-				this.enterOuterAlt(_localctx, 4);
-				{
-				{
-				this.state = 1088;
-				this.match(VtlParser.UNBOUNDED);
-				this.state = 1089;
-				this.match(VtlParser.PRECEDING);
-				}
-				}
-				break;
+				case 4:
+					this.enterOuterAlt(_localctx, 4);
+					{
+						{
+							this.state = 1088;
+							this.match(VtlParser.UNBOUNDED);
+							this.state = 1089;
+							this.match(VtlParser.PRECEDING);
+						}
+					}
+					break;
 
-			case 5:
-				this.enterOuterAlt(_localctx, 5);
-				{
-				{
-				this.state = 1090;
-				this.match(VtlParser.UNBOUNDED);
-				this.state = 1091;
-				this.match(VtlParser.FOLLOWING);
-				}
-				}
-				break;
+				case 5:
+					this.enterOuterAlt(_localctx, 5);
+					{
+						{
+							this.state = 1090;
+							this.match(VtlParser.UNBOUNDED);
+							this.state = 1091;
+							this.match(VtlParser.FOLLOWING);
+						}
+					}
+					break;
 			}
 		}
 		catch (re) {
@@ -4724,24 +4724,24 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1094;
-			this.joinKeyword();
-			this.state = 1095;
-			this.match(VtlParser.T__12);
-			this.state = 1096;
-			this.joinClause();
-			this.state = 1098;
-			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 106, this._ctx) ) {
-			case 1:
-				{
-				this.state = 1097;
-				this.joinBody();
+				this.state = 1094;
+				this.joinKeyword();
+				this.state = 1095;
+				this.match(VtlParser.T__12);
+				this.state = 1096;
+				this.joinClause();
+				this.state = 1098;
+				this._errHandler.sync(this);
+				switch (this.interpreter.adaptivePredict(this._input, 106, this._ctx)) {
+					case 1:
+						{
+							this.state = 1097;
+							this.joinBody();
+						}
+						break;
 				}
-				break;
-			}
-			this.state = 1100;
-			this.match(VtlParser.T__13);
+				this.state = 1100;
+				this.match(VtlParser.T__13);
 			}
 		}
 		catch (re) {
@@ -4766,75 +4766,75 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1102;
-			this.expr(0);
-			this.state = 1105;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.AS) {
-				{
-				this.state = 1103;
-				this.match(VtlParser.AS);
-				this.state = 1104;
-				this.match(VtlParser.IDENTIFIER);
-				}
-			}
-
-			this.state = 1115;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === VtlParser.CARTESIAN_PER) {
-				{
-				{
-				this.state = 1107;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 1108;
+				this.state = 1102;
 				this.expr(0);
-				this.state = 1111;
+				this.state = 1105;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 				if (_la === VtlParser.AS) {
 					{
-					this.state = 1109;
-					this.match(VtlParser.AS);
-					this.state = 1110;
-					this.match(VtlParser.IDENTIFIER);
+						this.state = 1103;
+						this.match(VtlParser.AS);
+						this.state = 1104;
+						this.match(VtlParser.IDENTIFIER);
 					}
 				}
 
-				}
-				}
-				this.state = 1117;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-			}
-			this.state = 1127;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.USING) {
-				{
-				this.state = 1118;
-				this.match(VtlParser.USING);
-				this.state = 1119;
-				this.componentID();
-				this.state = 1124;
+				this.state = 1115;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 				while (_la === VtlParser.CARTESIAN_PER) {
 					{
-					{
-					this.state = 1120;
-					this.match(VtlParser.CARTESIAN_PER);
-					this.state = 1121;
-					this.componentID();
+						{
+							this.state = 1107;
+							this.match(VtlParser.CARTESIAN_PER);
+							this.state = 1108;
+							this.expr(0);
+							this.state = 1111;
+							this._errHandler.sync(this);
+							_la = this._input.LA(1);
+							if (_la === VtlParser.AS) {
+								{
+									this.state = 1109;
+									this.match(VtlParser.AS);
+									this.state = 1110;
+									this.match(VtlParser.IDENTIFIER);
+								}
+							}
+
+						}
 					}
-					}
-					this.state = 1126;
+					this.state = 1117;
 					this._errHandler.sync(this);
 					_la = this._input.LA(1);
 				}
+				this.state = 1127;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.USING) {
+					{
+						this.state = 1118;
+						this.match(VtlParser.USING);
+						this.state = 1119;
+						this.componentID();
+						this.state = 1124;
+						this._errHandler.sync(this);
+						_la = this._input.LA(1);
+						while (_la === VtlParser.CARTESIAN_PER) {
+							{
+								{
+									this.state = 1120;
+									this.match(VtlParser.CARTESIAN_PER);
+									this.state = 1121;
+									this.componentID();
+								}
+							}
+							this.state = 1126;
+							this._errHandler.sync(this);
+							_la = this._input.LA(1);
+						}
+					}
 				}
-			}
 
 			}
 		}
@@ -4860,70 +4860,70 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1130;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.FILTER || _la === VtlParser.IDENTIFIER) {
-				{
-				this.state = 1129;
-				this.joinFilterClause();
+				this.state = 1130;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.FILTER || _la === VtlParser.IDENTIFIER) {
+					{
+						this.state = 1129;
+						this.joinFilterClause();
+					}
 				}
-			}
 
-			this.state = 1135;
-			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 113, this._ctx) ) {
-			case 1:
-				{
-				this.state = 1132;
-				this.joinCalcClause();
-				}
-				break;
+				this.state = 1135;
+				this._errHandler.sync(this);
+				switch (this.interpreter.adaptivePredict(this._input, 113, this._ctx)) {
+					case 1:
+						{
+							this.state = 1132;
+							this.joinCalcClause();
+						}
+						break;
 
-			case 2:
-				{
-				this.state = 1133;
-				this.joinApplyClause();
-				}
-				break;
+					case 2:
+						{
+							this.state = 1133;
+							this.joinApplyClause();
+						}
+						break;
 
-			case 3:
-				{
-				this.state = 1134;
-				this.joinAggClause();
+					case 3:
+						{
+							this.state = 1134;
+							this.joinAggClause();
+						}
+						break;
 				}
-				break;
-			}
-			this.state = 1139;
-			this._errHandler.sync(this);
-			switch (this._input.LA(1)) {
-			case VtlParser.KEEP:
-				{
-				this.state = 1137;
-				this.joinKeepClause();
+				this.state = 1139;
+				this._errHandler.sync(this);
+				switch (this._input.LA(1)) {
+					case VtlParser.KEEP:
+						{
+							this.state = 1137;
+							this.joinKeepClause();
+						}
+						break;
+					case VtlParser.DROP:
+						{
+							this.state = 1138;
+							this.joinDropClause();
+						}
+						break;
+					case VtlParser.T__13:
+					case VtlParser.RENAME:
+						break;
+					default:
+						break;
 				}
-				break;
-			case VtlParser.DROP:
-				{
-				this.state = 1138;
-				this.joinDropClause();
+				this.state = 1142;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.RENAME) {
+					{
+						this.state = 1141;
+						this.joinRenameClause();
+					}
 				}
-				break;
-			case VtlParser.T__13:
-			case VtlParser.RENAME:
-				break;
-			default:
-				break;
-			}
-			this.state = 1142;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.RENAME) {
-				{
-				this.state = 1141;
-				this.joinRenameClause();
-				}
-			}
 
 			}
 		}
@@ -4949,34 +4949,34 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1145;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (((((_la - 90)) & ~0x1F) === 0 && ((1 << (_la - 90)) & ((1 << (VtlParser.DIMENSION - 90)) | (1 << (VtlParser.MEASURE - 90)) | (1 << (VtlParser.ATTRIBUTE - 90)) | (1 << (VtlParser.VIRAL - 90)))) !== 0) || _la === VtlParser.COMPONENT) {
-				{
-				this.state = 1144;
-				this.componentRole();
-				}
-			}
-
-			this.state = 1147;
-			this.joinCalcClauseItem();
-			this.state = 1152;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === VtlParser.CARTESIAN_PER) {
-				{
-				{
-				this.state = 1148;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 1149;
-				this.joinCalcClauseItem();
-				}
-				}
-				this.state = 1154;
+				this.state = 1145;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-			}
+				if (((((_la - 90)) & ~0x1F) === 0 && ((1 << (_la - 90)) & ((1 << (VtlParser.DIMENSION - 90)) | (1 << (VtlParser.MEASURE - 90)) | (1 << (VtlParser.ATTRIBUTE - 90)) | (1 << (VtlParser.VIRAL - 90)))) !== 0) || _la === VtlParser.COMPONENT) {
+					{
+						this.state = 1144;
+						this.componentRole();
+					}
+				}
+
+				this.state = 1147;
+				this.joinCalcClauseItem();
+				this.state = 1152;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				while (_la === VtlParser.CARTESIAN_PER) {
+					{
+						{
+							this.state = 1148;
+							this.match(VtlParser.CARTESIAN_PER);
+							this.state = 1149;
+							this.joinCalcClauseItem();
+						}
+					}
+					this.state = 1154;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
+				}
 			}
 		}
 		catch (re) {
@@ -5002,48 +5002,48 @@ export class VtlParser extends Parser {
 			let _alt: number;
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1155;
-			this.match(VtlParser.CALC);
-			this.state = 1157;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (((((_la - 90)) & ~0x1F) === 0 && ((1 << (_la - 90)) & ((1 << (VtlParser.DIMENSION - 90)) | (1 << (VtlParser.MEASURE - 90)) | (1 << (VtlParser.ATTRIBUTE - 90)) | (1 << (VtlParser.VIRAL - 90)))) !== 0) || _la === VtlParser.COMPONENT) {
-				{
-				this.state = 1156;
-				this.componentRole();
-				}
-			}
-
-			this.state = 1159;
-			this.joinCalcExpr();
-			this.state = 1167;
-			this._errHandler.sync(this);
-			_alt = this.interpreter.adaptivePredict(this._input, 120, this._ctx);
-			while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
-				if (_alt === 1) {
+				this.state = 1155;
+				this.match(VtlParser.CALC);
+				this.state = 1157;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (((((_la - 90)) & ~0x1F) === 0 && ((1 << (_la - 90)) & ((1 << (VtlParser.DIMENSION - 90)) | (1 << (VtlParser.MEASURE - 90)) | (1 << (VtlParser.ATTRIBUTE - 90)) | (1 << (VtlParser.VIRAL - 90)))) !== 0) || _la === VtlParser.COMPONENT) {
 					{
-					{
-					this.state = 1160;
-					this.match(VtlParser.CARTESIAN_PER);
-					this.state = 1162;
-					this._errHandler.sync(this);
-					_la = this._input.LA(1);
-					if (((((_la - 90)) & ~0x1F) === 0 && ((1 << (_la - 90)) & ((1 << (VtlParser.DIMENSION - 90)) | (1 << (VtlParser.MEASURE - 90)) | (1 << (VtlParser.ATTRIBUTE - 90)) | (1 << (VtlParser.VIRAL - 90)))) !== 0) || _la === VtlParser.COMPONENT) {
-						{
-						this.state = 1161;
+						this.state = 1156;
 						this.componentRole();
-						}
-					}
-
-					this.state = 1164;
-					this.joinCalcExpr();
-					}
 					}
 				}
-				this.state = 1169;
+
+				this.state = 1159;
+				this.joinCalcExpr();
+				this.state = 1167;
 				this._errHandler.sync(this);
 				_alt = this.interpreter.adaptivePredict(this._input, 120, this._ctx);
-			}
+				while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
+					if (_alt === 1) {
+						{
+							{
+								this.state = 1160;
+								this.match(VtlParser.CARTESIAN_PER);
+								this.state = 1162;
+								this._errHandler.sync(this);
+								_la = this._input.LA(1);
+								if (((((_la - 90)) & ~0x1F) === 0 && ((1 << (_la - 90)) & ((1 << (VtlParser.DIMENSION - 90)) | (1 << (VtlParser.MEASURE - 90)) | (1 << (VtlParser.ATTRIBUTE - 90)) | (1 << (VtlParser.VIRAL - 90)))) !== 0) || _la === VtlParser.COMPONENT) {
+									{
+										this.state = 1161;
+										this.componentRole();
+									}
+								}
+
+								this.state = 1164;
+								this.joinCalcExpr();
+							}
+						}
+					}
+					this.state = 1169;
+					this._errHandler.sync(this);
+					_alt = this.interpreter.adaptivePredict(this._input, 120, this._ctx);
+				}
 			}
 		}
 		catch (re) {
@@ -5067,12 +5067,12 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1170;
-			this.componentID();
-			this.state = 1171;
-			this.match(VtlParser.ASSIGN);
-			this.state = 1172;
-			this.expr(0);
+				this.state = 1170;
+				this.componentID();
+				this.state = 1171;
+				this.match(VtlParser.ASSIGN);
+				this.state = 1172;
+				this.expr(0);
 			}
 		}
 		catch (re) {
@@ -5097,55 +5097,55 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1175;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (((((_la - 90)) & ~0x1F) === 0 && ((1 << (_la - 90)) & ((1 << (VtlParser.DIMENSION - 90)) | (1 << (VtlParser.MEASURE - 90)) | (1 << (VtlParser.ATTRIBUTE - 90)) | (1 << (VtlParser.VIRAL - 90)))) !== 0) || _la === VtlParser.COMPONENT) {
-				{
-				this.state = 1174;
-				this.componentRole();
-				}
-			}
-
-			this.state = 1177;
-			this.match(VtlParser.AGGREGATE);
-			this.state = 1178;
-			this.joinAggClauseItem();
-			this.state = 1183;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === VtlParser.CARTESIAN_PER) {
-				{
-				{
-				this.state = 1179;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 1180;
-				this.joinAggClauseItem();
-				}
-				}
-				this.state = 1185;
+				this.state = 1175;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-			}
-			this.state = 1187;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.GROUP) {
-				{
-				this.state = 1186;
-				this.groupingClause();
+				if (((((_la - 90)) & ~0x1F) === 0 && ((1 << (_la - 90)) & ((1 << (VtlParser.DIMENSION - 90)) | (1 << (VtlParser.MEASURE - 90)) | (1 << (VtlParser.ATTRIBUTE - 90)) | (1 << (VtlParser.VIRAL - 90)))) !== 0) || _la === VtlParser.COMPONENT) {
+					{
+						this.state = 1174;
+						this.componentRole();
+					}
 				}
-			}
 
-			this.state = 1190;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.HAVING) {
-				{
-				this.state = 1189;
-				this.havingClause();
+				this.state = 1177;
+				this.match(VtlParser.AGGREGATE);
+				this.state = 1178;
+				this.joinAggClauseItem();
+				this.state = 1183;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				while (_la === VtlParser.CARTESIAN_PER) {
+					{
+						{
+							this.state = 1179;
+							this.match(VtlParser.CARTESIAN_PER);
+							this.state = 1180;
+							this.joinAggClauseItem();
+						}
+					}
+					this.state = 1185;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
 				}
-			}
+				this.state = 1187;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.GROUP) {
+					{
+						this.state = 1186;
+						this.groupingClause();
+					}
+				}
+
+				this.state = 1190;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.HAVING) {
+					{
+						this.state = 1189;
+						this.havingClause();
+					}
+				}
 
 			}
 		}
@@ -5172,36 +5172,36 @@ export class VtlParser extends Parser {
 			let _alt: number;
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1193;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (((((_la - 90)) & ~0x1F) === 0 && ((1 << (_la - 90)) & ((1 << (VtlParser.DIMENSION - 90)) | (1 << (VtlParser.MEASURE - 90)) | (1 << (VtlParser.ATTRIBUTE - 90)) | (1 << (VtlParser.VIRAL - 90)))) !== 0) || _la === VtlParser.COMPONENT) {
-				{
-				this.state = 1192;
-				this.componentRole();
+				this.state = 1193;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (((((_la - 90)) & ~0x1F) === 0 && ((1 << (_la - 90)) & ((1 << (VtlParser.DIMENSION - 90)) | (1 << (VtlParser.MEASURE - 90)) | (1 << (VtlParser.ATTRIBUTE - 90)) | (1 << (VtlParser.VIRAL - 90)))) !== 0) || _la === VtlParser.COMPONENT) {
+					{
+						this.state = 1192;
+						this.componentRole();
+					}
 				}
-			}
 
-			this.state = 1195;
-			this.joinAggExpr();
-			this.state = 1200;
-			this._errHandler.sync(this);
-			_alt = this.interpreter.adaptivePredict(this._input, 126, this._ctx);
-			while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
-				if (_alt === 1) {
-					{
-					{
-					this.state = 1196;
-					this.match(VtlParser.CARTESIAN_PER);
-					this.state = 1197;
-					this.joinAggExpr();
-					}
-					}
-				}
-				this.state = 1202;
+				this.state = 1195;
+				this.joinAggExpr();
+				this.state = 1200;
 				this._errHandler.sync(this);
 				_alt = this.interpreter.adaptivePredict(this._input, 126, this._ctx);
-			}
+				while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
+					if (_alt === 1) {
+						{
+							{
+								this.state = 1196;
+								this.match(VtlParser.CARTESIAN_PER);
+								this.state = 1197;
+								this.joinAggExpr();
+							}
+						}
+					}
+					this.state = 1202;
+					this._errHandler.sync(this);
+					_alt = this.interpreter.adaptivePredict(this._input, 126, this._ctx);
+				}
 			}
 		}
 		catch (re) {
@@ -5225,12 +5225,12 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1203;
-			this.componentID();
-			this.state = 1204;
-			this.match(VtlParser.ASSIGN);
-			this.state = 1205;
-			this.aggrFunction();
+				this.state = 1203;
+				this.componentID();
+				this.state = 1204;
+				this.match(VtlParser.ASSIGN);
+				this.state = 1205;
+				this.aggrFunction();
 			}
 		}
 		catch (re) {
@@ -5255,26 +5255,26 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1207;
-			this.match(VtlParser.KEEP);
-			this.state = 1208;
-			this.keepClauseItem();
-			this.state = 1213;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === VtlParser.CARTESIAN_PER) {
-				{
-				{
-				this.state = 1209;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 1210;
+				this.state = 1207;
+				this.match(VtlParser.KEEP);
+				this.state = 1208;
 				this.keepClauseItem();
-				}
-				}
-				this.state = 1215;
+				this.state = 1213;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-			}
+				while (_la === VtlParser.CARTESIAN_PER) {
+					{
+						{
+							this.state = 1209;
+							this.match(VtlParser.CARTESIAN_PER);
+							this.state = 1210;
+							this.keepClauseItem();
+						}
+					}
+					this.state = 1215;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
+				}
 			}
 		}
 		catch (re) {
@@ -5299,26 +5299,26 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1216;
-			this.match(VtlParser.DROP);
-			this.state = 1217;
-			this.dropClauseItem();
-			this.state = 1222;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === VtlParser.CARTESIAN_PER) {
-				{
-				{
-				this.state = 1218;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 1219;
+				this.state = 1216;
+				this.match(VtlParser.DROP);
+				this.state = 1217;
 				this.dropClauseItem();
-				}
-				}
-				this.state = 1224;
+				this.state = 1222;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-			}
+				while (_la === VtlParser.CARTESIAN_PER) {
+					{
+						{
+							this.state = 1218;
+							this.match(VtlParser.CARTESIAN_PER);
+							this.state = 1219;
+							this.dropClauseItem();
+						}
+					}
+					this.state = 1224;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
+				}
 			}
 		}
 		catch (re) {
@@ -5343,24 +5343,24 @@ export class VtlParser extends Parser {
 			this.state = 1228;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
-			case VtlParser.FILTER:
-				this.enterOuterAlt(_localctx, 1);
-				{
-				this.state = 1225;
-				this.match(VtlParser.FILTER);
-				this.state = 1226;
-				this.expr(0);
-				}
-				break;
-			case VtlParser.IDENTIFIER:
-				this.enterOuterAlt(_localctx, 2);
-				{
-				this.state = 1227;
-				this.rulesetID();
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
+				case VtlParser.FILTER:
+					this.enterOuterAlt(_localctx, 1);
+					{
+						this.state = 1225;
+						this.match(VtlParser.FILTER);
+						this.state = 1226;
+						this.expr(0);
+					}
+					break;
+				case VtlParser.IDENTIFIER:
+					this.enterOuterAlt(_localctx, 2);
+					{
+						this.state = 1227;
+						this.rulesetID();
+					}
+					break;
+				default:
+					throw new NoViableAltException(this);
 			}
 		}
 		catch (re) {
@@ -5385,84 +5385,84 @@ export class VtlParser extends Parser {
 			let _alt: number;
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1230;
-			this.match(VtlParser.RENAME);
-			this.state = 1234;
-			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 130, this._ctx) ) {
-			case 1:
-				{
-				this.state = 1231;
-				this.componentID();
-				this.state = 1232;
-				this.match(VtlParser.MEMBERSHIP);
-				}
-				break;
-			}
-			this.state = 1236;
-			this.varID();
-			this.state = 1237;
-			this.match(VtlParser.TO);
-			this.state = 1241;
-			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 131, this._ctx) ) {
-			case 1:
-				{
-				this.state = 1238;
-				this.componentID();
-				this.state = 1239;
-				this.match(VtlParser.MEMBERSHIP);
-				}
-				break;
-			}
-			this.state = 1243;
-			this.varID();
-			this.state = 1261;
-			this._errHandler.sync(this);
-			_alt = this.interpreter.adaptivePredict(this._input, 134, this._ctx);
-			while (_alt !== 1 && _alt !== ATN.INVALID_ALT_NUMBER) {
-				if (_alt === 1 + 1) {
-					{
-					{
-					this.state = 1244;
-					this.match(VtlParser.CARTESIAN_PER);
-					this.state = 1248;
-					this._errHandler.sync(this);
-					switch ( this.interpreter.adaptivePredict(this._input, 132, this._ctx) ) {
+				this.state = 1230;
+				this.match(VtlParser.RENAME);
+				this.state = 1234;
+				this._errHandler.sync(this);
+				switch (this.interpreter.adaptivePredict(this._input, 130, this._ctx)) {
 					case 1:
 						{
-						this.state = 1245;
-						this.componentID();
-						this.state = 1246;
-						this.match(VtlParser.MEMBERSHIP);
+							this.state = 1231;
+							this.componentID();
+							this.state = 1232;
+							this.match(VtlParser.MEMBERSHIP);
 						}
 						break;
-					}
-					this.state = 1250;
-					this.varID();
-					this.state = 1251;
-					this.match(VtlParser.TO);
-					this.state = 1255;
-					this._errHandler.sync(this);
-					switch ( this.interpreter.adaptivePredict(this._input, 133, this._ctx) ) {
+				}
+				this.state = 1236;
+				this.varID();
+				this.state = 1237;
+				this.match(VtlParser.TO);
+				this.state = 1241;
+				this._errHandler.sync(this);
+				switch (this.interpreter.adaptivePredict(this._input, 131, this._ctx)) {
 					case 1:
 						{
-						this.state = 1252;
-						this.componentID();
-						this.state = 1253;
-						this.match(VtlParser.MEMBERSHIP);
+							this.state = 1238;
+							this.componentID();
+							this.state = 1239;
+							this.match(VtlParser.MEMBERSHIP);
 						}
 						break;
-					}
-					this.state = 1257;
-					this.varID();
-					}
-					}
 				}
-				this.state = 1263;
+				this.state = 1243;
+				this.varID();
+				this.state = 1261;
 				this._errHandler.sync(this);
 				_alt = this.interpreter.adaptivePredict(this._input, 134, this._ctx);
-			}
+				while (_alt !== 1 && _alt !== ATN.INVALID_ALT_NUMBER) {
+					if (_alt === 1 + 1) {
+						{
+							{
+								this.state = 1244;
+								this.match(VtlParser.CARTESIAN_PER);
+								this.state = 1248;
+								this._errHandler.sync(this);
+								switch (this.interpreter.adaptivePredict(this._input, 132, this._ctx)) {
+									case 1:
+										{
+											this.state = 1245;
+											this.componentID();
+											this.state = 1246;
+											this.match(VtlParser.MEMBERSHIP);
+										}
+										break;
+								}
+								this.state = 1250;
+								this.varID();
+								this.state = 1251;
+								this.match(VtlParser.TO);
+								this.state = 1255;
+								this._errHandler.sync(this);
+								switch (this.interpreter.adaptivePredict(this._input, 133, this._ctx)) {
+									case 1:
+										{
+											this.state = 1252;
+											this.componentID();
+											this.state = 1253;
+											this.match(VtlParser.MEMBERSHIP);
+										}
+										break;
+								}
+								this.state = 1257;
+								this.varID();
+							}
+						}
+					}
+					this.state = 1263;
+					this._errHandler.sync(this);
+					_alt = this.interpreter.adaptivePredict(this._input, 134, this._ctx);
+				}
 			}
 		}
 		catch (re) {
@@ -5486,10 +5486,10 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1264;
-			this.match(VtlParser.APPLY);
-			this.state = 1265;
-			this.expr(0);
+				this.state = 1264;
+				this.match(VtlParser.APPLY);
+				this.state = 1265;
+				this.expr(0);
 			}
 		}
 		catch (re) {
@@ -5514,18 +5514,18 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1267;
-			_la = this._input.LA(1);
-			if (!(_la === VtlParser.RANK || ((((_la - 134)) & ~0x1F) === 0 && ((1 << (_la - 134)) & ((1 << (VtlParser.FIRST_VALUE - 134)) | (1 << (VtlParser.LAST_VALUE - 134)) | (1 << (VtlParser.LAG - 134)) | (1 << (VtlParser.LEAD - 134)) | (1 << (VtlParser.RATIO_TO_REPORT - 134)))) !== 0))) {
-			this._errHandler.recoverInline(this);
-			} else {
-				if (this._input.LA(1) === Token.EOF) {
-					this.matchedEOF = true;
-				}
+				this.state = 1267;
+				_la = this._input.LA(1);
+				if (!(_la === VtlParser.RANK || ((((_la - 134)) & ~0x1F) === 0 && ((1 << (_la - 134)) & ((1 << (VtlParser.FIRST_VALUE - 134)) | (1 << (VtlParser.LAST_VALUE - 134)) | (1 << (VtlParser.LAG - 134)) | (1 << (VtlParser.LEAD - 134)) | (1 << (VtlParser.RATIO_TO_REPORT - 134)))) !== 0))) {
+					this._errHandler.recoverInline(this);
+				} else {
+					if (this._input.LA(1) === Token.EOF) {
+						this.matchedEOF = true;
+					}
 
-				this._errHandler.reportMatch(this);
-				this.consume();
-			}
+					this._errHandler.reportMatch(this);
+					this.consume();
+				}
 			}
 		}
 		catch (re) {
@@ -5550,24 +5550,24 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1269;
-			this.aggrFunctionClause();
-			this.state = 1274;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === VtlParser.CARTESIAN_PER) {
-				{
-				{
-				this.state = 1270;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 1271;
+				this.state = 1269;
 				this.aggrFunctionClause();
-				}
-				}
-				this.state = 1276;
+				this.state = 1274;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-			}
+				while (_la === VtlParser.CARTESIAN_PER) {
+					{
+						{
+							this.state = 1270;
+							this.match(VtlParser.CARTESIAN_PER);
+							this.state = 1271;
+							this.aggrFunctionClause();
+						}
+					}
+					this.state = 1276;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
+				}
 			}
 		}
 		catch (re) {
@@ -5592,22 +5592,22 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1278;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (((((_la - 90)) & ~0x1F) === 0 && ((1 << (_la - 90)) & ((1 << (VtlParser.DIMENSION - 90)) | (1 << (VtlParser.MEASURE - 90)) | (1 << (VtlParser.ATTRIBUTE - 90)) | (1 << (VtlParser.VIRAL - 90)))) !== 0) || _la === VtlParser.COMPONENT) {
-				{
-				this.state = 1277;
-				this.componentRole();
+				this.state = 1278;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (((((_la - 90)) & ~0x1F) === 0 && ((1 << (_la - 90)) & ((1 << (VtlParser.DIMENSION - 90)) | (1 << (VtlParser.MEASURE - 90)) | (1 << (VtlParser.ATTRIBUTE - 90)) | (1 << (VtlParser.VIRAL - 90)))) !== 0) || _la === VtlParser.COMPONENT) {
+					{
+						this.state = 1277;
+						this.componentRole();
+					}
 				}
-			}
 
-			this.state = 1280;
-			this.componentID();
-			this.state = 1281;
-			this.match(VtlParser.ASSIGN);
-			this.state = 1282;
-			this.aggrFunction();
+				this.state = 1280;
+				this.componentID();
+				this.state = 1281;
+				this.match(VtlParser.ASSIGN);
+				this.state = 1282;
+				this.aggrFunction();
 			}
 		}
 		catch (re) {
@@ -5632,24 +5632,24 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1284;
-			this.getFilterClause();
-			this.state = 1289;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === VtlParser.CARTESIAN_PER) {
-				{
-				{
-				this.state = 1285;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 1286;
+				this.state = 1284;
 				this.getFilterClause();
-				}
-				}
-				this.state = 1291;
+				this.state = 1289;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-			}
+				while (_la === VtlParser.CARTESIAN_PER) {
+					{
+						{
+							this.state = 1285;
+							this.match(VtlParser.CARTESIAN_PER);
+							this.state = 1286;
+							this.getFilterClause();
+						}
+					}
+					this.state = 1291;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
+				}
 			}
 		}
 		catch (re) {
@@ -5674,20 +5674,20 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			{
-			this.state = 1293;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.FILTER) {
 				{
-				this.state = 1292;
-				this.match(VtlParser.FILTER);
-				}
-			}
+					this.state = 1293;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
+					if (_la === VtlParser.FILTER) {
+						{
+							this.state = 1292;
+							this.match(VtlParser.FILTER);
+						}
+					}
 
-			this.state = 1295;
-			this.expr(0);
-			}
+					this.state = 1295;
+					this.expr(0);
+				}
 			}
 		}
 		catch (re) {
@@ -5712,29 +5712,29 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1297;
-			this.match(VtlParser.AGGREGATE);
-			this.state = 1298;
-			this.aggregateClause();
-			this.state = 1300;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.GROUP) {
-				{
-				this.state = 1299;
-				this.groupingClause();
+				this.state = 1297;
+				this.match(VtlParser.AGGREGATE);
+				this.state = 1298;
+				this.aggregateClause();
+				this.state = 1300;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.GROUP) {
+					{
+						this.state = 1299;
+						this.groupingClause();
+					}
 				}
-			}
 
-			this.state = 1303;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.HAVING) {
-				{
-				this.state = 1302;
-				this.havingClause();
+				this.state = 1303;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.HAVING) {
+					{
+						this.state = 1302;
+						this.havingClause();
+					}
 				}
-			}
 
 			}
 		}
@@ -5759,10 +5759,10 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1305;
-			this.match(VtlParser.FILTER);
-			this.state = 1306;
-			this.expr(0);
+				this.state = 1305;
+				this.match(VtlParser.FILTER);
+				this.state = 1306;
+				this.expr(0);
 			}
 		}
 		catch (re) {
@@ -5787,32 +5787,32 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1308;
-			this.varID();
-			this.state = 1309;
-			this.match(VtlParser.TO);
-			this.state = 1310;
-			this.varID();
-			this.state = 1318;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === VtlParser.CARTESIAN_PER) {
-				{
-				{
-				this.state = 1311;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 1312;
+				this.state = 1308;
 				this.varID();
-				this.state = 1313;
+				this.state = 1309;
 				this.match(VtlParser.TO);
-				this.state = 1314;
+				this.state = 1310;
 				this.varID();
-				}
-				}
-				this.state = 1320;
+				this.state = 1318;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-			}
+				while (_la === VtlParser.CARTESIAN_PER) {
+					{
+						{
+							this.state = 1311;
+							this.match(VtlParser.CARTESIAN_PER);
+							this.state = 1312;
+							this.varID();
+							this.state = 1313;
+							this.match(VtlParser.TO);
+							this.state = 1314;
+							this.varID();
+						}
+					}
+					this.state = 1320;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
+				}
 			}
 		}
 		catch (re) {
@@ -5838,159 +5838,159 @@ export class VtlParser extends Parser {
 			this.state = 1377;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
-			case VtlParser.SUM:
-				this.enterOuterAlt(_localctx, 1);
-				{
-				this.state = 1321;
-				this.match(VtlParser.SUM);
-				this.state = 1322;
-				this.match(VtlParser.T__12);
-				this.state = 1323;
-				this.expr(0);
-				this.state = 1324;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.AVG:
-				this.enterOuterAlt(_localctx, 2);
-				{
-				this.state = 1326;
-				this.match(VtlParser.AVG);
-				this.state = 1327;
-				this.match(VtlParser.T__12);
-				this.state = 1328;
-				this.expr(0);
-				this.state = 1329;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.COUNT:
-				this.enterOuterAlt(_localctx, 3);
-				{
-				this.state = 1331;
-				this.match(VtlParser.COUNT);
-				this.state = 1332;
-				this.match(VtlParser.T__12);
-				this.state = 1334;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-				if ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << VtlParser.T__2) | (1 << VtlParser.T__3) | (1 << VtlParser.T__12) | (1 << VtlParser.EVAL) | (1 << VtlParser.IF) | (1 << VtlParser.CURRENT_DATE))) !== 0) || ((((_la - 38)) & ~0x1F) === 0 && ((1 << (_la - 38)) & ((1 << (VtlParser.NOT - 38)) | (1 << (VtlParser.BETWEEN - 38)) | (1 << (VtlParser.ISNULL - 38)) | (1 << (VtlParser.UNION - 38)) | (1 << (VtlParser.SYMDIFF - 38)) | (1 << (VtlParser.INTERSECT - 38)) | (1 << (VtlParser.CHECK - 38)) | (1 << (VtlParser.EXISTS_IN - 38)) | (1 << (VtlParser.RANK - 38)) | (1 << (VtlParser.MIN - 38)) | (1 << (VtlParser.MAX - 38)))) !== 0) || ((((_la - 72)) & ~0x1F) === 0 && ((1 << (_la - 72)) & ((1 << (VtlParser.ABS - 72)) | (1 << (VtlParser.LN - 72)) | (1 << (VtlParser.LOG - 72)) | (1 << (VtlParser.TRUNC - 72)) | (1 << (VtlParser.ROUND - 72)) | (1 << (VtlParser.POWER - 72)) | (1 << (VtlParser.MOD - 72)) | (1 << (VtlParser.LEN - 72)) | (1 << (VtlParser.TRIM - 72)) | (1 << (VtlParser.UCASE - 72)) | (1 << (VtlParser.LCASE - 72)) | (1 << (VtlParser.SUBSTR - 72)) | (1 << (VtlParser.SUM - 72)) | (1 << (VtlParser.AVG - 72)) | (1 << (VtlParser.MEDIAN - 72)) | (1 << (VtlParser.COUNT - 72)) | (1 << (VtlParser.EXP - 72)) | (1 << (VtlParser.CHARSET_MATCH - 72)) | (1 << (VtlParser.NVL - 72)) | (1 << (VtlParser.HIERARCHY - 72)))) !== 0) || ((((_la - 110)) & ~0x1F) === 0 && ((1 << (_la - 110)) & ((1 << (VtlParser.DEFINE - 110)) | (1 << (VtlParser.LTRIM - 110)) | (1 << (VtlParser.RTRIM - 110)) | (1 << (VtlParser.INSTR - 110)) | (1 << (VtlParser.REPLACE - 110)) | (1 << (VtlParser.CEIL - 110)) | (1 << (VtlParser.FLOOR - 110)) | (1 << (VtlParser.SQRT - 110)) | (1 << (VtlParser.SETDIFF - 110)) | (1 << (VtlParser.STDDEV_POP - 110)) | (1 << (VtlParser.STDDEV_SAMP - 110)) | (1 << (VtlParser.VAR_POP - 110)) | (1 << (VtlParser.VAR_SAMP - 110)) | (1 << (VtlParser.FIRST_VALUE - 110)) | (1 << (VtlParser.LAST_VALUE - 110)) | (1 << (VtlParser.LAG - 110)) | (1 << (VtlParser.LEAD - 110)) | (1 << (VtlParser.RATIO_TO_REPORT - 110)))) !== 0) || ((((_la - 148)) & ~0x1F) === 0 && ((1 << (_la - 148)) & ((1 << (VtlParser.FILL_TIME_SERIES - 148)) | (1 << (VtlParser.FLOW_TO_STOCK - 148)) | (1 << (VtlParser.STOCK_TO_FLOW - 148)) | (1 << (VtlParser.TIMESHIFT - 148)) | (1 << (VtlParser.INNER_JOIN - 148)))) !== 0) || ((((_la - 180)) & ~0x1F) === 0 && ((1 << (_la - 180)) & ((1 << (VtlParser.LEFT_JOIN - 180)) | (1 << (VtlParser.CROSS_JOIN - 180)) | (1 << (VtlParser.FULL_JOIN - 180)) | (1 << (VtlParser.PERIOD_INDICATOR - 180)) | (1 << (VtlParser.TIME_AGG - 180)) | (1 << (VtlParser.CAST - 180)) | (1 << (VtlParser.CHECK_DATAPOINT - 180)) | (1 << (VtlParser.CHECK_HIERARCHY - 180)))) !== 0) || ((((_la - 226)) & ~0x1F) === 0 && ((1 << (_la - 226)) & ((1 << (VtlParser.INTEGER_CONSTANT - 226)) | (1 << (VtlParser.FLOAT_CONSTANT - 226)) | (1 << (VtlParser.BOOLEAN_CONSTANT - 226)) | (1 << (VtlParser.NULL_CONSTANT - 226)) | (1 << (VtlParser.STRING_CONSTANT - 226)) | (1 << (VtlParser.IDENTIFIER - 226)))) !== 0)) {
+				case VtlParser.SUM:
+					this.enterOuterAlt(_localctx, 1);
 					{
-					this.state = 1333;
-					this.expr(0);
+						this.state = 1321;
+						this.match(VtlParser.SUM);
+						this.state = 1322;
+						this.match(VtlParser.T__12);
+						this.state = 1323;
+						this.expr(0);
+						this.state = 1324;
+						this.match(VtlParser.T__13);
 					}
-				}
+					break;
+				case VtlParser.AVG:
+					this.enterOuterAlt(_localctx, 2);
+					{
+						this.state = 1326;
+						this.match(VtlParser.AVG);
+						this.state = 1327;
+						this.match(VtlParser.T__12);
+						this.state = 1328;
+						this.expr(0);
+						this.state = 1329;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.COUNT:
+					this.enterOuterAlt(_localctx, 3);
+					{
+						this.state = 1331;
+						this.match(VtlParser.COUNT);
+						this.state = 1332;
+						this.match(VtlParser.T__12);
+						this.state = 1334;
+						this._errHandler.sync(this);
+						_la = this._input.LA(1);
+						if ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << VtlParser.T__2) | (1 << VtlParser.T__3) | (1 << VtlParser.T__12) | (1 << VtlParser.EVAL) | (1 << VtlParser.IF) | (1 << VtlParser.CURRENT_DATE))) !== 0) || ((((_la - 38)) & ~0x1F) === 0 && ((1 << (_la - 38)) & ((1 << (VtlParser.NOT - 38)) | (1 << (VtlParser.BETWEEN - 38)) | (1 << (VtlParser.ISNULL - 38)) | (1 << (VtlParser.UNION - 38)) | (1 << (VtlParser.SYMDIFF - 38)) | (1 << (VtlParser.INTERSECT - 38)) | (1 << (VtlParser.CHECK - 38)) | (1 << (VtlParser.EXISTS_IN - 38)) | (1 << (VtlParser.RANK - 38)) | (1 << (VtlParser.MIN - 38)) | (1 << (VtlParser.MAX - 38)))) !== 0) || ((((_la - 72)) & ~0x1F) === 0 && ((1 << (_la - 72)) & ((1 << (VtlParser.ABS - 72)) | (1 << (VtlParser.LN - 72)) | (1 << (VtlParser.LOG - 72)) | (1 << (VtlParser.TRUNC - 72)) | (1 << (VtlParser.ROUND - 72)) | (1 << (VtlParser.POWER - 72)) | (1 << (VtlParser.MOD - 72)) | (1 << (VtlParser.LEN - 72)) | (1 << (VtlParser.TRIM - 72)) | (1 << (VtlParser.UCASE - 72)) | (1 << (VtlParser.LCASE - 72)) | (1 << (VtlParser.SUBSTR - 72)) | (1 << (VtlParser.SUM - 72)) | (1 << (VtlParser.AVG - 72)) | (1 << (VtlParser.MEDIAN - 72)) | (1 << (VtlParser.COUNT - 72)) | (1 << (VtlParser.EXP - 72)) | (1 << (VtlParser.CHARSET_MATCH - 72)) | (1 << (VtlParser.NVL - 72)) | (1 << (VtlParser.HIERARCHY - 72)))) !== 0) || ((((_la - 110)) & ~0x1F) === 0 && ((1 << (_la - 110)) & ((1 << (VtlParser.DEFINE - 110)) | (1 << (VtlParser.LTRIM - 110)) | (1 << (VtlParser.RTRIM - 110)) | (1 << (VtlParser.INSTR - 110)) | (1 << (VtlParser.REPLACE - 110)) | (1 << (VtlParser.CEIL - 110)) | (1 << (VtlParser.FLOOR - 110)) | (1 << (VtlParser.SQRT - 110)) | (1 << (VtlParser.SETDIFF - 110)) | (1 << (VtlParser.STDDEV_POP - 110)) | (1 << (VtlParser.STDDEV_SAMP - 110)) | (1 << (VtlParser.VAR_POP - 110)) | (1 << (VtlParser.VAR_SAMP - 110)) | (1 << (VtlParser.FIRST_VALUE - 110)) | (1 << (VtlParser.LAST_VALUE - 110)) | (1 << (VtlParser.LAG - 110)) | (1 << (VtlParser.LEAD - 110)) | (1 << (VtlParser.RATIO_TO_REPORT - 110)))) !== 0) || ((((_la - 148)) & ~0x1F) === 0 && ((1 << (_la - 148)) & ((1 << (VtlParser.FILL_TIME_SERIES - 148)) | (1 << (VtlParser.FLOW_TO_STOCK - 148)) | (1 << (VtlParser.STOCK_TO_FLOW - 148)) | (1 << (VtlParser.TIMESHIFT - 148)) | (1 << (VtlParser.INNER_JOIN - 148)))) !== 0) || ((((_la - 180)) & ~0x1F) === 0 && ((1 << (_la - 180)) & ((1 << (VtlParser.LEFT_JOIN - 180)) | (1 << (VtlParser.CROSS_JOIN - 180)) | (1 << (VtlParser.FULL_JOIN - 180)) | (1 << (VtlParser.PERIOD_INDICATOR - 180)) | (1 << (VtlParser.TIME_AGG - 180)) | (1 << (VtlParser.CAST - 180)) | (1 << (VtlParser.CHECK_DATAPOINT - 180)) | (1 << (VtlParser.CHECK_HIERARCHY - 180)))) !== 0) || ((((_la - 226)) & ~0x1F) === 0 && ((1 << (_la - 226)) & ((1 << (VtlParser.INTEGER_CONSTANT - 226)) | (1 << (VtlParser.FLOAT_CONSTANT - 226)) | (1 << (VtlParser.BOOLEAN_CONSTANT - 226)) | (1 << (VtlParser.NULL_CONSTANT - 226)) | (1 << (VtlParser.STRING_CONSTANT - 226)) | (1 << (VtlParser.IDENTIFIER - 226)))) !== 0)) {
+							{
+								this.state = 1333;
+								this.expr(0);
+							}
+						}
 
-				this.state = 1336;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.MEDIAN:
-				this.enterOuterAlt(_localctx, 4);
-				{
-				this.state = 1337;
-				this.match(VtlParser.MEDIAN);
-				this.state = 1338;
-				this.match(VtlParser.T__12);
-				this.state = 1339;
-				this.expr(0);
-				this.state = 1340;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.MIN:
-				this.enterOuterAlt(_localctx, 5);
-				{
-				this.state = 1342;
-				this.match(VtlParser.MIN);
-				this.state = 1343;
-				this.match(VtlParser.T__12);
-				this.state = 1344;
-				this.expr(0);
-				this.state = 1345;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.MAX:
-				this.enterOuterAlt(_localctx, 6);
-				{
-				this.state = 1347;
-				this.match(VtlParser.MAX);
-				this.state = 1348;
-				this.match(VtlParser.T__12);
-				this.state = 1349;
-				this.expr(0);
-				this.state = 1350;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.RANK:
-				this.enterOuterAlt(_localctx, 7);
-				{
-				this.state = 1352;
-				this.match(VtlParser.RANK);
-				this.state = 1353;
-				this.match(VtlParser.T__12);
-				this.state = 1354;
-				this.expr(0);
-				this.state = 1355;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.STDDEV_POP:
-				this.enterOuterAlt(_localctx, 8);
-				{
-				this.state = 1357;
-				this.match(VtlParser.STDDEV_POP);
-				this.state = 1358;
-				this.match(VtlParser.T__12);
-				this.state = 1359;
-				this.expr(0);
-				this.state = 1360;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.STDDEV_SAMP:
-				this.enterOuterAlt(_localctx, 9);
-				{
-				this.state = 1362;
-				this.match(VtlParser.STDDEV_SAMP);
-				this.state = 1363;
-				this.match(VtlParser.T__12);
-				this.state = 1364;
-				this.expr(0);
-				this.state = 1365;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.VAR_POP:
-				this.enterOuterAlt(_localctx, 10);
-				{
-				this.state = 1367;
-				this.match(VtlParser.VAR_POP);
-				this.state = 1368;
-				this.match(VtlParser.T__12);
-				this.state = 1369;
-				this.expr(0);
-				this.state = 1370;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.VAR_SAMP:
-				this.enterOuterAlt(_localctx, 11);
-				{
-				this.state = 1372;
-				this.match(VtlParser.VAR_SAMP);
-				this.state = 1373;
-				this.match(VtlParser.T__12);
-				this.state = 1374;
-				this.expr(0);
-				this.state = 1375;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
+						this.state = 1336;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.MEDIAN:
+					this.enterOuterAlt(_localctx, 4);
+					{
+						this.state = 1337;
+						this.match(VtlParser.MEDIAN);
+						this.state = 1338;
+						this.match(VtlParser.T__12);
+						this.state = 1339;
+						this.expr(0);
+						this.state = 1340;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.MIN:
+					this.enterOuterAlt(_localctx, 5);
+					{
+						this.state = 1342;
+						this.match(VtlParser.MIN);
+						this.state = 1343;
+						this.match(VtlParser.T__12);
+						this.state = 1344;
+						this.expr(0);
+						this.state = 1345;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.MAX:
+					this.enterOuterAlt(_localctx, 6);
+					{
+						this.state = 1347;
+						this.match(VtlParser.MAX);
+						this.state = 1348;
+						this.match(VtlParser.T__12);
+						this.state = 1349;
+						this.expr(0);
+						this.state = 1350;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.RANK:
+					this.enterOuterAlt(_localctx, 7);
+					{
+						this.state = 1352;
+						this.match(VtlParser.RANK);
+						this.state = 1353;
+						this.match(VtlParser.T__12);
+						this.state = 1354;
+						this.expr(0);
+						this.state = 1355;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.STDDEV_POP:
+					this.enterOuterAlt(_localctx, 8);
+					{
+						this.state = 1357;
+						this.match(VtlParser.STDDEV_POP);
+						this.state = 1358;
+						this.match(VtlParser.T__12);
+						this.state = 1359;
+						this.expr(0);
+						this.state = 1360;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.STDDEV_SAMP:
+					this.enterOuterAlt(_localctx, 9);
+					{
+						this.state = 1362;
+						this.match(VtlParser.STDDEV_SAMP);
+						this.state = 1363;
+						this.match(VtlParser.T__12);
+						this.state = 1364;
+						this.expr(0);
+						this.state = 1365;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.VAR_POP:
+					this.enterOuterAlt(_localctx, 10);
+					{
+						this.state = 1367;
+						this.match(VtlParser.VAR_POP);
+						this.state = 1368;
+						this.match(VtlParser.T__12);
+						this.state = 1369;
+						this.expr(0);
+						this.state = 1370;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.VAR_SAMP:
+					this.enterOuterAlt(_localctx, 11);
+					{
+						this.state = 1372;
+						this.match(VtlParser.VAR_SAMP);
+						this.state = 1373;
+						this.match(VtlParser.T__12);
+						this.state = 1374;
+						this.expr(0);
+						this.state = 1375;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				default:
+					throw new NoViableAltException(this);
 			}
 		}
 		catch (re) {
@@ -6015,26 +6015,26 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1379;
-			this.match(VtlParser.CALC);
-			this.state = 1380;
-			this.calcClauseItem();
-			this.state = 1385;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === VtlParser.CARTESIAN_PER) {
-				{
-				{
-				this.state = 1381;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 1382;
+				this.state = 1379;
+				this.match(VtlParser.CALC);
+				this.state = 1380;
 				this.calcClauseItem();
-				}
-				}
-				this.state = 1387;
+				this.state = 1385;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-			}
+				while (_la === VtlParser.CARTESIAN_PER) {
+					{
+						{
+							this.state = 1381;
+							this.match(VtlParser.CARTESIAN_PER);
+							this.state = 1382;
+							this.calcClauseItem();
+						}
+					}
+					this.state = 1387;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
+				}
 			}
 		}
 		catch (re) {
@@ -6059,22 +6059,22 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1389;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (((((_la - 90)) & ~0x1F) === 0 && ((1 << (_la - 90)) & ((1 << (VtlParser.DIMENSION - 90)) | (1 << (VtlParser.MEASURE - 90)) | (1 << (VtlParser.ATTRIBUTE - 90)) | (1 << (VtlParser.VIRAL - 90)))) !== 0) || _la === VtlParser.COMPONENT) {
-				{
-				this.state = 1388;
-				this.componentRole();
+				this.state = 1389;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (((((_la - 90)) & ~0x1F) === 0 && ((1 << (_la - 90)) & ((1 << (VtlParser.DIMENSION - 90)) | (1 << (VtlParser.MEASURE - 90)) | (1 << (VtlParser.ATTRIBUTE - 90)) | (1 << (VtlParser.VIRAL - 90)))) !== 0) || _la === VtlParser.COMPONENT) {
+					{
+						this.state = 1388;
+						this.componentRole();
+					}
 				}
-			}
 
-			this.state = 1391;
-			this.componentID();
-			this.state = 1392;
-			this.match(VtlParser.ASSIGN);
-			this.state = 1393;
-			this.calcExpr();
+				this.state = 1391;
+				this.componentID();
+				this.state = 1392;
+				this.match(VtlParser.ASSIGN);
+				this.state = 1393;
+				this.calcExpr();
 			}
 		}
 		catch (re) {
@@ -6098,28 +6098,28 @@ export class VtlParser extends Parser {
 		try {
 			this.state = 1401;
 			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 146, this._ctx) ) {
-			case 1:
-				this.enterOuterAlt(_localctx, 1);
-				{
-				this.state = 1395;
-				this.aggrFunction();
-				this.state = 1396;
-				this.match(VtlParser.T__12);
-				this.state = 1397;
-				this.expr(0);
-				this.state = 1398;
-				this.match(VtlParser.T__13);
-				}
-				break;
+			switch (this.interpreter.adaptivePredict(this._input, 146, this._ctx)) {
+				case 1:
+					this.enterOuterAlt(_localctx, 1);
+					{
+						this.state = 1395;
+						this.aggrFunction();
+						this.state = 1396;
+						this.match(VtlParser.T__12);
+						this.state = 1397;
+						this.expr(0);
+						this.state = 1398;
+						this.match(VtlParser.T__13);
+					}
+					break;
 
-			case 2:
-				this.enterOuterAlt(_localctx, 2);
-				{
-				this.state = 1400;
-				this.expr(0);
-				}
-				break;
+				case 2:
+					this.enterOuterAlt(_localctx, 2);
+					{
+						this.state = 1400;
+						this.expr(0);
+					}
+					break;
 			}
 		}
 		catch (re) {
@@ -6144,26 +6144,26 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1403;
-			this.match(VtlParser.DROP);
-			this.state = 1404;
-			this.dropClauseItem();
-			this.state = 1409;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === VtlParser.CARTESIAN_PER) {
-				{
-				{
-				this.state = 1405;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 1406;
+				this.state = 1403;
+				this.match(VtlParser.DROP);
+				this.state = 1404;
 				this.dropClauseItem();
-				}
-				}
-				this.state = 1411;
+				this.state = 1409;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-			}
+				while (_la === VtlParser.CARTESIAN_PER) {
+					{
+						{
+							this.state = 1405;
+							this.match(VtlParser.CARTESIAN_PER);
+							this.state = 1406;
+							this.dropClauseItem();
+						}
+					}
+					this.state = 1411;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
+				}
 			}
 		}
 		catch (re) {
@@ -6187,28 +6187,28 @@ export class VtlParser extends Parser {
 		try {
 			this.state = 1417;
 			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 148, this._ctx) ) {
-			case 1:
-				this.enterOuterAlt(_localctx, 1);
-				{
-				this.state = 1412;
-				this.componentID();
-				}
-				break;
+			switch (this.interpreter.adaptivePredict(this._input, 148, this._ctx)) {
+				case 1:
+					this.enterOuterAlt(_localctx, 1);
+					{
+						this.state = 1412;
+						this.componentID();
+					}
+					break;
 
-			case 2:
-				this.enterOuterAlt(_localctx, 2);
-				{
-				{
-				this.state = 1413;
-				this.datasetID();
-				this.state = 1414;
-				this.match(VtlParser.MEMBERSHIP);
-				this.state = 1415;
-				this.componentID();
-				}
-				}
-				break;
+				case 2:
+					this.enterOuterAlt(_localctx, 2);
+					{
+						{
+							this.state = 1413;
+							this.datasetID();
+							this.state = 1414;
+							this.match(VtlParser.MEMBERSHIP);
+							this.state = 1415;
+							this.componentID();
+						}
+					}
+					break;
 			}
 		}
 		catch (re) {
@@ -6233,26 +6233,26 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1419;
-			this.match(VtlParser.KEEP);
-			this.state = 1420;
-			this.keepClauseItem();
-			this.state = 1425;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === VtlParser.CARTESIAN_PER) {
-				{
-				{
-				this.state = 1421;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 1422;
+				this.state = 1419;
+				this.match(VtlParser.KEEP);
+				this.state = 1420;
 				this.keepClauseItem();
-				}
-				}
-				this.state = 1427;
+				this.state = 1425;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-			}
+				while (_la === VtlParser.CARTESIAN_PER) {
+					{
+						{
+							this.state = 1421;
+							this.match(VtlParser.CARTESIAN_PER);
+							this.state = 1422;
+							this.keepClauseItem();
+						}
+					}
+					this.state = 1427;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
+				}
 			}
 		}
 		catch (re) {
@@ -6276,28 +6276,28 @@ export class VtlParser extends Parser {
 		try {
 			this.state = 1433;
 			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 150, this._ctx) ) {
-			case 1:
-				this.enterOuterAlt(_localctx, 1);
-				{
-				this.state = 1428;
-				this.componentID();
-				}
-				break;
+			switch (this.interpreter.adaptivePredict(this._input, 150, this._ctx)) {
+				case 1:
+					this.enterOuterAlt(_localctx, 1);
+					{
+						this.state = 1428;
+						this.componentID();
+					}
+					break;
 
-			case 2:
-				this.enterOuterAlt(_localctx, 2);
-				{
-				{
-				this.state = 1429;
-				this.datasetID();
-				this.state = 1430;
-				this.match(VtlParser.MEMBERSHIP);
-				this.state = 1431;
-				this.componentID();
-				}
-				}
-				break;
+				case 2:
+					this.enterOuterAlt(_localctx, 2);
+					{
+						{
+							this.state = 1429;
+							this.datasetID();
+							this.state = 1430;
+							this.match(VtlParser.MEMBERSHIP);
+							this.state = 1431;
+							this.componentID();
+						}
+					}
+					break;
 			}
 		}
 		catch (re) {
@@ -6321,14 +6321,14 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1435;
-			this.match(VtlParser.UNPIVOT);
-			this.state = 1436;
-			this.varID();
-			this.state = 1437;
-			this.match(VtlParser.CARTESIAN_PER);
-			this.state = 1438;
-			this.varID();
+				this.state = 1435;
+				this.match(VtlParser.UNPIVOT);
+				this.state = 1436;
+				this.varID();
+				this.state = 1437;
+				this.match(VtlParser.CARTESIAN_PER);
+				this.state = 1438;
+				this.varID();
 			}
 		}
 		catch (re) {
@@ -6352,14 +6352,14 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1440;
-			this.match(VtlParser.PIVOT);
-			this.state = 1441;
-			this.varID();
-			this.state = 1442;
-			this.match(VtlParser.CARTESIAN_PER);
-			this.state = 1443;
-			this.varID();
+				this.state = 1440;
+				this.match(VtlParser.PIVOT);
+				this.state = 1441;
+				this.varID();
+				this.state = 1442;
+				this.match(VtlParser.CARTESIAN_PER);
+				this.state = 1443;
+				this.varID();
 			}
 		}
 		catch (re) {
@@ -6384,34 +6384,34 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1445;
-			this.match(VtlParser.SUBSPACE);
-			this.state = 1446;
-			this.varID();
-			this.state = 1447;
-			this.match(VtlParser.T__10);
-			this.state = 1448;
-			this.constant();
-			this.state = 1456;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === VtlParser.CARTESIAN_PER) {
-				{
-				{
-				this.state = 1449;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 1450;
+				this.state = 1445;
+				this.match(VtlParser.SUBSPACE);
+				this.state = 1446;
 				this.varID();
-				this.state = 1451;
+				this.state = 1447;
 				this.match(VtlParser.T__10);
-				this.state = 1452;
+				this.state = 1448;
 				this.constant();
-				}
-				}
-				this.state = 1458;
+				this.state = 1456;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-			}
+				while (_la === VtlParser.CARTESIAN_PER) {
+					{
+						{
+							this.state = 1449;
+							this.match(VtlParser.CARTESIAN_PER);
+							this.state = 1450;
+							this.varID();
+							this.state = 1451;
+							this.match(VtlParser.T__10);
+							this.state = 1452;
+							this.constant();
+						}
+					}
+					this.state = 1458;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
+				}
 			}
 		}
 		catch (re) {
@@ -6436,64 +6436,64 @@ export class VtlParser extends Parser {
 			this.state = 1469;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
-			case VtlParser.IN:
-				this.enterOuterAlt(_localctx, 1);
-				{
-				this.state = 1459;
-				this.match(VtlParser.IN);
-				this.state = 1462;
-				this._errHandler.sync(this);
-				switch (this._input.LA(1)) {
-				case VtlParser.UNION:
-				case VtlParser.SYMDIFF:
-				case VtlParser.INTERSECT:
-				case VtlParser.SETDIFF:
+				case VtlParser.IN:
+					this.enterOuterAlt(_localctx, 1);
 					{
-					this.state = 1460;
-					this.setExpr();
+						this.state = 1459;
+						this.match(VtlParser.IN);
+						this.state = 1462;
+						this._errHandler.sync(this);
+						switch (this._input.LA(1)) {
+							case VtlParser.UNION:
+							case VtlParser.SYMDIFF:
+							case VtlParser.INTERSECT:
+							case VtlParser.SETDIFF:
+								{
+									this.state = 1460;
+									this.setExpr();
+								}
+								break;
+							case VtlParser.IDENTIFIER:
+								{
+									this.state = 1461;
+									this.match(VtlParser.IDENTIFIER);
+								}
+								break;
+							default:
+								throw new NoViableAltException(this);
+						}
 					}
 					break;
-				case VtlParser.IDENTIFIER:
+				case VtlParser.NOT_IN:
+					this.enterOuterAlt(_localctx, 2);
 					{
-					this.state = 1461;
-					this.match(VtlParser.IDENTIFIER);
+						this.state = 1464;
+						this.match(VtlParser.NOT_IN);
+						this.state = 1467;
+						this._errHandler.sync(this);
+						switch (this._input.LA(1)) {
+							case VtlParser.UNION:
+							case VtlParser.SYMDIFF:
+							case VtlParser.INTERSECT:
+							case VtlParser.SETDIFF:
+								{
+									this.state = 1465;
+									this.setExpr();
+								}
+								break;
+							case VtlParser.IDENTIFIER:
+								{
+									this.state = 1466;
+									this.match(VtlParser.IDENTIFIER);
+								}
+								break;
+							default:
+								throw new NoViableAltException(this);
+						}
 					}
 					break;
 				default:
 					throw new NoViableAltException(this);
-				}
-				}
-				break;
-			case VtlParser.NOT_IN:
-				this.enterOuterAlt(_localctx, 2);
-				{
-				this.state = 1464;
-				this.match(VtlParser.NOT_IN);
-				this.state = 1467;
-				this._errHandler.sync(this);
-				switch (this._input.LA(1)) {
-				case VtlParser.UNION:
-				case VtlParser.SYMDIFF:
-				case VtlParser.INTERSECT:
-				case VtlParser.SETDIFF:
-					{
-					this.state = 1465;
-					this.setExpr();
-					}
-					break;
-				case VtlParser.IDENTIFIER:
-					{
-					this.state = 1466;
-					this.match(VtlParser.IDENTIFIER);
-					}
-					break;
-				default:
-					throw new NoViableAltException(this);
-				}
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
 			}
 		}
 		catch (re) {
@@ -6519,100 +6519,100 @@ export class VtlParser extends Parser {
 			this.state = 1509;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
-			case VtlParser.UNION:
-				this.enterOuterAlt(_localctx, 1);
-				{
-				this.state = 1471;
-				this.match(VtlParser.UNION);
-				this.state = 1472;
-				this.match(VtlParser.T__12);
-				this.state = 1473;
-				this.expr(0);
-				this.state = 1478;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-				while (_la === VtlParser.CARTESIAN_PER) {
+				case VtlParser.UNION:
+					this.enterOuterAlt(_localctx, 1);
 					{
+						this.state = 1471;
+						this.match(VtlParser.UNION);
+						this.state = 1472;
+						this.match(VtlParser.T__12);
+						this.state = 1473;
+						this.expr(0);
+						this.state = 1478;
+						this._errHandler.sync(this);
+						_la = this._input.LA(1);
+						while (_la === VtlParser.CARTESIAN_PER) {
+							{
+								{
+									this.state = 1474;
+									this.match(VtlParser.CARTESIAN_PER);
+									this.state = 1475;
+									this.expr(0);
+								}
+							}
+							this.state = 1480;
+							this._errHandler.sync(this);
+							_la = this._input.LA(1);
+						}
+						this.state = 1481;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.SYMDIFF:
+					this.enterOuterAlt(_localctx, 2);
 					{
-					this.state = 1474;
-					this.match(VtlParser.CARTESIAN_PER);
-					this.state = 1475;
-					this.expr(0);
+						this.state = 1483;
+						this.match(VtlParser.SYMDIFF);
+						this.state = 1484;
+						this.match(VtlParser.T__12);
+						this.state = 1485;
+						this.expr(0);
+						this.state = 1486;
+						this.match(VtlParser.CARTESIAN_PER);
+						this.state = 1487;
+						this.expr(0);
+						this.state = 1488;
+						this.match(VtlParser.T__13);
 					}
-					}
-					this.state = 1480;
-					this._errHandler.sync(this);
-					_la = this._input.LA(1);
-				}
-				this.state = 1481;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.SYMDIFF:
-				this.enterOuterAlt(_localctx, 2);
-				{
-				this.state = 1483;
-				this.match(VtlParser.SYMDIFF);
-				this.state = 1484;
-				this.match(VtlParser.T__12);
-				this.state = 1485;
-				this.expr(0);
-				this.state = 1486;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 1487;
-				this.expr(0);
-				this.state = 1488;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.SETDIFF:
-				this.enterOuterAlt(_localctx, 3);
-				{
-				this.state = 1490;
-				this.match(VtlParser.SETDIFF);
-				this.state = 1491;
-				this.match(VtlParser.T__12);
-				this.state = 1492;
-				this.expr(0);
-				this.state = 1493;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 1494;
-				this.expr(0);
-				this.state = 1495;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			case VtlParser.INTERSECT:
-				this.enterOuterAlt(_localctx, 4);
-				{
-				this.state = 1497;
-				this.match(VtlParser.INTERSECT);
-				this.state = 1498;
-				this.match(VtlParser.T__12);
-				this.state = 1499;
-				this.expr(0);
-				this.state = 1504;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-				while (_la === VtlParser.CARTESIAN_PER) {
+					break;
+				case VtlParser.SETDIFF:
+					this.enterOuterAlt(_localctx, 3);
 					{
+						this.state = 1490;
+						this.match(VtlParser.SETDIFF);
+						this.state = 1491;
+						this.match(VtlParser.T__12);
+						this.state = 1492;
+						this.expr(0);
+						this.state = 1493;
+						this.match(VtlParser.CARTESIAN_PER);
+						this.state = 1494;
+						this.expr(0);
+						this.state = 1495;
+						this.match(VtlParser.T__13);
+					}
+					break;
+				case VtlParser.INTERSECT:
+					this.enterOuterAlt(_localctx, 4);
 					{
-					this.state = 1500;
-					this.match(VtlParser.CARTESIAN_PER);
-					this.state = 1501;
-					this.expr(0);
+						this.state = 1497;
+						this.match(VtlParser.INTERSECT);
+						this.state = 1498;
+						this.match(VtlParser.T__12);
+						this.state = 1499;
+						this.expr(0);
+						this.state = 1504;
+						this._errHandler.sync(this);
+						_la = this._input.LA(1);
+						while (_la === VtlParser.CARTESIAN_PER) {
+							{
+								{
+									this.state = 1500;
+									this.match(VtlParser.CARTESIAN_PER);
+									this.state = 1501;
+									this.expr(0);
+								}
+							}
+							this.state = 1506;
+							this._errHandler.sync(this);
+							_la = this._input.LA(1);
+						}
+						this.state = 1507;
+						this.match(VtlParser.T__13);
 					}
-					}
-					this.state = 1506;
-					this._errHandler.sync(this);
-					_la = this._input.LA(1);
-				}
-				this.state = 1507;
-				this.match(VtlParser.T__13);
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
+					break;
+				default:
+					throw new NoViableAltException(this);
 			}
 		}
 		catch (re) {
@@ -6637,34 +6637,34 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1511;
-			this.persistentDatasetID();
-			this.state = 1512;
-			this.match(VtlParser.T__0);
-			this.state = 1513;
-			this.componentID();
-			this.state = 1514;
-			this.match(VtlParser.T__10);
-			this.state = 1515;
-			this.constant();
-			this.state = 1521;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.CARTESIAN_PER) {
-				{
-				this.state = 1516;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 1517;
+				this.state = 1511;
+				this.persistentDatasetID();
+				this.state = 1512;
+				this.match(VtlParser.T__0);
+				this.state = 1513;
 				this.componentID();
-				this.state = 1518;
+				this.state = 1514;
 				this.match(VtlParser.T__10);
-				this.state = 1519;
+				this.state = 1515;
 				this.constant();
+				this.state = 1521;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.CARTESIAN_PER) {
+					{
+						this.state = 1516;
+						this.match(VtlParser.CARTESIAN_PER);
+						this.state = 1517;
+						this.componentID();
+						this.state = 1518;
+						this.match(VtlParser.T__10);
+						this.state = 1519;
+						this.constant();
+					}
 				}
-			}
 
-			this.state = 1523;
-			this.match(VtlParser.T__1);
+				this.state = 1523;
+				this.match(VtlParser.T__1);
 			}
 		}
 		catch (re) {
@@ -6689,74 +6689,74 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1525;
-			this.aggrFunctionName();
-			this.state = 1526;
-			this.match(VtlParser.T__12);
-			this.state = 1527;
-			this.match(VtlParser.IDENTIFIER);
-			this.state = 1530;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.MEMBERSHIP) {
-				{
-				this.state = 1528;
-				this.match(VtlParser.MEMBERSHIP);
-				this.state = 1529;
-				this.componentID();
-				}
-			}
-
-			this.state = 1540;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === VtlParser.CARTESIAN_PER) {
-				{
-				{
-				this.state = 1532;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 1533;
+				this.state = 1525;
+				this.aggrFunctionName();
+				this.state = 1526;
+				this.match(VtlParser.T__12);
+				this.state = 1527;
 				this.match(VtlParser.IDENTIFIER);
-				this.state = 1536;
+				this.state = 1530;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 				if (_la === VtlParser.MEMBERSHIP) {
 					{
-					this.state = 1534;
-					this.match(VtlParser.MEMBERSHIP);
-					this.state = 1535;
-					this.componentID();
+						this.state = 1528;
+						this.match(VtlParser.MEMBERSHIP);
+						this.state = 1529;
+						this.componentID();
 					}
 				}
 
-				}
-				}
-				this.state = 1542;
+				this.state = 1540;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-			}
-			this.state = 1544;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.GROUP) {
-				{
-				this.state = 1543;
-				this.groupingClause();
-				}
-			}
+				while (_la === VtlParser.CARTESIAN_PER) {
+					{
+						{
+							this.state = 1532;
+							this.match(VtlParser.CARTESIAN_PER);
+							this.state = 1533;
+							this.match(VtlParser.IDENTIFIER);
+							this.state = 1536;
+							this._errHandler.sync(this);
+							_la = this._input.LA(1);
+							if (_la === VtlParser.MEMBERSHIP) {
+								{
+									this.state = 1534;
+									this.match(VtlParser.MEMBERSHIP);
+									this.state = 1535;
+									this.componentID();
+								}
+							}
 
-			this.state = 1547;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.HAVING) {
-				{
-				this.state = 1546;
-				this.havingClause();
+						}
+					}
+					this.state = 1542;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
 				}
-			}
+				this.state = 1544;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.GROUP) {
+					{
+						this.state = 1543;
+						this.groupingClause();
+					}
+				}
 
-			this.state = 1549;
-			this.match(VtlParser.T__13);
+				this.state = 1547;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.HAVING) {
+					{
+						this.state = 1546;
+						this.havingClause();
+					}
+				}
+
+				this.state = 1549;
+				this.match(VtlParser.T__13);
 			}
 		}
 		catch (re) {
@@ -6781,74 +6781,74 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1551;
-			this.aggrFunctionName();
-			this.state = 1552;
-			this.match(VtlParser.T__12);
-			this.state = 1553;
-			this.match(VtlParser.IDENTIFIER);
-			this.state = 1556;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.MEMBERSHIP) {
-				{
-				this.state = 1554;
-				this.match(VtlParser.MEMBERSHIP);
-				this.state = 1555;
-				this.componentID();
-				}
-			}
-
-			this.state = 1566;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === VtlParser.CARTESIAN_PER) {
-				{
-				{
-				this.state = 1558;
-				this.match(VtlParser.CARTESIAN_PER);
-				this.state = 1559;
+				this.state = 1551;
+				this.aggrFunctionName();
+				this.state = 1552;
+				this.match(VtlParser.T__12);
+				this.state = 1553;
 				this.match(VtlParser.IDENTIFIER);
-				this.state = 1562;
+				this.state = 1556;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 				if (_la === VtlParser.MEMBERSHIP) {
 					{
-					this.state = 1560;
-					this.match(VtlParser.MEMBERSHIP);
-					this.state = 1561;
-					this.componentID();
+						this.state = 1554;
+						this.match(VtlParser.MEMBERSHIP);
+						this.state = 1555;
+						this.componentID();
 					}
 				}
 
-				}
-				}
-				this.state = 1568;
+				this.state = 1566;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-			}
-			this.state = 1569;
-			this.match(VtlParser.T__13);
-			this.state = 1571;
-			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 167, this._ctx) ) {
-			case 1:
-				{
-				this.state = 1570;
-				this.groupingClause();
+				while (_la === VtlParser.CARTESIAN_PER) {
+					{
+						{
+							this.state = 1558;
+							this.match(VtlParser.CARTESIAN_PER);
+							this.state = 1559;
+							this.match(VtlParser.IDENTIFIER);
+							this.state = 1562;
+							this._errHandler.sync(this);
+							_la = this._input.LA(1);
+							if (_la === VtlParser.MEMBERSHIP) {
+								{
+									this.state = 1560;
+									this.match(VtlParser.MEMBERSHIP);
+									this.state = 1561;
+									this.componentID();
+								}
+							}
+
+						}
+					}
+					this.state = 1568;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
 				}
-				break;
-			}
-			this.state = 1574;
-			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 168, this._ctx) ) {
-			case 1:
-				{
-				this.state = 1573;
-				this.havingClause();
+				this.state = 1569;
+				this.match(VtlParser.T__13);
+				this.state = 1571;
+				this._errHandler.sync(this);
+				switch (this.interpreter.adaptivePredict(this._input, 167, this._ctx)) {
+					case 1:
+						{
+							this.state = 1570;
+							this.groupingClause();
+						}
+						break;
 				}
-				break;
-			}
+				this.state = 1574;
+				this._errHandler.sync(this);
+				switch (this.interpreter.adaptivePredict(this._input, 168, this._ctx)) {
+					case 1:
+						{
+							this.state = 1573;
+							this.havingClause();
+						}
+						break;
+				}
 			}
 		}
 		catch (re) {
@@ -6873,18 +6873,18 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1576;
-			_la = this._input.LA(1);
-			if (!(((((_la - 67)) & ~0x1F) === 0 && ((1 << (_la - 67)) & ((1 << (VtlParser.MIN - 67)) | (1 << (VtlParser.MAX - 67)) | (1 << (VtlParser.SUM - 67)) | (1 << (VtlParser.AVG - 67)) | (1 << (VtlParser.MEDIAN - 67)) | (1 << (VtlParser.COUNT - 67)))) !== 0) || ((((_la - 127)) & ~0x1F) === 0 && ((1 << (_la - 127)) & ((1 << (VtlParser.STDDEV_POP - 127)) | (1 << (VtlParser.STDDEV_SAMP - 127)) | (1 << (VtlParser.VAR_POP - 127)) | (1 << (VtlParser.VAR_SAMP - 127)))) !== 0))) {
-			this._errHandler.recoverInline(this);
-			} else {
-				if (this._input.LA(1) === Token.EOF) {
-					this.matchedEOF = true;
-				}
+				this.state = 1576;
+				_la = this._input.LA(1);
+				if (!(((((_la - 67)) & ~0x1F) === 0 && ((1 << (_la - 67)) & ((1 << (VtlParser.MIN - 67)) | (1 << (VtlParser.MAX - 67)) | (1 << (VtlParser.SUM - 67)) | (1 << (VtlParser.AVG - 67)) | (1 << (VtlParser.MEDIAN - 67)) | (1 << (VtlParser.COUNT - 67)))) !== 0) || ((((_la - 127)) & ~0x1F) === 0 && ((1 << (_la - 127)) & ((1 << (VtlParser.STDDEV_POP - 127)) | (1 << (VtlParser.STDDEV_SAMP - 127)) | (1 << (VtlParser.VAR_POP - 127)) | (1 << (VtlParser.VAR_SAMP - 127)))) !== 0))) {
+					this._errHandler.recoverInline(this);
+				} else {
+					if (this._input.LA(1) === Token.EOF) {
+						this.matchedEOF = true;
+					}
 
-				this._errHandler.reportMatch(this);
-				this.consume();
-			}
+					this._errHandler.reportMatch(this);
+					this.consume();
+				}
 			}
 		}
 		catch (re) {
@@ -6909,47 +6909,47 @@ export class VtlParser extends Parser {
 			let _alt: number;
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1578;
-			this.groupKeyword();
-			this.state = 1588;
-			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 170, this._ctx) ) {
-			case 1:
-				{
-				{
-				this.state = 1579;
-				this.match(VtlParser.IDENTIFIER);
-				this.state = 1584;
+				this.state = 1578;
+				this.groupKeyword();
+				this.state = 1588;
 				this._errHandler.sync(this);
-				_alt = this.interpreter.adaptivePredict(this._input, 169, this._ctx);
-				while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
-					if (_alt === 1) {
+				switch (this.interpreter.adaptivePredict(this._input, 170, this._ctx)) {
+					case 1:
 						{
-						{
-						this.state = 1580;
-						this.match(VtlParser.CARTESIAN_PER);
-						this.state = 1581;
-						this.match(VtlParser.IDENTIFIER);
+							{
+								this.state = 1579;
+								this.match(VtlParser.IDENTIFIER);
+								this.state = 1584;
+								this._errHandler.sync(this);
+								_alt = this.interpreter.adaptivePredict(this._input, 169, this._ctx);
+								while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
+									if (_alt === 1) {
+										{
+											{
+												this.state = 1580;
+												this.match(VtlParser.CARTESIAN_PER);
+												this.state = 1581;
+												this.match(VtlParser.IDENTIFIER);
+											}
+										}
+									}
+									this.state = 1586;
+									this._errHandler.sync(this);
+									_alt = this.interpreter.adaptivePredict(this._input, 169, this._ctx);
+								}
+							}
 						}
-						}
-					}
-					this.state = 1586;
-					this._errHandler.sync(this);
-					_alt = this.interpreter.adaptivePredict(this._input, 169, this._ctx);
-				}
-				}
-				}
-				break;
+						break;
 
-			case 2:
-				{
-				{
-				this.state = 1587;
-				this.expr(0);
+					case 2:
+						{
+							{
+								this.state = 1587;
+								this.expr(0);
+							}
+						}
+						break;
 				}
-				}
-				break;
-			}
 			}
 		}
 		catch (re) {
@@ -6973,40 +6973,40 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1590;
-			this.match(VtlParser.HAVING);
-			this.state = 1592;
-			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 171, this._ctx) ) {
-			case 1:
-				{
-				this.state = 1591;
-				this.match(VtlParser.T__12);
+				this.state = 1590;
+				this.match(VtlParser.HAVING);
+				this.state = 1592;
+				this._errHandler.sync(this);
+				switch (this.interpreter.adaptivePredict(this._input, 171, this._ctx)) {
+					case 1:
+						{
+							this.state = 1591;
+							this.match(VtlParser.T__12);
+						}
+						break;
 				}
-				break;
-			}
-			this.state = 1595;
-			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 172, this._ctx) ) {
-			case 1:
-				{
-				this.state = 1594;
-				this.aggrFunction();
+				this.state = 1595;
+				this._errHandler.sync(this);
+				switch (this.interpreter.adaptivePredict(this._input, 172, this._ctx)) {
+					case 1:
+						{
+							this.state = 1594;
+							this.aggrFunction();
+						}
+						break;
 				}
-				break;
-			}
-			this.state = 1597;
-			this.expr(0);
-			this.state = 1599;
-			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 173, this._ctx) ) {
-			case 1:
-				{
-				this.state = 1598;
-				this.match(VtlParser.T__13);
+				this.state = 1597;
+				this.expr(0);
+				this.state = 1599;
+				this._errHandler.sync(this);
+				switch (this.interpreter.adaptivePredict(this._input, 173, this._ctx)) {
+					case 1:
+						{
+							this.state = 1598;
+							this.match(VtlParser.T__13);
+						}
+						break;
 				}
-				break;
-			}
 			}
 		}
 		catch (re) {
@@ -7030,14 +7030,14 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1601;
-			this.match(VtlParser.RETURN);
-			this.state = 1602;
-			this.match(VtlParser.ALL);
-			this.state = 1603;
-			this.match(VtlParser.DATA);
-			this.state = 1604;
-			this.match(VtlParser.POINTS);
+				this.state = 1601;
+				this.match(VtlParser.RETURN);
+				this.state = 1602;
+				this.match(VtlParser.ALL);
+				this.state = 1603;
+				this.match(VtlParser.DATA);
+				this.state = 1604;
+				this.match(VtlParser.POINTS);
 			}
 		}
 		catch (re) {
@@ -7062,43 +7062,43 @@ export class VtlParser extends Parser {
 			this.state = 1611;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
-			case VtlParser.MEASURE:
-				this.enterOuterAlt(_localctx, 1);
-				{
-				this.state = 1606;
-				this.match(VtlParser.MEASURE);
-				}
-				break;
-			case VtlParser.COMPONENT:
-				this.enterOuterAlt(_localctx, 2);
-				{
-				this.state = 1607;
-				this.match(VtlParser.COMPONENT);
-				}
-				break;
-			case VtlParser.DIMENSION:
-				this.enterOuterAlt(_localctx, 3);
-				{
-				this.state = 1608;
-				this.match(VtlParser.DIMENSION);
-				}
-				break;
-			case VtlParser.ATTRIBUTE:
-				this.enterOuterAlt(_localctx, 4);
-				{
-				this.state = 1609;
-				this.match(VtlParser.ATTRIBUTE);
-				}
-				break;
-			case VtlParser.VIRAL:
-				this.enterOuterAlt(_localctx, 5);
-				{
-				this.state = 1610;
-				this.viralAttribute();
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
+				case VtlParser.MEASURE:
+					this.enterOuterAlt(_localctx, 1);
+					{
+						this.state = 1606;
+						this.match(VtlParser.MEASURE);
+					}
+					break;
+				case VtlParser.COMPONENT:
+					this.enterOuterAlt(_localctx, 2);
+					{
+						this.state = 1607;
+						this.match(VtlParser.COMPONENT);
+					}
+					break;
+				case VtlParser.DIMENSION:
+					this.enterOuterAlt(_localctx, 3);
+					{
+						this.state = 1608;
+						this.match(VtlParser.DIMENSION);
+					}
+					break;
+				case VtlParser.ATTRIBUTE:
+					this.enterOuterAlt(_localctx, 4);
+					{
+						this.state = 1609;
+						this.match(VtlParser.ATTRIBUTE);
+					}
+					break;
+				case VtlParser.VIRAL:
+					this.enterOuterAlt(_localctx, 5);
+					{
+						this.state = 1610;
+						this.viralAttribute();
+					}
+					break;
+				default:
+					throw new NoViableAltException(this);
 			}
 		}
 		catch (re) {
@@ -7122,10 +7122,10 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1613;
-			this.match(VtlParser.VIRAL);
-			this.state = 1614;
-			this.match(VtlParser.ATTRIBUTE);
+				this.state = 1613;
+				this.match(VtlParser.VIRAL);
+				this.state = 1614;
+				this.match(VtlParser.ATTRIBUTE);
 			}
 		}
 		catch (re) {
@@ -7149,8 +7149,8 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1616;
-			this.expr(0);
+				this.state = 1616;
+				this.expr(0);
 			}
 		}
 		catch (re) {
@@ -7175,18 +7175,18 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1618;
-			_la = this._input.LA(1);
-			if (!(_la === VtlParser.INTEGER_CONSTANT || _la === VtlParser.FLOAT_CONSTANT)) {
-			this._errHandler.recoverInline(this);
-			} else {
-				if (this._input.LA(1) === Token.EOF) {
-					this.matchedEOF = true;
-				}
+				this.state = 1618;
+				_la = this._input.LA(1);
+				if (!(_la === VtlParser.INTEGER_CONSTANT || _la === VtlParser.FLOAT_CONSTANT)) {
+					this._errHandler.recoverInline(this);
+				} else {
+					if (this._input.LA(1) === Token.EOF) {
+						this.matchedEOF = true;
+					}
 
-				this._errHandler.reportMatch(this);
-				this.consume();
-			}
+					this._errHandler.reportMatch(this);
+					this.consume();
+				}
 			}
 		}
 		catch (re) {
@@ -7210,8 +7210,8 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1620;
-			this.match(VtlParser.STRING_CONSTANT);
+				this.state = 1620;
+				this.match(VtlParser.STRING_CONSTANT);
 			}
 		}
 		catch (re) {
@@ -7235,8 +7235,8 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1622;
-			this.match(VtlParser.IDENTIFIER);
+				this.state = 1622;
+				this.match(VtlParser.IDENTIFIER);
 			}
 		}
 		catch (re) {
@@ -7260,8 +7260,8 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1624;
-			this.match(VtlParser.IDENTIFIER);
+				this.state = 1624;
+				this.match(VtlParser.IDENTIFIER);
 			}
 		}
 		catch (re) {
@@ -7285,8 +7285,8 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1626;
-			this.match(VtlParser.IDENTIFIER);
+				this.state = 1626;
+				this.match(VtlParser.IDENTIFIER);
 			}
 		}
 		catch (re) {
@@ -7310,8 +7310,8 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1628;
-			this.match(VtlParser.IDENTIFIER);
+				this.state = 1628;
+				this.match(VtlParser.IDENTIFIER);
 			}
 		}
 		catch (re) {
@@ -7335,8 +7335,8 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1630;
-			this.match(VtlParser.IDENTIFIER);
+				this.state = 1630;
+				this.match(VtlParser.IDENTIFIER);
 			}
 		}
 		catch (re) {
@@ -7360,8 +7360,8 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1632;
-			this.match(VtlParser.IDENTIFIER);
+				this.state = 1632;
+				this.match(VtlParser.IDENTIFIER);
 			}
 		}
 		catch (re) {
@@ -7386,18 +7386,18 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1634;
-			_la = this._input.LA(1);
-			if (!(((((_la - 179)) & ~0x1F) === 0 && ((1 << (_la - 179)) & ((1 << (VtlParser.INNER_JOIN - 179)) | (1 << (VtlParser.LEFT_JOIN - 179)) | (1 << (VtlParser.CROSS_JOIN - 179)) | (1 << (VtlParser.FULL_JOIN - 179)))) !== 0))) {
-			this._errHandler.recoverInline(this);
-			} else {
-				if (this._input.LA(1) === Token.EOF) {
-					this.matchedEOF = true;
-				}
+				this.state = 1634;
+				_la = this._input.LA(1);
+				if (!(((((_la - 179)) & ~0x1F) === 0 && ((1 << (_la - 179)) & ((1 << (VtlParser.INNER_JOIN - 179)) | (1 << (VtlParser.LEFT_JOIN - 179)) | (1 << (VtlParser.CROSS_JOIN - 179)) | (1 << (VtlParser.FULL_JOIN - 179)))) !== 0))) {
+					this._errHandler.recoverInline(this);
+				} else {
+					if (this._input.LA(1) === Token.EOF) {
+						this.matchedEOF = true;
+					}
 
-				this._errHandler.reportMatch(this);
-				this.consume();
-			}
+					this._errHandler.reportMatch(this);
+					this.consume();
+				}
 			}
 		}
 		catch (re) {
@@ -7421,42 +7421,42 @@ export class VtlParser extends Parser {
 		try {
 			this.state = 1642;
 			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 175, this._ctx) ) {
-			case 1:
-				this.enterOuterAlt(_localctx, 1);
-				{
-				{
-				this.state = 1636;
-				this.match(VtlParser.GROUP);
-				this.state = 1637;
-				this.match(VtlParser.BY);
-				}
-				}
-				break;
+			switch (this.interpreter.adaptivePredict(this._input, 175, this._ctx)) {
+				case 1:
+					this.enterOuterAlt(_localctx, 1);
+					{
+						{
+							this.state = 1636;
+							this.match(VtlParser.GROUP);
+							this.state = 1637;
+							this.match(VtlParser.BY);
+						}
+					}
+					break;
 
-			case 2:
-				this.enterOuterAlt(_localctx, 2);
-				{
-				{
-				this.state = 1638;
-				this.match(VtlParser.GROUP);
-				this.state = 1639;
-				this.match(VtlParser.EXCEPT);
-				}
-				}
-				break;
+				case 2:
+					this.enterOuterAlt(_localctx, 2);
+					{
+						{
+							this.state = 1638;
+							this.match(VtlParser.GROUP);
+							this.state = 1639;
+							this.match(VtlParser.EXCEPT);
+						}
+					}
+					break;
 
-			case 3:
-				this.enterOuterAlt(_localctx, 3);
-				{
-				{
-				this.state = 1640;
-				this.match(VtlParser.GROUP);
-				this.state = 1641;
-				this.match(VtlParser.ALL);
-				}
-				}
-				break;
+				case 3:
+					this.enterOuterAlt(_localctx, 3);
+					{
+						{
+							this.state = 1640;
+							this.match(VtlParser.GROUP);
+							this.state = 1641;
+							this.match(VtlParser.ALL);
+						}
+					}
+					break;
 			}
 		}
 		catch (re) {
@@ -7481,18 +7481,18 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1644;
-			_la = this._input.LA(1);
-			if (!(((((_la - 226)) & ~0x1F) === 0 && ((1 << (_la - 226)) & ((1 << (VtlParser.INTEGER_CONSTANT - 226)) | (1 << (VtlParser.FLOAT_CONSTANT - 226)) | (1 << (VtlParser.BOOLEAN_CONSTANT - 226)) | (1 << (VtlParser.NULL_CONSTANT - 226)) | (1 << (VtlParser.STRING_CONSTANT - 226)))) !== 0))) {
-			this._errHandler.recoverInline(this);
-			} else {
-				if (this._input.LA(1) === Token.EOF) {
-					this.matchedEOF = true;
-				}
+				this.state = 1644;
+				_la = this._input.LA(1);
+				if (!(((((_la - 226)) & ~0x1F) === 0 && ((1 << (_la - 226)) & ((1 << (VtlParser.INTEGER_CONSTANT - 226)) | (1 << (VtlParser.FLOAT_CONSTANT - 226)) | (1 << (VtlParser.BOOLEAN_CONSTANT - 226)) | (1 << (VtlParser.NULL_CONSTANT - 226)) | (1 << (VtlParser.STRING_CONSTANT - 226)))) !== 0))) {
+					this._errHandler.recoverInline(this);
+				} else {
+					if (this._input.LA(1) === Token.EOF) {
+						this.matchedEOF = true;
+					}
 
-				this._errHandler.reportMatch(this);
-				this.consume();
-			}
+					this._errHandler.reportMatch(this);
+					this.consume();
+				}
 			}
 		}
 		catch (re) {
@@ -7517,18 +7517,18 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1646;
-			_la = this._input.LA(1);
-			if (!(((((_la - 155)) & ~0x1F) === 0 && ((1 << (_la - 155)) & ((1 << (VtlParser.BOOLEAN - 155)) | (1 << (VtlParser.DATE - 155)) | (1 << (VtlParser.STRING - 155)) | (1 << (VtlParser.INTEGER - 155)) | (1 << (VtlParser.FLOAT - 155)))) !== 0))) {
-			this._errHandler.recoverInline(this);
-			} else {
-				if (this._input.LA(1) === Token.EOF) {
-					this.matchedEOF = true;
-				}
+				this.state = 1646;
+				_la = this._input.LA(1);
+				if (!(((((_la - 155)) & ~0x1F) === 0 && ((1 << (_la - 155)) & ((1 << (VtlParser.BOOLEAN - 155)) | (1 << (VtlParser.DATE - 155)) | (1 << (VtlParser.STRING - 155)) | (1 << (VtlParser.INTEGER - 155)) | (1 << (VtlParser.FLOAT - 155)))) !== 0))) {
+					this._errHandler.recoverInline(this);
+				} else {
+					if (this._input.LA(1) === Token.EOF) {
+						this.matchedEOF = true;
+					}
 
-				this._errHandler.reportMatch(this);
-				this.consume();
-			}
+					this._errHandler.reportMatch(this);
+					this.consume();
+				}
 			}
 		}
 		catch (re) {
@@ -7553,59 +7553,59 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1651;
-			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 176, this._ctx) ) {
-			case 1:
-				{
-				this.state = 1648;
-				this.basicScalarType();
-				}
-				break;
+				this.state = 1651;
+				this._errHandler.sync(this);
+				switch (this.interpreter.adaptivePredict(this._input, 176, this._ctx)) {
+					case 1:
+						{
+							this.state = 1648;
+							this.basicScalarType();
+						}
+						break;
 
-			case 2:
-				{
-				this.state = 1649;
-				this.valueDomainName();
-				}
-				break;
+					case 2:
+						{
+							this.state = 1649;
+							this.valueDomainName();
+						}
+						break;
 
-			case 3:
-				{
-				this.state = 1650;
-				this.setName();
+					case 3:
+						{
+							this.state = 1650;
+							this.setName();
+						}
+						break;
 				}
-				break;
-			}
-			this.state = 1654;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.T__0 || _la === VtlParser.T__15) {
-				{
-				this.state = 1653;
-				this.scalarTypeConstraint();
-				}
-			}
-
-			this.state = 1660;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.NOT || _la === VtlParser.NULL_CONSTANT) {
-				{
-				this.state = 1657;
+				this.state = 1654;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-				if (_la === VtlParser.NOT) {
+				if (_la === VtlParser.T__0 || _la === VtlParser.T__15) {
 					{
-					this.state = 1656;
-					this.match(VtlParser.NOT);
+						this.state = 1653;
+						this.scalarTypeConstraint();
 					}
 				}
 
-				this.state = 1659;
-				this.match(VtlParser.NULL_CONSTANT);
+				this.state = 1660;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.NOT || _la === VtlParser.NULL_CONSTANT) {
+					{
+						this.state = 1657;
+						this._errHandler.sync(this);
+						_la = this._input.LA(1);
+						if (_la === VtlParser.NOT) {
+							{
+								this.state = 1656;
+								this.match(VtlParser.NOT);
+							}
+						}
+
+						this.state = 1659;
+						this.match(VtlParser.NULL_CONSTANT);
+					}
 				}
-			}
 
 			}
 		}
@@ -7631,18 +7631,18 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1662;
-			_la = this._input.LA(1);
-			if (!(((((_la - 155)) & ~0x1F) === 0 && ((1 << (_la - 155)) & ((1 << (VtlParser.BOOLEAN - 155)) | (1 << (VtlParser.DATE - 155)) | (1 << (VtlParser.TIME_PERIOD - 155)) | (1 << (VtlParser.NUMBER - 155)) | (1 << (VtlParser.STRING - 155)) | (1 << (VtlParser.INTEGER - 155)))) !== 0) || _la === VtlParser.DURATION || _la === VtlParser.SCALAR || _la === VtlParser.TIME)) {
-			this._errHandler.recoverInline(this);
-			} else {
-				if (this._input.LA(1) === Token.EOF) {
-					this.matchedEOF = true;
-				}
+				this.state = 1662;
+				_la = this._input.LA(1);
+				if (!(((((_la - 155)) & ~0x1F) === 0 && ((1 << (_la - 155)) & ((1 << (VtlParser.BOOLEAN - 155)) | (1 << (VtlParser.DATE - 155)) | (1 << (VtlParser.TIME_PERIOD - 155)) | (1 << (VtlParser.NUMBER - 155)) | (1 << (VtlParser.STRING - 155)) | (1 << (VtlParser.INTEGER - 155)))) !== 0) || _la === VtlParser.DURATION || _la === VtlParser.SCALAR || _la === VtlParser.TIME)) {
+					this._errHandler.recoverInline(this);
+				} else {
+					if (this._input.LA(1) === Token.EOF) {
+						this.matchedEOF = true;
+					}
 
-				this._errHandler.reportMatch(this);
-				this.consume();
-			}
+					this._errHandler.reportMatch(this);
+					this.consume();
+				}
 			}
 		}
 		catch (re) {
@@ -7666,8 +7666,8 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1664;
-			this.match(VtlParser.IDENTIFIER);
+				this.state = 1664;
+				this.match(VtlParser.IDENTIFIER);
 			}
 		}
 		catch (re) {
@@ -7691,8 +7691,8 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1666;
-			this.match(VtlParser.IDENTIFIER);
+				this.state = 1666;
+				this.match(VtlParser.IDENTIFIER);
 			}
 		}
 		catch (re) {
@@ -7718,50 +7718,50 @@ export class VtlParser extends Parser {
 			this.state = 1683;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
-			case VtlParser.T__0:
-				this.enterOuterAlt(_localctx, 1);
-				{
-				{
-				this.state = 1668;
-				this.match(VtlParser.T__0);
-				this.state = 1669;
-				this.expr(0);
-				this.state = 1670;
-				this.match(VtlParser.T__1);
-				}
-				}
-				break;
-			case VtlParser.T__15:
-				this.enterOuterAlt(_localctx, 2);
-				{
-				{
-				this.state = 1672;
-				this.match(VtlParser.T__15);
-				this.state = 1673;
-				this.constant();
-				this.state = 1678;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-				while (_la === VtlParser.CARTESIAN_PER) {
+				case VtlParser.T__0:
+					this.enterOuterAlt(_localctx, 1);
 					{
+						{
+							this.state = 1668;
+							this.match(VtlParser.T__0);
+							this.state = 1669;
+							this.expr(0);
+							this.state = 1670;
+							this.match(VtlParser.T__1);
+						}
+					}
+					break;
+				case VtlParser.T__15:
+					this.enterOuterAlt(_localctx, 2);
 					{
-					this.state = 1674;
-					this.match(VtlParser.CARTESIAN_PER);
-					this.state = 1675;
-					this.constant();
+						{
+							this.state = 1672;
+							this.match(VtlParser.T__15);
+							this.state = 1673;
+							this.constant();
+							this.state = 1678;
+							this._errHandler.sync(this);
+							_la = this._input.LA(1);
+							while (_la === VtlParser.CARTESIAN_PER) {
+								{
+									{
+										this.state = 1674;
+										this.match(VtlParser.CARTESIAN_PER);
+										this.state = 1675;
+										this.constant();
+									}
+								}
+								this.state = 1680;
+								this._errHandler.sync(this);
+								_la = this._input.LA(1);
+							}
+							this.state = 1681;
+							this.match(VtlParser.T__16);
+						}
 					}
-					}
-					this.state = 1680;
-					this._errHandler.sync(this);
-					_la = this._input.LA(1);
-				}
-				this.state = 1681;
-				this.match(VtlParser.T__16);
-				}
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
+					break;
+				default:
+					throw new NoViableAltException(this);
 			}
 		}
 		catch (re) {
@@ -7785,54 +7785,54 @@ export class VtlParser extends Parser {
 		try {
 			this.state = 1691;
 			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 182, this._ctx) ) {
-			case 1:
-				this.enterOuterAlt(_localctx, 1);
-				{
-				this.state = 1685;
-				this.scalarType();
-				}
-				break;
+			switch (this.interpreter.adaptivePredict(this._input, 182, this._ctx)) {
+				case 1:
+					this.enterOuterAlt(_localctx, 1);
+					{
+						this.state = 1685;
+						this.scalarType();
+					}
+					break;
 
-			case 2:
-				this.enterOuterAlt(_localctx, 2);
-				{
-				this.state = 1686;
-				this.componentType();
-				}
-				break;
+				case 2:
+					this.enterOuterAlt(_localctx, 2);
+					{
+						this.state = 1686;
+						this.componentType();
+					}
+					break;
 
-			case 3:
-				this.enterOuterAlt(_localctx, 3);
-				{
-				this.state = 1687;
-				this.datasetType();
-				}
-				break;
+				case 3:
+					this.enterOuterAlt(_localctx, 3);
+					{
+						this.state = 1687;
+						this.datasetType();
+					}
+					break;
 
-			case 4:
-				this.enterOuterAlt(_localctx, 4);
-				{
-				this.state = 1688;
-				this.scalarSetType();
-				}
-				break;
+				case 4:
+					this.enterOuterAlt(_localctx, 4);
+					{
+						this.state = 1688;
+						this.scalarSetType();
+					}
+					break;
 
-			case 5:
-				this.enterOuterAlt(_localctx, 5);
-				{
-				this.state = 1689;
-				this.operatorType();
-				}
-				break;
+				case 5:
+					this.enterOuterAlt(_localctx, 5);
+					{
+						this.state = 1689;
+						this.operatorType();
+					}
+					break;
 
-			case 6:
-				this.enterOuterAlt(_localctx, 6);
-				{
-				this.state = 1690;
-				this.rulesetType();
-				}
-				break;
+				case 6:
+					this.enterOuterAlt(_localctx, 6);
+					{
+						this.state = 1690;
+						this.rulesetType();
+					}
+					break;
 			}
 		}
 		catch (re) {
@@ -7857,21 +7857,21 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1693;
-			this.componentRole();
-			this.state = 1698;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.T__7) {
-				{
-				this.state = 1694;
-				this.match(VtlParser.T__7);
-				this.state = 1695;
-				this.scalarType();
-				this.state = 1696;
-				this.match(VtlParser.T__6);
+				this.state = 1693;
+				this.componentRole();
+				this.state = 1698;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.T__7) {
+					{
+						this.state = 1694;
+						this.match(VtlParser.T__7);
+						this.state = 1695;
+						this.scalarType();
+						this.state = 1696;
+						this.match(VtlParser.T__6);
+					}
 				}
-			}
 
 			}
 		}
@@ -7897,37 +7897,37 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1700;
-			this.match(VtlParser.DATASET);
-			this.state = 1712;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.T__15) {
-				{
-				this.state = 1701;
-				this.match(VtlParser.T__15);
-				this.state = 1702;
-				this.compConstraint();
-				this.state = 1707;
+				this.state = 1700;
+				this.match(VtlParser.DATASET);
+				this.state = 1712;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-				while (_la === VtlParser.CARTESIAN_PER) {
+				if (_la === VtlParser.T__15) {
 					{
-					{
-					this.state = 1703;
-					this.match(VtlParser.CARTESIAN_PER);
-					this.state = 1704;
-					this.compConstraint();
+						this.state = 1701;
+						this.match(VtlParser.T__15);
+						this.state = 1702;
+						this.compConstraint();
+						this.state = 1707;
+						this._errHandler.sync(this);
+						_la = this._input.LA(1);
+						while (_la === VtlParser.CARTESIAN_PER) {
+							{
+								{
+									this.state = 1703;
+									this.match(VtlParser.CARTESIAN_PER);
+									this.state = 1704;
+									this.compConstraint();
+								}
+							}
+							this.state = 1709;
+							this._errHandler.sync(this);
+							_la = this._input.LA(1);
+						}
+						this.state = 1710;
+						this.match(VtlParser.T__16);
 					}
-					}
-					this.state = 1709;
-					this._errHandler.sync(this);
-					_la = this._input.LA(1);
 				}
-				this.state = 1710;
-				this.match(VtlParser.T__16);
-				}
-			}
 
 			}
 		}
@@ -7952,26 +7952,26 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1714;
-			this.componentType();
-			this.state = 1717;
-			this._errHandler.sync(this);
-			switch (this._input.LA(1)) {
-			case VtlParser.IDENTIFIER:
-				{
-				this.state = 1715;
-				this.componentID();
+				this.state = 1714;
+				this.componentType();
+				this.state = 1717;
+				this._errHandler.sync(this);
+				switch (this._input.LA(1)) {
+					case VtlParser.IDENTIFIER:
+						{
+							this.state = 1715;
+							this.componentID();
+						}
+						break;
+					case VtlParser.OPTIONAL:
+						{
+							this.state = 1716;
+							this.multModifier();
+						}
+						break;
+					default:
+						throw new NoViableAltException(this);
 				}
-				break;
-			case VtlParser.OPTIONAL:
-				{
-				this.state = 1716;
-				this.multModifier();
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
-			}
 			}
 		}
 		catch (re) {
@@ -7996,27 +7996,27 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1719;
-			this.match(VtlParser.OPTIONAL);
-			this.state = 1721;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.T__2 || _la === VtlParser.T__4) {
-				{
-				this.state = 1720;
+				this.state = 1719;
+				this.match(VtlParser.OPTIONAL);
+				this.state = 1721;
+				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-				if (!(_la === VtlParser.T__2 || _la === VtlParser.T__4)) {
-				this._errHandler.recoverInline(this);
-				} else {
-					if (this._input.LA(1) === Token.EOF) {
-						this.matchedEOF = true;
-					}
+				if (_la === VtlParser.T__2 || _la === VtlParser.T__4) {
+					{
+						this.state = 1720;
+						_la = this._input.LA(1);
+						if (!(_la === VtlParser.T__2 || _la === VtlParser.T__4)) {
+							this._errHandler.recoverInline(this);
+						} else {
+							if (this._input.LA(1) === Token.EOF) {
+								this.matchedEOF = true;
+							}
 
-					this._errHandler.reportMatch(this);
-					this.consume();
+							this._errHandler.reportMatch(this);
+							this.consume();
+						}
+					}
 				}
-				}
-			}
 
 			}
 		}
@@ -8042,33 +8042,33 @@ export class VtlParser extends Parser {
 			this.state = 1726;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
-			case VtlParser.RULESET:
-				this.enterOuterAlt(_localctx, 1);
-				{
-				this.state = 1723;
-				this.match(VtlParser.RULESET);
-				}
-				break;
-			case VtlParser.DATAPOINT:
-			case VtlParser.DATAPOINT_ON_VD:
-			case VtlParser.DATAPOINT_ON_VAR:
-				this.enterOuterAlt(_localctx, 2);
-				{
-				this.state = 1724;
-				this.dpRuleset();
-				}
-				break;
-			case VtlParser.HIERARCHICAL:
-			case VtlParser.HIERARCHICAL_ON_VD:
-			case VtlParser.HIERARCHICAL_ON_VAR:
-				this.enterOuterAlt(_localctx, 3);
-				{
-				this.state = 1725;
-				this.hrRuleset();
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
+				case VtlParser.RULESET:
+					this.enterOuterAlt(_localctx, 1);
+					{
+						this.state = 1723;
+						this.match(VtlParser.RULESET);
+					}
+					break;
+				case VtlParser.DATAPOINT:
+				case VtlParser.DATAPOINT_ON_VD:
+				case VtlParser.DATAPOINT_ON_VAR:
+					this.enterOuterAlt(_localctx, 2);
+					{
+						this.state = 1724;
+						this.dpRuleset();
+					}
+					break;
+				case VtlParser.HIERARCHICAL:
+				case VtlParser.HIERARCHICAL_ON_VD:
+				case VtlParser.HIERARCHICAL_ON_VAR:
+					this.enterOuterAlt(_localctx, 3);
+					{
+						this.state = 1725;
+						this.hrRuleset();
+					}
+					break;
+				default:
+					throw new NoViableAltException(this);
 			}
 		}
 		catch (re) {
@@ -8093,45 +8093,45 @@ export class VtlParser extends Parser {
 			this.state = 1739;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
-			case VtlParser.DATAPOINT:
-				this.enterOuterAlt(_localctx, 1);
-				{
-				this.state = 1728;
-				this.match(VtlParser.DATAPOINT);
-				}
-				break;
-			case VtlParser.DATAPOINT_ON_VD:
-				this.enterOuterAlt(_localctx, 2);
-				{
-				{
-				this.state = 1729;
-				this.match(VtlParser.DATAPOINT_ON_VD);
-				this.state = 1730;
-				this.match(VtlParser.T__15);
-				this.state = 1731;
-				this.prodValueDomains();
-				this.state = 1732;
-				this.match(VtlParser.T__16);
-				}
-				}
-				break;
-			case VtlParser.DATAPOINT_ON_VAR:
-				this.enterOuterAlt(_localctx, 3);
-				{
-				{
-				this.state = 1734;
-				this.match(VtlParser.DATAPOINT_ON_VAR);
-				this.state = 1735;
-				this.match(VtlParser.T__15);
-				this.state = 1736;
-				this.prodVariables();
-				this.state = 1737;
-				this.match(VtlParser.T__16);
-				}
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
+				case VtlParser.DATAPOINT:
+					this.enterOuterAlt(_localctx, 1);
+					{
+						this.state = 1728;
+						this.match(VtlParser.DATAPOINT);
+					}
+					break;
+				case VtlParser.DATAPOINT_ON_VD:
+					this.enterOuterAlt(_localctx, 2);
+					{
+						{
+							this.state = 1729;
+							this.match(VtlParser.DATAPOINT_ON_VD);
+							this.state = 1730;
+							this.match(VtlParser.T__15);
+							this.state = 1731;
+							this.prodValueDomains();
+							this.state = 1732;
+							this.match(VtlParser.T__16);
+						}
+					}
+					break;
+				case VtlParser.DATAPOINT_ON_VAR:
+					this.enterOuterAlt(_localctx, 3);
+					{
+						{
+							this.state = 1734;
+							this.match(VtlParser.DATAPOINT_ON_VAR);
+							this.state = 1735;
+							this.match(VtlParser.T__15);
+							this.state = 1736;
+							this.prodVariables();
+							this.state = 1737;
+							this.match(VtlParser.T__16);
+						}
+					}
+					break;
+				default:
+					throw new NoViableAltException(this);
 			}
 		}
 		catch (re) {
@@ -8157,89 +8157,89 @@ export class VtlParser extends Parser {
 			this.state = 1767;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
-			case VtlParser.HIERARCHICAL:
-				this.enterOuterAlt(_localctx, 1);
-				{
-				this.state = 1741;
-				this.match(VtlParser.HIERARCHICAL);
-				}
-				break;
-			case VtlParser.HIERARCHICAL_ON_VD:
-				this.enterOuterAlt(_localctx, 2);
-				{
-				{
-				this.state = 1742;
-				this.match(VtlParser.HIERARCHICAL_ON_VD);
-				this.state = 1752;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-				if (_la === VtlParser.T__15) {
+				case VtlParser.HIERARCHICAL:
+					this.enterOuterAlt(_localctx, 1);
 					{
-					this.state = 1743;
-					this.match(VtlParser.T__15);
-					this.state = 1744;
-					this.match(VtlParser.IDENTIFIER);
-					this.state = 1749;
-					this._errHandler.sync(this);
-					_la = this._input.LA(1);
-					if (_la === VtlParser.T__12) {
+						this.state = 1741;
+						this.match(VtlParser.HIERARCHICAL);
+					}
+					break;
+				case VtlParser.HIERARCHICAL_ON_VD:
+					this.enterOuterAlt(_localctx, 2);
+					{
 						{
-						this.state = 1745;
-						this.match(VtlParser.T__12);
-						this.state = 1746;
-						this.prodValueDomains();
-						this.state = 1747;
-						this.match(VtlParser.T__13);
+							this.state = 1742;
+							this.match(VtlParser.HIERARCHICAL_ON_VD);
+							this.state = 1752;
+							this._errHandler.sync(this);
+							_la = this._input.LA(1);
+							if (_la === VtlParser.T__15) {
+								{
+									this.state = 1743;
+									this.match(VtlParser.T__15);
+									this.state = 1744;
+									this.match(VtlParser.IDENTIFIER);
+									this.state = 1749;
+									this._errHandler.sync(this);
+									_la = this._input.LA(1);
+									if (_la === VtlParser.T__12) {
+										{
+											this.state = 1745;
+											this.match(VtlParser.T__12);
+											this.state = 1746;
+											this.prodValueDomains();
+											this.state = 1747;
+											this.match(VtlParser.T__13);
+										}
+									}
+
+									this.state = 1751;
+									this.match(VtlParser.T__16);
+								}
+							}
+
 						}
 					}
-
-					this.state = 1751;
-					this.match(VtlParser.T__16);
-					}
-				}
-
-				}
-				}
-				break;
-			case VtlParser.HIERARCHICAL_ON_VAR:
-				this.enterOuterAlt(_localctx, 3);
-				{
-				{
-				this.state = 1754;
-				this.match(VtlParser.HIERARCHICAL_ON_VAR);
-				this.state = 1765;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-				if (_la === VtlParser.T__15) {
+					break;
+				case VtlParser.HIERARCHICAL_ON_VAR:
+					this.enterOuterAlt(_localctx, 3);
 					{
-					this.state = 1755;
-					this.match(VtlParser.T__15);
-					this.state = 1756;
-					this.varID();
-					this.state = 1761;
-					this._errHandler.sync(this);
-					_la = this._input.LA(1);
-					if (_la === VtlParser.T__12) {
 						{
-						this.state = 1757;
-						this.match(VtlParser.T__12);
-						this.state = 1758;
-						this.prodVariables();
-						this.state = 1759;
-						this.match(VtlParser.T__13);
+							this.state = 1754;
+							this.match(VtlParser.HIERARCHICAL_ON_VAR);
+							this.state = 1765;
+							this._errHandler.sync(this);
+							_la = this._input.LA(1);
+							if (_la === VtlParser.T__15) {
+								{
+									this.state = 1755;
+									this.match(VtlParser.T__15);
+									this.state = 1756;
+									this.varID();
+									this.state = 1761;
+									this._errHandler.sync(this);
+									_la = this._input.LA(1);
+									if (_la === VtlParser.T__12) {
+										{
+											this.state = 1757;
+											this.match(VtlParser.T__12);
+											this.state = 1758;
+											this.prodVariables();
+											this.state = 1759;
+											this.match(VtlParser.T__13);
+										}
+									}
+
+									this.state = 1763;
+									this.match(VtlParser.T__16);
+								}
+							}
+
 						}
 					}
-
-					this.state = 1763;
-					this.match(VtlParser.T__16);
-					}
-				}
-
-				}
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
+					break;
+				default:
+					throw new NoViableAltException(this);
 			}
 		}
 		catch (re) {
@@ -8264,24 +8264,24 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1769;
-			this.match(VtlParser.IDENTIFIER);
-			this.state = 1774;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === VtlParser.T__4) {
-				{
-				{
-				this.state = 1770;
-				this.match(VtlParser.T__4);
-				this.state = 1771;
+				this.state = 1769;
 				this.match(VtlParser.IDENTIFIER);
-				}
-				}
-				this.state = 1776;
+				this.state = 1774;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-			}
+				while (_la === VtlParser.T__4) {
+					{
+						{
+							this.state = 1770;
+							this.match(VtlParser.T__4);
+							this.state = 1771;
+							this.match(VtlParser.IDENTIFIER);
+						}
+					}
+					this.state = 1776;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
+				}
 			}
 		}
 		catch (re) {
@@ -8306,24 +8306,24 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1777;
-			this.varID();
-			this.state = 1782;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === VtlParser.T__4) {
-				{
-				{
-				this.state = 1778;
-				this.match(VtlParser.T__4);
-				this.state = 1779;
+				this.state = 1777;
 				this.varID();
-				}
-				}
-				this.state = 1784;
+				this.state = 1782;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-			}
+				while (_la === VtlParser.T__4) {
+					{
+						{
+							this.state = 1778;
+							this.match(VtlParser.T__4);
+							this.state = 1779;
+							this.varID();
+						}
+					}
+					this.state = 1784;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
+				}
 			}
 		}
 		catch (re) {
@@ -8348,28 +8348,28 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1785;
-			this.inputParameterType();
-			this.state = 1790;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === VtlParser.T__4) {
-				{
-				{
-				this.state = 1786;
-				this.match(VtlParser.T__4);
-				this.state = 1787;
+				this.state = 1785;
 				this.inputParameterType();
-				}
-				}
-				this.state = 1792;
+				this.state = 1790;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-			}
-			this.state = 1793;
-			this.match(VtlParser.T__17);
-			this.state = 1794;
-			this.outputParameterType();
+				while (_la === VtlParser.T__4) {
+					{
+						{
+							this.state = 1786;
+							this.match(VtlParser.T__4);
+							this.state = 1787;
+							this.inputParameterType();
+						}
+					}
+					this.state = 1792;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
+				}
+				this.state = 1793;
+				this.match(VtlParser.T__17);
+				this.state = 1794;
+				this.outputParameterType();
 			}
 		}
 		catch (re) {
@@ -8394,42 +8394,42 @@ export class VtlParser extends Parser {
 			this.state = 1799;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
-			case VtlParser.BOOLEAN:
-			case VtlParser.DATE:
-			case VtlParser.TIME_PERIOD:
-			case VtlParser.NUMBER:
-			case VtlParser.STRING:
-			case VtlParser.INTEGER:
-			case VtlParser.DURATION:
-			case VtlParser.SCALAR:
-			case VtlParser.IDENTIFIER:
-			case VtlParser.TIME:
-				this.enterOuterAlt(_localctx, 1);
-				{
-				this.state = 1796;
-				this.scalarType();
-				}
-				break;
-			case VtlParser.DATASET:
-				this.enterOuterAlt(_localctx, 2);
-				{
-				this.state = 1797;
-				this.datasetType();
-				}
-				break;
-			case VtlParser.DIMENSION:
-			case VtlParser.MEASURE:
-			case VtlParser.ATTRIBUTE:
-			case VtlParser.VIRAL:
-			case VtlParser.COMPONENT:
-				this.enterOuterAlt(_localctx, 3);
-				{
-				this.state = 1798;
-				this.componentType();
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
+				case VtlParser.BOOLEAN:
+				case VtlParser.DATE:
+				case VtlParser.TIME_PERIOD:
+				case VtlParser.NUMBER:
+				case VtlParser.STRING:
+				case VtlParser.INTEGER:
+				case VtlParser.DURATION:
+				case VtlParser.SCALAR:
+				case VtlParser.IDENTIFIER:
+				case VtlParser.TIME:
+					this.enterOuterAlt(_localctx, 1);
+					{
+						this.state = 1796;
+						this.scalarType();
+					}
+					break;
+				case VtlParser.DATASET:
+					this.enterOuterAlt(_localctx, 2);
+					{
+						this.state = 1797;
+						this.datasetType();
+					}
+					break;
+				case VtlParser.DIMENSION:
+				case VtlParser.MEASURE:
+				case VtlParser.ATTRIBUTE:
+				case VtlParser.VIRAL:
+				case VtlParser.COMPONENT:
+					this.enterOuterAlt(_localctx, 3);
+					{
+						this.state = 1798;
+						this.componentType();
+					}
+					break;
+				default:
+					throw new NoViableAltException(this);
 			}
 		}
 		catch (re) {
@@ -8454,62 +8454,62 @@ export class VtlParser extends Parser {
 			this.state = 1806;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
-			case VtlParser.BOOLEAN:
-			case VtlParser.DATE:
-			case VtlParser.TIME_PERIOD:
-			case VtlParser.NUMBER:
-			case VtlParser.STRING:
-			case VtlParser.INTEGER:
-			case VtlParser.DURATION:
-			case VtlParser.SCALAR:
-			case VtlParser.IDENTIFIER:
-			case VtlParser.TIME:
-				this.enterOuterAlt(_localctx, 1);
-				{
-				this.state = 1801;
-				this.scalarType();
-				}
-				break;
-			case VtlParser.DATASET:
-				this.enterOuterAlt(_localctx, 2);
-				{
-				this.state = 1802;
-				this.datasetType();
-				}
-				break;
-			case VtlParser.SET:
-				this.enterOuterAlt(_localctx, 3);
-				{
-				this.state = 1803;
-				this.scalarSetType();
-				}
-				break;
-			case VtlParser.DATAPOINT:
-			case VtlParser.HIERARCHICAL:
-			case VtlParser.RULESET:
-			case VtlParser.DATAPOINT_ON_VD:
-			case VtlParser.DATAPOINT_ON_VAR:
-			case VtlParser.HIERARCHICAL_ON_VD:
-			case VtlParser.HIERARCHICAL_ON_VAR:
-				this.enterOuterAlt(_localctx, 4);
-				{
-				this.state = 1804;
-				this.rulesetType();
-				}
-				break;
-			case VtlParser.DIMENSION:
-			case VtlParser.MEASURE:
-			case VtlParser.ATTRIBUTE:
-			case VtlParser.VIRAL:
-			case VtlParser.COMPONENT:
-				this.enterOuterAlt(_localctx, 5);
-				{
-				this.state = 1805;
-				this.componentType();
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
+				case VtlParser.BOOLEAN:
+				case VtlParser.DATE:
+				case VtlParser.TIME_PERIOD:
+				case VtlParser.NUMBER:
+				case VtlParser.STRING:
+				case VtlParser.INTEGER:
+				case VtlParser.DURATION:
+				case VtlParser.SCALAR:
+				case VtlParser.IDENTIFIER:
+				case VtlParser.TIME:
+					this.enterOuterAlt(_localctx, 1);
+					{
+						this.state = 1801;
+						this.scalarType();
+					}
+					break;
+				case VtlParser.DATASET:
+					this.enterOuterAlt(_localctx, 2);
+					{
+						this.state = 1802;
+						this.datasetType();
+					}
+					break;
+				case VtlParser.SET:
+					this.enterOuterAlt(_localctx, 3);
+					{
+						this.state = 1803;
+						this.scalarSetType();
+					}
+					break;
+				case VtlParser.DATAPOINT:
+				case VtlParser.HIERARCHICAL:
+				case VtlParser.RULESET:
+				case VtlParser.DATAPOINT_ON_VD:
+				case VtlParser.DATAPOINT_ON_VAR:
+				case VtlParser.HIERARCHICAL_ON_VD:
+				case VtlParser.HIERARCHICAL_ON_VAR:
+					this.enterOuterAlt(_localctx, 4);
+					{
+						this.state = 1804;
+						this.rulesetType();
+					}
+					break;
+				case VtlParser.DIMENSION:
+				case VtlParser.MEASURE:
+				case VtlParser.ATTRIBUTE:
+				case VtlParser.VIRAL:
+				case VtlParser.COMPONENT:
+					this.enterOuterAlt(_localctx, 5);
+					{
+						this.state = 1805;
+						this.componentType();
+					}
+					break;
+				default:
+					throw new NoViableAltException(this);
 			}
 		}
 		catch (re) {
@@ -8534,21 +8534,21 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1808;
-			this.match(VtlParser.SET);
-			this.state = 1813;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === VtlParser.T__7) {
-				{
-				this.state = 1809;
-				this.match(VtlParser.T__7);
-				this.state = 1810;
-				this.scalarType();
-				this.state = 1811;
-				this.match(VtlParser.T__6);
+				this.state = 1808;
+				this.match(VtlParser.SET);
+				this.state = 1813;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === VtlParser.T__7) {
+					{
+						this.state = 1809;
+						this.match(VtlParser.T__7);
+						this.state = 1810;
+						this.scalarType();
+						this.state = 1811;
+						this.match(VtlParser.T__6);
+					}
 				}
-			}
 
 			}
 		}
@@ -8574,18 +8574,18 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1815;
-			_la = this._input.LA(1);
-			if (!(_la === VtlParser.ALL || _la === VtlParser.BOOLEAN_CONSTANT)) {
-			this._errHandler.recoverInline(this);
-			} else {
-				if (this._input.LA(1) === Token.EOF) {
-					this.matchedEOF = true;
-				}
+				this.state = 1815;
+				_la = this._input.LA(1);
+				if (!(_la === VtlParser.ALL || _la === VtlParser.BOOLEAN_CONSTANT)) {
+					this._errHandler.recoverInline(this);
+				} else {
+					if (this._input.LA(1) === Token.EOF) {
+						this.matchedEOF = true;
+					}
 
-				this._errHandler.reportMatch(this);
-				this.consume();
-			}
+					this._errHandler.reportMatch(this);
+					this.consume();
+				}
 			}
 		}
 		catch (re) {
@@ -8609,12 +8609,12 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1817;
-			this.match(VtlParser.DEFINE);
-			this.state = 1818;
-			this.match(VtlParser.DATAPOINT);
-			this.state = 1819;
-			this.match(VtlParser.RULESET);
+				this.state = 1817;
+				this.match(VtlParser.DEFINE);
+				this.state = 1818;
+				this.match(VtlParser.DATAPOINT);
+				this.state = 1819;
+				this.match(VtlParser.RULESET);
 			}
 		}
 		catch (re) {
@@ -8638,12 +8638,12 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1821;
-			this.match(VtlParser.DEFINE);
-			this.state = 1822;
-			this.match(VtlParser.HIERARCHICAL);
-			this.state = 1823;
-			this.match(VtlParser.RULESET);
+				this.state = 1821;
+				this.match(VtlParser.DEFINE);
+				this.state = 1822;
+				this.match(VtlParser.HIERARCHICAL);
+				this.state = 1823;
+				this.match(VtlParser.RULESET);
 			}
 		}
 		catch (re) {
@@ -8667,12 +8667,12 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1825;
-			this.match(VtlParser.END);
-			this.state = 1826;
-			this.match(VtlParser.DATAPOINT);
-			this.state = 1827;
-			this.match(VtlParser.RULESET);
+				this.state = 1825;
+				this.match(VtlParser.END);
+				this.state = 1826;
+				this.match(VtlParser.DATAPOINT);
+				this.state = 1827;
+				this.match(VtlParser.RULESET);
 			}
 		}
 		catch (re) {
@@ -8696,12 +8696,12 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1829;
-			this.match(VtlParser.END);
-			this.state = 1830;
-			this.match(VtlParser.HIERARCHICAL);
-			this.state = 1831;
-			this.match(VtlParser.RULESET);
+				this.state = 1829;
+				this.match(VtlParser.END);
+				this.state = 1830;
+				this.match(VtlParser.HIERARCHICAL);
+				this.state = 1831;
+				this.match(VtlParser.RULESET);
 			}
 		}
 		catch (re) {
@@ -8725,12 +8725,12 @@ export class VtlParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 1833;
-			this.match(VtlParser.DEFINE);
-			this.state = 1834;
-			this.match(VtlParser.DATA);
-			this.state = 1835;
-			this.match(VtlParser.STRUCTURE);
+				this.state = 1833;
+				this.match(VtlParser.DEFINE);
+				this.state = 1834;
+				this.match(VtlParser.DATA);
+				this.state = 1835;
+				this.match(VtlParser.STRUCTURE);
 			}
 		}
 		catch (re) {
@@ -8750,39 +8750,39 @@ export class VtlParser extends Parser {
 
 	public sempred(_localctx: RuleContext, ruleIndex: number, predIndex: number): boolean {
 		switch (ruleIndex) {
-		case 4:
-			return this.expr_sempred(_localctx as ExprContext, predIndex);
+			case 4:
+				return this.expr_sempred(_localctx as ExprContext, predIndex);
 		}
 		return true;
 	}
 	private expr_sempred(_localctx: ExprContext, predIndex: number): boolean {
 		switch (predIndex) {
-		case 0:
-			return this.precpred(this._ctx, 15);
+			case 0:
+				return this.precpred(this._ctx, 15);
 
-		case 1:
-			return this.precpred(this._ctx, 14);
+			case 1:
+				return this.precpred(this._ctx, 14);
 
-		case 2:
-			return this.precpred(this._ctx, 13);
+			case 2:
+				return this.precpred(this._ctx, 13);
 
-		case 3:
-			return this.precpred(this._ctx, 9);
+			case 3:
+				return this.precpred(this._ctx, 9);
 
-		case 4:
-			return this.precpred(this._ctx, 8);
+			case 4:
+				return this.precpred(this._ctx, 8);
 
-		case 5:
-			return this.precpred(this._ctx, 7);
+			case 5:
+				return this.precpred(this._ctx, 7);
 
-		case 6:
-			return this.precpred(this._ctx, 3);
+			case 6:
+				return this.precpred(this._ctx, 3);
 
-		case 7:
-			return this.precpred(this._ctx, 12);
+			case 7:
+				return this.precpred(this._ctx, 12);
 
-		case 8:
-			return this.precpred(this._ctx, 11);
+			case 8:
+				return this.precpred(this._ctx, 11);
 		}
 		return true;
 	}
@@ -10348,7 +10348,7 @@ export class JoinExpressionContext extends ExprComplexContext {
 
 
 export class TimeExprContext extends ParserRuleContext {
-	public _opComp: Token;
+	public _opComp: Token | undefined;
 	public timeSeriesExpr(): TimeSeriesExprContext | undefined {
 		return this.tryGetRuleContext(0, TimeSeriesExprContext);
 	}
@@ -10664,7 +10664,7 @@ export class CodeItemRelationContext extends ParserRuleContext {
 
 
 export class CodeItemRelationClauseContext extends ParserRuleContext {
-	public _opAdd: Token;
+	public _opAdd: Token | undefined;
 	public IDENTIFIER(): TerminalNode { return this.getToken(VtlParser.IDENTIFIER, 0); }
 	public expr(): ExprContext | undefined {
 		return this.tryGetRuleContext(0, ExprContext);
@@ -10698,7 +10698,7 @@ export class CodeItemRelationClauseContext extends ParserRuleContext {
 
 
 export class CodeItemRefContext extends ParserRuleContext {
-	public _opComp: Token;
+	public _opComp: Token | undefined;
 	public IDENTIFIER(): TerminalNode { return this.getToken(VtlParser.IDENTIFIER, 0); }
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);

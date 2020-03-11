@@ -1,5 +1,5 @@
 import * as React from 'react';
-import MonacoEditor, { EditorWillMount } from "react-monaco-editor";
+import MonacoEditor, {EditorWillMount} from "react-monaco-editor";
 import * as VtlTokensProvider from './VtlTokensProvider';
 import * as ParserFacade from './ParserFacade';
 import * as monacoEditor from 'monaco-editor/esm/vs/editor/editor.api';
@@ -35,29 +35,29 @@ export default class VtlEditor extends React.Component {
     errorFg = 'ff0000';
 
     editor = (monaco: any) => {
-        monaco.languages.register({ id: 'vtl' });
+        monaco.languages.register({id: 'vtl'});
         monaco.languages.setTokensProvider('vtl', new VtlTokensProvider.VtlTokensProvider());
         monaco.editor.defineTheme('vtlTheme', {
             base: 'vs',
             inherit: false,
             rules: [
-                { token: 'number_lit.calc', foreground: this.literalFg },
+                {token: 'number_lit.calc', foreground: this.literalFg},
 
-                { token: 'id.calc', foreground: this.idFg, fontStyle: 'italic' },
+                {token: 'id.calc', foreground: this.idFg, fontStyle: 'italic'},
 
-                { token: 'lparen.calc', foreground: this.symbolsFg },
-                { token: 'rparen.calc', foreground: this.symbolsFg },
+                {token: 'lparen.calc', foreground: this.symbolsFg},
+                {token: 'rparen.calc', foreground: this.symbolsFg},
 
-                { token: 'equal.calc', foreground: this.symbolsFg },
-                { token: 'minus.calc', foreground: this.symbolsFg },
-                { token: 'plus.calc', foreground: this.symbolsFg },
-                { token: 'div.calc', foreground: this.symbolsFg },
-                { token: 'mul.calc', foreground: this.symbolsFg },
+                {token: 'equal.calc', foreground: this.symbolsFg},
+                {token: 'minus.calc', foreground: this.symbolsFg},
+                {token: 'plus.calc', foreground: this.symbolsFg},
+                {token: 'div.calc', foreground: this.symbolsFg},
+                {token: 'mul.calc', foreground: this.symbolsFg},
 
-                { token: 'input_kw.calc', foreground: this.keywordFg, fontStyle: 'bold' },
-                { token: 'output_kw.calc', foreground: this.keywordFg, fontStyle: 'bold' },
+                {token: 'input_kw.calc', foreground: this.keywordFg, fontStyle: 'bold'},
+                {token: 'output_kw.calc', foreground: this.keywordFg, fontStyle: 'bold'},
 
-                { token: 'unrecognized.calc', foreground: this.errorFg }
+                {token: 'unrecognized.calc', foreground: this.errorFg}
             ]
         });
 
@@ -81,7 +81,6 @@ export default class VtlEditor extends React.Component {
         //     language: 'vtl',
         //     theme: 'vtlTheme'
         // });
-
 
 
         // editor.onDidChangeModelContent(function (e) {
@@ -130,7 +129,8 @@ export default class VtlEditor extends React.Component {
                     message: e.message,
                     severity: monaco.MarkerSeverity.Error
                 });
-            };
+            }
+            ;
             window.syntaxErrors = syntaxErrors;
             let model = monaco.editor.getModels()[0];
             monaco.editor.setModelMarkers(model, "owner", monacoErrors);
@@ -146,8 +146,15 @@ export default class VtlEditor extends React.Component {
         console.log(newValue);
         console.log(e);
         // console.log('onChange', newValue, e);
-        this.setState({ code: newValue });
+        this.setState({code: newValue});
 
+    }
+
+    options = {
+        minimap: {
+            enabled: true
+        },
+        automaticLayout: true
     }
 
     render() {
@@ -156,11 +163,11 @@ export default class VtlEditor extends React.Component {
                 <MonacoEditor
                     editorWillMount={this.editor}
                     editorDidMount={this.didMount}
-                    width="100%"
-                    height="500px"
+                    height="60vh"
                     language="vtl"
                     theme="vtlTheme"
                     defaultValue=''
+                    options={this.options}
                     value={this.state.code}
                     onChange={this.onChange}
                 />

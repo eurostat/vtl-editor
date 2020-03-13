@@ -32,7 +32,7 @@ class VtlToken implements monaco.languages.IToken {
     startIndex: number;
 
     constructor(ruleName: String, startIndex: number) {
-        this.scopes = ruleName.toLowerCase() + ".Vtl";
+        this.scopes = ruleName.toLowerCase() + ".vtl";
         this.startIndex = startIndex;
     }
 }
@@ -44,6 +44,7 @@ class VtlLineTokens implements monaco.languages.ILineTokens {
     constructor(tokens: monaco.languages.IToken[]) {
         this.endState = new VtlState();
         this.tokens = tokens;
+        console.log(tokens);
     }
 }
 
@@ -58,6 +59,7 @@ export function tokensForLine(input: string): monaco.languages.ILineTokens {
         }
     }
 
+    console.log('line : ' + input);
     const lexer = createLexer(input);
     lexer.removeErrorListeners();
     let errorListener = new ErrorCollectorListener();
@@ -70,21 +72,20 @@ export function tokensForLine(input: string): monaco.languages.ILineTokens {
             done = true
         } else {
             // We exclude EOF
-            if (token.type == EOF) {
+            if (token.type === EOF) {
                 done = true;
             } else {
                 let tokenTypeName = lexer.vocabulary.getSymbolicName(token.type);
-                if (tokenTypeName) {
-                    let myToken = new VtlToken(tokenTypeName, token.startIndex);
-                    myTokens.push(myToken);
-                }
+                console.log('token type: ' + tokenTypeName + ' / ' + token.type);
+                let myToken = new VtlToken(tokenTypeName ? tokenTypeName : '' + token.type, token.startIndex);
+                myTokens.push(myToken);
             }
         }
     } while (!done);
 
     // Add all errors
     for (let e of errorStartingPoints) {
-        myTokens.push(new VtlToken("error.Vtl", e));
+        myTokens.push(new VtlToken("error", e));
     }
     myTokens.sort((a, b) => (a.startIndex > b.startIndex) ? 1 : -1)
     return new VtlLineTokens(myTokens);

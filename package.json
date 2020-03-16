@@ -83,7 +83,7 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
-    "antlr4ts": "antlr4ts -visitor src/grammar/Vtl.g4"
+    "antlr4ts": "antlr4ts -visitor src/grammar/vtl-2.0/Vtl.g4"
   },
   "eslintConfig": {
     "extends": "react-app"

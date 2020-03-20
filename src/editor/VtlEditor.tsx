@@ -1,10 +1,18 @@
 import * as React from 'react';
-import MonacoEditor, { EditorWillMount } from "react-monaco-editor";
+import MonacoEditor, {EditorWillMount} from "react-monaco-editor";
 import * as VtlTokensProvider from './VtlTokensProvider';
 import * as ParserFacade from './ParserFacade';
 import * as EditorApi from 'monaco-editor/esm/vs/editor/editor.api';
 //import {AutoSuggestionsGenerator} from '../auto-suggest/AutoSuggestionsGenerator';
 import './vtl-editor.css';
+import {editor} from "monaco-editor/esm/vs/editor/editor.api";
+import {Position} from "monaco-editor/esm/vs/editor/editor.api";
+import {languages} from "monaco-editor";
+import {CancellationToken} from "monaco-editor/esm/vs/editor/editor.api";
+import {suggestions} from "./vtl-2.0.autocompleteProvider";
+// @ts-ignore
+// eslint-disable-next-line import/no-webpack-loader-syntax
+import txt from 'raw-loader!../grammar/vtl-2.0/Vtl.g4';
 
 declare const window: any;
 export default class VtlEditor extends React.Component {
@@ -74,40 +82,61 @@ export default class VtlEditor extends React.Component {
             ]
         });
 
-        // editor.onDidChangeModelContent(function (e) {
-        // 	let code = editor.getValue()
-        // 	let syntaxErrors = ParserFacade.validate(code);
-        // 	let monacoErrors = [];
-        // 	for (let e of syntaxErrors) {
-        // 		monacoErrors.push({
-        // 			startLineNumber: e.startLine,
-        // 			startColumn: e.startCol,
-        // 			endLineNumber: e.endLine,
-        // 			endColumn: e.endCol,
-        // 			message: e.message,
-        // 			severity: monaco.MarkerSeverity.Error
-        // 		});
-        // 	};
-        // 	window.syntaxErrors = syntaxErrors;
-        // 	let model = monaco.editor.getModels()[0];
-        // 	monaco.editor.setModelMarkers(model, "owner", monacoErrors);
-        // });
-        // console.log(monaco);
-        // console.log(monaco.editor);
+
+        monaco.languages.registerCompletionItemProvider("vtl", {
+            provideCompletionItems: function (model: editor.ITextModel, position: Position, context: languages.CompletionContext, token: CancellationToken) {
+                // find out if we are completing a property in the 'dependencies' object.
+                const textUntilPosition = model.getValueInRange({
+                    startLineNumber: 1,
+                    startColumn: 1,
+                    endLineNumber: position.lineNumber,
+                    endColumn: position.column
+                });
+                const word = model.getWordUntilPosition(position);
+                const range = {
+                    startLineNumber: position.lineNumber,
+                    endLineNumber: position.lineNumber,
+                    startColumn: word.startColumn,
+                    endColumn: word.endColumn
+                };
+
+                let uniquetext = Array.from(new Set(textUntilPosition.replace(/"(.*?)"/g, "")
+                    .replace(/[^a-zA-Z_]/g, " ")
+                    .split(" ").filter(w => w !== "")).values());
+                const suggestionList = suggestions(range, txt);
+                uniquetext = removeLanguageSyntaxFromList(uniquetext, suggestionList);
+                const array = uniquetext.map(w => {
+                    return {
+                        label: w,
+                        kind: monaco.languages.CompletionItemKind.Variable,
+                        insertText: w
+                    } as languages.CompletionItem
+                });
+
+                return {
+                    suggestions: [...suggestionList, ...array]
+                };
+            }
+        });
+
+        function removeLanguageSyntaxFromList(vars: string[], suggestionList: any[]) {
+            const suggestionsLabels = suggestionList.map(s => s.label.toLowerCase());
+            return vars.filter(t => !suggestionsLabels.includes(t.toLowerCase()))
+        }
 
     };
 
+
+
     didMount = (editor: any, monaco: any) => {
         console.log("DID MOUNT");
-        console.log(editor);
-        console.log(monaco);
         let to: NodeJS.Timeout;
         let onDidChangeTimout = (e: any) => {
             to = setTimeout(() => onDidChange(e), 2000);
         };
 
         let onDidChange = (e: any) => {
-            console.log("Test");
+
             let code = this.state.code;
             let syntaxErrors = ParserFacade.validate(code);
             let monacoErrors = [];
@@ -134,9 +163,6 @@ export default class VtlEditor extends React.Component {
 
     onChange = (newValue: string, e: EditorApi.editor.IModelContentChangedEvent) => {
         console.log("ON CHANGE");
-        console.log(newValue);
-        console.log(e);
-        // console.log('onChange', newValue, e);
         this.setState({code: newValue});
 
     };
@@ -151,7 +177,8 @@ export default class VtlEditor extends React.Component {
     render() {
         return (
             <div className="editor-container">
-                <MonacoEditor editorWillMount={this.editor} editorDidMount={this.didMount} height="60vh" language="vtl" theme="vtlTheme" defaultValue='' options={this.options}
+                <MonacoEditor editorWillMount={this.editor} editorDidMount={this.didMount} height="60vh" language="vtl"
+                              theme="vtlTheme" defaultValue='' options={this.options}
                               value={this.state.code} onChange={this.onChange}/>
             </div>)
     }

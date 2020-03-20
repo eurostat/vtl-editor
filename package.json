@@ -154,5 +154,9 @@
     "presets": [
       "react-app"
     ]
+  },
+  "devDependencies": {
+    "raw-loader": "^4.0.0",
+    "webpack-cli": "^3.3.11"
   }
 }

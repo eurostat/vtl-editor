@@ -1,8 +1,8 @@
 import * as React from 'react';
 import MonacoEditor, {EditorWillMount} from "react-monaco-editor";
-import { GrammarGraph } from './grammarGraph';
+import {GrammarGraph} from './grammarGraph';
 import * as VtlTokensProvider from './VtlTokensProvider';
-import { TokensProvider } from './tokensProvider';
+import {TokensProvider} from './tokensProvider';
 import * as ParserFacade from './ParserFacade';
 import * as EditorApi from 'monaco-editor/esm/vs/editor/editor.api';
 //import {AutoSuggestionsGenerator} from '../auto-suggest/AutoSuggestionsGenerator';
@@ -15,6 +15,7 @@ import {suggestions} from "../grammar/vtl-2.0/vtl-2.0.autocompleteProvider";
 // @ts-ignore
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import txt from 'raw-loader!../grammar/vtl-2.0/Vtl.g4';
+
 
 declare const window: any;
 export default class VtlEditor extends React.Component {
@@ -54,9 +55,9 @@ export default class VtlEditor extends React.Component {
             base: 'vs',
             inherit: true,
             rules: [
-                { token: 'string', foreground: '018B03' },
-                { token: 'operator', foreground: '8B3301' },
-                { token: 'operator.special', foreground: '8B3301', fontStyle: 'bold' },
+                {token: 'string', foreground: '018B03'},
+                {token: 'operator', foreground: '8B3301'},
+                {token: 'operator.special', foreground: '8B3301', fontStyle: 'bold'},
             ],
             colors: {}
         });
@@ -106,7 +107,6 @@ export default class VtlEditor extends React.Component {
     };
 
 
-
     didMount = (editor: any, monaco: typeof EditorApi) => {
         console.log("DID MOUNT");
         let to: NodeJS.Timeout;
@@ -115,7 +115,7 @@ export default class VtlEditor extends React.Component {
         };
 
         let onDidChange = (e: any) => {
-           // console.log("Test");
+            // console.log("Test");
             // this.tokensProvider.addVariables();
             monaco.languages.setMonarchTokensProvider('vtl-2.0', this.tokensProvider.monarchLanguage('vtl-2.0'));
             let code = this.state.code;

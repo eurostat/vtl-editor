@@ -11,7 +11,7 @@ import {editor} from "monaco-editor/esm/vs/editor/editor.api";
 import {Position} from "monaco-editor/esm/vs/editor/editor.api";
 import {languages} from "monaco-editor";
 import {CancellationToken} from "monaco-editor/esm/vs/editor/editor.api";
-import {suggestions} from "./vtl-2.0.autocompleteProvider";
+import {suggestions} from "../grammar/vtl-2.0/vtl-2.0.autocompleteProvider";
 // @ts-ignore
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import txt from 'raw-loader!../grammar/vtl-2.0/Vtl.g4';
@@ -62,7 +62,7 @@ export default class VtlEditor extends React.Component {
         });
 
 
-        monaco.languages.registerCompletionItemProvider("vtl", {
+        monaco.languages.registerCompletionItemProvider("vtl-2.0", {
             provideCompletionItems: function (model: editor.ITextModel, position: Position, context: languages.CompletionContext, token: CancellationToken) {
                 // find out if we are completing a property in the 'dependencies' object.
                 const textUntilPosition = model.getValueInRange({
@@ -115,7 +115,7 @@ export default class VtlEditor extends React.Component {
         };
 
         let onDidChange = (e: any) => {
-            console.log("Test");
+           // console.log("Test");
             // this.tokensProvider.addVariables();
             monaco.languages.setMonarchTokensProvider('vtl-2.0', this.tokensProvider.monarchLanguage('vtl-2.0'));
             let code = this.state.code;

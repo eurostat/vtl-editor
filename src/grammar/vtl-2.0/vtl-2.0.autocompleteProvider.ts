@@ -1,5 +1,5 @@
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
-import {parseGrammar} from "./GrammarParser"
+import {parseGrammar} from "../../editor/GrammarParser"
 
 
 export const suggestions = (range: any, file: string):any[] => {

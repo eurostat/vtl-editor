@@ -89,7 +89,7 @@ export function parseTreeStr(input: string) {
     parser.removeErrorListeners();
     parser.addErrorListener(new ConsoleErrorListener());
 
-    const tree = parser.start();
+    const tree = parser["start"]();
 
     return tree.toStringTree(parser.ruleNames);
 }

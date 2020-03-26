@@ -1,26 +1,27 @@
-import * as React from 'react';
-import MonacoEditor, {EditorWillMount} from "react-monaco-editor";
-import {GrammarGraph} from './grammarGraph';
-import * as VtlTokensProvider from './VtlTokensProvider';
-import {TokensProvider} from './tokensProvider';
-import * as ParserFacade from './ParserFacade';
+import { languages } from "monaco-editor";
 import * as EditorApi from 'monaco-editor/esm/vs/editor/editor.api';
-//import {AutoSuggestionsGenerator} from '../auto-suggest/AutoSuggestionsGenerator';
-import './vtlEditor.css';
-import {editor} from "monaco-editor/esm/vs/editor/editor.api";
-import {Position} from "monaco-editor/esm/vs/editor/editor.api";
-import {languages} from "monaco-editor";
-import {CancellationToken} from "monaco-editor/esm/vs/editor/editor.api";
-import {suggestions} from "../grammar/vtl-2.0/vtl-2.0.autocompleteProvider";
+import { CancellationToken, editor, Position } from 'monaco-editor/esm/vs/editor/editor.api';
 // @ts-ignore
 // eslint-disable-next-line import/no-webpack-loader-syntax
-import txt from 'raw-loader!../grammar/vtl-2.0/Vtl.g4';
-
+import grammar from 'raw-loader!../grammar/vtl-2.0/Vtl.g4';
+import * as React from 'react';
+import MonacoEditor from "react-monaco-editor";
+import { suggestions } from "../grammar/vtl-2.0/vtl-2.0.autocompleteProvider";
+import { VtlLexer } from '../grammar/vtl-2.0/VtlLexer';
+import { VtlParser } from '../grammar/vtl-2.0/VtlParser';
+import { GrammarGraph } from './grammarGraph';
+import * as ParserFacade from './ParserFacade';
+import { createLexer, createParser } from './ParserFacade';
+import { TokensProvider } from './tokensProvider';
+//import {AutoSuggestionsGenerator} from '../auto-suggest/AutoSuggestionsGenerator';
+import './vtlEditor.css';
 
 declare const window: any;
 export default class VtlEditor extends React.Component {
+    private lexer = createLexer("");
+    private parser = createParser("");
     private tokensProvider: TokensProvider = new TokensProvider();
-    private grammarGraph: GrammarGraph = new GrammarGraph();
+    private grammarGraph: GrammarGraph<VtlLexer, VtlParser> = new GrammarGraph(this.lexer, this.parser, grammar);
 
     state = {
         code: [
@@ -62,9 +63,8 @@ export default class VtlEditor extends React.Component {
             colors: {}
         });
 
-
         monaco.languages.registerCompletionItemProvider("vtl-2.0", {
-            provideCompletionItems: function (model: editor.ITextModel, position: Position, context: languages.CompletionContext, token: CancellationToken) {
+            provideCompletionItems: function(model: editor.ITextModel, position: Position, context: languages.CompletionContext, token: CancellationToken) {
                 // find out if we are completing a property in the 'dependencies' object.
                 const textUntilPosition = model.getValueInRange({
                     startLineNumber: 1,
@@ -83,7 +83,7 @@ export default class VtlEditor extends React.Component {
                 let uniquetext = Array.from(new Set(textUntilPosition.replace(/"(.*?)"/g, "")
                     .replace(/[^a-zA-Z_]/g, " ")
                     .split(" ").filter(w => w !== "")).values());
-                const suggestionList = suggestions(range, txt);
+                const suggestionList = suggestions(range, grammar);
                 uniquetext = removeLanguageSyntaxFromList(uniquetext, suggestionList);
                 const array = uniquetext.map(w => {
                     return {
@@ -105,7 +105,6 @@ export default class VtlEditor extends React.Component {
         }
 
     };
-
 
     didMount = (editor: any, monaco: typeof EditorApi) => {
         console.log("DID MOUNT");
@@ -160,15 +159,8 @@ export default class VtlEditor extends React.Component {
     render() {
         return (
             <div className="editor-container">
-                <MonacoEditor editorWillMount={this.editor}
-                              editorDidMount={this.didMount}
-                              height="60vh"
-                              language="vtl-2.0"
-                              theme="vtl"
-                              defaultValue=''
-                              options={this.options}
-                              value={this.state.code}
-                              onChange={this.onChange}/>
+                <MonacoEditor editorWillMount={this.editor} editorDidMount={this.didMount} height="60vh" language="vtl-2.0" theme="vtl" defaultValue='' options={this.options}
+                              value={this.state.code} onChange={this.onChange}/>
             </div>)
     }
 

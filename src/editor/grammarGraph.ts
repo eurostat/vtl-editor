@@ -1,45 +1,46 @@
 import { Lexer, Parser } from 'antlr4ts';
+import { rgxEscape, rgxReplace, RuleToken, RuleTokenizer, TokenType } from './ruleTokenizer';
 
 export class GrammarGraph<L extends Lexer, P extends Parser> {
-    private readonly rawGrammar: string;
-    private processedGrammar!: string;
     private lexer: L;
     private parser: P;
-    private root: GrammarRule | undefined;
+    private tokenizer: RuleTokenizer<L, P>;
     private readonly rules = new Map<string, GrammarRule>();
+    private root: GrammarRule | undefined;
 
     constructor(lexer: L, parser: P, grammar: string) {
-        this.rawGrammar = grammar;
         this.lexer = lexer;
         this.parser = parser;
-        this.processRaw();
+        this.tokenizer = new RuleTokenizer(lexer, parser);
+        if (grammar && grammar.length > 0) this.processRaw(grammar);
     }
 
-    private processRaw() {
-        this.processedGrammar = this.rawGrammar
+    private processRaw(grammar: string) {
+        // Strip import wrapping, comments, newlines and tabulators
+        let processed = grammar
             .replace(/^export default "|\/\*.*?\*\/|(\\[rnt])+|";$/g, " ");
-        const vocabulary = this.lexer.vocabulary;
+
+        // Replace literal tokens with names from vocabulary
+        let vocabulary = this.lexer.vocabulary;
         this.lexer.ruleNames.forEach((value, index) => {
             const literal = vocabulary.getLiteralName(index);
-            if (!!literal && this.processedGrammar.includes(literal)) {
-                console.log(value + "/" + index + ": " + literal + " " + this.processedGrammar.includes(literal));
-                this.processedGrammar = this.processedGrammar
-                    .replace(new RegExp(literal.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"), "g"), value);
+            if (!!literal && processed.includes(literal)) {
+                // Escape all RegExp special characters first
+                processed = processed
+                    .replace(new RegExp(literal.replace(rgxEscape, rgxReplace), "g"), value);
             }
         });
 
-        this.processedGrammar.split(";")
+        // Split grammar into rules
+        processed.split(";")
             .filter((value) => value.includes(":"))
             .forEach((value, index, array) => {
                 let colon = value.indexOf(":");
-                const name = value.substr(0, colon).trim();
-                const rule = new GrammarRule(name, value.substr(++colon).trim().replace(/ +/g, " "));
-                this.rules.set(name, rule);
-                if (index === 0) this.root = rule;
+                const name = this.tokenizer.ruleName(value.substr(0, colon).trim(), index);
+                const tokens = this.tokenizer.tokenize(value.substr(++colon).trim().replace(/ +/g, " "));
+                this.rules.set(name, new GrammarRule(name, tokens));
             });
-        console.log("PROCESSED");
-        console.log(this.processedGrammar);
-        console.log(this.rules);
+        this.root = this.rules.get(this.parser.ruleNames[0]);
     }
 
     public rootName() {
@@ -47,133 +48,48 @@ export class GrammarGraph<L extends Lexer, P extends Parser> {
     }
 }
 
-enum TokenizeMode {
-    None,
-    Identifier,
-    Assign,
-    Modifier
-}
+class GrammarNode {
+    protected readonly alternatives: GrammarStatement[] = [];
 
-enum TokenType {
-    Space= " ",
-    Lparen = "(",
-    Rparen = ")",
-    Question = "?",
-    Star = "*",
-    Plus = "+",
-    Pipe = "|",
-    Hash = "#",
-    Assign = "=",
-    Under = "_",
-    Identifier = "i",
-    Label = "l",
-    Operand = "o"
-}
+    protected processTokens(tokens: RuleToken[]) {
+        const statements = RuleTokenizer.alternatives(tokens);
+        if (statements.length > 0) {
+            statements.forEach((statement) =>
+                this.alternatives.push(new GrammarStatement(statement)));
+        } else {
 
-export class GrammarRule {
-    private readonly _name: string = "";
-    private readonly raw: string = "";
-
-    private primary: boolean = false;
-    private secondary: boolean = false;
-    private statements: GrammarStatement[] = [];
-
-    constructor(name: string, raw: string) {
-        this._name = name;
-        this.raw = raw;
-        this.processRaw(raw);
-    }
-
-    private processRaw(raw: string) {
-        const chars = new RuleTokenizer().tokenize(Array.from(raw));
-
-    }
-
-    get name(): string {
-        return this._name;
-    }
-
-}
-
-class RuleTokenizer {
-    private mode: TokenizeMode = TokenizeMode.None;
-    private readonly tokens: RuleToken[] = [];
-    private readonly parens: RuleToken[] = [];
-    private readonly identifier: string[] = [];
-
-    public tokenize(chars: string[]) {
-        chars.forEach((value, index) => {
-            switch (value) {
-                case TokenType.Lparen: {
-                    this.finishIdentifier(index);
-                    const token = new RuleToken(TokenType.Lparen, index);
-                    this.parens.push(token);
-                    this.tokens.push(token);
-                    break;
-                }
-                case TokenType.Rparen: {
-                    this.finishIdentifier(index);
-                    const lparen = this.parens.pop();
-                    if (lparen) {
-                        const rparen = new RuleToken(TokenType.Rparen, index);
-                        lparen.sibling = rparen;
-                        rparen.sibling = lparen;
-                    } else {
-                        this.unexpected(value, index);
-                    }
-                    break;
-                }
-
-                case TokenType.Space: {
-                    this.finishIdentifier(index);
-                    break;
-                }
-                default : {
-                    if(/[a-zA-Z_]/.test(value)) {
-                        this.identifier.push(value);
-                    }
-                    this.unexpected(value, index);
-                }
-            }
-        })
-    }
-
-    private unexpected(token: string, index: number) {
-        console.log("Unexpected token " + token + " at " + index);
-    }
-
-    private finishIdentifier(index: number) {
-        if (this.identifier.length > 0) {
-            this.tokens.push(new RuleToken(
-                TokenType.Identifier,
-                index - this.identifier.length,
-                this.parens.length,
-                this.identifier.toString()));
-            this.identifier.length = 0;
         }
     }
 }
 
-class RuleToken {
-    public type: TokenType;
-    public nested: number = 0;
-    public index: number = -1;
-    public optional: boolean = false;
-    public zeromore: boolean = false;
-    public onemore: boolean = false;
-    public sibling: RuleToken | undefined;
+export class GrammarRule extends GrammarNode {
+    private readonly _name: string = "";
+    private primary: boolean = false;
 
-    constructor(type: TokenType, index: number, nested?: number, value?: string) {
-        this.type = type;
-        this.index = index;
-        if (nested) this.nested = nested;
+
+    private readonly tokens: GrammarToken[] = [];
+
+    constructor(name: string, tokens: RuleToken[]) {
+        super();
+        this._name = name;
+        this.processTokens(tokens);
     }
 
+
+
+    get name(): string {
+        return this._name;
+    }
 }
 
-export class GrammarStatement {
-    private keyword = "";
-    private tokens: GrammarToken[] = [];
+export class GrammarStatement extends GrammarNode {
+    private primary: boolean = false;
+
+    constructor(tokens: RuleToken[]) {
+        super();
+        this.processTokens(tokens);
+    }
+
 }
 
 export class GrammarToken {

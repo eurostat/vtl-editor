@@ -42,7 +42,7 @@ export default class VtlEditor extends React.Component {
     };
 
     literalFg = '3b8737';
-    idFg = '#001188';
+    idFg = '#f8f8f8';
     symbolsFg = '990000';
     keywordFg = '7132a8';
     errorFg = 'ff0000';

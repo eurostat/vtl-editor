@@ -39,9 +39,10 @@ type VtlEditorProps = {
     setCode: (value: string) => void,
     setCodeChanged: (value: boolean) => void,
     theme: string,
+    languageVersion: string
 }
 
-const VtlEditor = ({browsedFiles, showMenu, code, setCode, setCodeChanged, theme}: VtlEditorProps) => {
+const VtlEditor = ({browsedFiles, showMenu, code, setCode, setCodeChanged, theme, languageVersion}: VtlEditorProps) => {
     const tokensProvider: TokensProvider = new TokensProvider();
     const grammarGraph: GrammarGraph = new GrammarGraph();
     // const [code, setCode] = useState(defaultText);

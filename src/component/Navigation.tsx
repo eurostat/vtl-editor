@@ -49,7 +49,7 @@ const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, 
                 <button onClick={downloadFile}><FontAwesomeIcon icon={faSave}/></button>
                 <button onClick={uploadFile}><FontAwesomeIcon icon={faUpload}/></button>
                 <button><FontAwesomeIcon icon={faQuestionCircle}/></button>
-                <button onClick={() => changeMenu()}><FontAwesomeIcon icon={faCog}/></button>
+                <button id="setting-icon" onClick={() => changeMenu()}><FontAwesomeIcon icon={faCog}/></button>
             </div>
             <SettingsNav {...settingsNavProps}/>
             <div style={{display: "inline-block"}}>

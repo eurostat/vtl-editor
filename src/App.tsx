@@ -55,7 +55,8 @@ function App() {
         code,
         setCode,
         setCodeChanged,
-        theme
+        theme,
+        languageVersion
     };
     const NavigationProps = {
         "showDialog": setShowDialog,
@@ -82,7 +83,6 @@ function App() {
                 <div className="middle-container">
                     <div className="top-bar">
                         <span>{fileName}</span>
-                        <VersionChooser/>
                     </div>
                     <div className="vtl-container">
                         <VtlEditor {...VtlEditorProps}/>

@@ -44,7 +44,6 @@ export class TokensProvider {
     }
 
     public monarchLanguage(version: string): any {
-        console.log(this.definition);
         return this.definition;
     }
 
@@ -62,7 +61,7 @@ function rgxReplacer(key: string, value: any) {
 
 function rgxReviver(key: string, value: any) {
     const strValue = value.toString();
-    if (strValue.indexOf(rgxPrefix) == 0) {
+    if (strValue.indexOf(rgxPrefix) === 0) {
         const matchArray = strValue.split(rgxPrefix)[1].match(rgxRgx);
         return new RegExp(matchArray[1], matchArray[2] || "");
     }

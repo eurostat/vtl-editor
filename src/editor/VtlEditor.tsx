@@ -58,6 +58,7 @@ export default class VtlEditor extends React.Component {
             rules: [
                 {token: 'string', foreground: '018B03'},
                 {token: 'operator', foreground: '8B3301'},
+                {token: 'delimiter.bracket', foreground: '8B3301'},
                 {token: 'operator.special', foreground: '8B3301', fontStyle: 'bold'},
             ],
             colors: {}
@@ -107,16 +108,12 @@ export default class VtlEditor extends React.Component {
     };
 
     didMount = (editor: any, monaco: typeof EditorApi) => {
-        console.log("DID MOUNT");
         let to: NodeJS.Timeout;
         let onDidChangeTimout = (e: any) => {
             to = setTimeout(() => onDidChange(e), 2000);
         };
 
         let onDidChange = (e: any) => {
-            // console.log("Test");
-            // this.tokensProvider.addVariables();
-            monaco.languages.setMonarchTokensProvider('vtl-2.0', this.tokensProvider.monarchLanguage('vtl-2.0'));
             let code = this.state.code;
             let syntaxErrors = ParserFacade.validate(code);
             let monacoErrors = [];
@@ -142,10 +139,6 @@ export default class VtlEditor extends React.Component {
     };
 
     onChange = (newValue: string, e: EditorApi.editor.IModelContentChangedEvent) => {
-        console.log("ON CHANGE");
-        // console.log(newValue);
-        // console.log(e);
-        // console.log('onChange', newValue, e);
         this.setState({code: newValue});
     };
 

@@ -5,10 +5,9 @@ import VtlEditor from './editor/VtlEditor';
 import Header from "./component/Header";
 import Navigation from "./component/Navigation";
 import ErrorBox from "./component/ErrorBox";
-import VersionChooser from "./component/VersionChooser";
 import UploadDialog from "./component/upload/UploadDialog";
 import {SnackbarProvider} from "notistack";
-import {languageVersions, themes} from "./editor/settings";
+import {languageVersions} from "./editor/settings";
 
 
 const defaultText = `ds_PY := lag ( na_main, 1 ) over ( order by time );
@@ -66,6 +65,12 @@ function App() {
         codeChanged,
         "settingsNavProps" : {theme, setTheme, languageVersion, setLanguageVersion}
     };
+
+    const UploadDialogProps = {
+        "onClose": setShowDialog,
+        "onLoad": updateFiles,
+        codeChanged
+    }
     return (
         <SnackbarProvider
             maxSnack={2}
@@ -90,7 +95,7 @@ function App() {
                     <ErrorBox/>
                 </div>
                 {showDialog ?
-                    <UploadDialog onClose={setShowDialog} onLoad={updateFiles} codeChanged={codeChanged}/> : null}
+                    <UploadDialog {...UploadDialogProps}/> : null}
             </div>
         </SnackbarProvider>
     );

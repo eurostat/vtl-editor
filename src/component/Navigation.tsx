@@ -1,4 +1,5 @@
 import React from "react";
+import "./navigation.scss"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faQuestionCircle, faSave} from "@fortawesome/free-regular-svg-icons";
 import {faCog, faUpload} from "@fortawesome/free-solid-svg-icons";

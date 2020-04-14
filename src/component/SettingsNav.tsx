@@ -1,11 +1,10 @@
 import React from "react";
 import {Form} from "react-bootstrap";
-import {languageVersions, themes} from "../editor/settings";
-import {languages} from "monaco-editor";
+import {languageVersions, themes, VTL_VERSION} from "../editor/settings";
 
 type SettingsNavProps = {
-    languageVersion: string,
-    setLanguageVersion: (value: string) => void,
+    languageVersion: VTL_VERSION,
+    setLanguageVersion: (value: VTL_VERSION) => void,
     theme: string,
     setTheme: (value: string) => void
 }

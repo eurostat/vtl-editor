@@ -7,7 +7,7 @@ import Navigation from "./component/Navigation";
 import ErrorBox from "./component/ErrorBox";
 import UploadDialog from "./component/upload/UploadDialog";
 import {SnackbarProvider} from "notistack";
-import {languageVersions} from "./editor/settings";
+import {languageVersions, VTL_VERSION} from "./editor/settings";
 
 
 const defaultText = `ds_PY := lag ( na_main, 1 ) over ( order by time );
@@ -32,7 +32,7 @@ function App() {
     const [codeChanged, setCodeChanged] = useState(false);
     const [fileName, setFileName] = useState("newFile.vtl");
     const [theme, setTheme] = useState("vtl");
-    const [languageVersion, setLanguageVersion] = useState(languageVersions[languageVersions.length - 1].code);
+    const [languageVersion, setLanguageVersion] = useState(languageVersions[languageVersions.length - 1].code as VTL_VERSION);
     useEffect(() => {
 
     }, [files]);
@@ -63,7 +63,7 @@ function App() {
         code,
         setCodeChanged,
         codeChanged,
-        "settingsNavProps" : {theme, setTheme, languageVersion, setLanguageVersion}
+        "settingsNavProps": {theme, setTheme, languageVersion, setLanguageVersion}
     };
 
     const UploadDialogProps = {
@@ -85,7 +85,7 @@ function App() {
             <div className={showMenu ? "App" : "App hide-settings-nav"}>
                 <Header/>
                 <Navigation {...NavigationProps}/>
-                <div className="middle-container">
+                <div className={`middle-container ${theme}`}>
                     <div className="top-bar">
                         <span>{fileName}</span>
                     </div>

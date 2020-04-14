@@ -1,19 +1,16 @@
 import * as React from 'react';
-import {useEffect, useRef, useState} from 'react';
+import {useEffect, useRef} from 'react';
 import MonacoEditor from "react-monaco-editor";
 import {GrammarGraph} from './grammarGraph';
 import {TokensProvider} from './tokensProvider';
 import * as ParserFacade from './ParserFacade';
 import * as EditorApi from 'monaco-editor/esm/vs/editor/editor.api';
-import {CancellationToken, editor, Position} from 'monaco-editor/esm/vs/editor/editor.api';
 //import {AutoSuggestionsGenerator} from '../auto-suggest/AutoSuggestionsGenerator';
 import './vtlEditor.css';
-import {languages} from "monaco-editor";
-import {suggestions} from "../grammar/vtl-2.0/vtl-2.0.autocompleteProvider";
 // @ts-ignore
 // eslint-disable-next-line import/no-webpack-loader-syntax
-import txt from 'raw-loader!../grammar/vtl-2.0/Vtl.g4';
-
+import {getSuggestions, getVtlTheme} from "./provider/providers";
+import {VTL_VERSION} from "./settings";
 
 declare const window: any;
 
@@ -39,7 +36,7 @@ type VtlEditorProps = {
     setCode: (value: string) => void,
     setCodeChanged: (value: boolean) => void,
     theme: string,
-    languageVersion: string
+    languageVersion: VTL_VERSION
 }
 
 const VtlEditor = ({browsedFiles, showMenu, code, setCode, setCodeChanged, theme, languageVersion}: VtlEditorProps) => {
@@ -64,62 +61,15 @@ const VtlEditor = ({browsedFiles, showMenu, code, setCode, setCodeChanged, theme
         }
     }, [showMenu]);
 
-    const editor = (monaco: typeof EditorApi) => {
-        monaco.languages.register({id: 'vtl-2.0'});
-        monaco.languages.setMonarchTokensProvider('vtl-2.0', tokensProvider.monarchLanguage('vtl-2.0'));
-        //monaco.languages.setTokensProvider('vtl', new VtlTokensProvider.VtlTokensProvider());
-        monaco.editor.defineTheme('vtl', {
-            base: 'vs',
-            inherit: true,
-            rules: [
-                {token: 'string', foreground: '018B03'},
-                {token: 'operator', foreground: '8B3301'},
-                {token: 'operator.special', foreground: '8B3301', fontStyle: 'bold'},
-            ],
-            colors: {}
+
+    const editorWillMount = (monaco: typeof EditorApi) => {
+
+        monaco.languages.register({id: languageVersion});
+        monaco.languages.setMonarchTokensProvider(languageVersion, tokensProvider.monarchLanguage(languageVersion));
+        monaco.editor.defineTheme('vtl', getVtlTheme());
+        monaco.languages.registerCompletionItemProvider(languageVersion, {
+            provideCompletionItems: getSuggestions(languageVersion, monaco)
         });
-
-
-        monaco.languages.registerCompletionItemProvider("vtl-2.0", {
-            provideCompletionItems: function (model: editor.ITextModel, position: Position, context: languages.CompletionContext, token: CancellationToken) {
-                // find out if we are completing a property in the 'dependencies' object.
-                const textUntilPosition = model.getValueInRange({
-                    startLineNumber: 1,
-                    startColumn: 1,
-                    endLineNumber: position.lineNumber,
-                    endColumn: position.column
-                });
-                const word = model.getWordUntilPosition(position);
-                const range = {
-                    startLineNumber: position.lineNumber,
-                    endLineNumber: position.lineNumber,
-                    startColumn: word.startColumn,
-                    endColumn: word.endColumn
-                };
-
-                let uniquetext = Array.from(new Set(textUntilPosition.replace(/"(.*?)"/g, "")
-                    .replace(/[^a-zA-Z_]/g, " ")
-                    .split(" ").filter(w => w !== "")).values());
-                const suggestionList = suggestions(range, txt);
-                uniquetext = removeLanguageSyntaxFromList(uniquetext, suggestionList);
-                const array = uniquetext.map(w => {
-                    return {
-                        label: w,
-                        kind: monaco.languages.CompletionItemKind.Variable,
-                        insertText: w
-                    } as languages.CompletionItem
-                });
-
-                return {
-                    suggestions: [...suggestionList, ...array]
-                };
-            }
-        });
-
-        function removeLanguageSyntaxFromList(vars: string[], suggestionList: any[]) {
-            const suggestionsLabels = suggestionList.map(s => s.label.toLowerCase());
-            return vars.filter(t => !suggestionsLabels.includes(t.toLowerCase()))
-        }
 
     };
 
@@ -132,9 +82,6 @@ const VtlEditor = ({browsedFiles, showMenu, code, setCode, setCodeChanged, theme
         };
 
         let onDidChange = (e: any) => {
-            // console.log("Test");
-            // this.tokensProvider.addVariables();
-            monaco.languages.setMonarchTokensProvider('vtl-2.0', tokensProvider.monarchLanguage('vtl-2.0'));
             let syntaxErrors = ParserFacade.validate(code);
             let monacoErrors = [];
             for (let e of syntaxErrors) {
@@ -160,9 +107,6 @@ const VtlEditor = ({browsedFiles, showMenu, code, setCode, setCodeChanged, theme
 
     const onChange = (newValue: string, e: EditorApi.editor.IModelContentChangedEvent) => {
         console.log("ON CHANGE");
-        // console.log(newValue);
-        // console.log(e);
-        // console.log('onChange', newValue, e);
         setCode(newValue);
         setCodeChanged(true);
 
@@ -178,10 +122,10 @@ const VtlEditor = ({browsedFiles, showMenu, code, setCode, setCodeChanged, theme
         <div className="editor-container">
             <MonacoEditor
                 ref={monacoRef}
-                editorWillMount={editor}
+                editorWillMount={editorWillMount}
                 editorDidMount={didMount}
-                height="60vh"
-                language="vtl-2.0"
+                height="100%"
+                language={languageVersion}
                 theme={theme}
                 defaultValue=''
                 options={options}

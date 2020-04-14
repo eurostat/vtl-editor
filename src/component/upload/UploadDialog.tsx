@@ -96,7 +96,7 @@ const UploadDialog = ({onClose, onLoad}: any) => {
                                     <p>Drag 'n' drop some files here, or click to select files</p>
                                 </div>
                                 <aside>
-                                    <h5>Selected file:</h5>
+                                    <span>Selected file:</span>
                                     <ul>{file}</ul>
                                 </aside>
                             </section>

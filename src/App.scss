@@ -160,6 +160,21 @@ button {
   display: inline-block;
   vertical-align: top;
   width: calc(#{$centerWidth} - #{$settingsNavWidth});
+  height: calc(100vh - 50px);
+}
+.middle-container.vtl, .middle-container.default{
+  background-color: white;
+}
+
+.middle-container.vs-dark, .middle-container.hc-black{
+  background-color: #1e1e1e;
+  .error-hr {
+    border-top: 2px solid rgba(215, 215, 215, 0.1);
+  }
+}
+
+.middle-container.hc-black{
+  background-color: black;
 }
 
 .top-bar {
@@ -212,6 +227,11 @@ button {
 
 .vtl-container {
   width: 100%;
+  height: 60%;
+}
+
+.editor-container{
+  height: 100%;
 }
 
 .error-hr {
@@ -223,8 +243,8 @@ button {
 
 .error-container {
   display: inline-block;
-  background-color: white;
-  height: 15vh;
+  background-color: transparent;
+  height: 100%;
   width: $centerWidth;
 }
 

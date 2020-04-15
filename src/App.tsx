@@ -5,7 +5,7 @@ import VtlEditor from './editor/VtlEditor';
 import Header from "./component/Header";
 import Navigation from "./component/Navigation";
 import ErrorBox from "./component/ErrorBox";
-import UploadDialog from "./component/upload/UploadDialog";
+import OpenDialog from "./component/dialog/openDialog";
 import {SnackbarProvider} from "notistack";
 import {languageVersions, VTL_VERSION} from "./editor/settings";
 
@@ -83,7 +83,7 @@ function App() {
                     <ErrorBox/>
                 </div>
                 {showDialog ?
-                    <UploadDialog {...UploadDialogProps}/> : null}
+                    <OpenDialog {...UploadDialogProps}/> : null}
             </div>
         </SnackbarProvider>
     );

@@ -5,32 +5,32 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import Button from "@material-ui/core/Button";
 import DialogActions from "@material-ui/core/DialogActions";
-import "./uploadDialog.scss";
+import "./openDialog.scss";
 import {useSnackbar} from "notistack";
 
 
-const UploadDialog = ({onClose, onLoad}: any) => {
+const OpenDialog = ({onClose, onLoad}: any) => {
     const [open, setOpen] = useState(true);
     const [files, setFiles] = useState([] as any[]);
     const {enqueueSnackbar} = useSnackbar();
     const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
         if (acceptedFiles.length > 1) {
-            enqueueSnackbar("You can only load one file!", {
-                variant: "error"
+            enqueueSnackbar("Only one selected file can be loaded.", {
+                variant: "warning"
             });
 
         }
         if (acceptedFiles.length > 0) {
             let acceptedFile = acceptedFiles[0];
-            enqueueSnackbar(`File with name ${acceptedFile.name} loaded successfully!`, {
-                variant: "success"
+            enqueueSnackbar(`Selected file ${acceptedFile.name}.`, {
+                variant: "info"
             });
             setFiles([acceptedFile]);
         }
         if (rejectedFiles.length > 0) {
             const rejected = rejectedFiles.map((f: File) => f.name).reduce((n1: string, n2: string) => n1 + ", " + n2);
             enqueueSnackbar(`Rejected files: ${rejected}`, {
-                variant: "error"
+                variant: "warning"
             });
         }
 
@@ -71,7 +71,7 @@ const UploadDialog = ({onClose, onLoad}: any) => {
             resolveAllFiles().then(result => onLoad(result, files[0].name));
             handleClose();
         }else{
-            enqueueSnackbar(`You did not add any file`, {
+            enqueueSnackbar(`Please select the file first.`, {
                 variant: "warning"
             });
         }
@@ -104,12 +104,12 @@ const UploadDialog = ({onClose, onLoad}: any) => {
                     </DialogContent>
 
                     <DialogActions>
+                        <button onClick={handleAddFiles} className="btn btn-primary default-button">
+                            <span>Open file</span>
+                        </button>
                         <Button onClick={handleClose} color="primary">
                             Cancel
                         </Button>
-                        <button onClick={handleAddFiles} className="btn btn-primary default-button">
-                            <span>Add file</span>
-                        </button>
                     </DialogActions>
                 </div>
             </Dialog>
@@ -118,4 +118,4 @@ const UploadDialog = ({onClose, onLoad}: any) => {
     );
 };
 
-export default UploadDialog;
+export default OpenDialog;

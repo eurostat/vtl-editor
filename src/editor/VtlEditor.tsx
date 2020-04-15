@@ -14,21 +14,6 @@ import {VTL_VERSION} from "./settings";
 
 declare const window: any;
 
-
-const defaultText = `ds_PY := lag ( na_main, 1 ) over ( order by time );
-
-ds_L_CY := na_main [ sub prices = "L" ] ;
-ds_L_PY := ds_PY [ sub prices = "L" ] ;
-ds_V_PY := ds_PY [ sub prices = "V" ] ;
-ds_Y_CY := na_main [ sub prices = "Y" ] ;
-
-
-ErrB:= check((abs(ds_Y_CY-(ds_L_CY / ds_L_PY[ filter obs_value <> 0 ] * ds_V_PY)) / ds_Y_CY [ filter obs_value <> 0 ]) < 0.001, 
-    errorcode("The observation values do not comply with the Y(t)= L(t) * V(t-1) / L(t-1) relation"), 
-    errorlevel("Error") );
-
-ErrB`;
-
 type VtlEditorProps = {
     browsedFiles: string[],
     showMenu: boolean;

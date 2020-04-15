@@ -13,10 +13,10 @@ export interface VersionType {
 }
 
 export const themes = [
-    {name: "Vtl", code: "vtl"},
-    {name: "Default", code: "vs"},
+    {name: "VTL", code: "vtl"},
+    {name: "Light", code: "vs"},
     {name: "Dark", code: "vs-dark"},
-    {name: "High Contract Dark", code: "hc-black"},
+    {name: "High Contrast Dark", code: "hc-black"},
 ];
 export const languageVersions: VersionType[] = [
     {name: "1.0", code: VTL_VERSION.VTL_1_0},

@@ -1,0 +1,125 @@
+@import "../variables";
+
+.error-hr {
+  width: $centerWidth;
+  display: inline-block;
+  border-top: 2px solid rgba(0, 0, 0, .1);
+  margin: 0;
+}
+
+.error-container {
+  background-color: transparent;
+  height: $errorBoxHeight;
+  width: 100%;
+}
+
+.error-bar {
+  background-color: #007acc;
+  border: 1px solid #0081da;
+  height: $errorBarHeight;
+  width: 100%;
+  color: white;
+  position: relative;
+  font-size: 0.75em;
+
+  svg {
+    font-size: 1.3em;
+  }
+}
+
+.position-left {
+  div {
+    display: inline-block;
+    vertical-align: middle;
+    padding-left: 10px;
+    line-height: 20px;
+    padding-top: 4px;
+  }
+
+  div:last-of-type {
+    padding-left: 5px;
+    padding-top: 0;
+  }
+
+  text-align: left;
+}
+
+.error-top .position-right {
+  div {
+    &:first-of-type {
+      padding-right: 5px;
+    }
+    padding-right: 10px;
+  }
+}
+
+.position-right div.error-count{
+  color: #c10000;
+  padding-right: 20px;
+}
+
+.position-right {
+  div {
+    line-height: 25px;
+    display: inline-block;
+    vertical-align: middle;
+    padding-right: 10px;
+  }
+  span {
+    padding-left: 20px;
+  }
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding-right: 20px;
+}
+
+.error-top {
+  height: $errorBarHeight;
+  background-color: #f3f3f3;
+  border-bottom: 2px #d4d4d4 solid;
+  position: relative;
+  font-size: 0.75em;
+  color: #7e7e7e;
+}
+
+.error-list {
+  max-height: calc(#{$errorBoxHeight} - #{$errorBarHeight} - 5px);
+  overflow: auto;
+  text-align: left;
+  padding-left: 15px;
+  color: #c10000;
+  font-size: .8em;
+  margin: 0 auto;
+
+  div {
+    &:first-of-type {
+      margin-top: 7px;
+    }
+
+    margin-bottom: 2.8px;
+  }
+
+  span {
+    padding-left: 10px;
+  }
+
+  svg {
+    font-size: .8em;
+  }
+}
+
+.position-right .close-button {
+  border-left: 2px #d5d5d5 solid;
+  height: 15px;
+  line-height: 17px;
+  font-size: 1.0em;
+
+  & > svg {
+    margin-left: 12px;
+  }
+}
+
+.hand-cursor{
+  cursor: pointer;
+}

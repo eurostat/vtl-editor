@@ -33,6 +33,7 @@ ErrB`;
 type VtlEditorProps = {
     browsedFiles: string[],
     showMenu: boolean;
+    showErrorBox:boolean,
     code: string,
     setCode: (value: string) => void,
     setCodeChanged: (value: boolean) => void,
@@ -40,7 +41,7 @@ type VtlEditorProps = {
     languageVersion: VTL_VERSION
 }
 
-const VtlEditor = ({browsedFiles, showMenu, code, setCode, setCodeChanged, theme, languageVersion}: VtlEditorProps) => {
+const VtlEditor = ({browsedFiles, showMenu,showErrorBox, code, setCode, setCodeChanged, theme, languageVersion}: VtlEditorProps) => {
     const tokensProvider: TokensProvider = new TokensProvider();
     const grammarGraph: GrammarGraph = new GrammarGraph();
     // const [code, setCode] = useState(defaultText);
@@ -60,31 +61,7 @@ const VtlEditor = ({browsedFiles, showMenu, code, setCode, setCodeChanged, theme
             // @ts-ignore
             monacoRef.current.editor.layout();
         }
-    }, [showMenu]);
-
-    useEffect(() => {
-        // @ts-ignore
-        console.log("useeffect", monacoRef.current);
-
-        // @ts-ignore
-        monacoRef.current.props = {...monacoRef.current.props, editorWillMount};
-        // @ts-ignore
-        console.log(monacoRef.current.languages);
-        // if (monacoRef != null && monacoRef.current != null && monacoRef.current!.editor !=null) {
-        //     // @ts-ignore
-        //     monacoRef.current.editor.languages.register({id: languageVersion});
-        //     // @ts-ignore
-        //     monacoRef.current!.editor.languages.setMonarchTokensProvider(languageVersion, tokensProvider.monarchLanguage(languageVersion));
-        //     // @ts-ignore
-        //     monacoRef.current!.editor.editor.defineTheme('vtl', getVtlTheme());
-        //     // @ts-ignore
-        //     monacoRef.current!.editor.languages.registerCompletionItemProvider(languageVersion, {
-        //         // @ts-ignore
-        //         provideCompletionItems: getSuggestions(languageVersion, monacoRef.current.editor!)
-        //     });
-        // }
-    }, [languageVersion]);
-
+    }, [showMenu, showErrorBox]);
 
     const editorWillMount = (monaco: typeof EditorApi) => {
 

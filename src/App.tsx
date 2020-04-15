@@ -28,6 +28,7 @@ function App() {
     const [files, setFiles] = useState([] as string[]);
     const [showDialog, setShowDialog] = useState(false);
     const [showMenu, setShowMenu] = useState(false);
+    const [showErrorBox, setShowErrorBox] = useState(false);
     const [code, setCode] = useState(defaultText);
     const [codeChanged, setCodeChanged] = useState(false);
     const [fileName, setFileName] = useState("newFile.vtl");
@@ -48,9 +49,22 @@ function App() {
         setShowMenu(!showMenu);
     };
 
+    const changeErrorBoxState = () => {
+        console.log("change error box");
+        setShowErrorBox(!showErrorBox);
+    };
+
+    const getStyles = () => {
+        let styling = "App";
+        styling += showMenu ? "" : " hide-settings-nav";
+        styling += showErrorBox ? "" : " hide-error-box";
+        return styling;
+    }
+
     const VtlEditorProps = {
         "browsedFiles": files,
         showMenu,
+        showErrorBox,
         code,
         setCode,
         setCodeChanged,
@@ -72,6 +86,12 @@ function App() {
         "onLoad": updateFiles,
         codeChanged
     };
+
+    const ErrorBoxProps = {
+        changeErrorBoxState
+    };
+
+
     return (
         <SnackbarProvider
             maxSnack={2}
@@ -83,7 +103,7 @@ function App() {
             }}
             dense={true}
         >
-            <div className={showMenu ? "App" : "App hide-settings-nav"}>
+            <div className={getStyles()}>
                 <Header/>
                 <Navigation {...NavigationProps}/>
                 <div className={`middle-container ${theme}`}>
@@ -93,7 +113,7 @@ function App() {
                     <div className="vtl-container">
                         <VtlEditor {...VtlEditorProps}/>
                     </div>
-                    <ErrorBox/>
+                    <ErrorBox {...ErrorBoxProps} />
                 </div>
                 {showDialog ?
                     <UploadDialog {...UploadDialogProps}/> : null}

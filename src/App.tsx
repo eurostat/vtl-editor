@@ -9,28 +9,13 @@ import UploadDialog from "./component/upload/UploadDialog";
 import {SnackbarProvider} from "notistack";
 import {languageVersions, VTL_VERSION} from "./editor/settings";
 
-
-const defaultText = `ds_PY := lag ( na_main, 1 ) over ( order by time );
-
-ds_L_CY := na_main [ sub prices = "L" ] ;
-ds_L_PY := ds_PY [ sub prices = "L" ] ;
-ds_V_PY := ds_PY [ sub prices = "V" ] ;
-ds_Y_CY := na_main [ sub prices = "Y" ] ;
-
-
-ErrB:= check((abs(ds_Y_CY-(ds_L_CY / ds_L_PY[ filter obs_value <> 0 ] * ds_V_PY)) / ds_Y_CY [ filter obs_value <> 0 ]) < 0.001, 
-    errorcode("The observation values do not comply with the Y(t)= L(t) * V(t-1) / L(t-1) relation"), 
-    errorlevel("Error") );
-
-ErrB`;
-
 function App() {
     const [files, setFiles] = useState([] as string[]);
     const [showDialog, setShowDialog] = useState(false);
     const [showMenu, setShowMenu] = useState(false);
-    const [code, setCode] = useState(defaultText);
+    const [code, setCode] = useState("");
     const [codeChanged, setCodeChanged] = useState(false);
-    const [fileName, setFileName] = useState("newFile.vtl");
+    const [fileName, setFileName] = useState("unnamed.vtl");
     const [theme, setTheme] = useState("vtl");
     const [languageVersion, setLanguageVersion] = useState(languageVersions[languageVersions.length - 1].code as VTL_VERSION);
     useEffect(() => {
@@ -57,12 +42,14 @@ function App() {
         theme,
         languageVersion
     };
+
     const NavigationProps = {
         "showDialog": setShowDialog,
         "changeMenu": changeMenuState,
         code,
         setCodeChanged,
         codeChanged,
+        fileName,
         "settingsNavProps": {theme, setTheme, languageVersion, setLanguageVersion}
     };
 
@@ -70,7 +57,8 @@ function App() {
         "onClose": setShowDialog,
         "onLoad": updateFiles,
         codeChanged
-    }
+    };
+
     return (
         <SnackbarProvider
             maxSnack={2}

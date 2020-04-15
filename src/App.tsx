@@ -15,7 +15,7 @@ function App() {
     const [showMenu, setShowMenu] = useState(false);
     const [code, setCode] = useState("");
     const [codeChanged, setCodeChanged] = useState(false);
-    const [fileName, setFileName] = useState("unnamed.vtl");
+    const [fileName, setFileName] = useState("untitled.vtl");
     const [theme, setTheme] = useState("vtl");
     const [languageVersion, setLanguageVersion] = useState(languageVersions[languageVersions.length - 1].code as VTL_VERSION);
     useEffect(() => {

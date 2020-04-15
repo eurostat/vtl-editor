@@ -63,6 +63,7 @@ function App() {
         code,
         setCodeChanged,
         codeChanged,
+        fileName,
         "settingsNavProps": {theme, setTheme, languageVersion, setLanguageVersion}
     };
 
@@ -70,7 +71,7 @@ function App() {
         "onClose": setShowDialog,
         "onLoad": updateFiles,
         codeChanged
-    }
+    };
     return (
         <SnackbarProvider
             maxSnack={2}

@@ -44,7 +44,7 @@ const SettingsNav = ({languageVersion, setLanguageVersion, theme, setTheme}: Set
                     <Form.Control as="select" custom onChange={onChangeVersion}
                                   defaultValue={getDefaultLanguageVersion()}>
                         {languageVersions.map(v =>
-                            <option>{v.name}</option>
+                            <option key={v.name}>{v.name}</option>
                         )}
                     </Form.Control>
                 </Form.Group>
@@ -52,7 +52,7 @@ const SettingsNav = ({languageVersion, setLanguageVersion, theme, setTheme}: Set
                     <Form.Label>Theme preferences</Form.Label>
                     <Form.Control as="select" custom onChange={onChangeTheme} defaultValue={getDefaultThemeVersion()}>
                         {themes.map(v =>
-                            <option>{v.name}</option>
+                            <option key={v.name}>{v.name}</option>
                         )}
                     </Form.Control>
                 </Form.Group>

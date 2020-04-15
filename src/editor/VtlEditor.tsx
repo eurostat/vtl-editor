@@ -9,7 +9,8 @@ import * as EditorApi from 'monaco-editor/esm/vs/editor/editor.api';
 import './vtlEditor.css';
 // @ts-ignore
 // eslint-disable-next-line import/no-webpack-loader-syntax
-import {getSuggestions, getVtlTheme} from "./provider/providers";
+import {languageVersions} from "./settings";
+import {getEditorWillMount, getSuggestions, getVtlTheme} from "./provider/providers";
 import {VTL_VERSION} from "./settings";
 
 declare const window: any;
@@ -44,7 +45,7 @@ const VtlEditor = ({browsedFiles, showMenu, code, setCode, setCodeChanged, theme
     const grammarGraph: GrammarGraph = new GrammarGraph();
     // const [code, setCode] = useState(defaultText);
     const monacoRef = useRef(null);
-
+    let monacoLang = useRef();
     useEffect(() => {
         console.log("USE EFFECT");
         console.log(browsedFiles.length);
@@ -61,15 +62,41 @@ const VtlEditor = ({browsedFiles, showMenu, code, setCode, setCodeChanged, theme
         }
     }, [showMenu]);
 
+    useEffect(() => {
+        // @ts-ignore
+        console.log("useeffect", monacoRef.current);
+
+        // @ts-ignore
+        monacoRef.current.props = {...monacoRef.current.props, editorWillMount};
+        // @ts-ignore
+        console.log(monacoRef.current.languages);
+        // if (monacoRef != null && monacoRef.current != null && monacoRef.current!.editor !=null) {
+        //     // @ts-ignore
+        //     monacoRef.current.editor.languages.register({id: languageVersion});
+        //     // @ts-ignore
+        //     monacoRef.current!.editor.languages.setMonarchTokensProvider(languageVersion, tokensProvider.monarchLanguage(languageVersion));
+        //     // @ts-ignore
+        //     monacoRef.current!.editor.editor.defineTheme('vtl', getVtlTheme());
+        //     // @ts-ignore
+        //     monacoRef.current!.editor.languages.registerCompletionItemProvider(languageVersion, {
+        //         // @ts-ignore
+        //         provideCompletionItems: getSuggestions(languageVersion, monacoRef.current.editor!)
+        //     });
+        // }
+    }, [languageVersion]);
+
 
     const editorWillMount = (monaco: typeof EditorApi) => {
 
-        monaco.languages.register({id: languageVersion});
-        monaco.languages.setMonarchTokensProvider(languageVersion, tokensProvider.monarchLanguage(languageVersion));
         monaco.editor.defineTheme('vtl', getVtlTheme());
-        monaco.languages.registerCompletionItemProvider(languageVersion, {
-            provideCompletionItems: getSuggestions(languageVersion, monaco)
+        languageVersions.forEach(version => {
+            monaco.languages.register({id: version.code});
+            monaco.languages.setMonarchTokensProvider(version.code, tokensProvider.monarchLanguage(version.code));
+            monaco.languages.registerCompletionItemProvider(version.code, {
+                provideCompletionItems: getSuggestions(version.code, monaco)
+            });
         });
+        console.log("edit will mount", monaco);
 
     };
 

@@ -7,10 +7,10 @@ import {VTL_VERSION} from "../settings";
 
 export const getSuggestionListByVersion = (version: VTL_VERSION, monaco: typeof EditorApi): any => {
     const txtByVersion = getGrammarByVersion(version);
-    return suggestionsByTxt(txtByVersion, monaco);
+    return suggestionsByTxt(version, txtByVersion, monaco);
 };
 
-const suggestionsByTxt = (txt: string, monaco: typeof EditorApi): any => {
+const suggestionsByTxt = (version: VTL_VERSION, txt: string, monaco: typeof EditorApi): any => {
     return function (model: editor.ITextModel, position: Position, context: languages.CompletionContext, token: CancellationToken) {
         const textUntilPosition = model.getValueInRange({
             startLineNumber: 1,
@@ -29,7 +29,7 @@ const suggestionsByTxt = (txt: string, monaco: typeof EditorApi): any => {
         let uniquetext = Array.from(new Set(textUntilPosition.replace(/"(.*?)"/g, "")
             .replace(/[^a-zA-Z_]/g, " ")
             .split(" ").filter(w => w !== "")).values());
-        const suggestionList = suggestions(range, txt);
+        const suggestionList = suggestions(version,range, txt);
         uniquetext = removeLanguageSyntaxFromList(uniquetext, suggestionList);
         const array = uniquetext.map(w => {
             return {
@@ -38,7 +38,7 @@ const suggestionsByTxt = (txt: string, monaco: typeof EditorApi): any => {
                 insertText: w
             } as languages.CompletionItem
         });
-
+        console.log("suggestion list", suggestionList);
         return {
             suggestions: [...suggestionList, ...array]
         };

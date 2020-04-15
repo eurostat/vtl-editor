@@ -1,11 +1,14 @@
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
-import {languages, IRange} from "monaco-editor";
+import {IRange, languages} from "monaco-editor";
+import {VTL_VERSION} from "./settings";
 
-let suggestions: languages.CompletionItem[] = [];
+let suggestionMap: Map<VTL_VERSION,languages.CompletionItem[]> = new Map();
 
-export const parseGrammar = (method: string, range: IRange): languages.CompletionItem[] => {
-    suggestions = suggestions.length === 0 ? mapArrayIntoObject(prepareString(method), range) : suggestions;
-    return suggestions;
+export const parseGrammar = (version: VTL_VERSION, method: string, range: IRange): languages.CompletionItem[] => {
+    if(!suggestionMap.has(version)){
+        suggestionMap.set(version, mapArrayIntoObject(prepareString(method), range));
+    }
+    return suggestionMap.get(version)!;
 };
 
 const prepareString = (method: string): string[] => {
@@ -18,7 +21,7 @@ const prepareString = (method: string): string[] => {
 };
 
 
-const deleteRepeat = (map: Map<string, string[]>): void=> {
+const deleteRepeat = (map: Map<string, string[]>): void => {
     const functions = map.get(FUNCTION);
     let identifierArray = map.get(IDENTIFIER);
     if (identifierArray) {

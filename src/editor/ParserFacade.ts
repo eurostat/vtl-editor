@@ -2,6 +2,7 @@ import { CommonTokenStream, Recognizer } from 'antlr4ts';
 import { CharStreams, Token } from 'antlr4ts';
 import { ANTLRErrorListener, DefaultErrorStrategy } from 'antlr4ts';
 import { Lexer } from "antlr4ts/Lexer";
+import { RecognitionException } from 'antlr4ts/RecognitionException';
 import { VtlLexer } from '../grammar/vtl-2.0/VtlLexer'
 import { VtlParser } from "../grammar/vtl-2.0/VtlParser"
 
@@ -40,12 +41,14 @@ class CollectorErrorListener implements ANTLRErrorListener {
     }
 
     // @ts-ignore TS7006
-    syntaxError(recognizer, offendingSymbol, line, column, msg, e) {
+    syntaxError(recognizer, offendingSymbol, line, column, msg, e: RecognitionException | undefined) {
         let endColumn = column + 1;
         if (offendingSymbol._text !== null && offendingSymbol._text !== undefined) {
             endColumn = column + offendingSymbol._text.length;
         }
         this.errors.push(new Error(line, line, column, endColumn, msg));
+console.log(e?.getOffendingToken());
+        console.log(e?.expectedTokens);
     }
 
 }
@@ -97,9 +100,9 @@ export function parseTreeStr(input: string) {
 class VtlErrorStrategy extends DefaultErrorStrategy {
     // @ts-ignore MEH
     singleTokenDeletion(recognizer: Recognizer) {
-        // if (recognizer.inputStream.LA(1) == VtlParser.NL) {
-        //     return null;
-        // }
+        if (recognizer.inputStream.LA(1) == VtlParser.EOL) {
+             return null;
+        }
         return super.singleTokenDeletion(recognizer);
     }
 }
@@ -115,8 +118,12 @@ export function validate(input: string): Error[] {
     parser.removeErrorListeners();
     parser.addErrorListener(new CollectorErrorListener(errors));
     // @ts-ignore TODO
-    parser._errHandler = new VtlErrorStrategy();
+    // parser._errHandler = new VtlErrorStrategy();
 
-    const tree = parser.start();
+    const temp = "start";
+    if (temp in parser) {
+        const tree = parser[temp]();
+    }
+
     return errors;
 }

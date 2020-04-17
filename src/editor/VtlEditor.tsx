@@ -15,13 +15,15 @@ import { createLexer, createParser } from './ParserFacade';
 import { TokensProvider } from './tokensProvider';
 //import {AutoSuggestionsGenerator} from '../auto-suggest/AutoSuggestionsGenerator';
 import './vtlEditor.css';
+import { VocabularyPack } from './vocabularyPack';
 
 declare const window: any;
 export default class VtlEditor extends React.Component {
     private lexer = createLexer("");
     private parser = createParser("");
     private tokensProvider: TokensProvider = new TokensProvider();
-    private grammarGraph: GrammarGraph<VtlLexer, VtlParser> = new GrammarGraph(this.lexer, this.parser, grammar);
+    private vocabulary: VocabularyPack<VtlLexer, VtlParser> = new VocabularyPack(this.lexer,this.parser);
+    private grammarGraph: GrammarGraph<VtlLexer, VtlParser> = new GrammarGraph(this.vocabulary, grammar);
 
     state = {
         code: [

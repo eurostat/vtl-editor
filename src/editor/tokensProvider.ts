@@ -1,9 +1,9 @@
 import monarchDefinition from '../grammar/vtl-2.0/monarchDefinition.json';
 import { VtlLexer } from '../grammar/vtl-2.0/VtlLexer';
+import { keywordRgx } from './vocabularyPack';
 
 
 export class TokensProvider {
-    private readonly keywordRgx: RegExp = /[a-z_$][\w$]*/;
     private readonly definition: any;
 
     constructor() {
@@ -32,7 +32,7 @@ export class TokensProvider {
             let tokenName = vocabulary.getLiteralName(++index);
             if (tokenName) {
                 tokenName = tokenName.replace(/^'+|'+$/g, '');
-                if (this.keywordRgx.test(tokenName)) {
+                if (keywordRgx.test(tokenName)) {
                     this.definition.keywords.push(tokenName);
                 } else if (vocabulary.getSymbolicName(index)) {
                     this.definition.specials.push(tokenName);

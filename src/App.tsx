@@ -9,6 +9,11 @@ import OpenDialog from "./component/dialog/openDialog";
 import {SnackbarProvider} from "notistack";
 import {languageVersions, VTL_VERSION} from "./editor/settings";
 
+const errorList = [
+    "Error description numer 1", "Error description numer 2", "Error description numer 3", "Error description numer 4",
+    "Error description numer 5", "Error description numer 6", "Error description numer 7"
+];
+
 function App() {
     const [files, setFiles] = useState([] as string[]);
     const [showDialog, setShowDialog] = useState(false);
@@ -74,7 +79,9 @@ function App() {
     };
 
     const ErrorBoxProps = {
-        changeErrorBoxState
+        changeErrorBoxState,
+        errorList,
+        languageVersion
     };
 
     return (

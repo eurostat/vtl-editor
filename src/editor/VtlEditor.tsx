@@ -31,12 +31,9 @@ const VtlEditor = ({browsedFiles, showMenu,showErrorBox, code, setCode, setCodeC
     const grammarGraph: GrammarGraph = new GrammarGraph();
     // const [code, setCode] = useState(defaultText);
     const monacoRef = useRef(null);
-    let monacoLang = useRef();
     useEffect(() => {
-        console.log("USE EFFECT");
         console.log(browsedFiles.length);
         if (browsedFiles.length > 0) {
-            console.log("if statement");
             setCode(browsedFiles[0]);
         }
     }, [browsedFiles]);
@@ -49,7 +46,6 @@ const VtlEditor = ({browsedFiles, showMenu,showErrorBox, code, setCode, setCodeC
     }, [showMenu, showErrorBox]);
 
     const editorWillMount = (monaco: typeof EditorApi) => {
-
         monaco.editor.defineTheme('vtl', getVtlTheme());
         languageVersions.forEach(version => {
             monaco.languages.register({id: version.code});
@@ -58,8 +54,6 @@ const VtlEditor = ({browsedFiles, showMenu,showErrorBox, code, setCode, setCodeC
                 provideCompletionItems: getSuggestions(version.code, monaco)
             });
         });
-        console.log("edit will mount", monaco);
-
     };
 
 

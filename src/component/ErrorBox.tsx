@@ -5,24 +5,26 @@ import {faTimesCircle} from "@fortawesome/free-regular-svg-icons";
 import {faTimesCircle as faTimesCircleSolid} from "@fortawesome/free-solid-svg-icons";
 import {faTimes} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {VTL_VERSION, languageVersions} from "../editor/settings";
+
 
 type ErrorBoxProps = {
     changeErrorBoxState: () => void,
+    errorList: string[],
+    languageVersion: VTL_VERSION
 }
 
-const errorList = [
-    "Error description numer 1", "Error description numer 2", "Error description numer 3", "Error description numer 4",
-    "Error description numer 5", "Error description numer 6", "Error description numer 7"
-];
 
-const ErrorBox = ({changeErrorBoxState}: ErrorBoxProps) => {
+const ErrorBox = ({changeErrorBoxState, errorList, languageVersion}: ErrorBoxProps) => {
+    const errorsCount = errorList.length;
+    const version = languageVersions!.find(l => l.code === languageVersion)!.name;
     return (
         <>
             <div className="error-container">
                 <div className="error-top">
                     <div className="position-right">
                         <div>
-                            5
+                            {errorsCount}
                         </div>
                         <div className="error-count">
                             <FontAwesomeIcon icon={faTimesCircleSolid}/>
@@ -49,12 +51,12 @@ const ErrorBox = ({changeErrorBoxState}: ErrorBoxProps) => {
                         <FontAwesomeIcon icon={faTimesCircle}/>
                     </div>
                     <div>
-                        5
+                        {errorsCount}
                     </div>
                 </div>
                 <div className="position-right">
                     <div>
-                        VTL 2.0
+                        VTL {version}
                     </div>
                     <div>
                         Line 36, Col 43

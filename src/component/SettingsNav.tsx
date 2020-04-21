@@ -2,6 +2,7 @@ import React from "react";
 import {Form} from "react-bootstrap";
 import {languageVersions, themes, VTL_VERSION} from "../editor/settings";
 
+
 type SettingsNavProps = {
     languageVersion: VTL_VERSION,
     setLanguageVersion: (value: VTL_VERSION) => void,
@@ -28,16 +29,15 @@ const SettingsNav = ({languageVersion, setLanguageVersion, theme, setTheme}: Set
     };
 
     const findElementByName = (array: any[], value: string) => {
-        console.log(array, value);
         return array.find(e => e.name === value).code;
     };
     const findElementByCode = (array: any[], value: string) => {
-        console.log(array, value);
         return array.find(e => e.code === value).name || "";
     };
 
     return (
         <div className="nav flex-column nav-pills left-nav settings-nav" aria-orientation="vertical">
+
             <Form>
                 <Form.Group controlId="version-select">
                     <Form.Label>VTL Grammar Version</Form.Label>

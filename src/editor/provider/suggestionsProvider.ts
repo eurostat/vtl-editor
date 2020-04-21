@@ -38,7 +38,6 @@ const suggestionsByTxt = (version: VTL_VERSION, txt: string, monaco: typeof Edit
                 insertText: w
             } as languages.CompletionItem
         });
-        console.log("suggestion list", suggestionList);
         return {
             suggestions: [...suggestionList, ...array]
         };

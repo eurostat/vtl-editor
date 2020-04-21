@@ -1,10 +1,10 @@
 import * as EditorApi from "monaco-editor";
-import { getSuggestionListByVersion } from "./suggestionsProvider";
-import { VTL_VERSION } from "../settings";
+import {getSuggestionListByVersion} from "./suggestionsProvider";
+import {VTL_VERSION} from "../settings";
+import {languages} from 'monaco-editor/esm/vs/editor/editor.api';
 
 export const getSuggestions = (version: VTL_VERSION, monaco: typeof EditorApi) => {
     let suggestionListByVersion = getSuggestionListByVersion(version, monaco);
-    console.log(suggestionListByVersion)
     return suggestionListByVersion
 };
 
@@ -22,10 +22,17 @@ export const getVtlTheme = (): EditorApi.editor.IStandaloneThemeData => {
     }
 };
 
+export const getBracketsConfiguration = (): languages.LanguageConfiguration => {
+    return {
+        "surroundingPairs": [{"open": "{", "close": "}"},{"open": "(", "close": ")"}, {"open": "[", "close": "]"}],
+        "autoClosingPairs": [{"open": "{", "close": "}"},{"open": "(", "close": ")"},{"open": "[", "close": "]"}],
+        "brackets": [["{", "}"],["(", ")"],["[", "]"]]
+    }
+}
 
-export const getEditorWillMount = (languageVersion:VTL_VERSION, tokensProvider:any) => {
-    return(monaco: typeof EditorApi) => {
-        console.log("edit will mount",monaco);
+
+export const getEditorWillMount = (languageVersion: VTL_VERSION, tokensProvider: any) => {
+    return (monaco: typeof EditorApi) => {
         monaco.languages.register({id: languageVersion});
         monaco.languages.setMonarchTokensProvider(languageVersion, tokensProvider.monarchLanguage(languageVersion));
         monaco.editor.defineTheme('vtl', getVtlTheme());

@@ -8,11 +8,32 @@ import ErrorBox from "./component/ErrorBox";
 import OpenDialog from "./component/dialog/openDialog";
 import {SnackbarProvider} from "notistack";
 import {languageVersions, VTL_VERSION} from "./editor/settings";
+import {editor, Position} from "monaco-editor";
 
 const errorList = [
     "Error description numer 1", "Error description numer 2", "Error description numer 3", "Error description numer 4",
     "Error description numer 5", "Error description numer 6", "Error description numer 7"
 ];
+
+const defCode = `
+ds_PY := lag ( na_main, 1 ) over ( order by time );
+
+ds_L_CY := na_main [ sub prices = "L" ] ;
+ds_L_PY := ds_PY [ sub prices = "L" ] ;
+ds_V_PY := ds_PY [ sub prices = "V" ] ;
+ds_Y_CY := na_main [ sub prices = "Y" ] ;
+
+
+ErrB:= check((abs(ds_Y_CY-(ds_L_CY / ds_L_PY[ filter obs_value <> 0 ] * ds_V_PY)) / ds_Y_CY [ filter obs_value <> 0 ]) < 0.001, 
+    errorcode("The observation values do not comply with the Y(t)= L(t) * V(t-1) / L(t-1) relation"), 
+    errorlevel("Error") );
+
+ErrB
+`;
+const getTheme = (): string => {
+    const item = window.localStorage.getItem("theme");
+    return item ? JSON.parse(item) : "vtl";
+};
 
 function App() {
     const [files, setFiles] = useState([] as string[]);
@@ -22,17 +43,56 @@ function App() {
     const [code, setCode] = useState("");
     const [codeChanged, setCodeChanged] = useState(false);
     const [fileName, setFileName] = useState("untitled.vtl");
-    const [theme, setTheme] = useState("vtl");
+    const [theme, setTheme] = useState(getTheme());
     const [languageVersion, setLanguageVersion] = useState(languageVersions[languageVersions.length - 1].code as VTL_VERSION);
+    const [cursorPosition, setCursorPosition] = useState(new Position(0, 0));
+    const [tempCursor, setTempCursor] = useState(new Position(0, 0));
+    const [errors, setErrors] = useState([] as editor.IMarkerData[]);
+
+
+
     useEffect(() => {
+        retrieveFromLocalStorage("code", setCode);
+        retrieveFromLocalStorage("codeChanged", setCodeChanged);
+        retrieveFromLocalStorage("theme", setTheme);
+        retrieveFromLocalStorage("showErrorBox", setShowErrorBox);
+        retrieveFromLocalStorage("fileName", setFileName);
+        console.log(getTheme());
+    }, []);
 
-    }, [files]);
+    const retrieveFromLocalStorage = (key: string, setter: (v: any) => void): any => {
+        const value = window.localStorage.getItem(key);
+        if (value) {
+            setter(JSON.parse(value));
+        }
+    };
 
+    const saveToLocalStorage = (key: string, value: any) => {
+        window.localStorage.setItem(key, JSON.stringify(value));
+    };
 
     const updateFiles = (newFiles: string[], fileName: string) => {
-        setCodeChanged(false);
-        setFiles(newFiles);
+        updateCodeChanged(false);
+        // @ts-ignore
+        //document.getElementsByClassName("logo")[0].focus();
+        updateCode(newFiles[0]);
+        //setFiles(newFiles);
+        saveToLocalStorage("fileName", fileName);
         setFileName(fileName)
+    };
+    const updateCode = (val: string) => {
+        saveToLocalStorage("code", val);
+        setCode(val);
+    };
+
+    const updateTheme = (theme: string) => {
+        setTheme(theme);
+        saveToLocalStorage("theme", theme);
+    };
+
+    const updateCodeChanged = (val: boolean) => {
+        saveToLocalStorage("codeChanged", val);
+        setCodeChanged(val);
     };
 
     const changeMenuState = () => {
@@ -40,7 +100,7 @@ function App() {
     };
 
     const changeErrorBoxState = () => {
-        console.log("change error box");
+        saveToLocalStorage("showErrorBox", !showErrorBox);
         setShowErrorBox(!showErrorBox);
     };
 
@@ -49,17 +109,19 @@ function App() {
         styling += showMenu ? "" : " hide-settings-nav";
         styling += showErrorBox ? "" : " hide-error-box";
         return styling;
-    }
+    };
 
     const VtlEditorProps = {
-        "browsedFiles": files,
         showMenu,
         showErrorBox,
         code,
-        setCode,
-        setCodeChanged,
+        "setCode": updateCode,
+        "setCodeChanged": updateCodeChanged,
         theme,
-        languageVersion
+        languageVersion,
+        setCursorPosition,
+        tempCursor,
+        setErrors
     };
 
     const NavigationProps = {
@@ -69,7 +131,7 @@ function App() {
         setCodeChanged,
         codeChanged,
         fileName,
-        "settingsNavProps": {theme, setTheme, languageVersion, setLanguageVersion}
+        "settingsNavProps": {theme, "setTheme": updateTheme, languageVersion, setLanguageVersion}
     };
 
     const UploadDialogProps = {
@@ -80,9 +142,12 @@ function App() {
 
     const ErrorBoxProps = {
         changeErrorBoxState,
-        errorList,
-        languageVersion
+        languageVersion,
+        cursorPosition,
+        errors,
+        setTempCursor
     };
+
 
     return (
         <SnackbarProvider
@@ -100,7 +165,7 @@ function App() {
                 <Navigation {...NavigationProps}/>
                 <div className={`middle-container ${theme}`}>
                     <div className="top-bar">
-                        <span>{fileName}</span>
+                        <span>{fileName}&nbsp;{codeChanged ? "*" : ""}</span>
                     </div>
                     <div className="vtl-container">
                         <VtlEditor {...VtlEditorProps}/>

@@ -25,7 +25,7 @@ const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, 
         a.href = file;
         a.download = fileName;
         a.click();
-        setCodeChanged(true);
+        setCodeChanged(false);
         // FileSaver.saveAs(file, "data.vtl");
     };
 

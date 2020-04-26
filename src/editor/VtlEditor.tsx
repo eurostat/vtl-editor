@@ -9,7 +9,7 @@ import MonacoEditor from "react-monaco-editor";
 import { suggestions } from "../grammar/vtl-2.0/vtl-2.0.autocompleteProvider";
 import { VtlLexer } from '../grammar/vtl-2.0/VtlLexer';
 import { VtlParser } from '../grammar/vtl-2.0/VtlParser';
-import { GrammarGraph } from './grammarGraph';
+import { GrammarGraph } from './grammar-graph/grammarGraph';
 import * as ParserFacade from './ParserFacade';
 import { createLexer, createParser } from './ParserFacade';
 import { TokensProvider } from './tokensProvider';

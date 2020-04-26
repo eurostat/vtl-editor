@@ -1,44 +1,15 @@
 import { Lexer, Parser } from 'antlr4ts';
-import { VocabularyPack } from './vocabularyPack';
+import { VocabularyPack } from '../vocabularyPack';
+import { RuleToken } from './ruleToken';
+import { TokenizerContext } from './tokenizerContext';
+import { TokenType } from './tokenType';
 
 export const rgxEscape = /[-\/\\^$*+?.()|[\]{}]/g;
 export const rgxReplace = "\\$&";
 
-export enum TokenType {
-    Space = " ",
-    Lparen = "(",
-    Rparen = ")",
-    Question = "?",
-    Star = "*",
-    Plus = "+",
-    Pipe = "|",
-    Hash = "#",
-    Assign = "=",
-    PlusAssign = "+=",
-    Identifier = "i",
-    Label = "l",
-    Operator = "o",
-    Rule = "r",
-    Unknown = "u"
-}
-
-export enum MultiplyMode {
-    None,
-    Optional,
-    Onemore,
-    Zeromore
-}
-
-interface TokenizerContext {
-    tokens: RuleToken[];
-    parens: RuleToken[];
-    operand: string[];
-    modifier: TokenType | undefined;
-}
-
 export class RuleTokenizer<L extends Lexer, P extends Parser> {
     private vocabulary: VocabularyPack<L, P>;
-    private readonly context: TokenizerContext = {tokens: [], parens: [], operand: [], modifier: undefined};
+    private readonly context: TokenizerContext = {tokens: [], parens: [], atom: [], modifier: undefined};
 
     constructor(vocabulary: VocabularyPack<L, P>) {
         this.vocabulary = vocabulary;
@@ -47,7 +18,7 @@ export class RuleTokenizer<L extends Lexer, P extends Parser> {
     public tokenize(declaration: string): RuleToken[] {
         this.clearContext();
         Array.from(declaration).forEach((value, index) => {
-            if (!(this.isOperand(value, index)
+            if (!(this.isAtom(value, index)
                 || this.isModifier(value, index))) {
                 switch (value) {
                     case TokenType.Lparen: {
@@ -82,7 +53,7 @@ export class RuleTokenizer<L extends Lexer, P extends Parser> {
                         if (last) {
                             last.type = TokenType.Identifier;
                             this.addToken(value);
-                            console.warn("Unknown operand token " + last.name + " recognized as identifier");
+                            console.warn("Unknown operator token " + last.name + " recognized as identifier");
                         }
                         break;
                     }
@@ -91,7 +62,7 @@ export class RuleTokenizer<L extends Lexer, P extends Parser> {
                         break;
                     }
                     case TokenType.Space: {
-                        this.finishOperand(index);
+                        this.finishAtom(index);
                         break;
                     }
                     default : {
@@ -100,23 +71,23 @@ export class RuleTokenizer<L extends Lexer, P extends Parser> {
                 }
             }
         });
-        this.finishOperand(declaration.length);
+        this.finishAtom(declaration.length);
         return this.context.tokens;
     }
 
-    private isOperand(value: string, index: number): boolean {
+    private isAtom(value: string, index: number): boolean {
         if (/[a-zA-Z_0-9]/.test(value)) {
-            this.context.operand.push(value);
+            this.context.atom.push(value);
             return true;
         }
-        this.finishOperand(index);
+        this.finishAtom(index);
         return false;
     }
 
     private isModifier(value: string, index: number): boolean {
         // TODO: add plus assign and multipliers stacking
         if (/[*+?]/.test(value)) {
-            const last = this.lastToken([TokenType.Operator, TokenType.Rule, TokenType.Rparen, TokenType.Unknown]);
+            const last = this.lastToken([TokenType.Keyword, TokenType.Operator, TokenType.Operand, TokenType.Rule, TokenType.Rparen, TokenType.Unknown]);
             if (this.context.modifier) {
                 if (value === TokenType.Question && last) last.greedy = false;
                 else this.unexpected(value, index);
@@ -140,26 +111,32 @@ export class RuleTokenizer<L extends Lexer, P extends Parser> {
         ));
     }
 
-    private finishOperand(index: number) {
-        if (this.context.operand.length > 0) {
-            const name: string = this.context.operand.join("");
+    private finishAtom(index: number) {
+        if (this.context.atom.length > 0) {
+            const name: string = this.context.atom.join("");
             let value: string | undefined = undefined;
-            index = index - this.context.operand.length;
+            index = index - this.context.atom.length;
             const last = this.lastToken([TokenType.Hash]);
             let type: TokenType;
             if (last) {
                 type = TokenType.Label;
-            } else if (this.vocabulary.symbolicNames.includes(name)){
+            } else if (this.vocabulary.isSymbolicName(name)) {
+                type = TokenType.Operand;
+                const symbolicIndex = this.vocabulary.symbolicIndex(name);
+                if (this.vocabulary.hasKeyword(symbolicIndex)) {
+                    type = TokenType.Keyword;
+                    value = this.vocabulary.keyword(symbolicIndex);
+                } else if (this.vocabulary.hasOperator(symbolicIndex)) {
+                    type = TokenType.Operator;
+                    value = this.vocabulary.operator(symbolicIndex);
+                }
+            } else if (name in Lexer) {
                 type = TokenType.Operator;
-                value = this.vocabulary.operandNames[this.vocabulary.symbolicNames.indexOf(name)];
-            }
-            else if (name in Lexer) {
-                type = TokenType.Operator;
-            } else if (this.vocabulary.ruleNames.includes(name)) {
+            } else if (this.vocabulary.isRuleName(name)) {
                 type = TokenType.Rule;
             } else {
                 type = TokenType.Unknown;
-                console.warn("Unknown operand token " + name + " at " + index);
+                console.warn("Unknown operator token " + name + " at " + index);
             }
 
             this.context.tokens.push(new RuleToken(
@@ -168,7 +145,7 @@ export class RuleTokenizer<L extends Lexer, P extends Parser> {
                 name,
                 value
             ));
-            this.context.operand.length = 0;
+            this.context.atom.length = 0;
         }
     }
 
@@ -183,7 +160,7 @@ export class RuleTokenizer<L extends Lexer, P extends Parser> {
     private clearContext() {
         this.context.tokens = [];
         this.context.parens = [];
-        this.context.operand = [];
+        this.context.atom = [];
         this.context.modifier = undefined;
     }
 
@@ -196,16 +173,16 @@ export class RuleTokenizer<L extends Lexer, P extends Parser> {
     }
 
     public ruleName(declaration: string, index: number): string {
-        const ruleNames = this.vocabulary.ruleNames;
+        const ruleNames = this.vocabulary.getRuleNames();
         let rgx = new RegExp(ruleNames[index].replace(rgxEscape, rgxReplace), "g");
         if (rgx.test(declaration)) {
             return ruleNames[index];
         } else {
             console.warn("Mismatched rule " + index + " name. Looking for alternatives.");
-            ruleNames.forEach((ruleName, index) => {
+            ruleNames.forEach((ruleName, other) => {
                 rgx = new RegExp(ruleName.replace(rgxEscape, rgxReplace), "g");
                 if (rgx.test(declaration)) {
-                    console.warn("Matched name of rule " + index + ".");
+                    console.warn("Matched name of rule " + other + ".");
                     return ruleName;
                 }
             });
@@ -217,13 +194,13 @@ export class RuleTokenizer<L extends Lexer, P extends Parser> {
     public static alternatives(tokens: RuleToken[]): RuleToken[][] {
         let pipeIndex = -1;
         let statement: RuleToken[] = [];
-        return tokens.reduce((statements: RuleToken[][], token, index, tokens) => {
+        return tokens.reduce((statements: RuleToken[][], token, index, initial) => {
             if (token.nested === 0 && token.type === TokenType.Pipe) {
-                statement = tokens.slice(pipeIndex + 1, index);
+                statement = initial.slice(pipeIndex + 1, index);
                 if (statement.length !== 0) statements.push(statement);
                 pipeIndex = index;
-            } else if (index === tokens.length - 1) {
-                statement = tokens.slice(pipeIndex + 1);
+            } else if (index === initial.length - 1) {
+                statement = initial.slice(pipeIndex + 1);
                 if (statement.length !== 0) statements.push(statement);
             }
             return statements;
@@ -233,15 +210,15 @@ export class RuleTokenizer<L extends Lexer, P extends Parser> {
     public static parentheses(tokens: RuleToken[]): RuleToken[][] {
         let parenIndex = -1;
         let statement: RuleToken[] = [];
-        return tokens.reduce((statements: RuleToken[][], token, index, tokens) => {
+        return tokens.reduce((statements: RuleToken[][], token, index, initial) => {
             if (token.nested === 0 && (token.type === TokenType.Lparen || token.type === TokenType.Rparen)) {
-                statement = tokens.slice(
+                statement = initial.slice(
                     parenIndex,
                     index + (token.type === TokenType.Rparen ? 1 : 0));
                 if (statement.length !== 0) statements.push(statement);
                 parenIndex = index;
-            } else if (index === tokens.length - 1) {
-                statement = tokens.slice(parenIndex + 1);
+            } else if (index === initial.length - 1) {
+                statement = initial.slice(parenIndex + 1);
                 if (statement.length !== 0) statements.push(statement);
             }
             return statements;
@@ -262,53 +239,3 @@ export class RuleTokenizer<L extends Lexer, P extends Parser> {
     }
 }
 
-export class RuleToken {
-    public type: TokenType;
-    public name: string | undefined;
-    public value: string | undefined;
-    public identifier: string | undefined;
-    public nested: number = 0;
-    public multiplied: MultiplyMode = MultiplyMode.None;
-    public greedy: boolean = true;
-    public sibling: RuleToken | undefined;
-
-    constructor(type: TokenType, nested?: number, name?: string, value?: string) {
-        this.type = type;
-        if (nested) this.nested = nested;
-        if (name) this.name = name;
-        if (value) this.value = value;
-    }
-
-    multiply(type: string) {
-        let multiplied = MultiplyMode.None;
-        switch (type) {
-            case TokenType.Question:
-                multiplied = MultiplyMode.Optional;
-                break;
-            case TokenType.Plus:
-                multiplied = MultiplyMode.Onemore;
-                break;
-            case TokenType.Star:
-                multiplied = MultiplyMode.Zeromore;
-                break;
-            default:
-                return;
-        }
-        if (this.multiplied === multiplied) return;
-        this.multiplied = this.multiplied === MultiplyMode.None
-            ? multiplied
-            : MultiplyMode.Zeromore;
-    }
-
-    label(identifier: string | undefined) {
-        this.identifier = identifier;
-    }
-
-    isAssign() {
-        return this.type === TokenType.Assign || this.type === TokenType.PlusAssign;
-    }
-
-    isAtom() {
-        return this.type === TokenType.Rule || this.type === TokenType.Operator || this.type === TokenType.Unknown;
-    }
-}

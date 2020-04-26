@@ -1,176 +1,14 @@
-import { CharStreams, CommonTokenStream, Lexer, Parser } from 'antlr4ts';
-// @ts-ignore
-// eslint-disable-next-line import/no-webpack-loader-syntax
-import a4grammar from 'raw-loader!../grammar/antlr4/ANTLRv4Parser.g4';
-import { ANTLRv4Lexer } from '../grammar/antlr4/ANTLRv4Lexer';
-import { ANTLRv4Parser } from '../grammar/antlr4/ANTLRv4Parser';
-import { MultiplyMode, rgxEscape, rgxReplace, RuleToken, RuleTokenizer, TokenType } from './ruleTokenizer';
-import { keywordRgx, VocabularyPack } from './vocabularyPack';
-
-export enum StatementType {
-    None = " ",
-    Rule = "r",
-    Block = "b",
-    Atom = "a",
-    Operator = "o",
-    Unknown = "u"
-}
+import { keywordRgx } from '../vocabularyPack';
+import { MultiplyMode } from './multiplyMode';
+import { RuleToken } from './ruleToken';
+import { RuleTokenizer } from './ruleTokenizer';
+import { StatementMetadata } from './statementMetadata';
+import { StatementType } from './statementType';
+import { SyntaxCollection } from './syntaxCollection';
+import { SyntaxLink } from './syntaxLink';
+import { TokenType } from './tokenType';
 
 const terminators: string[] = ["EOL", "EOF"];
-
-export class GrammarGraph<L extends Lexer, P extends Parser> {
-    private vocabulary: VocabularyPack<L, P>;
-    private readonly tokenizer: RuleTokenizer<L, P>;
-    private readonly rules: Map<string, GrammarStatement> = new Map<string, GrammarStatement>();
-    private readonly operands: Map<string, GrammarStatement> = new Map<string, GrammarStatement>();
-    private root: GrammarStatement | undefined;
-
-    constructor(vocabulary: VocabularyPack<L, P>, grammar: string) {
-        this.vocabulary = vocabulary;
-        this.tokenizer = new RuleTokenizer(vocabulary);
-        if (grammar && grammar.length > 0) this.processRaw(grammar);
-    }
-
-    private processAntlr(grammar: string) {
-        // Strip import wrapping, comments, newlines and tabulators
-        let processed = a4grammar
-            .replace(/^export default "|(\\[rnt])+|";$/g, " ");
-        console.log(processed);
-        const lexer = new ANTLRv4Lexer(CharStreams.fromString(processed));
-        // lexer.removeErrorListeners();
-        // lexer.addErrorListener(new ConsoleErrorListener());
-//         let token:Token | undefined | null = lexer.nextToken();
-// let i = 0;
-//         while (token !== null && token !== undefined && i < 100) {
-//             if (token.type !== ANTLRv4Lexer.WS) {
-//                 let tokenTypeName = lexer.vocabulary.getSymbolicName(token.type);
-//                    console.log('token type: ' + tokenTypeName + ' / ' + token.type);
-//             }
-//             token = lexer.nextToken();
-//             i++;
-//         }
-
-        const tokens = new CommonTokenStream(lexer as Lexer);
-        console.log(tokens);
-        const parser = new ANTLRv4Parser(tokens);
-        // parser.removeErrorListeners();
-        //parser.addErrorListener(new ConsoleErrorListener());
-
-        const tree = parser["grammarSpec"]();
-
-        console.log(tree.toStringTree(parser.ruleNames));
-
-    }
-
-    private processRaw(grammar: string) {
-        // Strip import wrapping, comments, newlines and tabulators
-        let processed = grammar
-            .replace(/^export default "|\/\*.*?\*\/|(\\[rnt])+|";$/g, " ");
-
-        // Replace literal tokens with names from vocabulary
-        this.vocabulary.literalNames.forEach((literal, index) => {
-            const symbolic = this.vocabulary.symbolicNames[index];
-            if (!!literal && processed.includes(literal)) {
-                // Escape all RegExp special characters first
-                processed = processed.replace(
-                    new RegExp(literal.replace(rgxEscape, rgxReplace), "g"),
-                    " " + symbolic + " ");
-            }
-        });
-
-        // Split grammar into rules
-        processed.split(";")
-            .filter((value) => value.includes(":"))
-            .forEach((value, index, array) => {
-                let colon = value.indexOf(":");
-                const name = this.tokenizer.ruleName(
-                    value.substr(0, colon).trim(), index);
-                const tokens = this.tokenizer.tokenize(
-                    value.substr(++colon).trim().replace(/ +/g, " "));
-                this.addRule(name, tokens);
-            });
-
-        // Resolve remaining statements and collect operands
-        this.rules.forEach((rule) =>
-            rule.resolveStatements(this.rules, this.operands, new Map<string, GrammarStatement>()));
-
-        // Find root
-        this.root = this.rules.get(this.vocabulary.ruleNames[0]);
-        // Mark root and subsequent statements as primaries (appearing at the line beginning)
-        this.root?.markPrimary();
-        const instructions = this.root?.constructSyntax(new SyntaxCollection(), new Map<string, GrammarStatement>());
-        console.log(this.rules);
-        console.log(instructions);
-    }
-
-    private addRule(name: string, tokens: RuleToken[]): GrammarStatement {
-        const rule = new GrammarStatement(StatementType.Rule, tokens, name);
-        this.rules.set(name, rule);
-        rule.processRule();
-        return rule;
-    }
-
-    public rootName() {
-        return !!this.root ? this.root.name : undefined;
-    }
-}
-
-export class SyntaxCollection {
-    entries: SyntaxEntry[] = [];
-    terminated = false;
-
-    add(syntax: string, terminated?: boolean) {
-        if (!this.contains(syntax)) {
-            const entry = new SyntaxEntry(
-                syntax, (typeof terminated !== "undefined" && terminated));
-            this.terminated = (this.terminated || this.entries.length === 0) && entry.terminated;
-            this.entries.push(entry);
-        }
-    }
-
-    addAll(syntaxes: SyntaxCollection) {
-        if (syntaxes.notEmpty()) {
-            this.terminated = (this.terminated || this.entries.length === 0) && syntaxes.terminated;
-            const values = this.entries.map((entry) => entry.value);
-            syntaxes.entries//.filter((entry) => !values.some((value) => value === entry.value))
-                .forEach((entry) => this.entries.push(entry));
-        }
-    }
-
-    merge(syntaxes: SyntaxCollection, delimiter: string) {
-        if (!this.terminated && syntaxes.notEmpty()) {
-            this.entries = this.entries.reduce((expanded, entry) => {
-                if (entry.terminated) {
-                    expanded.push(entry);
-                } else {
-                    syntaxes.entries.forEach((syntax) =>
-                        expanded.push(new SyntaxEntry(entry.value + delimiter + syntax.value, syntax.terminated)));
-                }
-                return expanded;
-            }, [] as SyntaxEntry[]);
-            this.terminated = !this.entries.some((entry) => !entry.terminated);
-        }
-    }
-
-    contains(value: string) {
-        return false;
-        // return this.entries.map((entry) => entry.value).some((entry) => entry === value);
-    }
-
-    isEmpty = () => this.entries.length === 0;
-    notEmpty = (): boolean => this.entries.length !== 0;
-    size = () => this.entries.length;
-}
-
-export class SyntaxEntry {
-    value: string;
-    terminated: boolean;
-
-    constructor(value: string, terminated: boolean) {
-        this.value = value;
-        this.terminated = terminated;
-    }
-}
 
 export class GrammarStatement {
     private type: StatementType = StatementType.None;
@@ -183,8 +21,10 @@ export class GrammarStatement {
     private multiplied: MultiplyMode = MultiplyMode.None;
     private greedy: boolean = false;
     private readonly statements: GrammarStatement[] = [];
+    private readonly metadata: StatementMetadata[] = [];
     private readonly tokens: RuleToken[] = [];
     private token: RuleToken | undefined;
+    syntax: SyntaxLink | undefined;
 
     constructor(type: StatementType, tokens: RuleToken[], name?: string) {
         this.type = type;
@@ -311,8 +151,18 @@ export class GrammarStatement {
                 if (!this._label) this._label = token.identifier;
                 this.unresolved = true;
                 break;
+            case TokenType.Keyword:
+                this.type = StatementType.Keyword;
+                this._label = token.identifier;
+                this.unresolved = true;
+                break;
             case TokenType.Operator:
                 this.type = StatementType.Operator;
+                this._label = token.identifier;
+                this.unresolved = true;
+                break;
+            case TokenType.Operand:
+                this.type = StatementType.Operand;
                 this._label = token.identifier;
                 this.unresolved = true;
                 break;
@@ -357,7 +207,7 @@ export class GrammarStatement {
     }
 
     public resolveStatements(rules: Map<string, GrammarStatement>,
-                             operands: Map<string, GrammarStatement>,
+                             operators: Map<string, GrammarStatement>,
                              visited: Map<string, GrammarStatement>) {
         if (this.name) {
             if (visited.has(this.name)) return;
@@ -365,30 +215,137 @@ export class GrammarStatement {
         }
         this.statements.forEach((statement, index, statements) => {
             if (statement.unresolved && statement.name) {
-                if (statement.isToken(TokenType.Rule)) {
+                if (statement.isToken([TokenType.Rule])) {
                     const rule = rules.get(statement.name);
                     if (rule) {
                         if (rule !== statement) {
                             if (!rule.label && !!statement.label) rule.label = statement.label;
                             statements[index] = rule;
                         }
-                        rule.resolveStatements(rules, operands, visited);
+                        rule.resolveStatements(rules, operators, visited);
                     } else {
                         console.warn("Unknown rule in graph " + statement.name);
                     }
-                } else if (statement.isToken(TokenType.Operator)) {
-                    const operand = operands.get(statement.name);
-                    if (operand) {
-                        if (operand !== statement) statements[index] = operand;
+                } else if (statement.isToken([TokenType.Keyword, TokenType.Operator, TokenType.Operand]) ) {
+                    const operator = operators.get(statement.name);
+                    if (operator) {
+                        if (operator !== statement) statements[index] = operator;
                     } else {
                         statement.unresolved = false;
-                        operands.set(statement.name, statement);
+                        operators.set(statement.name, statement);
                     }
                 }
             } else {
-                statement.resolveStatements(rules, operands, visited);
+                statement.resolveStatements(rules, operators, visited);
             }
         });
+    }
+
+    public resolveSyntax() {
+        let syntax = new SyntaxLink();
+        switch (this.type) {
+            case StatementType.Rule: {
+                if (this.statements.length === 1) {
+                    syntax = this.statements[0].constructLink(false);
+                    break;
+                }
+                let link: SyntaxLink | undefined;
+                if (this.alternatives) {
+                    syntax.alternatives = true;
+                    this.statements.forEach((statement) => {
+                            link = statement.constructLink(false);
+                            if (link.hasKeyword()) syntax.add(link);
+                    });
+                } else {
+                    this.statements.forEach((statement) => {
+                        link = statement.constructLink(syntax.hasKeyword());
+                        if (syntax.hasKeyword() || link.hasKeyword()) {
+                            syntax.add(link);
+                        }
+                    });
+                }
+                break;
+            }
+            case StatementType.Block: {
+                break;
+            }
+            case StatementType.Keyword: {
+                if (!!this.value) syntax.keyword = this.value;
+                else console.warn("Keyword without value " + this.name);
+                break;
+            }
+            case StatementType.Operator: {
+                if (!!this.value) syntax.operator = this.value;
+                else console.warn("Operator without value " + this.name);
+                break;
+            }
+            case StatementType.Operand: {
+                if (!!this.name) syntax.operand = this.name;
+                else console.warn("Operand without name");
+                break;
+            }
+            default:
+                console.warn("Unknown statement type " + this.type);
+        }
+        if (syntax.hasKeyword()) {
+            syntax.collapse();
+            this.syntax = syntax;
+        }
+    }
+
+    private constructLink(keyword: boolean): SyntaxLink {
+        let syntax = new SyntaxLink();
+        syntax.multiplied = this.multiplied;
+        switch (this.type) {
+            case StatementType.Rule: {
+                if (this.statements.length === 1) syntax = this.statements[0].constructLink(false);
+                else if (!!this.name) syntax.rule = this.name;
+                break;
+            }
+            case StatementType.Block: {
+                if (this.statements.length === 1) {
+                    syntax = this.statements[0].constructLink(keyword);
+                    break;
+                }
+                let link: SyntaxLink | undefined;
+                if (this.alternatives) {
+                    syntax.alternatives = true;
+                    this.statements.forEach((statement) => {
+                        link = statement.constructLink(keyword);
+                        if (keyword || link.hasKeyword()) {
+                            syntax.add(link);
+                        }
+                    });
+                } else {
+                    this.statements.forEach((statement) => {
+                        link = statement.constructLink(keyword || syntax.hasKeyword());
+                        if (keyword || syntax.hasKeyword() || link.hasKeyword()) {
+                            syntax.add(link);
+                        }
+                    });
+                }
+                break;
+            }
+            case StatementType.Keyword: {
+                if (!!this.value) syntax.keyword = this.value;
+                else console.warn("Keyword without value " + this.name);
+                break;
+            }
+            case StatementType.Operator: {
+                if (!!this.value) syntax.operator = this.value;
+                else console.warn("Operator without value " + this.name);
+                break;
+            }
+            case StatementType.Operand: {
+                if (!!this.name) syntax.operand = this.name;
+                else console.warn("Operand without name");
+                break;
+            }
+            default:
+                console.warn("Unknown statement type " + this.type);
+        }
+        syntax.collapse();
+        return syntax;
     }
 
     public constructSyntax(previous: SyntaxCollection, visited: Map<string, GrammarStatement>): SyntaxCollection {
@@ -443,8 +400,8 @@ export class GrammarStatement {
             case StatementType.Operator: {
                 if (!!this.value) {
                     if (previous.notEmpty() || keywordRgx.test(this.value)) {
-                        if (previous.notEmpty() || this.value === "check")
-                        combined.add(this.value, !!this.name && terminators.includes(this.name));
+                        if (previous.notEmpty() || this.value === "if")
+                            combined.add(this.value, !!this.name && terminators.includes(this.name));
                     }
                 } else {
                     if (previous.notEmpty() && !!this.name) {
@@ -457,8 +414,9 @@ export class GrammarStatement {
                 console.warn("Unknown statement type " + this.type);
         }
         if (visiset && !!this.name) visited.delete(this.name);
-        if (this.name === "joinExpr") {
-            console.log("join data");
+        if (this.value === "if") {
+            console.log(visited);
+            console.log("ceil data " + this.name);
             console.log(previous);
             console.log(combined);
         }
@@ -512,13 +470,13 @@ export class GrammarStatement {
 
     private multiply(token: RuleToken) {
         this.greedy = this.greedy || token.greedy;
-        if (this.multiplied === token.multiplied) return;
+        if (this.multiplied === token.multiplied || token.multiplied === MultiplyMode.None) return;
         this.multiplied = this.multiplied === MultiplyMode.None
             ? token.multiplied
             : MultiplyMode.Zeromore;
     }
 
-    private isToken(type: TokenType): boolean {
-        return !!this.token && this.token.type === type;
+    private isToken(types: TokenType[]): boolean {
+        return !!this.token && types.includes(this.token.type);
     }
 }

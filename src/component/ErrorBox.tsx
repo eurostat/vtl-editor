@@ -30,7 +30,7 @@ const ErrorBox = ({changeErrorBoxState, languageVersion, cursorPosition, errors,
                 <div className="error-top">
                     <div className="position-left">
                         <div>
-                            [Line, Column] Message
+                            {errorsCount ? "[Line, Column] Message" : ""}
                         </div>
 
                     </div>
@@ -49,12 +49,11 @@ const ErrorBox = ({changeErrorBoxState, languageVersion, cursorPosition, errors,
                 <div className="error-list">
                     {errors.map((e, i) => {
                         const {startLineNumber, startColumn, message} = e;
-                        const line = !i ? "Line " : "";
-                        const col = !i ? " Column " : "";
+
                         return (
                             <div onClick={() => newCursorPosition(e)}>
                                 <FontAwesomeIcon icon={faTimesCircleSolid}/>
-                                <span>{`[${line}${startLineNumber},${col}${startColumn}] ${message}`}</span>
+                                <span>{`[${startLineNumber}, ${startColumn}] ${message}`}</span>
                             </div>)
                     })}
                 </div>

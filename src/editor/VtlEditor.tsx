@@ -1,18 +1,16 @@
 import * as React from 'react';
-import {useEffect, useRef, useState} from 'react';
+import {useEffect, useRef} from 'react';
 import MonacoEditor from "react-monaco-editor";
 import {GrammarGraph} from './grammarGraph';
 import {TokensProvider} from './tokensProvider';
-import * as ParserFacadeV3 from './ParserFacadeV3';
 import * as EditorApi from 'monaco-editor/esm/vs/editor/editor.api';
-import {languages, Position} from 'monaco-editor/esm/vs/editor/editor.api';
+import {Position} from 'monaco-editor/esm/vs/editor/editor.api';
 //import {AutoSuggestionsGenerator} from '../auto-suggest/AutoSuggestionsGenerator';
 import './vtlEditor.css';
 // @ts-ignore
 // eslint-disable-next-line import/no-webpack-loader-syntax
-import {languageVersions, VTL_VERSION} from "./settings";
-import {getBracketsConfiguration, getSuggestions, getVtlTheme} from "./provider/providers";
-import {editor} from "monaco-editor/esm/vs/editor/editor.api";
+import {VTL_VERSION} from "./settings";
+import {getEditorWillMount, getParserFacade} from "./provider/providers";
 
 declare const window: any;
 
@@ -28,18 +26,19 @@ type VtlEditorProps = {
     tempCursor: Position,
     setErrors: (array: EditorApi.editor.IMarkerData[]) => void,
 }
-
+let parserFacade: any = {parser: null};
 const VtlEditor = ({showMenu, showErrorBox, code, setCode, setCodeChanged, theme, languageVersion, setCursorPosition, tempCursor, setErrors}: VtlEditorProps) => {
     const tokensProvider: TokensProvider = new TokensProvider();
     const grammarGraph: GrammarGraph = new GrammarGraph();
     const monacoRef = useRef(null);
+
 
     useEffect(() => {
         if (monacoRef && monacoRef.current) {
             // @ts-ignore
             monacoRef.current.editor.layout();
         }
-       // console.log(monacoRef.current, "monaco efect");
+        // console.log(monacoRef.current, "monaco efect");
     }, [showMenu, showErrorBox]);
 
     useEffect(() => {
@@ -51,18 +50,10 @@ const VtlEditor = ({showMenu, showErrorBox, code, setCode, setCodeChanged, theme
         }
     }, [tempCursor]);
 
-    const editorWillMount = (monaco: typeof EditorApi) => {
-        console.log("define");
-        monaco.editor.defineTheme('vtl', getVtlTheme());
-        languageVersions.forEach(version => {
-            monaco.languages.register({id: version.code});
-            monaco.languages.setMonarchTokensProvider(version.code, tokensProvider.monarchLanguage(version.code));
-            monaco.languages.setLanguageConfiguration(version.code,getBracketsConfiguration());
-            monaco.languages.registerCompletionItemProvider(version.code, {
-                provideCompletionItems: getSuggestions(version.code, monaco)
-            });
-        });
-    };
+    useEffect(() => {
+        parserFacade = getParserFacade(languageVersion);
+    }, [languageVersion]);
+
 
     const didMount = (editor: EditorApi.editor.IStandaloneCodeEditor, monaco: typeof EditorApi) => {
         console.log("DID MOUNT");
@@ -70,11 +61,11 @@ const VtlEditor = ({showMenu, showErrorBox, code, setCode, setCodeChanged, theme
         let onDidChangeTimout = (e: any) => {
             to = setTimeout(() => onDidChange(e), 2000);
         };
-        console.log(editor);
 
         const onDidChange = (e: any) => {
             monaco.languages.setMonarchTokensProvider('vtl-2.0', tokensProvider.monarchLanguage('vtl-2.0'));
-            let syntaxErrors = ParserFacadeV3.validate(editor.getValue());
+            // @ts-ignore
+            let syntaxErrors = parserFacade.parser.validate(editor.getValue());
             let monacoErrors = [];
             for (let e of syntaxErrors) {
                 monacoErrors.push({
@@ -115,7 +106,7 @@ const VtlEditor = ({showMenu, showErrorBox, code, setCode, setCodeChanged, theme
         <div className="editor-container">
             <MonacoEditor
                 ref={monacoRef}
-                editorWillMount={editorWillMount}
+                editorWillMount={getEditorWillMount()}
                 editorDidMount={didMount}
                 height="100%"
                 language={languageVersion}

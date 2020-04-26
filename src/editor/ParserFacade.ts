@@ -107,7 +107,6 @@ class VtlErrorStrategy extends DefaultErrorStrategy {
 
 export function validate(input: string): Error[] {
     let errors: Error[] = [];
-    console.log("syntax eror");
     const lexer = createLexer(input);
     lexer.removeErrorListeners();
     lexer.addErrorListener(new ConsoleErrorListener());

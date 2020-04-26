@@ -1,50 +1,18 @@
-import * as EditorApi from "monaco-editor";
-import {CancellationToken, editor, languages, Position} from "monaco-editor";
-import {suggestions} from "./autocompleteProvider";
-import {getGrammarByVersion} from "./grammarProvider";
 import {VTL_VERSION} from "../settings";
+import {getSuggestions as getSuggestions2_0} from "../../grammar/vtl-2.0/suggestionsV2-0";
+import {getSuggestions as getSuggestions3_0} from "../../grammar/vtl-3.0/suggestionsV3-0";
 
 
-export const getSuggestionListByVersion = (version: VTL_VERSION, monaco: typeof EditorApi): any => {
-    const txtByVersion = getGrammarByVersion(version);
-    return suggestionsByTxt(version, txtByVersion, monaco);
-};
-
-const suggestionsByTxt = (version: VTL_VERSION, txt: string, monaco: typeof EditorApi): any => {
-    return function (model: editor.ITextModel, position: Position, context: languages.CompletionContext, token: CancellationToken) {
-        const textUntilPosition = model.getValueInRange({
-            startLineNumber: 1,
-            startColumn: 1,
-            endLineNumber: position.lineNumber,
-            endColumn: position.column
-        });
-        const word = model.getWordUntilPosition(position);
-        const range = {
-            startLineNumber: position.lineNumber,
-            endLineNumber: position.lineNumber,
-            startColumn: word.startColumn,
-            endColumn: word.endColumn
-        };
-
-        let uniquetext = Array.from(new Set(textUntilPosition.replace(/"(.*?)"/g, "")
-            .replace(/[^a-zA-Z_]/g, " ")
-            .split(" ").filter(w => w !== "")).values());
-        const suggestionList = suggestions(version,range, txt);
-        uniquetext = removeLanguageSyntaxFromList(uniquetext, suggestionList);
-        const array = uniquetext.map(w => {
-            return {
-                label: w,
-                kind: monaco.languages.CompletionItemKind.Variable,
-                insertText: w
-            } as languages.CompletionItem
-        });
-        return {
-            suggestions: [...suggestionList, ...array]
-        };
-    };
-
-    function removeLanguageSyntaxFromList(vars: string[], suggestionList: any[]) {
-        const suggestionsLabels = suggestionList.map(s => s.label.toLowerCase());
-        return vars.filter(t => !suggestionsLabels.includes(t.toLowerCase()))
+export const getSuggestionsForVersion = (version: VTL_VERSION, range: any) => {
+    switch (version) {
+        case VTL_VERSION.VTL_1_0:
+            return getSuggestions2_0(range);
+        case VTL_VERSION.VTL_1_1:
+            return getSuggestions2_0(range);
+        case VTL_VERSION.VTL_2_0:
+            return getSuggestions2_0(range);
+        case VTL_VERSION.VTL_3_0:
+            return getSuggestions3_0(range);
     }
 };
+

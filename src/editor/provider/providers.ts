@@ -1,13 +1,28 @@
 import * as EditorApi from "monaco-editor";
-import {CancellationToken, editor, Position} from "monaco-editor";
-import {getSuggestionsForVersion} from "./suggestionsProvider";
-import {languageVersions, VTL_VERSION} from "../settings";
-import {languages} from 'monaco-editor/esm/vs/editor/editor.api';
-import {TokensProvider} from "../tokensProvider";
+import { CancellationToken, editor, Position } from "monaco-editor";
+import { getSuggestions as getSuggestions2_0 } from '../../grammar/vtl-2.0/suggestionsV2-0';
+import { VtlLexer } from '../../grammar/vtl-2.0/VtlLexer';
+import { VtlParser } from '../../grammar/vtl-2.0/VtlParser';
+import { getSuggestions as getSuggestions3_0 } from '../../grammar/vtl-3.0/suggestionsV3-0';
+import { AutocompleteProvider } from '../autocompleteProvider';
+import { GrammarGraph } from '../grammar-graph/grammarGraph';
+import { createLexer, createParser } from '../ParserFacade';
+import { VocabularyPack } from '../vocabularyPack';
+import { languageVersions, VTL_VERSION } from "../settings";
+import { languages } from 'monaco-editor/esm/vs/editor/editor.api';
+import { TokensProvider } from "../tokensProvider";
 import * as ParserFacade from "../ParserFacade";
 import * as ParserFacadeV3 from "../ParserFacadeV3";
+// @ts-ignore
+// eslint-disable-next-line import/no-webpack-loader-syntax
+import grammar from 'raw-loader!../../grammar/vtl-2.0/Vtl.g4';
 
+const lexer = createLexer("");
+const parser = createParser("");
 const tokensProvider: TokensProvider = new TokensProvider();
+const vocabulary: VocabularyPack<VtlLexer, VtlParser> = new VocabularyPack(lexer, parser);
+const grammarGraph: GrammarGraph<VtlLexer, VtlParser> = new GrammarGraph(vocabulary, grammar);
+const autocompleteProvider: AutocompleteProvider = new AutocompleteProvider(grammarGraph.suggestions());
 
 export const getVtlTheme = (): EditorApi.editor.IStandaloneThemeData => {
     return {
@@ -32,7 +47,6 @@ export const getBracketsConfiguration = (): languages.LanguageConfiguration => {
     }
 };
 
-
 export const getEditorWillMount = () => {
     return (monaco: typeof EditorApi) => {
         languageVersions.forEach(version => {
@@ -47,9 +61,8 @@ export const getEditorWillMount = () => {
     };
 };
 
-
 const getSuggestions = (version: VTL_VERSION, monaco: typeof EditorApi): any => {
-    return function (model: editor.ITextModel, position: Position, context: languages.CompletionContext, token: CancellationToken) {
+    return function(model: editor.ITextModel, position: Position, context: languages.CompletionContext, token: CancellationToken) {
         const textUntilPosition = model.getValueInRange({
             startLineNumber: 1,
             startColumn: 1,
@@ -88,12 +101,20 @@ const getSuggestions = (version: VTL_VERSION, monaco: typeof EditorApi): any => 
     }
 };
 
+export const getSuggestionsForVersion = (version: VTL_VERSION, range: any) => {
+    let suggestions :languages.CompletionItem[] | undefined;
+    switch (version) {
+        case VTL_VERSION.VTL_2_0:
+            suggestions = getSuggestions2_0(range);
+            return suggestions.length !== 0 ? suggestions : grammarGraph.suggestions();
+        case VTL_VERSION.VTL_3_0:
+            suggestions = getSuggestions3_0(range);
+            return suggestions.length !== 0 ? suggestions : grammarGraph.suggestions();
+    }
+};
+
 export const getParserFacade = (version: VTL_VERSION) => {
     switch (version) {
-        case VTL_VERSION.VTL_1_0:
-            return {parser: ParserFacade};
-        case VTL_VERSION.VTL_1_1:
-            return {parser: ParserFacade};
         case VTL_VERSION.VTL_2_0:
             return {parser: ParserFacade};
         case VTL_VERSION.VTL_3_0:

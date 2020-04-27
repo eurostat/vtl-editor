@@ -2,8 +2,8 @@ import { mergeMultiplyMode, MultiplyMode } from './multiplyMode';
 import { StatementType } from './statementType';
 import { SyntaxCollection } from './syntaxCollection';
 
-const identifierPrefix = "⟨";
-const identifierPostfix = "⟩";
+const identifierPrefix = "⟨⟨";
+const identifierPostfix = "⟩⟩";
 const alternativesPrefix = "{";
 const alternativesPostfix = "}¹";
 const optionalPrefix = "{";

@@ -17,6 +17,7 @@ export class GrammarGraph<L extends Lexer, P extends Parser> {
     private readonly tokenizer: RuleTokenizer<L, P>;
     private readonly rules: Map<string, GrammarStatement> = new Map<string, GrammarStatement>();
     private readonly operators: Map<string, GrammarStatement> = new Map<string, GrammarStatement>();
+    private readonly keywords: SyntaxCollection = new SyntaxCollection();
     private root: GrammarStatement | undefined;
 
     constructor(vocabulary: VocabularyPack<L, P>, grammar: string) {
@@ -89,20 +90,20 @@ export class GrammarGraph<L extends Lexer, P extends Parser> {
             rule.resolveStatements(this.rules, this.operators, new Map<string, GrammarStatement>()));
 
         // Resolve syntax of functions and operators
-        this.rules.forEach((rule) => rule.resolveSyntax());
+        this.rules.forEach((rule) => rule.resolveSyntax(this.keywords));
+        this.keywords.distinct();
+        console.log(this.keywords);
 
         // Find root
         const rule0 = this.vocabulary.ruleName(0);
         if (rule0) this.root = this.rules.get(rule0);
-        // const instructions = this.root?.constructSyntax(new SyntaxCollection(), new Map<string, GrammarStatement>());
         console.log(this.rules);
 
         console.log(new Map(
             (Array.from(this.rules, ([key, value]) => [key, value.syntax])
-                .filter((value) => value[1] !== undefined) as [string, SyntaxLink][])
+                .filter((value) => value[1].length !== 0) as [string, SyntaxLink[]][])
                 //.map((value) => [value[0], value[1].snippet])
             ));
-        //console.log(instructions);
     }
 
     private addRule(name: string, tokens: RuleToken[]): GrammarStatement {

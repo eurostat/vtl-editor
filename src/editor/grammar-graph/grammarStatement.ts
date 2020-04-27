@@ -1,5 +1,4 @@
-import { keywordRgx } from '../vocabularyPack';
-import { MultiplyMode } from './multiplyMode';
+import { mergeMultiplyMode, MultiplyMode } from './multiplyMode';
 import { RuleToken } from './ruleToken';
 import { RuleTokenizer } from './ruleTokenizer';
 import { StatementMetadata } from './statementMetadata';
@@ -11,11 +10,10 @@ import { TokenType } from './tokenType';
 const terminators: string[] = ["EOL", "EOF"];
 
 export class GrammarStatement {
-    private type: StatementType = StatementType.None;
+    private type: StatementType = StatementType.Unknown;
     private _name: string | undefined;
     private _label: string | undefined;
     private _value: string | undefined;
-    private _primary: boolean = false;
     private alternatives: boolean = false;
     private unresolved: boolean = false;
     private multiplied: MultiplyMode = MultiplyMode.None;
@@ -24,7 +22,7 @@ export class GrammarStatement {
     private readonly metadata: StatementMetadata[] = [];
     private readonly tokens: RuleToken[] = [];
     private token: RuleToken | undefined;
-    syntax: SyntaxLink | undefined;
+    syntax: SyntaxLink[] = [];
 
     constructor(type: StatementType, tokens: RuleToken[], name?: string) {
         this.type = type;
@@ -135,7 +133,7 @@ export class GrammarStatement {
     }
 
     private addAtom(token: RuleToken) {
-        const statement = new GrammarStatement(StatementType.Atom, [token]);
+        const statement = new GrammarStatement(StatementType.Unknown, [token]);
         this.statements.push(statement);
         statement.processToken(token);
     }
@@ -226,7 +224,7 @@ export class GrammarStatement {
                     } else {
                         console.warn("Unknown rule in graph " + statement.name);
                     }
-                } else if (statement.isToken([TokenType.Keyword, TokenType.Operator, TokenType.Operand]) ) {
+                } else if (statement.isToken([TokenType.Keyword, TokenType.Operator, TokenType.Operand])) {
                     const operator = operators.get(statement.name);
                     if (operator) {
                         if (operator !== statement) statements[index] = operator;
@@ -241,56 +239,64 @@ export class GrammarStatement {
         });
     }
 
-    public resolveSyntax() {
-        let syntax = new SyntaxLink();
+    public resolveSyntax(keywords: SyntaxCollection) {
         switch (this.type) {
             case StatementType.Rule: {
-                if (this.statements.length === 1) {
-                    syntax = this.statements[0].constructLink(false);
-                    break;
-                }
                 let link: SyntaxLink | undefined;
                 if (this.alternatives) {
-                    syntax.alternatives = true;
                     this.statements.forEach((statement) => {
-                            link = statement.constructLink(false);
-                            if (link.hasKeyword()) syntax.add(link);
+                        link = statement.constructLink(false);
+                        if (link.hasKeyword()) this.syntax.push(link);
                     });
                 } else {
+                    const syntax = new SyntaxLink();
                     this.statements.forEach((statement) => {
                         link = statement.constructLink(syntax.hasKeyword());
                         if (syntax.hasKeyword() || link.hasKeyword()) {
                             syntax.add(link);
                         }
                     });
+                    if (syntax.hasKeyword()) this.syntax.push(syntax);
                 }
                 break;
             }
-            case StatementType.Block: {
-                break;
-            }
             case StatementType.Keyword: {
+                const syntax = new SyntaxLink();
                 if (!!this.value) syntax.keyword = this.value;
                 else console.warn("Keyword without value " + this.name);
+                this.syntax.push(syntax);
                 break;
             }
             case StatementType.Operator: {
-                if (!!this.value) syntax.operator = this.value;
-                else console.warn("Operator without value " + this.name);
                 break;
             }
             case StatementType.Operand: {
-                if (!!this.name) syntax.operand = this.name;
-                else console.warn("Operand without name");
                 break;
             }
             default:
                 console.warn("Unknown statement type " + this.type);
         }
-        if (syntax.hasKeyword()) {
-            syntax.collapse();
-            this.syntax = syntax;
+        if (this.alternatives) {
+            const added: SyntaxLink[] = [];
+            const removed: SyntaxLink[] = [];
+            this.syntax.forEach((link) => {
+                if (link.alternatives) {
+                    removed.push(link);
+                    link.chain.forEach((sublink) => {
+                        sublink.multiplied = mergeMultiplyMode(sublink.multiplied, link.multiplied);
+                        added.push(sublink);
+                    })
+                }
+            });
+            this.syntax = this.syntax.filter((link) => !removed.includes(link));
+            this.syntax.push(...added);
         }
+        this.syntax.forEach((link) => {
+            link.collapse();
+            // Due to bug in tokenizing process, remove erroneous optional flags
+            link.unOption();
+            link.collectSyntax(keywords);
+        });
     }
 
     private constructLink(keyword: boolean): SyntaxLink {
@@ -348,97 +354,6 @@ export class GrammarStatement {
         return syntax;
     }
 
-    public constructSyntax(previous: SyntaxCollection, visited: Map<string, GrammarStatement>): SyntaxCollection {
-        const combined: SyntaxCollection = new SyntaxCollection();
-        let visiset = false;
-
-        if (previous.size() > 1000) return combined;
-        // if (previous.notEmpty()) console.log(previous.entries);
-        switch (this.type) {
-            case StatementType.Rule: {
-                if (this.name) {
-                    if (visited.has(this.name)) {
-                        if (previous.notEmpty()) combined.add("<" + this.name + ">");
-                        break;
-                    }
-                    visited.set(this.name, this);
-                    visiset = true;
-
-                    let syntaxes: SyntaxCollection = new SyntaxCollection();
-                    if (this.alternatives) {
-                        this.statements.forEach((statement) => {
-                            syntaxes.addAll(statement.constructSyntax(previous, visited));
-                        });
-                    } else {
-                        this.statements.forEach((statement) => {
-                            if (syntaxes.isEmpty()) syntaxes.addAll(statement.constructSyntax(previous, visited));
-                            else syntaxes.merge(statement.constructSyntax(syntaxes, visited), " ");
-                        });
-                    }
-                    combined.addAll(syntaxes);
-                    break;
-                } else {
-                    console.warn("Unnamed rule " + this.name);
-                }
-                break;
-            }
-            case StatementType.Block: {
-                let syntaxes: SyntaxCollection = new SyntaxCollection();
-                if (this.alternatives) {
-                    this.statements.forEach((statement) => {
-                        syntaxes.addAll(statement.constructSyntax(previous, visited));
-                    });
-                } else {
-                    this.statements.forEach((statement) => {
-                        if (syntaxes.isEmpty()) syntaxes.addAll(statement.constructSyntax(previous, visited));
-                        else syntaxes.merge(statement.constructSyntax(syntaxes, visited), " ");
-                    });
-                }
-                combined.addAll(syntaxes);
-                break;
-            }
-            case StatementType.Operator: {
-                if (!!this.value) {
-                    if (previous.notEmpty() || keywordRgx.test(this.value)) {
-                        if (previous.notEmpty() || this.value === "if")
-                            combined.add(this.value, !!this.name && terminators.includes(this.name));
-                    }
-                } else {
-                    if (previous.notEmpty() && !!this.name) {
-                        combined.add("<" + this.name.toLocaleLowerCase() + ">", terminators.includes(this.name));
-                    }
-                }
-                break;
-            }
-            default:
-                console.warn("Unknown statement type " + this.type);
-        }
-        if (visiset && !!this.name) visited.delete(this.name);
-        if (this.value === "if") {
-            console.log(visited);
-            console.log("ceil data " + this.name);
-            console.log(previous);
-            console.log(combined);
-        }
-        return combined;
-    }
-
-    public markPrimary() {
-        if (this._primary) return;
-        this._primary = true;
-        if (this.statements.length !== 0) {
-            if (this.alternatives) {
-                this.statements.forEach((statement) => statement.markPrimary())
-            } else {
-                this.statements[0].markPrimary();
-                let i = 1;
-                while (i < this.statements.length && this.statements[i - 1].isOptional()) {
-                    this.statements[i++].markPrimary();
-                }
-            }
-        }
-    }
-
     public isOptional(): boolean {
         return this.multiplied === MultiplyMode.Optional
             || this.multiplied === MultiplyMode.Zeromore;
@@ -462,10 +377,6 @@ export class GrammarStatement {
 
     get value(): string | undefined {
         return this._value;
-    }
-
-    get primary(): boolean {
-        return this._primary;
     }
 
     private multiply(token: RuleToken) {

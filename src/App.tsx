@@ -10,26 +10,6 @@ import {SnackbarProvider} from "notistack";
 import {languageVersions, VTL_VERSION} from "./editor/settings";
 import {editor, Position} from "monaco-editor";
 
-const errorList = [
-    "Error description numer 1", "Error description numer 2", "Error description numer 3", "Error description numer 4",
-    "Error description numer 5", "Error description numer 6", "Error description numer 7"
-];
-
-const defCode = `
-ds_PY := lag ( na_main, 1 ) over ( order by time );
-
-ds_L_CY := na_main [ sub prices = "L" ] ;
-ds_L_PY := ds_PY [ sub prices = "L" ] ;
-ds_V_PY := ds_PY [ sub prices = "V" ] ;
-ds_Y_CY := na_main [ sub prices = "Y" ] ;
-
-
-ErrB:= check((abs(ds_Y_CY-(ds_L_CY / ds_L_PY[ filter obs_value <> 0 ] * ds_V_PY)) / ds_Y_CY [ filter obs_value <> 0 ]) < 0.001, 
-    errorcode("The observation values do not comply with the Y(t)= L(t) * V(t-1) / L(t-1) relation"), 
-    errorlevel("Error") );
-
-ErrB
-`;
 const getTheme = (): string => {
     const item = window.localStorage.getItem("theme");
     return item ? JSON.parse(item) : "vtl";

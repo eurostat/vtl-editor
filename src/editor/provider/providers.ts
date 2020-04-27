@@ -17,6 +17,7 @@ export const getVtlTheme = (): EditorApi.editor.IStandaloneThemeData => {
             {token: 'string', foreground: '018B03'},
             {token: 'comment', foreground: '939393'},
             {token: 'operator', foreground: '8B3301'},
+            {token: 'delimiter.bracket', foreground: '8B3301'},
             {token: 'operator.special', foreground: '8B3301', fontStyle: 'bold'},
         ],
         colors: {}

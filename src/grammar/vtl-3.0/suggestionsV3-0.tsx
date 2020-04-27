@@ -1,4 +1,4 @@
-import {FUNCTION,KEYWORD,SNIPPET,INSERT_AS_SNIPPET} from "../../editor/consts";
+import {FUNCTION,KEYWORD,SNIPPET,INSERT_AS_SNIPPET} from "../../editor/constants";
 
 export const getSuggestions = (range : any) => {return [
     {

@@ -1,4 +1,5 @@
 import { CharStreams, CommonTokenStream, Lexer, Parser } from 'antlr4ts';
+import { languages } from 'monaco-editor';
 // @ts-ignore
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import a4grammar from 'raw-loader!../../grammar/antlr4/ANTLRv4Parser.g4';
@@ -113,7 +114,19 @@ export class GrammarGraph<L extends Lexer, P extends Parser> {
         return rule;
     }
 
-    public rootName() {
+    rootName() {
         return !!this.root ? this.root.name : undefined;
+    }
+
+    suggestions(): languages.CompletionItem[] {
+        return this.keywords.entries.map((entry) => {
+            return {
+                label: entry.keyword,
+                kind: entry.completionKind(),
+                insertText: entry.snippet,
+                detail: entry.syntax,
+                documentation: ""
+            } as languages.CompletionItem;
+        });
     }
 }

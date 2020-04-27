@@ -1,3 +1,5 @@
+import { IMarkdownString, languages } from 'monaco-editor';
+
 export class SyntaxCollection {
     entries: SyntaxEntry[] = [];
     private _levels: SyntaxLevel[] = [];
@@ -96,7 +98,17 @@ export class SyntaxEntry {
     private _keyword: string;
     private _syntax: string;
     private _snippet: string;
+    private _markdown: IMarkdownString = {value: ""};
     private _terminated: boolean = false;
+    private _kind = languages.CompletionItemKind.Keyword;
+    private round: boolean = false;
+    private openRound: number = 0;
+    private square: boolean = false;
+    private openSquare: number = 0;
+    private curly: boolean = false;
+    private openCurly: number = 0;
+    private angle: boolean = false;
+    private openAngle: number = 0;
 
     constructor(keyword: string) {
         this._keyword = keyword;
@@ -116,6 +128,10 @@ export class SyntaxEntry {
         return this._syntax;
     }
 
+    get markdown(): IMarkdownString {
+        return this._markdown;
+    }
+
     get snippet(): string {
         return this._snippet;
     }
@@ -129,8 +145,85 @@ export class SyntaxEntry {
         if (this._keyword === this._syntax && keyword !== "") {
             this._keyword = this._keyword + " " + keyword;
         }
-        if (syntax != "") this._syntax = this._syntax + " " + syntax;
-        if (snippet != "") this._snippet = this._snippet + " " + snippet;
+
+        switch (syntax) {
+            case "(": {
+                this.round = true;
+                this.openRound++;
+                this._syntax = this._syntax + " " + syntax;
+                this._snippet = this._snippet + " " + snippet;
+                break;
+            }
+            case ")": {
+                if (this.round && this.openRound > 0) {
+                    this.openRound--;
+                    this.round = this.openRound > 0;
+                    this._syntax = this._syntax + " " + syntax;
+                    this._snippet = this._snippet + " " + snippet;
+                } else {
+                    this.terminate();
+                }
+                break;
+            }
+            case "[": {
+                this.square = true;
+                this.openSquare++;
+                this._syntax = this._syntax + " " + syntax;
+                this._snippet = this._snippet + " " + snippet;
+                break;
+            }
+            case "]": {
+                if (this.square && this.openSquare > 0) {
+                    this.openSquare--;
+                    this.square = this.openSquare > 0;
+                    this._syntax = this._syntax + " " + syntax;
+                    this._snippet = this._snippet + " " + snippet;
+                } else {
+                    this.terminate();
+                }
+                break;
+            }
+            case "{": {
+                this.curly = true;
+                this.openCurly++;
+                this._syntax = this._syntax + " " + syntax;
+                this._snippet = this._snippet + " " + snippet;
+                break;
+            }
+            case "}": {
+                if (this.curly && this.openCurly > 0) {
+                    this.openCurly--;
+                    this.curly = this.openCurly > 0;
+                    this._syntax = this._syntax + " " + syntax;
+                    this._snippet = this._snippet + " " + snippet;
+                } else {
+                    this.terminate();
+                }
+                break;
+            }
+            case "<": {
+                this.angle = true;
+                this.openAngle++;
+                this._syntax = this._syntax + " " + syntax;
+                this._snippet = this._snippet + " " + snippet;
+                break;
+            }
+            case ">": {
+                if (this.angle && this.openAngle > 0) {
+                    this.openAngle--;
+                    this.angle = this.openAngle > 0;
+                    this._syntax = this._syntax + " " + syntax;
+                    this._snippet = this._snippet + " " + snippet;
+                } else {
+                    this.terminate();
+                }
+                break;
+            }
+            default: {
+                this._syntax = this._syntax + (syntax !== "" ? " " + syntax : "");
+                this._snippet = this._snippet + (snippet !== "" ? " " + snippet : "");
+            }
+        }
     }
 
     equals(entry: SyntaxEntry) {
@@ -138,5 +231,9 @@ export class SyntaxEntry {
             && this._syntax === entry._syntax
             && this._snippet === entry._snippet
             && this._terminated === entry._terminated;
+    }
+
+    completionKind() {
+        return this._kind;
     }
 }

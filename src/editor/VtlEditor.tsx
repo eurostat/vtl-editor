@@ -1,29 +1,27 @@
-import { languages } from "monaco-editor";
 import * as EditorApi from 'monaco-editor/esm/vs/editor/editor.api';
-import { CancellationToken, editor, Position } from 'monaco-editor/esm/vs/editor/editor.api';
 // @ts-ignore
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import grammar from 'raw-loader!../grammar/vtl-2.0/Vtl.g4';
 import * as React from 'react';
 import MonacoEditor from "react-monaco-editor";
-import { suggestions } from "../grammar/vtl-2.0/vtl-2.0.autocompleteProvider";
 import { VtlLexer } from '../grammar/vtl-2.0/VtlLexer';
 import { VtlParser } from '../grammar/vtl-2.0/VtlParser';
+import { AutocompleteProvider } from './autocompleteProvider';
 import { GrammarGraph } from './grammar-graph/grammarGraph';
 import * as ParserFacade from './ParserFacade';
 import { createLexer, createParser } from './ParserFacade';
 import { TokensProvider } from './tokensProvider';
-//import {AutoSuggestionsGenerator} from '../auto-suggest/AutoSuggestionsGenerator';
-import './vtlEditor.css';
 import { VocabularyPack } from './vocabularyPack';
+import './vtlEditor.css';
 
 declare const window: any;
 export default class VtlEditor extends React.Component {
     private lexer = createLexer("");
     private parser = createParser("");
     private tokensProvider: TokensProvider = new TokensProvider();
-    private vocabulary: VocabularyPack<VtlLexer, VtlParser> = new VocabularyPack(this.lexer,this.parser);
+    private vocabulary: VocabularyPack<VtlLexer, VtlParser> = new VocabularyPack(this.lexer, this.parser);
     private grammarGraph: GrammarGraph<VtlLexer, VtlParser> = new GrammarGraph(this.vocabulary, grammar);
+    private autocompleteProvider: AutocompleteProvider = new AutocompleteProvider(this.grammarGraph.suggestions());
 
     state = {
         code: [
@@ -65,48 +63,7 @@ export default class VtlEditor extends React.Component {
             ],
             colors: {}
         });
-
-        monaco.languages.registerCompletionItemProvider("vtl-2.0", {
-            provideCompletionItems: function(model: editor.ITextModel, position: Position, context: languages.CompletionContext, token: CancellationToken) {
-                // find out if we are completing a property in the 'dependencies' object.
-                const textUntilPosition = model.getValueInRange({
-                    startLineNumber: 1,
-                    startColumn: 1,
-                    endLineNumber: position.lineNumber,
-                    endColumn: position.column
-                });
-                const word = model.getWordUntilPosition(position);
-                const range = {
-                    startLineNumber: position.lineNumber,
-                    endLineNumber: position.lineNumber,
-                    startColumn: word.startColumn,
-                    endColumn: word.endColumn
-                };
-
-                let uniquetext = Array.from(new Set(textUntilPosition.replace(/"(.*?)"/g, "")
-                    .replace(/[^a-zA-Z_]/g, " ")
-                    .split(" ").filter(w => w !== "")).values());
-                const suggestionList = suggestions(range, grammar);
-                uniquetext = removeLanguageSyntaxFromList(uniquetext, suggestionList);
-                const array = uniquetext.map(w => {
-                    return {
-                        label: w,
-                        kind: monaco.languages.CompletionItemKind.Variable,
-                        insertText: w
-                    } as languages.CompletionItem
-                });
-
-                return {
-                    suggestions: [...suggestionList, ...array]
-                };
-            }
-        });
-
-        function removeLanguageSyntaxFromList(vars: string[], suggestionList: any[]) {
-            const suggestionsLabels = suggestionList.map(s => s.label.toLowerCase());
-            return vars.filter(t => !suggestionsLabels.includes(t.toLowerCase()))
-        }
-
+        monaco.languages.registerCompletionItemProvider("vtl-2.0", this.autocompleteProvider);
     };
 
     didMount = (editor: any, monaco: typeof EditorApi) => {
@@ -119,13 +76,13 @@ export default class VtlEditor extends React.Component {
             let code = this.state.code;
             let syntaxErrors = ParserFacade.validate(code);
             let monacoErrors = [];
-            for (let e of syntaxErrors) {
+            for (let error of syntaxErrors) {
                 monacoErrors.push({
-                    startLineNumber: e.startLine,
-                    startColumn: e.startCol,
-                    endLineNumber: e.endLine,
-                    endColumn: e.endCol,
-                    message: e.message,
+                    startLineNumber: error.startLine,
+                    startColumn: error.startCol,
+                    endLineNumber: error.endLine,
+                    endColumn: error.endCol,
+                    message: error.message,
                     severity: monaco.MarkerSeverity.Error
                 });
             }

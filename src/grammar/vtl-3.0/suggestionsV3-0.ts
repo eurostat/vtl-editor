@@ -45,7 +45,6 @@ export const getSuggestions = (range: IRange) => {
             kind: KEYWORD,
             insertText: "with",
             range: range,
-            documentation: {value: "documentation"}
         },
         {
             label: "current_date",
@@ -540,7 +539,6 @@ export const getSuggestions = (range: IRange) => {
             insertText: "nvl",
             range: range,
             documentation: {value: "The operator nvl returns op2 when op1 is null, otherwise op1.    \n\n **Syntax** \n\n    nvl ( op1 , op2 )  "}
-
         },
         {
             label: "hierarchy",
@@ -572,7 +570,6 @@ export const getSuggestions = (range: IRange) => {
             kind: KEYWORD,
             insertText: "data",
             range: range,
-            documentation: {value: "documentation"}
         },
         {
             label: "structure",
@@ -640,7 +637,6 @@ export const getSuggestions = (range: IRange) => {
             insertText: "ltrim",
             range: range,
             documentation: {value: "Removes leading whitespace from a string.  For example,    trim(\" Hello \") gives \"Hello \".   \n\n **Syntax** \n\n    ltrim(operand) "}
-
         },
         {
             label: "rtrim",

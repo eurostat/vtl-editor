@@ -242,3 +242,12 @@ button {
 .editor-container {
   height: 100%;
 }
+
+.overlay-full {
+  position: absolute;
+  height: 100vh;
+  top: 0;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.58);
+  z-index: 99;
+}

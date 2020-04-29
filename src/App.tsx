@@ -29,8 +29,6 @@ function App() {
     const [tempCursor, setTempCursor] = useState(new Position(0, 0));
     const [errors, setErrors] = useState([] as editor.IMarkerData[]);
 
-
-
     useEffect(() => {
         retrieveFromLocalStorage("code", setCode);
         retrieveFromLocalStorage("codeChanged", setCodeChanged);
@@ -60,6 +58,7 @@ function App() {
         saveToLocalStorage("fileName", fileName);
         setFileName(fileName)
     };
+
     const updateCode = (val: string) => {
         saveToLocalStorage("code", val);
         setCode(val);
@@ -127,7 +126,6 @@ function App() {
         errors,
         setTempCursor
     };
-
 
     return (
         <SnackbarProvider

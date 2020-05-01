@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import "./navigation.scss"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faQuestionCircle, faSave} from "@fortawesome/free-regular-svg-icons";
+import {faFile, faQuestionCircle, faSave} from "@fortawesome/free-regular-svg-icons";
 import {faCog, faUpload} from "@fortawesome/free-solid-svg-icons";
 import {decisionModal} from "./DecisionModal";
 import ModalFactory from "react-modal-promise";
@@ -15,10 +15,11 @@ type NavigationProps = {
     setCodeChanged: (value: boolean) => void,
     codeChanged: boolean,
     fileName: string,
+    createNewFile: () => void,
     settingsNavProps: any
 }
 
-const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, fileName, settingsNavProps}: NavigationProps) => {
+const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, fileName, createNewFile, settingsNavProps}: NavigationProps) => {
     const downloadFile = () => {
         let url = window.URL;
         let file = url.createObjectURL(new File([code], (!fileName || fileName === "") ? "untitled.vtl" : fileName));
@@ -67,6 +68,11 @@ const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, 
     return (
         <>
             <div className="nav flex-column nav-pills left-nav" aria-orientation="vertical">
+                <Tooltip title="New File" placement="right" arrow>
+                    <button className="menu-save" onClick={createNewFile}>
+                        <FontAwesomeIcon icon={faFile}/>
+                    </button>
+                </Tooltip>
                 <Tooltip title="Save file (Ctrl+S)" placement="right" arrow>
                     <button className="menu-save" onClick={downloadFile}>
                         <FontAwesomeIcon icon={faSave}/>

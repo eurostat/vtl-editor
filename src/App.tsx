@@ -55,6 +55,10 @@ function App() {
         //document.getElementsByClassName("logo")[0].focus();
         updateCode(newFiles[0]);
         //setFiles(newFiles);
+        updateFileName(fileName);
+    };
+
+    const updateFileName =(fileName : string) => {
         saveToLocalStorage("fileName", fileName);
         setFileName(fileName)
     };
@@ -90,6 +94,12 @@ function App() {
         return styling;
     };
 
+    const createNewFile = () => {
+        updateCode("");
+        updateCodeChanged(false);
+        updateFileName("untitled.vtl")
+    };
+
     const VtlEditorProps = {
         showMenu,
         showErrorBox,
@@ -110,6 +120,7 @@ function App() {
         setCodeChanged,
         codeChanged,
         fileName,
+        createNewFile,
         "settingsNavProps": {theme, "setTheme": updateTheme, languageVersion, setLanguageVersion}
     };
 
@@ -120,6 +131,7 @@ function App() {
     };
 
     const ErrorBoxProps = {
+        showErrorBox,
         changeErrorBoxState,
         languageVersion,
         cursorPosition,

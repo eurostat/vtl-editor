@@ -7,6 +7,7 @@ import {decisionModal} from "./DecisionModal";
 import ModalFactory from "react-modal-promise";
 import SettingsNav from "./SettingsNav";
 import {Tooltip} from "@material-ui/core";
+import {Link} from "react-router-dom";
 
 type NavigationProps = {
     showDialog: (value: boolean) => void,
@@ -106,9 +107,11 @@ const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, 
                     </button>
                 </Tooltip>
                 <Tooltip title="Help" placement="right" arrow>
-                    <button className="menu-help">
-                        <FontAwesomeIcon icon={faQuestionCircle}/>
-                    </button>
+                    <Link to="/documentation" target="_blank">
+                        <button className="menu-help">
+                            <FontAwesomeIcon icon={faQuestionCircle}/>
+                        </button>
+                    </Link>
                 </Tooltip>
             </div>
             <SettingsNav {...settingsNavProps}/>

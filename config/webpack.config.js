@@ -493,6 +493,10 @@ module.exports = function (webpackEnv) {
                             use: 'raw-loader',
                         },
                         {
+                            test: /\.html$/i,
+                            loader: 'html-loader',
+                        },
+                        {
                             loader: require.resolve('file-loader'),
                             // Exclude `js` files to keep "css" loader working as it injects
                             // its runtime that would otherwise be processed through "file" loader.

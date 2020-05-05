@@ -69,6 +69,9 @@ const OpenDialog = ({onClose, onLoad}: any) => {
     const handleAddFiles = async () => {
         if(files.length>0) {
             resolveAllFiles().then(result => onLoad(result, files[0].name));
+            enqueueSnackbar(`File opened successfully.`, {
+                variant: "success"
+            });
             handleClose();
         }else{
             enqueueSnackbar(`Please select the file first.`, {

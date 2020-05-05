@@ -53,6 +53,12 @@
   width: $settingsNavWidth;
   background-color: #232323;
 
+  .group-container{
+    text-align: left;
+    margin: 0 auto 10px;
+    width: 70%;
+  }
+
   label {
     margin-top: 35px;
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
@@ -64,8 +70,6 @@
   }
 
   select {
-    width: 70%;
-    margin: 0 auto;
     background-color: #36393c;
     color: #a2a8ad;
     border: 1px solid #46494d;

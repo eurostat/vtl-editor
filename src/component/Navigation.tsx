@@ -45,31 +45,48 @@ const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, 
                 downloadFile();
             } else if (key === 'o') {
                 event.preventDefault();
-                uploadFile();
+                openFile();
             }
         }
     };
 
+    const makeNewFile = async () => {
+        const text = codeChanged ? "You have unsaved changes. Do you want to save your progress before creating new file?"
+            : "You will lose your code. Do you want to continue?";
+        let res = await decisionModal({
+            title: "Warning!",
+            text
+        });
+        if (res === "save") {
+            if (codeChanged) {
+                downloadFile()
+            }
+            createNewFile();
+        }
+    };
 
-    const uploadFile = async () => {
+    const openFile = async () => {
+        let res: any = true;
         if (codeChanged) {
-            const res = await decisionModal({
+            res = await decisionModal({
                 title: "Warning!",
                 text:
                     "You have unsaved changes. Do you want to save your progress before opening new file?"
             });
-            if (res) {
+            if (res === "save") {
                 downloadFile()
             }
         }
-        showDialog(true);
+        if (res !== "cancel") {
+            showDialog(true);
+        }
     };
 
     return (
         <>
             <div className="nav flex-column nav-pills left-nav" aria-orientation="vertical">
                 <Tooltip title="New File" placement="right" arrow>
-                    <button className="menu-save" onClick={createNewFile}>
+                    <button className="menu-save" onClick={makeNewFile}>
                         <FontAwesomeIcon icon={faFile}/>
                     </button>
                 </Tooltip>
@@ -79,7 +96,7 @@ const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, 
                     </button>
                 </Tooltip>
                 <Tooltip title="Open file (Ctrl+O)" placement="right" arrow>
-                    <button className="menu-open" onClick={uploadFile}>
+                    <button className="menu-open" onClick={openFile}>
                         <FontAwesomeIcon icon={faUpload}/>
                     </button>
                 </Tooltip>

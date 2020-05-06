@@ -29,16 +29,13 @@ const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, 
         a.download = fileName;
         a.click();
         setCodeChanged(false);
-        // FileSaver.saveAs(file, "data.vtl");
     };
 
     useEffect(() => {
         window.onkeydown = (event: KeyboardEvent) => checkKeyEvent(event);
     });
 
-
     const checkKeyEvent = (event: KeyboardEvent) => {
-        console.log(event);
         if (event.ctrlKey) {
             let key = event.key;
             if (key === 's') {
@@ -47,6 +44,11 @@ const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, 
             } else if (key === 'o') {
                 event.preventDefault();
                 openFile();
+            } else if ( key === 'e') {
+                event.preventDefault();
+                makeNewFile();
+            } else if (key === "F1") {
+                window.open(`${window.location.origin}/documentation`);
             }
         }
     };
@@ -86,7 +88,7 @@ const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, 
     return (
         <>
             <div className="nav flex-column nav-pills left-nav" aria-orientation="vertical">
-                <Tooltip title="New File" placement="right" arrow>
+                <Tooltip title="New File (Ctrl+E)" placement="right" arrow>
                     <button className="menu-save" onClick={makeNewFile}>
                         <FontAwesomeIcon icon={faFile}/>
                     </button>
@@ -102,11 +104,11 @@ const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, 
                     </button>
                 </Tooltip>
                 <Tooltip title="Settings" placement="right" arrow>
-                    <button className="menu-settings" id="setting-icon" onClick={() => changeMenu()}>
+                    <button className="menu-settings" id="setting-icon" onClick={changeMenu}>
                         <FontAwesomeIcon icon={faCog}/>
                     </button>
                 </Tooltip>
-                <Tooltip title="Help" placement="right" arrow>
+                <Tooltip title="Help (Ctrl+F1)" placement="right" arrow>
                     <Link to="/documentation" target="_blank">
                         <button className="menu-help">
                             <FontAwesomeIcon icon={faQuestionCircle}/>

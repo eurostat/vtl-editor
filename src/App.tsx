@@ -28,6 +28,7 @@ function App() {
     const [cursorPosition, setCursorPosition] = useState(new Position(0, 0));
     const [tempCursor, setTempCursor] = useState(new Position(0, 0));
     const [errors, setErrors] = useState([] as editor.IMarkerData[]);
+    const [errorBoxSize, setErrorBoxSize] = useState(0);
 
     useEffect(() => {
         retrieveFromLocalStorage("code", setCode);
@@ -58,7 +59,7 @@ function App() {
         updateFileName(fileName);
     };
 
-    const updateFileName =(fileName : string) => {
+    const updateFileName = (fileName: string) => {
         saveToLocalStorage("fileName", fileName);
         setFileName(fileName)
     };
@@ -101,8 +102,7 @@ function App() {
     };
 
     const VtlEditorProps = {
-        showMenu,
-        showErrorBox,
+        "resizeLayout": [showMenu, showErrorBox, errorBoxSize],
         code,
         "setCode": updateCode,
         "setCodeChanged": updateCodeChanged,
@@ -133,6 +133,7 @@ function App() {
     const ErrorBoxProps = {
         showErrorBox,
         changeErrorBoxState,
+        setErrorBoxSize,
         languageVersion,
         cursorPosition,
         errors,
@@ -153,11 +154,11 @@ function App() {
             <div className={getStyles()}>
                 <Header/>
                 <Navigation {...NavigationProps}/>
-                <div className={`middle-container ${theme}`}>
-                    <div className="top-bar">
+                <div id="middle-container" className={`middle-container ${theme}`}>
+                    <div id="top-bar" className="top-bar">
                         <span>{fileName}&nbsp;{codeChanged ? "*" : ""}</span>
                     </div>
-                    <div className="vtl-container">
+                    <div id="vtl-container" className="vtl-container">
                         <VtlEditor {...VtlEditorProps}/>
                     </div>
                     <ErrorBox {...ErrorBoxProps} />

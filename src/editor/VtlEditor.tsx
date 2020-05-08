@@ -6,14 +6,12 @@ import MonacoEditor from "react-monaco-editor";
 import { getEditorWillMount, getParserFacade } from "./provider/providers";
 
 import { VTL_VERSION } from "./settings";
-//import {AutoSuggestionsGenerator} from '../auto-suggest/AutoSuggestionsGenerator';
 import './vtlEditor.css';
 
 declare const window: any;
 
 type VtlEditorProps = {
-    showMenu: boolean;
-    showErrorBox: boolean,
+    resizeLayout: any[],
     code: string,
     setCode: (value: string) => void,
     setCodeChanged: (value: boolean) => void,
@@ -26,7 +24,8 @@ type VtlEditorProps = {
 
 let parserFacade: any = {parser: null};
 let errors: any = {value: ""};
-const VtlEditor = ({showMenu, showErrorBox, code, setCode, setCodeChanged, theme, languageVersion, setCursorPosition, tempCursor, setErrors}: VtlEditorProps) => {
+
+const VtlEditor = ({resizeLayout, code, setCode, setCodeChanged, theme, languageVersion, setCursorPosition, tempCursor, setErrors}: VtlEditorProps) => {
     const monacoRef = useRef(null);
 
     useEffect(() => {
@@ -35,7 +34,7 @@ const VtlEditor = ({showMenu, showErrorBox, code, setCode, setCodeChanged, theme
             monacoRef.current.editor.layout();
         }
         // console.log(monacoRef.current, "monaco efect");
-    }, [showMenu, showErrorBox]);
+    }, [...resizeLayout]);
 
     useEffect(() => {
         if (monacoRef && monacoRef.current) {
@@ -55,6 +54,7 @@ const VtlEditor = ({showMenu, showErrorBox, code, setCode, setCodeChanged, theme
         let onDidChangeTimout = (e: any) => {
             to = setTimeout(() => onDidChange(e), 2000);
         };
+
         const onDidChange = (e: any) => {
             // @ts-ignore
             let syntaxErrors = parserFacade.parser.validate(editor.getValue());
@@ -69,8 +69,7 @@ const VtlEditor = ({showMenu, showErrorBox, code, setCode, setCodeChanged, theme
                     severity: monaco.MarkerSeverity.Error
                 });
             }
-            console.log("on did change");
-            let errorsString = monacoErrors.map(e => e.message).reduce((e1, e2) => e1 + ", " + e2,"");
+            let errorsString = monacoErrors.map(e => e.message).reduce((e1, e2) => e1 + ", " + e2, "");
             if (errorsString !== errors.value) {
                 setErrors(monacoErrors);
                 errors = {value: errorsString};
@@ -87,7 +86,6 @@ const VtlEditor = ({showMenu, showErrorBox, code, setCode, setCodeChanged, theme
     };
 
     const onChange = (newValue: string, e: EditorApi.editor.IModelContentChangedEvent) => {
-        console.log("ON CHANGE");
         setCode(newValue);
         setCodeChanged(true);
 

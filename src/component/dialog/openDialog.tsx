@@ -10,7 +10,7 @@ import {useSnackbar} from "notistack";
 
 
 const OpenDialog = ({onClose, onLoad}: any) => {
-    const [open, setOpen] = useState(true);
+    const [open] = useState(true);
     const [files, setFiles] = useState([] as any[]);
     const {enqueueSnackbar} = useSnackbar();
     const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
@@ -35,7 +35,7 @@ const OpenDialog = ({onClose, onLoad}: any) => {
         }
 
     }, []);
-    const {acceptedFiles, getRootProps, getInputProps} = useDropzone({onDrop, accept: ".vtl"});
+    const {getRootProps, getInputProps} = useDropzone({onDrop, accept: ".vtl"});
     const file = files.map((file: File) => (
         <li key={file.name}>
             {file.name}
@@ -67,13 +67,13 @@ const OpenDialog = ({onClose, onLoad}: any) => {
     };
 
     const handleAddFiles = async () => {
-        if(files.length>0) {
+        if (files.length > 0) {
             resolveAllFiles().then(result => onLoad(result, files[0].name));
             enqueueSnackbar(`File opened successfully.`, {
                 variant: "success"
             });
             handleClose();
-        }else{
+        } else {
             enqueueSnackbar(`Please select the file first.`, {
                 variant: "warning"
             });

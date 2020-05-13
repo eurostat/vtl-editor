@@ -1,0 +1,82 @@
+@import "../variables";
+
+
+.overlay{
+  position:absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.62);
+}
+
+.overlay-header{
+  height: calc( #{$navbarHeight} + #{$barHeight});
+  border: solid 5px red;
+  width: 100%;
+}
+
+.overlay-nav, .overlay-settings{
+  height: 100vh;
+}
+
+.overlay-nav, .overlay-settings, .overlay-middle-container{
+  display: inline-block;
+}
+
+.overlay-nav{
+  vertical-align: top;
+  border: solid 5px #bf11c8;
+  width: $leftNavWidth;
+}
+.hide-settings-nav{
+  .overlay-settings{
+    display: none;
+  }
+}
+
+
+.overlay-settings{
+  width: $settingsNavWidth;
+  border: solid 5px #007acc;
+}
+
+.overlay-middle-container{
+  display: inline-block;
+  vertical-align: top;
+  width: calc(#{$centerWidth} - #{$settingsNavWidth});
+  height: calc(100vh - #{$navbarHeight} - #{$barHeight});
+  border: solid 5px #3b3939;
+  position: relative;
+}
+
+.overlay-top{
+  width: 100%;
+  height: calc( #{$topBarHeight} - 5px );
+  border: solid 5px darkred;
+}
+
+.hide-error-box{
+  .overlay-editor{
+    height: calc(100% - #{$topBarHeight} - #{$errorBarHeight} + 5px);
+  }
+  .overlay-error-box{
+    display: none;
+  }
+}
+
+.overlay-editor{
+  width: 100%;
+  height: calc(100% - #{$topBarHeight} - #{$errorBarHeight} - #{$errorBoxHeight} + 5px);
+  border: solid 5px #e04f5f;
+}
+
+.overlay-error-box{
+  height: $errorBoxHeight;
+  border: solid 5px #ffc0dc;
+}
+
+.overlay-error-bar{
+  height: $errorBarHeight;
+  border: solid 5px #5c6cff;
+}

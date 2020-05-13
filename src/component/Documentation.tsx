@@ -1,8 +1,7 @@
 import React from "react";
 
 // @ts-ignore
-
-import html from '../documentation.html';
+import html from '../documentation/userManual.html';
 var htmlDoc = {__html: html};
 
 const Documentation = () => {

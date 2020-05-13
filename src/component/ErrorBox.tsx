@@ -19,7 +19,7 @@ type ErrorBoxProps = {
 
 const ErrorBox = ({showErrorBox, changeErrorBoxState, setErrorBoxSize, languageVersion, cursorPosition, errors, setTempCursor}: ErrorBoxProps) => {
     const errorsCount = errors.length;
-    const version = languageVersions!.find(l => l.code === languageVersion)!.name;
+    const version = languageVersions.find(l => l.code === languageVersion)!.name;
 
     const newCursorPosition = (error: editor.IMarkerData) => {
         setTempCursor(new Position(error.startLineNumber, error.startColumn));

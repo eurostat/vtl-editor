@@ -9,6 +9,7 @@ import OpenDialog from "./component/dialog/openDialog";
 import {SnackbarProvider} from "notistack";
 import {languageVersions, VTL_VERSION} from "./editor/settings";
 import {editor, Position} from "monaco-editor";
+import GuideOverlay from "./component/GuideOverlay";
 
 const getTheme = (): string => {
     const item = window.localStorage.getItem("theme");
@@ -16,7 +17,6 @@ const getTheme = (): string => {
 };
 
 function App() {
-    const [files, setFiles] = useState([] as string[]);
     const [showDialog, setShowDialog] = useState(false);
     const [showMenu, setShowMenu] = useState(false);
     const [showErrorBox, setShowErrorBox] = useState(false);
@@ -24,7 +24,7 @@ function App() {
     const [codeChanged, setCodeChanged] = useState(false);
     const [fileName, setFileName] = useState("untitled.vtl");
     const [theme, setTheme] = useState(getTheme());
-    const [languageVersion, setLanguageVersion] = useState(languageVersions[languageVersions.length - 1].code as VTL_VERSION);
+    const [languageVersion, setLanguageVersion] = useState(languageVersions[languageVersions.length - 1].code);
     const [cursorPosition, setCursorPosition] = useState(new Position(0, 0));
     const [tempCursor, setTempCursor] = useState(new Position(0, 0));
     const [errors, setErrors] = useState([] as editor.IMarkerData[]);
@@ -165,6 +165,7 @@ function App() {
                 </div>
                 {showDialog ?
                     <OpenDialog {...UploadDialogProps}/> : null}
+                {false ? <GuideOverlay/> : null}
             </div>
         </SnackbarProvider>
     );

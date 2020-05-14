@@ -1,10 +1,12 @@
 import * as React from 'react';
 import MonacoEditor, {EditorWillMount} from "react-monaco-editor";
+import { GrammarGraph } from './grammarGraph';
 import * as VtlTokensProvider from './VtlTokensProvider';
+import { TokensProvider } from './tokensProvider';
 import * as ParserFacade from './ParserFacade';
 import * as EditorApi from 'monaco-editor/esm/vs/editor/editor.api';
 //import {AutoSuggestionsGenerator} from '../auto-suggest/AutoSuggestionsGenerator';
-import './vtl-editor.css';
+import './vtlEditor.css';
 import {editor} from "monaco-editor/esm/vs/editor/editor.api";
 import {Position} from "monaco-editor/esm/vs/editor/editor.api";
 import {languages} from "monaco-editor";
@@ -16,6 +18,8 @@ import txt from 'raw-loader!../grammar/vtl-2.0/Vtl.g4';
 
 declare const window: any;
 export default class VtlEditor extends React.Component {
+    private tokensProvider: TokensProvider = new TokensProvider();
+    private grammarGraph: GrammarGraph = new GrammarGraph();
 
     state = {
         code: [
@@ -36,50 +40,25 @@ export default class VtlEditor extends React.Component {
     };
 
     literalFg = '3b8737';
-    idFg = '000000';
+    idFg = '#001188';
     symbolsFg = '990000';
     keywordFg = '7132a8';
     errorFg = 'ff0000';
     eolFg = '009900';
 
-    editor = (monaco: any) => {
-        monaco.languages.register({id: 'vtl'});
-        monaco.languages.setTokensProvider('vtl', new VtlTokensProvider.VtlTokensProvider());
-        monaco.editor.defineTheme('vtlTheme', {
+    editor = (monaco: typeof EditorApi) => {
+        monaco.languages.register({id: 'vtl-2.0'});
+        monaco.languages.setMonarchTokensProvider('vtl-2.0', this.tokensProvider.monarchLanguage('vtl-2.0'));
+        //monaco.languages.setTokensProvider('vtl', new VtlTokensProvider.VtlTokensProvider());
+        monaco.editor.defineTheme('vtl', {
             base: 'vs',
-            inherit: false,
+            inherit: true,
             rules: [
-                {token: 'assign.vtl', foreground: this.symbolsFg},
-                {token: '1.vtl', foreground: this.symbolsFg},
-                {token: '2.vtl', foreground: this.symbolsFg},
-                {token: '3.vtl', foreground: this.symbolsFg},
-                {token: '4.vtl', foreground: this.symbolsFg},
-                {token: '11.vtl', foreground: this.symbolsFg},
-                {token: '13.vtl', foreground: this.symbolsFg},
-                {token: '14.vtl', foreground: this.symbolsFg},
-                {token: '5.vtl', foreground: this.symbolsFg},
-                {token: '6.vtl', foreground: this.symbolsFg},
-                {token: 'cartesian_per.vtl', foreground: this.symbolsFg},
-
-
-                {token: 'integer_constant.vtl', foreground: this.symbolsFg, fontStyle: 'bold'},
-
-                {token: 'eol.vtl', foreground: this.eolFg, fontStyle: 'bold'},
-                {token: 'string_constant.vtl', foreground: this.literalFg},
-
-                {token: 'subspace.vtl', foreground: this.keywordFg, fontStyle: 'bold'},
-                {token: 'order.vtl', foreground: this.keywordFg, fontStyle: 'bold'},
-                {token: 'lag.vtl', foreground: this.keywordFg, fontStyle: 'bold'},
-                {token: 'over.vtl', foreground: this.keywordFg, fontStyle: 'bold'},
-                {token: 'check.vtl', foreground: this.keywordFg, fontStyle: 'bold'},
-                {token: 'by.vtl', foreground: this.keywordFg, fontStyle: 'bold'},
-                {token: 'filter.vtl', foreground: this.keywordFg, fontStyle: 'bold'},
-                {token: 'errorcode.vtl', foreground: this.keywordFg, fontStyle: 'bold'},
-                {token: 'errorlevel.vtl', foreground: this.keywordFg, fontStyle: 'bold'},
-                {token: 'abs.vtl', foreground: this.keywordFg, fontStyle: 'bold'},
-
-                {token: 'identifier.vtl', foreground: this.idFg, fontStyle: 'italic'},
-            ]
+                { token: 'string', foreground: '018B03' },
+                { token: 'operator', foreground: '8B3301' },
+                { token: 'operator.special', foreground: '8B3301', fontStyle: 'bold' },
+            ],
+            colors: {}
         });
 
 
@@ -128,7 +107,7 @@ export default class VtlEditor extends React.Component {
 
 
 
-    didMount = (editor: any, monaco: any) => {
+    didMount = (editor: any, monaco: typeof EditorApi) => {
         console.log("DID MOUNT");
         let to: NodeJS.Timeout;
         let onDidChangeTimout = (e: any) => {
@@ -136,7 +115,9 @@ export default class VtlEditor extends React.Component {
         };
 
         let onDidChange = (e: any) => {
-
+            console.log("Test");
+            // this.tokensProvider.addVariables();
+            monaco.languages.setMonarchTokensProvider('vtl-2.0', this.tokensProvider.monarchLanguage('vtl-2.0'));
             let code = this.state.code;
             let syntaxErrors = ParserFacade.validate(code);
             let monacoErrors = [];
@@ -163,8 +144,10 @@ export default class VtlEditor extends React.Component {
 
     onChange = (newValue: string, e: EditorApi.editor.IModelContentChangedEvent) => {
         console.log("ON CHANGE");
+        // console.log(newValue);
+        // console.log(e);
+        // console.log('onChange', newValue, e);
         this.setState({code: newValue});
-
     };
 
     options = {
@@ -177,9 +160,15 @@ export default class VtlEditor extends React.Component {
     render() {
         return (
             <div className="editor-container">
-                <MonacoEditor editorWillMount={this.editor} editorDidMount={this.didMount} height="60vh" language="vtl"
-                              theme="vtlTheme" defaultValue='' options={this.options}
-                              value={this.state.code} onChange={this.onChange}/>
+                <MonacoEditor editorWillMount={this.editor}
+                              editorDidMount={this.didMount}
+                              height="60vh"
+                              language="vtl-2.0"
+                              theme="vtl"
+                              defaultValue=''
+                              options={this.options}
+                              value={this.state.code}
+                              onChange={this.onChange}/>
             </div>)
     }
 

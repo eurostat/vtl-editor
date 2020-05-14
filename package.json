@@ -156,7 +156,6 @@
     ]
   },
   "devDependencies": {
-    "raw-loader": "^4.0.0",
-    "webpack-cli": "^3.3.11"
+    "raw-loader": "^4.0.0"
   }
 }

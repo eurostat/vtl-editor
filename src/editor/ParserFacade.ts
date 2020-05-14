@@ -33,7 +33,7 @@ export class Error {
 // @ts-ignore VALID
 class CollectorErrorListener implements ANTLRErrorListener {
 
-    private errors: Error[] = []
+    private errors: Error[] = [];
 
     constructor(errors: Error[]) {
         this.errors = errors
@@ -41,7 +41,7 @@ class CollectorErrorListener implements ANTLRErrorListener {
 
     // @ts-ignore TS7006
     syntaxError(recognizer, offendingSymbol, line, column, msg, e) {
-        var endColumn = column + 1;
+        let endColumn = column + 1;
         if (offendingSymbol._text !== null && offendingSymbol._text !== undefined) {
             endColumn = column + offendingSymbol._text.length;
         }

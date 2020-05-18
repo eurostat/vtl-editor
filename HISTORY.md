@@ -1,3 +1,17 @@
+## Version 0.5.0.200518-a
+Date: 2020-05-18
+
+### New Features
+- New file icon in the side menu allows to create new file
+- Added tooltips to the menu items and bottom bar [VRM-22]
+- Help icon in the side menu opens a new window with a user manual [VRM-97]
+
+### Improvements
+- If current file has unsaved changes when you create new or open another file, you are prompted to save the current file, discard changes or cancel the action [VRM-41]
+- Error box can now be resized with mouse drag [VRM-19]
+- Keyboard shortcuts for creating new file, saving file, opening new file and opening documentation [VRM-22]
+
+
 ## Version 0.4.0.200427-a
 Date: 2020-04-27
 
@@ -13,11 +27,13 @@ Date: 2020-04-27
 
 ### Fixes
 - Round and angle brackets are now colorized properly [VRM-14]
+- Brackets pairs are matched properly
 
 ### Technical details
 - Autocomplete items are listed in static source files for each existing grammar providing extra details and help content [VRM-16]
 - For new grammars when there aren't static files autocomplete items are created automatically from grammar file [VRM-18]
 - Editor configuration and contents are preserved in the local storage in the browser
+
 
 ## Version 0.3.0.200415-a
 Date: 2020-04-15

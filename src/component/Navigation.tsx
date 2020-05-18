@@ -1,13 +1,13 @@
-import React, {useEffect} from "react";
-import "./navigation.scss"
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faFile, faQuestionCircle, faSave} from "@fortawesome/free-regular-svg-icons";
-import {faCog, faUpload} from "@fortawesome/free-solid-svg-icons";
-import {decisionModal} from "./DecisionModal";
+import { faFile, faQuestionCircle, faSave } from "@fortawesome/free-regular-svg-icons";
+import { faCog, faUpload } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Tooltip } from "@material-ui/core";
+import React, { useEffect } from "react";
 import ModalFactory from "react-modal-promise";
+import { Link } from "react-router-dom";
+import { decisionModal } from "./DecisionModal";
+import "./navigation.scss"
 import SettingsNav from "./SettingsNav";
-import {Tooltip} from "@material-ui/core";
-import {Link} from "react-router-dom";
 
 type NavigationProps = {
     showDialog: (value: boolean) => void,
@@ -44,7 +44,7 @@ const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, 
             } else if (key === 'o') {
                 event.preventDefault();
                 openFile();
-            } else if ( key === 'e') {
+            } else if (key === 'e') {
                 event.preventDefault();
                 makeNewFile();
             } else if (key === "F1") {

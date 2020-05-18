@@ -19,7 +19,7 @@ export class RuleToken {
     }
 
     multiply(type: string) {
-        let multiplied = MultiplyMode.None;
+        let multiplied;
         switch (type) {
             case TokenType.Question:
                 multiplied = MultiplyMode.Optional;

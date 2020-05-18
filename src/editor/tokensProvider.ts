@@ -2,7 +2,6 @@ import monarchDefinition from '../grammar/vtl-2.0/monarchDefinition.json';
 import { VtlLexer } from '../grammar/vtl-2.0/VtlLexer';
 import { keywordRgx } from './vocabularyPack';
 
-
 export class TokensProvider {
     private readonly definition: any;
 
@@ -54,10 +53,6 @@ export class TokensProvider {
 
 const rgxPrefix = "_RGX_";
 const rgxRgx = /\/(.*)\/(.*)?/;
-
-function rgxReplacer(key: string, value: any) {
-    return value instanceof RegExp ? rgxPrefix + value.toString() : value;
-}
 
 function rgxReviver(key: string, value: any) {
     const strValue = value.toString();

@@ -118,6 +118,7 @@ $errorColor: #e04f5f;
 
   div {
     cursor: pointer;
+
     &:first-of-type {
       margin-top: 7px;
     }
@@ -175,14 +176,14 @@ $errorColor: #e04f5f;
   }
 }
 
-.middle-container.vs-dark{
-  .error-list{
-   background-color: #1e1e1e;
+.middle-container.vs-dark {
+  .error-list {
+    background-color: #1e1e1e;
   }
 }
 
-.middle-container.hc-black{
-  .error-list{
+.middle-container.hc-black {
+  .error-list {
     background-color: black;
   }
 }

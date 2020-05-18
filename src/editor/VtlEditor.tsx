@@ -3,7 +3,7 @@ import { Position } from 'monaco-editor/esm/vs/editor/editor.api';
 import * as React from 'react';
 import { useEffect, useRef } from 'react';
 import MonacoEditor from "react-monaco-editor";
-import { getEditorWillMount, getParserFacade } from "./provider/providers";
+import { getEditorWillMount, getParserFacade } from "./providers";
 
 import { VTL_VERSION } from "./settings";
 import './vtlEditor.css';
@@ -33,7 +33,6 @@ const VtlEditor = ({resizeLayout, code, setCode, setCodeChanged, theme, language
             // @ts-ignore
             monacoRef.current.editor.layout();
         }
-        // console.log(monacoRef.current, "monaco efect");
     }, [...resizeLayout]);
 
     useEffect(() => {

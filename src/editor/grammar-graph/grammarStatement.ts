@@ -1,3 +1,4 @@
+import { Log } from '../../utility/log';
 import { mergeMultiplyMode, MultiplyMode } from './multiplyMode';
 import { RuleToken } from './ruleToken';
 import { RuleTokenizer } from './ruleTokenizer';
@@ -6,8 +7,6 @@ import { StatementType } from './statementType';
 import { SyntaxCollection } from './syntaxCollection';
 import { SyntaxLink } from './syntaxLink';
 import { TokenType } from './tokenType';
-
-const terminators: string[] = ["EOL", "EOF"];
 
 export class GrammarStatement {
     private type: StatementType = StatementType.Unknown;
@@ -78,10 +77,9 @@ export class GrammarStatement {
             return;
         }
         let i = 0;
-        let token = tokens[0];
         const length = tokens.length;
         while (i < tokens.length) {
-            token = tokens[i];
+            let token = tokens[i];
             switch (token.type) {
                 case TokenType.Identifier: {
                     // labeledElement Antlr4 rule
@@ -104,7 +102,7 @@ export class GrammarStatement {
                             }
                         }
                     }
-                    console.error("Missing or mismatched token(s) after identifier");
+                    Log.error("Missing or mismatched token(s) after identifier", "GrammarStatement");
                     break;
                 }
                 case TokenType.Lparen: {
@@ -116,7 +114,7 @@ export class GrammarStatement {
                             i = index;
                         }
                     } else {
-                        console.error("Missing right parenthesis token");
+                        Log.error("Missing right parenthesis token", "GrammarStatement");
                     }
                     break;
                 }
@@ -125,7 +123,7 @@ export class GrammarStatement {
                         // atom Antlr4 rule
                         this.addAtom(token);
                     } else {
-                        console.warn("Unexpected token " + token.name + " of type " + token.type);
+                        Log.warn("Unexpected token " + token.name + " of type " + token.type, "GrammarStatement");
                     }
             }
             i++;
@@ -165,7 +163,7 @@ export class GrammarStatement {
                 this.unresolved = true;
                 break;
             default:
-                console.warn("Unexpected token " + token.name + " of type " + token.type);
+                Log.warn("Unexpected token " + token.name + " of type " + token.type, "GrammarStatement");
         }
     }
 
@@ -193,7 +191,7 @@ export class GrammarStatement {
                 statements.forEach((statement) => this.addAlternative(statement));
             }
         } else {
-            console.error("Missing parenthesis tokens in block");
+            Log.error("Missing parenthesis tokens in block", "GrammarStatement");
         }
     }
 
@@ -222,7 +220,7 @@ export class GrammarStatement {
                         }
                         rule.resolveStatements(rules, operators, visited);
                     } else {
-                        console.warn("Unknown rule in graph " + statement.name);
+                        Log.warn("Unknown rule in graph " + statement.name, "GrammarStatement");
                     }
                 } else if (statement.isToken([TokenType.Keyword, TokenType.Operator, TokenType.Operand])) {
                     const operator = operators.get(statement.name);
@@ -263,7 +261,7 @@ export class GrammarStatement {
             case StatementType.Keyword: {
                 const syntax = new SyntaxLink();
                 if (!!this.value) syntax.keyword = this.value;
-                else console.warn("Keyword without value " + this.name);
+                else Log.warn("Keyword without value " + this.name, "GrammarStatement");
                 this.syntax.push(syntax);
                 break;
             }
@@ -274,7 +272,7 @@ export class GrammarStatement {
                 break;
             }
             default:
-                console.warn("Unknown statement type " + this.type);
+                Log.warn("Unknown statement type " + this.type, "GrammarStatement");
         }
         if (this.alternatives) {
             const added: SyntaxLink[] = [];
@@ -334,21 +332,21 @@ export class GrammarStatement {
             }
             case StatementType.Keyword: {
                 if (!!this.value) syntax.keyword = this.value;
-                else console.warn("Keyword without value " + this.name);
+                else Log.warn("Keyword without value " + this.name, "GrammarStatement");
                 break;
             }
             case StatementType.Operator: {
                 if (!!this.value) syntax.operator = this.value;
-                else console.warn("Operator without value " + this.name);
+                else Log.warn("Operator without value " + this.name, "GrammarStatement");
                 break;
             }
             case StatementType.Operand: {
                 if (!!this.name) syntax.operand = this.name;
-                else console.warn("Operand without name");
+                else Log.warn("Operand without name", "GrammarStatement");
                 break;
             }
             default:
-                console.warn("Unknown statement type " + this.type);
+                Log.warn("Unknown statement type " + this.type, "GrammarStatement");
         }
         syntax.collapse();
         return syntax;

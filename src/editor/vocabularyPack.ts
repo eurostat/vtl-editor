@@ -22,7 +22,7 @@ export class VocabularyPack<L extends Lexer, P extends Parser> {
         this.operatorNames = new Array<string | undefined>(count);
         this.keywordNames = new Array<string | undefined>(count);
         if (lexer instanceof VtlLexer) {
-            const vtlLexer = <VtlLexer>lexer;
+            const vtlLexer = lexer as VtlLexer;
             const vocabulary = vtlLexer.vocabulary;
             VtlLexer.ruleNames.forEach((ruleName) => {
                 if (ruleName in VtlLexer) {

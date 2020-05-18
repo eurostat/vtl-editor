@@ -1,11 +1,11 @@
-import React, {DOMElement, useEffect} from "react";
+import { faTimesCircle } from "@fortawesome/free-regular-svg-icons";
+import { faChevronUp, faTimes, faTimesCircle as faTimesCircleSolid } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Tooltip } from "@material-ui/core";
+import { editor, Position } from "monaco-editor";
+import React, { useEffect } from "react";
+import { languageVersions, VTL_VERSION } from "../editor/settings";
 import "./errorbox.scss";
-import {faChevronUp, faTimes, faTimesCircle as faTimesCircleSolid} from "@fortawesome/free-solid-svg-icons";
-import {faSave, faTimesCircle} from "@fortawesome/free-regular-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {languageVersions, VTL_VERSION} from "../editor/settings";
-import {editor, Position} from "monaco-editor";
-import {Tooltip} from "@material-ui/core";
 
 type ErrorBoxProps = {
     showErrorBox: boolean,
@@ -66,7 +66,6 @@ const ErrorBox = ({showErrorBox, changeErrorBoxState, setErrorBoxSize, languageV
         const disableSelect = (event: any) => {
             event.preventDefault();
         };
-        console.log(window);
     });
 
     const getElementHeight = (element: any) => {

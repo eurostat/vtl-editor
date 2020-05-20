@@ -1,119 +1,121 @@
+import * as React from 'react';
+import {useEffect, useRef} from 'react';
+import MonacoEditor from "react-monaco-editor";
+import {GrammarGraph} from './grammarGraph';
+import {TokensProvider} from './tokensProvider';
 import * as EditorApi from 'monaco-editor/esm/vs/editor/editor.api';
+import {Position} from 'monaco-editor/esm/vs/editor/editor.api';
+//import {AutoSuggestionsGenerator} from '../auto-suggest/AutoSuggestionsGenerator';
+import './vtlEditor.css';
 // @ts-ignore
 // eslint-disable-next-line import/no-webpack-loader-syntax
-import grammar from 'raw-loader!../grammar/vtl-2.0/Vtl.g4';
-import * as React from 'react';
-import MonacoEditor from "react-monaco-editor";
-import { VtlLexer } from '../grammar/vtl-2.0/VtlLexer';
-import { VtlParser } from '../grammar/vtl-2.0/VtlParser';
-import { AutocompleteProvider } from './autocompleteProvider';
-import { GrammarGraph } from './grammar-graph/grammarGraph';
-import * as ParserFacade from './ParserFacade';
-import { createLexer, createParser } from './ParserFacade';
-import { TokensProvider } from './tokensProvider';
-import { VocabularyPack } from './vocabularyPack';
-import './vtlEditor.css';
+import {VTL_VERSION} from "./settings";
+import {getEditorWillMount, getParserFacade} from "./provider/providers";
 
 declare const window: any;
-export default class VtlEditor extends React.Component {
-    private lexer = createLexer("");
-    private parser = createParser("");
-    private tokensProvider: TokensProvider = new TokensProvider();
-    private vocabulary: VocabularyPack<VtlLexer, VtlParser> = new VocabularyPack(this.lexer, this.parser);
-    private grammarGraph: GrammarGraph<VtlLexer, VtlParser> = new GrammarGraph(this.vocabulary, grammar);
-    private autocompleteProvider: AutocompleteProvider = new AutocompleteProvider(this.grammarGraph.suggestions());
 
-    state = {
-        code: [
-            'ds_PY := lag ( na_main, 1 ) over ( order by time );',
-            '',
-            'ds_L_CY := na_main [ sub prices = "L" ] ;',
-            'ds_L_PY := ds_PY [ sub prices = "L" ] ;',
-            'ds_V_PY := ds_PY [ sub prices = "V" ] ;',
-            'ds_Y_CY := na_main [ sub prices = "Y" ] ;',
-            '',
+type VtlEditorProps = {
+    showMenu: boolean;
+    showErrorBox: boolean,
+    code: string,
+    setCode: (value: string) => void,
+    setCodeChanged: (value: boolean) => void,
+    theme: string,
+    languageVersion: VTL_VERSION,
+    setCursorPosition: (e: Position) => void,
+    tempCursor: Position,
+    setErrors: (array: EditorApi.editor.IMarkerData[]) => void,
+}
+let parserFacade: any = {parser: null};
+const VtlEditor = ({showMenu, showErrorBox, code, setCode, setCodeChanged, theme, languageVersion, setCursorPosition, tempCursor, setErrors}: VtlEditorProps) => {
+    const tokensProvider: TokensProvider = new TokensProvider();
+    const grammarGraph: GrammarGraph = new GrammarGraph();
+    const monacoRef = useRef(null);
 
-            'ErrB:= check((abs(ds_Y_CY-(ds_L_CY / ds_L_PY[ filter obs_value <> 0 ] * ds_V_PY)) / ds_Y_CY [ filter obs_value <> 0 ]) < 0.001, ',
-            '	errorcode("The observation values do not comply with the Y(t)= L(t) * V(t-1) / L(t-1) relation"), ',
-            '	errorlevel("Error") );',
-            '',
-            'ErrB'
-        ].join('\n'),
-    };
 
-    literalFg = '3b8737';
-    idFg = '#f8f8f8';
-    symbolsFg = '990000';
-    keywordFg = '7132a8';
-    errorFg = 'ff0000';
-    eolFg = '009900';
+    useEffect(() => {
+        if (monacoRef && monacoRef.current) {
+            // @ts-ignore
+            monacoRef.current.editor.layout();
+        }
+        // console.log(monacoRef.current, "monaco efect");
+    }, [showMenu, showErrorBox]);
 
-    editor = (monaco: typeof EditorApi) => {
-        monaco.languages.register({id: 'vtl-2.0'});
-        monaco.languages.setMonarchTokensProvider('vtl-2.0', this.tokensProvider.monarchLanguage('vtl-2.0'));
-        //monaco.languages.setTokensProvider('vtl', new VtlTokensProvider.VtlTokensProvider());
-        monaco.editor.defineTheme('vtl', {
-            base: 'vs',
-            inherit: true,
-            rules: [
-                {token: 'string', foreground: '018B03'},
-                {token: 'operator', foreground: '8B3301'},
-                {token: 'delimiter.bracket', foreground: '8B3301'},
-                {token: 'operator.special', foreground: '8B3301', fontStyle: 'bold'},
-            ],
-            colors: {}
-        });
-        monaco.languages.registerCompletionItemProvider("vtl-2.0", this.autocompleteProvider);
-    };
+    useEffect(() => {
+        if (monacoRef && monacoRef.current) {
+            // @ts-ignore
+            monacoRef.current.editor.focus();
+            // @ts-ignore
+            monacoRef.current.editor.setPosition(new Position(tempCursor.lineNumber, tempCursor.column));
+        }
+    }, [tempCursor]);
 
-    didMount = (editor: any, monaco: typeof EditorApi) => {
+    useEffect(() => {
+        parserFacade = getParserFacade(languageVersion);
+    }, [languageVersion]);
+
+
+    const didMount = (editor: EditorApi.editor.IStandaloneCodeEditor, monaco: typeof EditorApi) => {
+        console.log("DID MOUNT");
         let to: NodeJS.Timeout;
         let onDidChangeTimout = (e: any) => {
             to = setTimeout(() => onDidChange(e), 2000);
         };
 
-        let onDidChange = (e: any) => {
-            let code = this.state.code;
-            let syntaxErrors = ParserFacade.validate(code);
+        const onDidChange = (e: any) => {
+            monaco.languages.setMonarchTokensProvider('vtl-2.0', tokensProvider.monarchLanguage('vtl-2.0'));
+            // @ts-ignore
+            let syntaxErrors = parserFacade.parser.validate(editor.getValue());
             let monacoErrors = [];
-            for (let error of syntaxErrors) {
+            for (let e of syntaxErrors) {
                 monacoErrors.push({
-                    startLineNumber: error.startLine,
-                    startColumn: error.startCol,
-                    endLineNumber: error.endLine,
-                    endColumn: error.endCol,
-                    message: error.message,
+                    startLineNumber: e.startLine,
+                    startColumn: e.startCol,
+                    endLineNumber: e.endLine,
+                    endColumn: e.endCol,
+                    message: e.message,
                     severity: monaco.MarkerSeverity.Error
                 });
             }
-
+            setErrors(monacoErrors);
             window.syntaxErrors = syntaxErrors;
             let model = monaco.editor.getModels()[0];
             monaco.editor.setModelMarkers(model, "owner", monacoErrors);
         };
         editor.onDidChangeModelContent((e: any) => {
             if (to) clearTimeout(to);
-            onDidChangeTimout(e);
+            return onDidChangeTimout(e);
         });
+        editor.onDidChangeCursorPosition((e: EditorApi.editor.ICursorPositionChangedEvent) => setCursorPosition(e.position));
     };
 
-    onChange = (newValue: string, e: EditorApi.editor.IModelContentChangedEvent) => {
-        this.setState({code: newValue});
+    const onChange = (newValue: string, e: EditorApi.editor.IModelContentChangedEvent) => {
+        console.log("ON CHANGE");
+        setCode(newValue);
+        setCodeChanged(true);
+
     };
 
-    options = {
+    const options = {
         minimap: {
             enabled: true
         },
         automaticLayout: true
     };
+    return (
+        <div className="editor-container">
+            <MonacoEditor
+                ref={monacoRef}
+                editorWillMount={getEditorWillMount()}
+                editorDidMount={didMount}
+                height="100%"
+                language={languageVersion}
+                theme={theme}
+                defaultValue=''
+                options={options}
+                value={code}
+                onChange={onChange}/>
+        </div>)
+};
 
-    render() {
-        return (
-            <div className="editor-container">
-                <MonacoEditor editorWillMount={this.editor} editorDidMount={this.didMount} height="60vh" language="vtl-2.0" theme="vtl" defaultValue='' options={this.options}
-                              value={this.state.code} onChange={this.onChange}/>
-            </div>)
-    }
-
-}
+export default VtlEditor;

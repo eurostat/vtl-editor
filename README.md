@@ -1,5 +1,49 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Before you start
+
+Take notice that the project is supposed to be run on Weblogic or Tomcat servlet containers.
+To make it work it's important to take into an account during the development that proper
+routing has to be maintained.
+
+See:
+```xml
+<configuration>
+  <environmentVariables>
+    <PUBLIC_URL>${app.address}:${app.port}/${project.artifactId}</PUBLIC_URL>
+    <REACT_APP_ROUTER_BASE>/${project.artifactId}</REACT_APP_ROUTER_BASE>
+  </environmentVariables>
+</configuration>
+```
+
+This configuration specified the address of web application, incl. the context address which is
+project's artifact id.
+Specific Maven profiles have to be run, to make the application work on specific environment,
+see *profiles* section in *pom.xml*.
+
+If you're going to use *BrowserRouter* in the project remember to act accordingly, i.e.:
+```html
+<BrowserRouter basename={process.env.REACT_APP_ROUTER_BASE || ''}>
+```
+Whereas *REACT_APP_ROUTER_BASE* is specified as context path in *pom.xml*.
+
+**Build options are for deployment (production) tests only!**
+For regular development use webpack dev server as usual.
+
+## Available Maven build configurations
+
+### mvn clean install -P local-tomcat
+Build for local Tomcat testing, address: http://127.0.0.1:8080/vrm-frontend
+
+### mvn clean install -P local-weblogic
+Build for local WebLogic testing, address: http://127.0.0.1:7001/vrm-frontend
+
+### mvn clean install -P prod-tomcat
+Build for local Tomcat testing, address: ${eurostat.address}:8080/vrm-frontend
+
+### mvn clean install -P prod-weblogic
+Build for local WebLogic testing, address: ${eurostat.address}:7001/vrm-frontend
+
 ## Available Scripts
 
 In the project directory, you can run:

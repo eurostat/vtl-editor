@@ -1,9 +1,9 @@
 import React from "react";
 import "./navigation.scss"
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faQuestionCircle, faSave} from "@fortawesome/free-regular-svg-icons";
-import {faCog, faUpload} from "@fortawesome/free-solid-svg-icons";
-import {decisionModal} from "./DecisionModal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faQuestionCircle, faSave } from "@fortawesome/free-regular-svg-icons";
+import { faCog, faUpload } from "@fortawesome/free-solid-svg-icons";
+import { decisionModal } from "./DecisionModal";
 import ModalFactory from "react-modal-promise";
 import SettingsNav from "./SettingsNav";
 
@@ -17,12 +17,10 @@ type NavigationProps = {
     settingsNavProps: any
 }
 
-
-const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged,fileName, settingsNavProps}: NavigationProps) => {
-
+const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, fileName, settingsNavProps}: NavigationProps) => {
     const downloadFile = () => {
         let url = window.URL;
-        let file = url.createObjectURL(new File([code], fileName))
+        let file = url.createObjectURL(new File([code], (!fileName || fileName === "") ? "untitled.vtl" : fileName));
         let a = document.createElement('a');
         a.href = file;
         a.download = fileName;

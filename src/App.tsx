@@ -5,33 +5,18 @@ import VtlEditor from './editor/VtlEditor';
 import Header from "./component/Header";
 import Navigation from "./component/Navigation";
 import ErrorBox from "./component/ErrorBox";
-import UploadDialog from "./component/upload/UploadDialog";
+import OpenDialog from "./component/dialog/openDialog";
 import {SnackbarProvider} from "notistack";
 import {languageVersions, VTL_VERSION} from "./editor/settings";
-
-
-const defaultText = `ds_PY := lag ( na_main, 1 ) over ( order by time );
-
-ds_L_CY := na_main [ sub prices = "L" ] ;
-ds_L_PY := ds_PY [ sub prices = "L" ] ;
-ds_V_PY := ds_PY [ sub prices = "V" ] ;
-ds_Y_CY := na_main [ sub prices = "Y" ] ;
-
-
-ErrB:= check((abs(ds_Y_CY-(ds_L_CY / ds_L_PY[ filter obs_value <> 0 ] * ds_V_PY)) / ds_Y_CY [ filter obs_value <> 0 ]) < 0.001, 
-    errorcode("The observation values do not comply with the Y(t)= L(t) * V(t-1) / L(t-1) relation"), 
-    errorlevel("Error") );
-
-ErrB`;
 
 function App() {
     const [files, setFiles] = useState([] as string[]);
     const [showDialog, setShowDialog] = useState(false);
     const [showMenu, setShowMenu] = useState(false);
     const [showErrorBox, setShowErrorBox] = useState(false);
-    const [code, setCode] = useState(defaultText);
+    const [code, setCode] = useState("");
     const [codeChanged, setCodeChanged] = useState(false);
-    const [fileName, setFileName] = useState("newFile.vtl");
+    const [fileName, setFileName] = useState("untitled.vtl");
     const [theme, setTheme] = useState("vtl");
     const [languageVersion, setLanguageVersion] = useState(languageVersions[languageVersions.length - 1].code as VTL_VERSION);
     useEffect(() => {
@@ -71,6 +56,7 @@ function App() {
         theme,
         languageVersion
     };
+
     const NavigationProps = {
         "showDialog": setShowDialog,
         "changeMenu": changeMenuState,
@@ -90,7 +76,6 @@ function App() {
     const ErrorBoxProps = {
         changeErrorBoxState
     };
-
 
     return (
         <SnackbarProvider
@@ -116,7 +101,7 @@ function App() {
                     <ErrorBox {...ErrorBoxProps} />
                 </div>
                 {showDialog ?
-                    <UploadDialog {...UploadDialogProps}/> : null}
+                    <OpenDialog {...UploadDialogProps}/> : null}
             </div>
         </SnackbarProvider>
     );

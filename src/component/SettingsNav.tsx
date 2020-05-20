@@ -40,7 +40,7 @@ const SettingsNav = ({languageVersion, setLanguageVersion, theme, setTheme}: Set
         <div className="nav flex-column nav-pills left-nav settings-nav" aria-orientation="vertical">
             <Form>
                 <Form.Group controlId="version-select">
-                    <Form.Label>Vtl Language Version</Form.Label>
+                    <Form.Label>VTL Grammar Version</Form.Label>
                     <Form.Control as="select" custom onChange={onChangeVersion}
                                   defaultValue={getDefaultLanguageVersion()}>
                         {languageVersions.map(v =>
@@ -49,7 +49,7 @@ const SettingsNav = ({languageVersion, setLanguageVersion, theme, setTheme}: Set
                     </Form.Control>
                 </Form.Group>
                 <Form.Group controlId="theme-select">
-                    <Form.Label>Theme preferences</Form.Label>
+                    <Form.Label>Color Theme</Form.Label>
                     <Form.Control as="select" custom onChange={onChangeTheme} defaultValue={getDefaultThemeVersion()}>
                         {themes.map(v =>
                             <option key={v.name}>{v.name}</option>

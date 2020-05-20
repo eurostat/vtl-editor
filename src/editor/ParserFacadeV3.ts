@@ -2,8 +2,8 @@ import { CommonTokenStream, Recognizer } from 'antlr4ts';
 import { CharStreams, Token } from 'antlr4ts';
 import { ANTLRErrorListener, DefaultErrorStrategy } from 'antlr4ts';
 import { Lexer } from "antlr4ts/Lexer";
-import { VtlLexer } from '../grammar/vtl-2.0/VtlLexer'
-import { VtlParser } from "../grammar/vtl-2.0/VtlParser"
+import { VtlLexer } from '../grammar/vtl-3.0/VtlLexer'
+import { VtlParser } from "../grammar/vtl-3.0/VtlParser"
 
 // @ts-ignore VALID
 class ConsoleErrorListener implements ANTLRErrorListener {
@@ -41,7 +41,6 @@ class CollectorErrorListener implements ANTLRErrorListener {
 
     // @ts-ignore TS7006
     syntaxError(recognizer, offendingSymbol, line, column, msg, e) {
-
         let endColumn = column + 1;
         if (offendingSymbol._text !== null && offendingSymbol._text !== undefined) {
             endColumn = column + offendingSymbol._text.length;
@@ -107,6 +106,7 @@ class VtlErrorStrategy extends DefaultErrorStrategy {
 
 export function validate(input: string): Error[] {
     let errors: Error[] = [];
+
     const lexer = createLexer(input);
     lexer.removeErrorListeners();
     lexer.addErrorListener(new ConsoleErrorListener());

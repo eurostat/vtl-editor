@@ -20,12 +20,12 @@ type NavigationProps = {
 const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, fileName, settingsNavProps}: NavigationProps) => {
     const downloadFile = () => {
         let url = window.URL;
-        let file = url.createObjectURL(new File([code], (!fileName || fileName === "") ? "data.vtl" : fileName));
+        let file = url.createObjectURL(new File([code], (!fileName || fileName === "") ? "untitled.vtl" : fileName));
         let a = document.createElement('a');
         a.href = file;
         a.download = fileName;
         a.click();
-        setCodeChanged(true);
+        setCodeChanged(false);
         // FileSaver.saveAs(file, "data.vtl");
     };
 

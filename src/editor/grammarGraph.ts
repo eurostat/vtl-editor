@@ -20,7 +20,7 @@ export class GrammarGraph {
         VtlLexer.ruleNames.forEach((value, index) => {
             const literal = vocabulary.getLiteralName(index);
             if (!!literal && this.processedGrammar.includes(literal)) {
-                console.log(value + "/" + index + ": " + literal + " " + this.processedGrammar.includes(literal));
+               // console.log(value + "/" + index + ": " + literal + " " + this.processedGrammar.includes(literal));
                 this.processedGrammar = this.processedGrammar
                     .replace(new RegExp(literal.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"), "g"), value);
             }
@@ -33,9 +33,9 @@ export class GrammarGraph {
             let colon = value.indexOf(":");
             rules.set(value.substr(0, colon).trim(), value.substr(++colon).trim());
         });
-        console.log("PROCESSED");
-        console.log(this.processedGrammar);
-        console.log(statements);
-        console.log(rules);
+       // console.log("PROCESSED");
+       // console.log(this.processedGrammar);
+       // console.log(statements);
+        //console.log(rules);
     }
 }

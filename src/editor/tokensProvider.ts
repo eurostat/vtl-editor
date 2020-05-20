@@ -44,7 +44,6 @@ export class TokensProvider {
     }
 
     public monarchLanguage(version: string): any {
-        console.log(this.definition);
         return this.definition;
     }
 

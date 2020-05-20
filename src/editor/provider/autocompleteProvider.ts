@@ -1,6 +1,7 @@
 import {parseGrammar} from "../GrammarParser"
+import {VTL_VERSION} from "../settings";
 
 
-export const suggestions = (range: any, file: string):any[] => {
-    return parseGrammar(file, range);
+export const suggestions = (version: VTL_VERSION,range: any, file: string):any[] => {
+    return parseGrammar(version,file, range);
 };

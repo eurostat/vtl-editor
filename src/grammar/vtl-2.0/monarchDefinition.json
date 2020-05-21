@@ -60,11 +60,11 @@
       ],
       [
         "_RGX_/[()\\[\\]]/",
-        "@brackets"
+        "delimiter.bracket"
       ],
       [
         "_RGX_/[<>](?!@symbols)/",
-        "@brackets"
+        "delimiter.bracket"
       ],
       [
         "_RGX_/@symbols/",

@@ -1,10 +1,7 @@
 grammar Vtl;
 import VtlTokens;
 
-start: (statement? (ML_COMMENT)* (SL_COMMENT)* EOL)* statement? EOF
-      | ML_COMMENT
-      | SL_COMMENT
-      ;
+start: (statement? ML_COMMENT* SL_COMMENT* EOL)* EOF;
 
 /* Assignment */
 statement: ((varID ASSIGN)? expr) | persistentAssignment;
@@ -206,7 +203,7 @@ lists
 /* eval */
 evalExpr
   :
-  EVAL '(' routineName '(' (componentID|constant)? (',' (componentID|constant))* ')' (LANGUAGE STRING_CONSTANT)? (RETURNS outputParameterType)? ')'
+  EVAL '(' routineName '(' (componentID|constant) (',' (componentID|constant))* ')' LANGUAGE STRING_CONSTANT RETURNS outputParameterType ')'
   ;
   
 /* cast */

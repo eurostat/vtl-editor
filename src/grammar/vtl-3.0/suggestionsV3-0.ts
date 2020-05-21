@@ -1,5 +1,5 @@
 import { IRange, languages as Languages } from 'monaco-editor';
-import { FUNCTION, INSERT_AS_SNIPPET, KEYWORD, SNIPPET } from "../../editor/constants";
+import { FUNCTION, KEYWORD, SNIPPET, INSERT_AS_SNIPPET } from "../../editor/constants";
 
 export const getSuggestions = (range: IRange) => {
     return [
@@ -510,9 +510,9 @@ export const getSuggestions = (range: IRange) => {
             documentation: {value: "The operator exp returns e (base of the natural logarithm) raised to the op-th power.  \n\n **Syntax** \n\n    exp(op) "}
         },
         {
-            label: "role",
+            label: "componentRole",
             kind: KEYWORD,
-            insertText: "role",
+            insertText: "componentRole",
             range: range,
         },
         {
@@ -1093,6 +1093,12 @@ export const getSuggestions = (range: IRange) => {
             insertText: "pivot",
             range: range,
             documentation: {value: "The operator transposes several Data Points of the operand Data Set into a single Data Point of the resulting Data Set.  \n\n **Syntax** \n\n    op [ pivot identifier , measure ]   "}
+        },
+        {
+            label: "customPivot",
+            kind: KEYWORD,
+            insertText: "customPivot",
+            range: range,
         },
         {
             label: "unpivot",

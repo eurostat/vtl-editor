@@ -5,8 +5,9 @@ import ModalHeader from "react-bootstrap/ModalHeader";
 
 
 const DecisionModal = ({open, close, text, title}: any) => {
-    const save = () => close(true);
-    const cancel = () => close(false);
+    const save = () => close("save");
+    const no = () => close("no");
+    const cancel = () => close("cancel");
 
     return (
         <Modal show={open}>
@@ -16,8 +17,11 @@ const DecisionModal = ({open, close, text, title}: any) => {
                 <Button color="primary" onClick={save}>
                     Yes
                 </Button>{" "}
-                <Button color="secondary" onClick={cancel}>
+                <Button color="secondary" onClick={no}>
                     No
+                </Button>
+                <Button color="secondary" onClick={cancel}>
+                    Cancel
                 </Button>
             </ModalFooter>
         </Modal>

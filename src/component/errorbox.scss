@@ -2,6 +2,10 @@
 
 $errorColor: #e04f5f;
 
+#resize {
+  cursor: n-resize;
+}
+
 .error-hr {
   width: $centerWidth;
   display: inline-block;
@@ -10,6 +14,8 @@ $errorColor: #e04f5f;
 }
 
 .error-container {
+  position: absolute;
+  z-index: 999;
   background-color: transparent;
   height: $errorBoxHeight;
   width: 100%;
@@ -21,8 +27,10 @@ $errorColor: #e04f5f;
   height: $errorBarHeight;
   width: 100%;
   color: white;
-  position: relative;
+  //position: relative;
   font-size: 0.75em;
+  position: absolute;
+  bottom: 0;
 
   svg {
     font-size: 1.3em;
@@ -86,7 +94,8 @@ $errorColor: #e04f5f;
   position: relative;
   font-size: 0.75em;
   color: #7e7e7e;
-  .position-left{
+
+  .position-left {
     div {
       padding-left: 37px;
       line-height: 25px;
@@ -96,8 +105,10 @@ $errorColor: #e04f5f;
 }
 
 .error-list {
-  max-height: calc(#{$errorBoxHeight} - #{$errorBarHeight} - 5px);
-  max-height: 80%;
+  height: calc(100% - 25px);
+  background-color: white;
+  //max-height: calc(#{$errorBoxHeight} - #{$errorBarHeight} - 5px);
+  //max-height: 80%;
   overflow: auto;
   text-align: left;
   padding-left: 15px;
@@ -106,6 +117,7 @@ $errorColor: #e04f5f;
   margin: 0 auto;
 
   div {
+    cursor: pointer;
     &:first-of-type {
       margin-top: 7px;
     }
@@ -141,7 +153,8 @@ $errorColor: #e04f5f;
 .hand-cursor {
   cursor: pointer;
 }
-.error-list{
+
+.error-list {
   div {
     cursor: pointer;
   }
@@ -151,12 +164,25 @@ $errorColor: #e04f5f;
   .error-top {
     background-color: #383838;
     color: white;
-    }
-  .error-list{
+  }
+
+  .error-list {
     div {
       &:hover {
         background-color: #323232;
       }
+    }
   }
+}
+
+.middle-container.vs-dark{
+  .error-list{
+   background-color: #1e1e1e;
+  }
+}
+
+.middle-container.hc-black{
+  .error-list{
+    background-color: black;
   }
 }

@@ -1,15 +1,15 @@
-import React, {useEffect, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { editor, Position } from "monaco-editor";
+import { SnackbarProvider } from "notistack";
+import React, { useEffect, useState } from 'react';
 import './App.scss';
-import VtlEditor from './editor/VtlEditor';
+import OpenDialog from "./component/dialog/openDialog";
+import ErrorBox from "./component/ErrorBox";
+import GuideOverlay from "./component/GuideOverlay";
 import Header from "./component/Header";
 import Navigation from "./component/Navigation";
-import ErrorBox from "./component/ErrorBox";
-import OpenDialog from "./component/dialog/openDialog";
-import {SnackbarProvider} from "notistack";
-import {languageVersions, VTL_VERSION} from "./editor/settings";
-import {editor, Position} from "monaco-editor";
-import GuideOverlay from "./component/GuideOverlay";
+import { languageVersions } from "./editor/settings";
+import VtlEditor from './editor/VtlEditor';
 
 const getTheme = (): string => {
     const item = window.localStorage.getItem("theme");
@@ -36,7 +36,6 @@ function App() {
         retrieveFromLocalStorage("theme", setTheme);
         retrieveFromLocalStorage("showErrorBox", setShowErrorBox);
         retrieveFromLocalStorage("fileName", setFileName);
-        console.log(getTheme());
     }, []);
 
     const retrieveFromLocalStorage = (key: string, setter: (v: any) => void): any => {

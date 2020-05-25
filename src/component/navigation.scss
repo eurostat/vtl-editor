@@ -7,15 +7,16 @@
   width: $leftNavWidth;
   height: 100vh;
 
-  >button {
+  > button {
     &:first-child {
       margin-top: 40px;
     }
+
     width: 100%;
     margin: 10px auto;
   }
 
-  &> a > button {
+  & > a > button {
     width: 100%;
     margin: 10px auto;
   }
@@ -39,7 +40,8 @@
 }
 
 .hide-settings-nav #setting-icon {
-  border:none;
+  border: none;
+
   & > svg {
     color: #858585;
   }
@@ -57,7 +59,7 @@
   width: $settingsNavWidth;
   background-color: #232323;
 
-  .group-container{
+  .group-container {
     text-align: left;
     margin: 0 auto 10px;
     width: 70%;

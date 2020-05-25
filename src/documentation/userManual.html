@@ -1,0 +1,130 @@
+<h1 id="user_interface">VRM Editor - User Manual</h1>
+<h2 id="getting_started">GETTING STARTED</h2>
+<p>The <strong>VRM Editor</strong> is an online editor, that allows you to edit all your text files and this documentation describes the features.</p>
+<h3 id="vrm_open_editor">Open online editor</h3>
+<p>You can open <strong>VRM Editor</strong> in browser from the dedicated link. It works in consistent manner in browsers <strong>Chrome, Firefox, Microsoft Edge</strong> (Internet Explorer is NOT supported) on desktop computers.</p>
+<h3 id="vrm_interface">Interface</h3>
+<p><strong>VRM Editor</strong> comes with a simple and intuitive layout, that maximizes the space provided for the editor while leaving ample room to browse and access the full context of your folder or project. You have available all the following elements for the interface:</p>
+<figure>
+<img src="images/vrm_interface.png" style="width:80.0%" alt="" /><figcaption>VRM Editor - Interface</figcaption>
+</figure>
+<ul>
+<li><p><strong>(1) Menu</strong> The options in menu are activated by clicking into the icons on the left part of the main window.</p>
+<p>The main menu contains all the following options:</p>
+<ul>
+<li><p>Save</p></li>
+<li><p>Open</p></li>
+<li><p>Settings</p></li>
+<li><p>Help</p></li>
+</ul>
+<p>Hovering over the above items, will display a label with the name.</p></li>
+<li><p><strong>(2) Text Editor</strong></p>
+<p>Here you can edit the contents of your assets. In addition, the editor supports autocomplete.</p></li>
+<li><p><strong>(3) Status Bar</strong></p>
+<p>Here you can see various helpful details while you are interacting with the <strong>VRM Editor</strong>:</p>
+<ul>
+<li><p>Arrow to expand the panel with details for errors</p></li>
+<li><p>Number of errors</p></li>
+<li><p>Cursor position <strong>(Line and Column)</strong></p></li>
+<li><p><strong>VTL language version</strong> number</p></li>
+</ul></li>
+<li><p><strong>(4) Help</strong></p>
+<p>This tab contains link to <strong>'User Manual'</strong> or will displayed in the content from application.</p></li>
+<li><p><strong>(5) Mini Map</strong></p>
+<p>(code outline) gives you a high-level overview of your source code, which is useful for quick navigation and code understanding.</p></li>
+<li><p><strong>(6) Panel</strong></p>
+<p>The panel displays potential errors with descriptions for the added code.</p></li>
+<li><p><strong>(7) Settings sidebar</strong></p>
+<p>The panel displays a drop-down menu for changing the <strong>VTL version</strong> or theme color.</p></li>
+<li><p><strong>(8) Tab</strong></p>
+<p>The panel displays the name of the current text file.</p></li>
+</ul>
+<h2 id="vrm_editing_funcionalities">EDITING FUNCTIONALITIES</h2>
+<p>For <strong>VRM Editor</strong> you have available all the following functionalities for the files:</p>
+<ul>
+<li><p>Create VTL file</p></li>
+<li><p>Save file</p></li>
+<li><p>Open file</p></li>
+<li><p>Search and replace</p></li>
+<li><p>Syntax highlighting for VTL elements</p></li>
+<li><p>Autocomplete VTL syntax elements</p></li>
+<li><p>Display context help regarding VTL syntax elements and snippets</p></li>
+<li><p>Check VTL grammar for the file</p></li>
+<li><p>Display syntax errors with details on the list in the error panel</p></li>
+</ul>
+<h3 id="vrm_create_vtl_file">Create VTL file</h3>
+<p>After opening application, you have the document opened, with empty code field in the editor. You can add new code or upload existing<strong>VTL file</strong> from the storage with using in menu option <strong>'Open file'</strong>. You can save the file at any time, <strong>VRM Editor</strong> also has autosave option, so you can go back to adding content even after closing the application.</p>
+<h3 id="vrm_save_vtl_file">Save VTL file</h3>
+<p>You can also add changes to the tab with the code. If you click on the <strong>'Save file'</strong> option in main menu, you have possibility to save <strong>VTL file</strong> to local storage at any time. Additionally, if you have unsaved changes and application is closed without saving file, after reopening editor, it will restore last version of used document. File changes and settings from the last opening are saved automatically and when the application is run, last saved version is automatically loaded.</p>
+<p>Procedure of saving <strong>VTL Editor</strong> contents to local storage:</p>
+<ol type="1">
+<li><p>Choose icon <strong>'Save'</strong> in main menu.</p></li>
+<li><p>If the file has a path added on your computer, the file will be saved or if not, you will see a window and you should add the path to save the file.</p></li>
+<li><p>You see success/error message for saving file.</p></li>
+</ol>
+<h3 id="vrm_load_vtl_file">Open VTL file</h3>
+<p>If you click on the ‘<strong>Open file</strong>’ option in main menu, you have possibility to load file from an external file into the editor. Aditionally, you have possibility to have opened more than one file. New files will be opened in the new carts, after opening new cart in browser.</p>
+<p>Procedure of opening text <strong>VTL file</strong> from local storage:</p>
+<ol type="1">
+<li><p>Go to main menu.</p></li>
+<li><p>Choose icon <strong>'Open file'</strong></p></li>
+<li><p>You have two options for upload a text <strong>VTL file</strong> from local storage:</p>
+<ul>
+<li><p>choosing button Add file on the pop-up and uploads file from the path to the file on local storage,</p></li>
+<li><p>dragging the file and dropping it in the appropriate field, marked with a dashed line, on the main screen Procedure of opening <strong>VTL text file.</strong></p></li>
+</ul></li>
+</ol>
+<h3 id="vrm_search_and_replace">Search and replace</h3>
+<p>You can search for text in a file by pressing <strong>Ctrl + F</strong>. This will open up the Find panel on the bottom: Enter your search term here and press <strong>Enter</strong>. You can navigate between matches by continuously hitting <strong>Enter</strong> (or <strong>Shift + Enter</strong> to go backwards). The searched phrase is highlighted in the editor and scrollbar. If you want to replace a match, expand the <strong>Search widget</strong> to display the <strong>Replace text box</strong> and enter the text you want to replace it with in the Replace input field. Then hit <strong>Enter</strong> to replace the match and keep hitting <strong>Enter</strong> to replace each subsequent match or <strong>Ctrl+Alt+Enter</strong> to immediately replace all. The searched phrase is highlighted in the editor and scrollbar. Highlighting a word in the code editor will highlight all other matches in the file which makes it easier to check where a variable or function is being used. You can replace all in one file or replace a single change.</p>
+<h3 id="vrm_syntax_highliting">Syntax highlighting for VTL elements</h3>
+<p>You have possibility to switch color to a different <strong>syntax highlighting for VTL elements</strong> in the code editor. You can edit your preferences by clicking on <strong>Settings/Color theme</strong> and choosing one option to display the theme preferences drop-down:</p>
+<ul>
+<li><p>VTL</p></li>
+<li><p>Light</p></li>
+<li><p>Dark</p></li>
+<li><p>High Contrast Dark</p></li>
+</ul>
+<h3 id="vrm_autocomplete_VTL_syntax">Autocomplete VTL syntax elements</h3>
+<p>The editor supports autocomplete and when you type a letter or hit <strong>Ctrl+Space</strong>, you will see a list of autocomplete suggestions. After choosing name from the list, by using mouse cursor or selecting with keyboard, selected keyword is added to the code.</p>
+<h3 id="vrm_display_content_help">Display context help</h3>
+<p>Context help regarding <strong>VTL syntax elements and snippet</strong> are displayed in the editor, after moving the cursor over the name and selecting the <strong>'i'</strong> icon in the line with the selected name. <strong>Context help</strong> is displayed during typing, as shown in the example:</p>
+<h3 id="vrm_check_grammar">Check VTL - grammar for the file</h3>
+<p>For the content of the files, is checked structure. In case of syntax errors, they are underlined in application and details are added on the bottom error panel. Additionally, after moving your cursor to the place with error, you will see the error details.</p>
+<h3 id="vrm_display_errors">Display errors</h3>
+<p><strong>VRM Editor</strong> displays of potential errors and warnings in a dedicated section of the page and on the bottom panel. As default blue panel is collapsed. After press arrow on the left, you will see the list in the panel with line, column and message of <strong>syntax or grammar error</strong>. In the code, the position with error has red underline.</p>
+<h2 id="vrm_settings">SETTINGS</h2>
+<p>You can edit your preferences by clicking on <strong>Settings</strong> in main menu,then will see all the following options:</p>
+<ul>
+<li><p>Change theme color</p></li>
+<li><p>Switch VTL language version</p></li>
+</ul>
+<h3 id="vrm_language_version">Language version</h3>
+<p>You have possibility to change the <strong>VTL language version</strong> in <strong>Settings/ VTL Grammar Version</strong>. The highest (currently 2.0) will be added as a default option.</p>
+<h3 id="vrm_color_theme">Color theme</h3>
+<p>You have possibility to change theme preferences in <strong>Settings/ Color theme</strong>. There will be available options to choose:</p>
+<ul>
+<li><p><strong>VTL</strong> - similar to Light</p></li>
+<li><p><strong>Light</strong> - light view</p></li>
+<li><p><strong>Dark</strong> - dark view</p></li>
+<li><p><strong>High Contrast Dark</strong> - high contrast</p></li>
+</ul>
+<h2 id="vrm_keyboard_shortcuts">KEYBOARD SHOTCUTS</h2>
+<p>The following commands are available when editing a file:</p>
+<ul>
+<li><p><strong>F1 or Alt+F1</strong>  Display the full list of commands</p></li>
+<li><p><strong>Ctrl-C</strong>               Copy the selected text to the clipboard</p></li>
+<li><p><strong>Ctrl-V</strong>               Paste the clipboard’s contents to the selected text</p></li>
+<li><p><strong>Ctrl-X</strong>               Cut the selected text</p></li>
+<li><p><strong>Ctrl-S</strong>                Save current document file</p></li>
+<li><p><strong>Ctrl-O</strong>               Open a file in the current software</p></li>
+<li><p><strong>Ctrl+Space</strong>        Display the list of autocomplete suggestions</p></li>
+<li><p><strong>Ctrl-Z</strong>                Undo editing</p></li>
+<li><p><strong>Ctrl-Enter</strong>          Insert a new-line character</p></li>
+<li><p><strong>Ctrl-P</strong>                Print active window</p></li>
+<li><p><strong>Ctrl-F</strong>                Find text</p></li>
+</ul>
+<h2 id="vrm_accessibilitys">ACCESSIBILITY</h2>
+<h3 id="vrm_accessibility_help">Accessibility Help</h3>
+<p>You can press <strong>Alt+F1</strong> or <strong>Ctrl+F1</strong> in IE to trigger the <strong>'Show Accessibility Help'</strong> dialog, while in an editor to find out the current position in the editor and to check the state of various accessibility options. The editor can be dynamically optimized for screen reader software from this dialog.</p>
+<h3 id="vrm_high_contrast_theme">High contrast theme</h3>
+<p>You have possibility to turn on high contrast mode, for window with code in editor, on all platforms in <strong>'Settings'</strong>. There will be available option to display the Theme preferences drop-down and select the <strong>High Contrast Dark</strong>.</p>

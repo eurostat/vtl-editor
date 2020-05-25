@@ -40,21 +40,26 @@ const SettingsNav = ({languageVersion, setLanguageVersion, theme, setTheme}: Set
 
             <Form>
                 <Form.Group controlId="version-select">
-                    <Form.Label>VTL Grammar Version</Form.Label>
-                    <Form.Control as="select" custom onChange={onChangeVersion}
-                                  defaultValue={getDefaultLanguageVersion()}>
-                        {languageVersions.map(v =>
-                            <option key={v.name}>{v.name}</option>
-                        )}
-                    </Form.Control>
+                    <div className="group-container">
+                        <Form.Label>VTL Grammar Version</Form.Label>
+                        <Form.Control as="select" custom onChange={onChangeVersion}
+                                      defaultValue={getDefaultLanguageVersion()}>
+                            {languageVersions.map(v =>
+                                <option key={v.name}>{v.name}</option>
+                            )}
+                        </Form.Control>
+                    </div>
                 </Form.Group>
                 <Form.Group controlId="theme-select">
-                    <Form.Label>Color Theme</Form.Label>
-                    <Form.Control as="select" custom onChange={onChangeTheme} defaultValue={getDefaultThemeVersion()}>
-                        {themes.map(v =>
-                            <option key={v.name}>{v.name}</option>
-                        )}
-                    </Form.Control>
+                    <div className="group-container">
+                        <Form.Label>Color Theme</Form.Label>
+                        <Form.Control as="select" custom onChange={onChangeTheme}
+                                      defaultValue={getDefaultThemeVersion()}>
+                            {themes.map(v =>
+                                <option key={v.name}>{v.name}</option>
+                            )}
+                        </Form.Control>
+                    </div>
                 </Form.Group>
             </Form>
         </div>

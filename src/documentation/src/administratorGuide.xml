@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter xml:id="user_interface" xml:lang="en" version="5.0" xmlns="http://docbook.org/ns/docbook"
+         xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://docbook.org/ns/docbook http://docbook.org/xml/5.0/xsd/docbook.xsd">
+    <title>Administrator deployment guide</title>
+
+    <section xml:id="vrm_getting_started">
+        <title>Getting started</title>
+        <para>These instructions were created to guide in the process of application build and deployment actions.</para>
+    </section>
+
+
+    <section xml:id="vrm_steps_required">
+        <title>Steps required</title>
+
+        <section xml:id="vrm_prerequisites">
+            <title>Prerequisites</title>
+            <para>Before starting any build process, we must first make sure that all the required software for the web application’s build to be successful or event start at all
+                is installed in the system.
+            </para>
+            <para>Please make sure that following software is present and working in your system:</para>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        <link xlink:href="https://www.java.com/pl/download">Java</link>
+                        - version 1.8 at least,
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <link xlink:href="https://maven.apache.org">Maven</link>
+                        - latest version,
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <link xlink:href="https://nodejs.org/en">Node.js</link>
+                        - latest version,
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <link xlink:href="https://www.npmjs.com">NPM package manager</link>
+                        - latest version.
+                    </para>
+                </listitem>
+            </itemizedlist>
+        </section>
+    </section>
+
+    <section xml:id="vrm_build_configuration">
+        <title>Build configuration</title>
+
+        <section xml:id="vrm_properties">
+            <title>Properties</title>
+            <para>This section provides a step by step description of configuration entries and properties, which is required to understand the whole concept and how build overall
+                works.
+            </para>
+            <para>We’ll go step by step through <computeroutput>pom.xml</computeroutput> ( <emphasis role="bold">Maven</emphasis> build configuration) file explaining the whole
+                internal composition of configuration and its effect on the build process.
+            </para>
+            <para>Let’s look at the properties section first:
+            </para>
+
+            <programlisting>
+                <![CDATA[
+<properties>
+  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  <maven.compiler.source>1.8</maven.compiler.source>
+  <maven.compiler.target>1.8</maven.compiler.target>
+  <npm.output.directory>build</npm.output.directory>
+  <eurostat.address>http://ec.europa.eu/vrm</eurostat.address>
+</properties>
+                 ]]>
+            </programlisting>
+
+            <para>These properties contain basic configuration for the application.</para>
+            <para>Java version is set to <computeroutput>1.8</computeroutput> – as required for <emphasis role="bold">Maven</emphasis> to work.
+            </para>
+            <para>Then there are two important properties:</para>
+            <para>
+                <computeroutput>npm.output.directory</computeroutput>, which defines where the compiled / transpiled project’s code will land after the build and <computeroutput>
+                eurostat.address
+            </computeroutput> – property defining a real address of the Eurostat production server.
+                The property – of course – has to be set to the value used in the actual production environment.
+            </para>
+        </section>
+
+        <section xml:id="vrm_plugins">
+            <title>Plugins</title>
+            <para>Following build (plugins) configuration:</para>
+
+            <programlisting>
+                <![CDATA[
+<build>
+  <finalName>${project.artifactId}</finalName>
+  <plugins>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-war-plugin</artifactId>
+      <configuration>
+        <webResources>
+          <resource>
+            <directory>${npm.output.directory}</directory>
+          </resource>
+        </webResources>
+        <webXml>${basedir}/web.xml</webXml>
+      </configuration>
+    </plugin>
+
+    <plugin>
+      <groupId>org.codehaus.mojo</groupId>
+      <artifactId>exec-maven-plugin</artifactId>
+      <executions>
+        <execution>
+          <id>npm run build</id>
+          <goals>
+            <goal>exec</goal>
+          </goals>
+          <phase>compile</phase>
+          <configuration>
+            <executable>npm</executable>
+            <arguments>
+              <argument>run</argument>
+              <argument>build</argument>
+            </arguments>
+          </configuration>
+        </execution>
+      </executions>
+      <configuration>
+        <environmentVariables>
+          <PUBLIC_URL>${app.address}:${app.port}/${project.artifactId}</PUBLIC_URL>
+          <REACT_APP_ROUTER_BASE>/${project.artifactId}</REACT_APP_ROUTER_BASE>
+        </environmentVariables>
+      </configuration>
+    </plugin>
+  </plugins>
+</build>
+  ]]>
+            </programlisting>
+
+            <para>Contains four important parts, as listed below:</para>
+
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        <emphasis role="bold">File name</emphasis>
+                        Property allows us to set the outcome filename, which is by default the project’s name, i.e. vtl-editor.
+                    </para>
+                </listitem>
+            </itemizedlist>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        <emphasis role="bold">maven-war-plugin configuration</emphasis>
+                        Maven <computeroutput>WAR</computeroutput> plugin is configured to copy web.xml descriptor, found in project’s root folder, to the WEB-INF folder in the
+                        build directory.
+                    </para>
+                </listitem>
+            </itemizedlist>
+
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        <emphasis role="bold">exec-maven-plugin configuration</emphasis>
+                        Exec plugin is configured to run the right npm build configuration – in this case – npm run build – which builds a production ready application.
+                    </para>
+                </listitem>
+            </itemizedlist>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        <emphasis role="bold">Environment variables</emphasis>
+                        PUBLIC_URL – sets the public access URL – property that is required for React application to know the full application address, and
+                        REACT_APP_ROUTER_BASE – property prepared for routing purposes (application’s context), if necessary.
+                    </para>
+                </listitem>
+            </itemizedlist>
+
+        </section>
+
+
+        <section xml:id="vrm_profiles">
+            <title>Profiles</title>
+            <para>The last part of configuration contains probably the most important deployment-wise configuration.</para>
+
+            <programlisting>
+                <![CDATA[
+<profiles>
+  <profile>
+    <id>local-tomcat</id>
+    <activation>
+      <activeByDefault>true</activeByDefault>
+    </activation>
+    <properties>
+      <app.port>8080</app.port>
+      <app.address>http://127.0.0.1</app.address>
+    </properties>
+  </profile>
+
+  <profile>
+    <id>local-weblogic</id>
+    <properties>
+      <app.port>7001</app.port>
+      <app.address>http://127.0.0.1</app.address>
+    </properties>
+  </profile>
+
+  <profile>
+    <id>prod-tomcat</id>
+    <properties>
+      <app.port>7001</app.port>
+      <app.address>${eurostat.address}</app.address>
+    </properties>
+  </profile>
+
+  <profile>
+    <id>prod-weblogic</id>
+    <properties>
+      <app.port>7001</app.port>
+      <app.address>${eurostat.address}</app.address>
+    </properties>
+  </profile>
+</profiles>
+                 ]]>
+            </programlisting>
+
+            <para>There are four profiles configured for <computeroutput>.WAR</computeroutput> file build, described below:
+            </para>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        <emphasis role="bold">local-weblogic</emphasis>
+                        – application has <computeroutput>localhost / 127.0.0.1</computeroutput> address and <computeroutput>7001</computeroutput> port set – development purposes.
+                    </para>
+                </listitem>
+            </itemizedlist>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        <emphasis role="bold">local-tomcat</emphasis>
+                        – like above, except the port is set to <computeroutput>8080</computeroutput>.
+                    </para>
+                </listitem>
+            </itemizedlist>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        <emphasis role="bold">prod-tomcat</emphasis>
+                        and <emphasis role="bold">prod-weblogic</emphasis> working analogically (port-wise) with the only difference being the address set to aforementioned <computeroutput>
+                        eurostat.address’s
+                    </computeroutput> property value.
+                    </para>
+                </listitem>
+            </itemizedlist>
+        </section>
+
+        <section xml:id="buiold_process">
+            <title>Build process</title>
+            <para>The build process is carried by
+                <link xlink:href="http://maven.apache.org/">Maven</link>, which requires Java to be installed in the system (preferred 1.8 minimum).
+            </para>
+            <para>To build the application the right profile must be chosen, see <emphasis role="bold">'Profile'</emphasis> subsection under <emphasis role="bold">'Build
+                configuration'
+            </emphasis> section.
+            </para>
+            <para>Run following command to execute build process:</para>
+
+            <programlisting>
+                <![CDATA[
+mvn clean install – P [profile_name]
+                 ]]>
+            </programlisting>
+
+            <para>Whereas <computeroutput>[profile_name]</computeroutput> refers to the chosen profile’s name.
+            </para>
+            <para>The <computeroutput>WAR</computeroutput> file should be ready for deployment.
+            </para>
+        </section>
+
+        <section xml:id="deployment_process">
+            <title>Deployment process</title>
+            <para>The deployment process may vary depending on the platform.</para>
+            <para>The general idea is that by default the application deploys <computeroutput>WAR</computeroutput> file under the context specified as the project name / war file
+                name.
+            </para>
+            <para>It is possible to change that behavior for the most of existing application servers that comply with the JEE standards, however in case of Tomcat – simple servlet
+                container – It is not possible to do on the application’s side.
+            </para>
+            <para>For simplicity reasons we have assumed that it is better to deploy application using context as it is – its name, and if the it must change – take required steps
+                later or just change the deployment archive name.
+            </para>
+            <para>Because the official documentation is enriched enough with descriptions, popular issues solutions, and updated on frequent base – in <emphasis role="bold">
+                Tomcat’s</emphasis>, as well as in <emphasis role="bold">WebLogic’s</emphasis> case - we have decided to redirect to these sources.
+            </para>
+            <para>For more information about <emphasis role="bold">WebLogic</emphasis> web application server-side deployment go
+                <link xlink:href="https://www.oracle.com/webfolder/technetwork/tutorials/obe/fmw/wls/12c/03-DeployApps/deployapps.html">here</link>
+                and for Tomcat
+                <link xlink:href="http://tomcat.apache.org/tomcat-8.0-doc/deployer-howto.html">here</link>.
+            </para>
+        </section>
+    </section>
+
+
+</chapter>

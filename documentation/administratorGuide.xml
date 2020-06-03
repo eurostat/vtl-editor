@@ -1,16 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter xml:id="user_interface" xml:lang="en" version="5.0" xmlns="http://docbook.org/ns/docbook"
-         xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://docbook.org/ns/docbook http://docbook.org/xml/5.0/xsd/docbook.xsd">
-    <title>Administrator deployment guide</title>
+<book xml:id="administrator-guide" xml:lang="en" version="5.0"
+      xmlns="http://docbook.org/ns/docbook"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      xsi:schemaLocation="http://docbook.org/ns/docbook http://docbook.org/xml/5.0/xsd/docbook.xsd">
+    <info>
+        <title>Administrator Deployment Guide</title>
+        <releaseinfo>version <?eval ${project.version}?></releaseinfo>
+        <date>18/05/2020</date>
+        <copyright>
+            <year>2020</year>
+            <holder>European Commission</holder>
+            <holder>EUROSTAT</holder>
+        </copyright>
+        <mediaobject>
+            <imageobject>
+                <imagedata align="center" fileref="images/title_page_logo.png" scalefit="1" width="100%"/>
+            </imageobject>
+        </mediaobject>
+        <authorgroup>
+            <author>
+                <personname>Commission Européenne, 2920 Luxembourg, LUXEMBOURG - Tel. +352 43011</personname>
+            </author>
+        </authorgroup>
+    </info>
 
-    <section xml:id="vrm_getting_started">
+    <chapter xml:id="vrm_getting_started">
         <title>Getting started</title>
         <para>These instructions were created to guide in the process of application build and deployment actions.</para>
-    </section>
+    </chapter>
 
 
-    <section xml:id="vrm_steps_required">
+    <chapter xml:id="vrm_steps_required">
         <title>Steps required</title>
 
         <section xml:id="vrm_prerequisites">
@@ -46,9 +67,9 @@
                 </listitem>
             </itemizedlist>
         </section>
-    </section>
+    </chapter>
 
-    <section xml:id="vrm_build_configuration">
+    <chapter xml:id="vrm_build_configuration">
         <title>Build configuration</title>
 
         <section xml:id="vrm_properties">
@@ -255,7 +276,7 @@
             </itemizedlist>
         </section>
 
-        <section xml:id="buiold_process">
+        <section xml:id="build_process">
             <title>Build process</title>
             <para>The build process is carried by
                 <link xlink:href="http://maven.apache.org/">Maven</link>, which requires Java to be installed in the system (preferred 1.8 minimum).
@@ -299,7 +320,7 @@ mvn clean install – P [profile_name]
                 <link xlink:href="http://tomcat.apache.org/tomcat-8.0-doc/deployer-howto.html">here</link>.
             </para>
         </section>
-    </section>
+    </chapter>
 
 
-</chapter>
+</book>

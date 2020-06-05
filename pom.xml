@@ -51,7 +51,7 @@
                 <version>${maven.resources.version}</version>
                 <executions>
                     <execution>
-                        <id>copy-help-images</id>
+                        <id>copy-help-sources</id>
                         <phase>generate-resources</phase>
                         <goals>
                             <goal>copy-resources</goal>
@@ -64,7 +64,24 @@
                                     <filtering>false</filtering>
                                     <includes>
                                         <include>images/*</include>
+                                        <include>docbook.css</include>
                                     </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-docbookx-sources</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/documentation</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/documentation</directory>
+                                    <filtering>true</filtering>
                                 </resource>
                             </resources>
                         </configuration>
@@ -91,7 +108,7 @@
                             <goal>generate-html</goal>
                         </goals>
                         <configuration>
-                            <sourceDirectory>${project.basedir}/documentation</sourceDirectory>
+                            <sourceDirectory>${project.build.directory}/documentation</sourceDirectory>
                             <includes>userManual.xml</includes>
                             <targetDirectory>${project.basedir}/src/documentation</targetDirectory>
                             <chunkSectionDepth>2</chunkSectionDepth>
@@ -110,7 +127,7 @@
                             <goal>generate-pdf</goal>
                         </goals>
                         <configuration>
-                            <sourceDirectory>${project.basedir}/documentation</sourceDirectory>
+                            <sourceDirectory>${project.build.directory}/documentation</sourceDirectory>
                             <includes>userManual.xml,administratorGuide.xml,releaseNotes.xml</includes>
                             <targetDirectory>${project.build.directory}/documentation</targetDirectory>
                             <foCustomization>documentation/fo.xsl</foCustomization>
@@ -143,6 +160,26 @@
                 <version>${maven.antrun.version}</version>
                 <executions>
                     <execution>
+                        <id>insert-version</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target name="version">
+                                <replace file="${project.build.directory}/documentation/userManual.xml"
+                                         token="&amp;version;"
+                                         value="${pretty.version}"/>
+                                <replace file="${project.build.directory}/documentation/administratorGuide.xml"
+                                         token="&amp;version;"
+                                         value="${pretty.version}"/>
+                                <replace file="${project.build.directory}/documentation/releaseNotes.xml"
+                                         token="&amp;version;"
+                                         value="${pretty.version}"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>copy-guides</id>
                         <phase>compile</phase>
                         <goals>
@@ -159,6 +196,34 @@
                                 <move file="${project.build.directory}/documentation/releaseNotes.pdf"
                                       tofile="${project.basedir}/src/documentation/Release Notes v.${pretty.version}.pdf"
                                       failonerror="true"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>rename-css</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target name="docbookcss">
+                                <move file="${project.basedir}/src/documentation/docbook.css"
+                                      tofile="${project.basedir}/src/documentation/docbook.module.css"
+                                      failonerror="true"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>replace-styles</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target name="styles">
+                                <replace file="${project.basedir}/src/documentation/userManual.html"
+                                         token="class=&quot;"
+                                         value="class=&quot;docbook."/>
                             </target>
                         </configuration>
                     </execution>

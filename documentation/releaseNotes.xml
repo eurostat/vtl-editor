@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="./docbook.css" type="text/css"?>
+<!DOCTYPE book [
+        <!ENTITY version "">
+        ]>
 <book xml:id="release-notes" xml:lang="en" version="5.0"
       xmlns="http://docbook.org/ns/docbook"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -6,8 +10,8 @@
 
     <info>
         <title>VRM - Release Notes</title>
-        <subtitle>Release notes for the Validation Rule Manager</subtitle>
-        <releaseinfo>version <?eval ${project.version}?></releaseinfo>
+        <subtitle>Release Notes for the Validation Rule Manager</subtitle>
+        <releaseinfo>version &version;</releaseinfo>
         <date>18/05/2020</date>
         <copyright>
             <year>2020</year>

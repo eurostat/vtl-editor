@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="./docbook.css" type="text/css"?>
+<!DOCTYPE book [
+        <!ENTITY version "">
+        ]>
 <book xml:id="administrator-guide" xml:lang="en" version="5.0"
       xmlns="http://docbook.org/ns/docbook"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xmlns:xlink="http://www.w3.org/1999/xlink"
       xsi:schemaLocation="http://docbook.org/ns/docbook http://docbook.org/xml/5.0/xsd/docbook.xsd">
     <info>
-        <title>Administrator Deployment Guide</title>
-        <releaseinfo>version <?eval ${project.version}?></releaseinfo>
+        <title>Administrator Guide</title>
+        <subtitle>Administrator Guide for the Validation Rule Manager</subtitle>
+        <releaseinfo>version &version;</releaseinfo>
         <date>18/05/2020</date>
         <copyright>
             <year>2020</year>

@@ -7,11 +7,11 @@
   width: $leftNavWidth;
   height: 100vh;
 
-  > button {
-    &:first-child {
-      margin-top: 40px;
-    }
+  .menu-first-item {
+    margin-top: 40px;
+  }
 
+  > button {
     width: 100%;
     margin: 10px auto;
   }

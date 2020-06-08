@@ -14,7 +14,7 @@ ReactDOM.render(
     <Router basename={process.env.REACT_APP_ROUTER_BASE || ''}>
         <Switch>
             <Route exact path="/documentation" component={Documentation}/>
-            <Route exact path="/" component={App}/>
+            <Route path="/" component={App}/>
             <Redirect to="/"/>
         </Switch>
     </Router>,

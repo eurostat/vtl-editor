@@ -1,15 +1,16 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { editor, Position } from "monaco-editor";
-import { SnackbarProvider } from "notistack";
-import React, { useEffect, useState } from 'react';
+import {editor, Position} from "monaco-editor";
+import {SnackbarProvider} from "notistack";
+import React, {useEffect, useState} from 'react';
 import './App.scss';
 import OpenDialog from "./component/dialog/openDialog";
-import ErrorBox from "./component/ErrorBox";
 import GuideOverlay from "./component/GuideOverlay";
 import Header from "./component/Header";
 import Navigation from "./component/Navigation";
-import { languageVersions } from "./editor/settings";
-import VtlEditor from './editor/VtlEditor';
+import {languageVersions} from "./editor/settings";
+import EditorView from "./component/EditorView";
+import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
+import SDMXView from "./component/SDMXView";
 
 const getTheme = (): string => {
     const item = window.localStorage.getItem("theme");
@@ -120,7 +121,7 @@ function App() {
         codeChanged,
         fileName,
         createNewFile,
-        "settingsNavProps": {theme, "setTheme": updateTheme, languageVersion, setLanguageVersion}
+        "settingsNavProps": {theme, "setTheme": updateTheme, languageVersion, setLanguageVersion},
     };
 
     const UploadDialogProps = {
@@ -139,34 +140,45 @@ function App() {
         setTempCursor
     };
 
+    const EditorViewProps = {
+        fileName,
+        codeChanged,
+        VtlEditorProps,
+        ErrorBoxProps
+    };
+
     return (
-        <SnackbarProvider
-            maxSnack={2}
-            transitionDuration={500}
-            autoHideDuration={6000}
-            anchorOrigin={{
-                vertical: "top",
-                horizontal: "right"
-            }}
-            dense={true}
-        >
-            <div className={getStyles()}>
-                <Header/>
-                <Navigation {...NavigationProps}/>
-                <div id="middle-container" className={`middle-container ${theme}`}>
-                    <div id="top-bar" className="top-bar">
-                        <span>{fileName}&nbsp;{codeChanged ? "*" : ""}</span>
+        <Router>
+            <SnackbarProvider
+                maxSnack={2}
+                transitionDuration={500}
+                autoHideDuration={6000}
+                anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right"
+                }}
+                dense={true}
+            >
+                <div className={getStyles()}>
+                    <Header/>
+                    <Navigation {...NavigationProps}/>
+                    <div id="middle-container" className={`middle-container ${theme}`}>
+                        <Switch>
+                            <Route exact path="/sdmx">
+                                <SDMXView/>
+                            </Route>
+                            <Route exact path="/">
+                                <EditorView {...EditorViewProps}/>
+                            </Route>
+                            <Redirect to="/"/>
+                        </Switch>
                     </div>
-                    <div id="vtl-container" className="vtl-container">
-                        <VtlEditor {...VtlEditorProps}/>
-                    </div>
-                    <ErrorBox {...ErrorBoxProps} />
+                    {showDialog ?
+                        <OpenDialog {...UploadDialogProps}/> : null}
+                    {false ? <GuideOverlay/> : null}
                 </div>
-                {showDialog ?
-                    <OpenDialog {...UploadDialogProps}/> : null}
-                {false ? <GuideOverlay/> : null}
-            </div>
-        </SnackbarProvider>
+            </SnackbarProvider>
+        </Router>
     );
 }
 

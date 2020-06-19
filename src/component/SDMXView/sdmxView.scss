@@ -1,0 +1,106 @@
+@import "../../variables";
+
+$gray-background-color: #f5f5f5;
+$gray-border-color: #d0d0d0;
+
+.sdmx-container {
+  overflow: auto;
+}
+
+.view-name-container {
+  text-align: left;
+  height: 50px;
+  background-color: $gray-background-color;
+  border-bottom: $gray-border-color 1px solid;
+
+  h3 {
+    padding-top: 10px;
+    padding-left: 20px;
+    font-size: 18px;
+  }
+}
+
+.sdmx-option {
+  text-align: right;
+  height: 80px;
+
+  > span, button {
+    height: 100%;
+    display: inline-flex;
+    align-items: center;
+  }
+}
+
+.sdmx-agency{
+  height: 60px;
+}
+
+.sdmx-autocomplete {
+  min-width: 200px;
+}
+
+
+.filter-button {
+  margin-right: 10px;
+}
+
+.agency-row{
+  height: 60px;
+}
+
+.filter-container {
+  background-color: $gray-background-color;
+  margin-left: -5px;
+  padding: 5px 0 5px 5px;
+  border: $gray-border-color 1px solid;
+  margin-bottom: 10px;
+  border-radius: 5px;
+
+  .filter-row {
+    text-align: left;
+    span{
+      color:$base-color;
+      font-weight: bold;
+    }
+
+    svg{
+      margin-right: 5px;
+    }
+  }
+}
+.filter-options{
+  transform:scaleY(0);
+  height: 0;
+}
+.open{
+  height:auto;
+  transform:scaleY(1); // implicit, but good to specify explicitly
+}
+
+
+
+.refresh-icon{
+  color: #9f9f9f;
+  font-size: 1.3em;
+}
+
+.sdmx-autocomplete,.sdmx-final-select{
+  background-color: white;
+}
+
+.sdmx-table {
+  padding-bottom: 20px;
+}
+
+.table-container{
+  background-color: $gray-background-color;
+  border-top: $gray-border-color 1px solid;
+  padding-top: 20px;
+  padding-bottom: 50px;
+}
+
+.button-margin-right{
+  margin-right: 10px;
+}
+
+

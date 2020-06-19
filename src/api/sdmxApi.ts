@@ -16,6 +16,7 @@ export async function getAgencies(registryId: string) {
     return fetchResponse(SDMX_AGENCIES(registryId));
 }
 
+
 export async function getSdmxDataStructures(registryId: string) {
     return fetchResponse(SDMX_STRUCTURES(registryId));
 }

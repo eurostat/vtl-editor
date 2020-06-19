@@ -10,10 +10,15 @@ type EditorViewProps= {
     ErrorBoxProps: any
 }
 
+const classes = {
+    height:"100%",
+    overflow:"hidden"
+};
+
 const EditorView = ({fileName, codeChanged, VtlEditorProps,ErrorBoxProps}: EditorViewProps) => {
 
     return (
-        <>
+        <div style={classes}>
             <div id="top-bar" className="top-bar">
                 <span>{fileName}&nbsp;{codeChanged ? "*" : ""}</span>
             </div>
@@ -21,7 +26,7 @@ const EditorView = ({fileName, codeChanged, VtlEditorProps,ErrorBoxProps}: Edito
                 <VtlEditor {...VtlEditorProps}/>
             </div>
             <ErrorBox {...ErrorBoxProps} />
-        </>
+        </div>
     );
 };
 

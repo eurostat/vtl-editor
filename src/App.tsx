@@ -10,7 +10,7 @@ import Navigation from "./component/Navigation";
 import {languageVersions} from "./editor/settings";
 import EditorView from "./component/EditorView";
 import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
-import SDMXView from "./component/SDMXView";
+import SDMXView from "./component/SDMXView/SDMXView";
 
 const getTheme = (): string => {
     const item = window.localStorage.getItem("theme");
@@ -148,11 +148,12 @@ function App() {
     };
 
     return (
+        //TODO check if it is working without router here
         <Router>
             <SnackbarProvider
                 maxSnack={2}
                 transitionDuration={500}
-                autoHideDuration={6000}
+                autoHideDuration={4000}
                 anchorOrigin={{
                     vertical: "top",
                     horizontal: "right"

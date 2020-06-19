@@ -1,4 +1,4 @@
-import {faFile, faQuestionCircle, faSave, IconDefinition} from "@fortawesome/free-regular-svg-icons";
+import {faFile, faQuestionCircle, faSave, IconDefinition, faEdit} from "@fortawesome/free-regular-svg-icons";
 import {faCog, faUpload, faCrown} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Tooltip} from "@material-ui/core";
@@ -40,7 +40,6 @@ const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, 
 
     useEffect(() => {
         window.onkeydown = (event: KeyboardEvent) => checkKeyEvent(event);
-        console.log("navigation use effect", window.location.pathname);
     });
 
     const checkKeyEvent = (event: KeyboardEvent) => {
@@ -95,7 +94,7 @@ const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, 
 
     const menuOptions: MenuContentMap = {
         "/sdmx": [
-            {title: "Editor", clazz: "menu-first-item", icon: faCrown, link: "/"}
+            {title: "Editor", clazz: "menu-first-item", icon: faEdit, link: "/"}
         ],
         "/": [
             {title: "New File (Ctrl+E)", clazz: "menu-new menu-first-item", icon: faFile, onClick: makeNewFile},

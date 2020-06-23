@@ -11,6 +11,7 @@ import {languageVersions} from "./editor/settings";
 import EditorView from "./component/EditorView";
 import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
 import SDMXView from "./component/SDMXView/SDMXView";
+import {ICodeList} from "./models/api/ICodeList";
 
 const getTheme = (): string => {
     const item = window.localStorage.getItem("theme");
@@ -30,6 +31,7 @@ function App() {
     const [tempCursor, setTempCursor] = useState(new Position(0, 0));
     const [errors, setErrors] = useState([] as editor.IMarkerData[]);
     const [errorBoxSize, setErrorBoxSize] = useState(0);
+    const [codeLists,setCodeLists] = useState<ICodeList[]>([]);
 
     useEffect(() => {
         retrieveFromLocalStorage("code", setCode);

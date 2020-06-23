@@ -29,7 +29,11 @@ type FilteredState = {
     final: FinalStructureEnum
 }
 
-const SDMXView = () => {
+type SDMXViewProps = {
+    setCodeList:(codeLists:ICodeList[]) => void
+}
+
+const SDMXView = ({setCodeList}:SDMXViewProps) => {
     const [registries, setRegistries] = useState<ISdmxRegistry[]>([]);
     const [registry, setRegistry] = useState<ISdmxRegistry | null>(null);
     const [registriesLoading, setRegistriesLoading] = useState<boolean>(true);
@@ -41,7 +45,6 @@ const SDMXView = () => {
     const [showFilters, setShowFilters] = useState(false);
     const [finalType, setFinalType] = useState<FinalStructureEnum>(FinalStructureEnum.ALL);
     const [prevFilteredState, setPrevFilteredState] = useState<FilteredState | null>(null);
-    const [codeLists, setCodeLists] = useState<ICodeList[]>([]);
 
     const [reverted, setReverted] = useState(false);
     const dataStructureTableRef = useRef();

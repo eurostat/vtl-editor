@@ -106,16 +106,6 @@ $progress-border-radius: 4px;
   margin-right: 10px;
 }
 
-.sdmx-footer {
-  width: 100%;
-  height: 40px;
-  position: fixed;
-  bottom: 0;
-  background-color: #d2d2d2;
-  text-align: center;
-  font-size: 0.8em;
-}
-
 .sdmx-progress-bar-container {
   width: 900px;
   height: 15px;
@@ -144,7 +134,7 @@ $progress-border-radius: 4px;
   position: fixed;
   width: 100vw;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.57);
+  background-color: rgba(0, 0, 0, 0.7);
   z-index: 999;
 }
 
@@ -156,6 +146,9 @@ $progress-border-radius: 4px;
 
   .MuiTypography-colorTextSecondary {
     color: white;
+  }
+  .MuiTypography-caption{
+    font-size: 0.85em;
   }
 
   .MuiCircularProgress-circleStatic {

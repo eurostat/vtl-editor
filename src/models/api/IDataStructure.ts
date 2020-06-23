@@ -1,3 +1,7 @@
+export interface IDataStructureObject {
+    dataStructures:IDataStructure[]
+}
+
 export interface IDataStructure {
     agencyId: string,
     id: string,

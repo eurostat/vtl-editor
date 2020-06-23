@@ -31,7 +31,7 @@ function App() {
     const [tempCursor, setTempCursor] = useState(new Position(0, 0));
     const [errors, setErrors] = useState([] as editor.IMarkerData[]);
     const [errorBoxSize, setErrorBoxSize] = useState(0);
-    const [codeLists,setCodeLists] = useState<ICodeList[]>([]);
+    const [codeLists, setCodeLists] = useState<ICodeList[]>([]);
 
     useEffect(() => {
         retrieveFromLocalStorage("code", setCode);
@@ -168,7 +168,7 @@ function App() {
                     <div id="middle-container" className={`middle-container ${theme}`}>
                         <Switch>
                             <Route exact path="/sdmx">
-                                <SDMXView/>
+                                <SDMXView setCodeLists={setCodeLists}/>
                             </Route>
                             <Route exact path="/">
                                 <EditorView {...EditorViewProps}/>

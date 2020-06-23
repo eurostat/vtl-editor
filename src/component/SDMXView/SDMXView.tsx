@@ -30,10 +30,10 @@ type FilteredState = {
 }
 
 type SDMXViewProps = {
-    setCodeList:(codeLists:ICodeList[]) => void
+    setCodeLists:(codeLists:ICodeList[]) => void
 }
 
-const SDMXView = ({setCodeList}:SDMXViewProps) => {
+const SDMXView = ({setCodeLists}:SDMXViewProps) => {
     const [registries, setRegistries] = useState<ISdmxRegistry[]>([]);
     const [registry, setRegistry] = useState<ISdmxRegistry | null>(null);
     const [registriesLoading, setRegistriesLoading] = useState<boolean>(true);

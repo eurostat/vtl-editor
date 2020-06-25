@@ -8,7 +8,7 @@ import {Link} from "react-router-dom";
 import {decisionModal} from "./DecisionModal";
 import "./navigation.scss"
 import SettingsNav from "./SettingsNav";
-
+import {useLocation} from 'react-router-dom'
 
 type NavigationProps = {
     showDialog: (value: boolean) => void,
@@ -27,7 +27,7 @@ type MenuContent = {
 type MenuContentMap = Record<string, MenuContent[]>;
 
 const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, fileName, createNewFile, settingsNavProps}: NavigationProps) => {
-    const [href, setHref] = useState(window.location.pathname);
+    const location = useLocation();
     const downloadFile = () => {
         let url = window.URL;
         let file = url.createObjectURL(new File([code], (!fileName || fileName === "") ? "untitled.vtl" : fileName));
@@ -107,7 +107,7 @@ const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, 
     return (
         <>
             <div className="nav flex-column nav-pills left-nav" aria-orientation="vertical">
-                {menuOptions[href].map(option => <MenuItem key={option.clazz} item={option} setHref={setHref}/>)}
+                {menuOptions[location.pathname].map(option => <MenuItem key={option.clazz} item={option}/>)}
                 <Tooltip title="Settings" placement="right" arrow>
                     <button className="menu-settings" id="setting-icon" onClick={changeMenu}>
                         <FontAwesomeIcon icon={faCog}/>
@@ -131,14 +131,11 @@ const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, 
 
 type MenuItemProps = {
     item: MenuContent,
-    setHref: (value: string) => void
 }
 
-const MenuItem = ({item, setHref}: MenuItemProps) => {
+const MenuItem = ({item}: MenuItemProps) => {
     const {title, clazz, icon, onClick, link = ""} = item;
     const afterClick = () => {
-        if (link)
-            setHref(link);
         if (onClick)
             onClick();
     };

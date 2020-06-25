@@ -9,13 +9,14 @@ import {FinalStructureEnum, IDataStructure, IDataStructureObject} from "../../mo
 import DataStructureDetailPanel from "./DataStructureDetailPanel";
 import {SDMX_DSD, SDMX_STRUCTURES} from "../../api/apiConsts";
 import {ISdmxRegistry} from "../../models/api/ISdmxRegistry";
-import {ICodeList} from "../../models/api/ICodeList";
+import {ICodeList, ICodeListDetails} from "../../models/api/ICodeList";
 import {ApiCache} from "./ApiCache";
 import {IResponse} from "../../models/api/IResponse";
 import {IBaseStruct, IDataStructureDefinition, IStructureType} from "../../models/api/IDataStructureDefinition";
 import {getCodeList, getDataStructureDefinition, getSdmxDataStructures} from "../../api/sdmxApi";
 import {useSnackbar} from "notistack";
 import {IAgency} from "../../models/api/IAgency";
+import {useHistory} from 'react-router-dom'
 
 type DataStructureTableProps = {
     registry: ISdmxRegistry | null,
@@ -24,7 +25,7 @@ type DataStructureTableProps = {
     selectedAgencies: IAgency[],
     setPrevFilteredState: (value: any) => void,
     finalType: FinalStructureEnum
-    setCodeLists: (codeLists: ICodeList[]) => void
+    setCodeLists: (codeLists: ICodeListDetails[]) => void
 }
 
 
@@ -45,10 +46,11 @@ const DataStructureTable = forwardRef(({
     const [codeListTotal, setCodeListTotal] = useState<number>(0);
     const tableRef = useRef<any>();
     const {enqueueSnackbar} = useSnackbar();
+    const history = useHistory();
 
     const fetchDataStructureDefinition = async (ds: IDataStructure) => {
         const dataStructureDefinition: IResponse<IDataStructureDefinition> | undefined =
-            await getDataStructureDefinition(registry!.id, ds!.agencyId, ds!.id, ds!.version);
+            await getDataStructureDefinition(registry!.id, ds.agencyId, ds.id, ds.version);
         if (dataStructureDefinition && dataStructureDefinition.data) {
             return dataStructureDefinition.data;
         }
@@ -74,7 +76,7 @@ const DataStructureTable = forwardRef(({
                 return promise;
             })
         )])
-        return codeListsResponses.filter(response => response && response.data);
+        return codeListsResponses.filter(response => response && response.data).map(response => response!.data);
     }
 
     useEffect(() => {
@@ -87,6 +89,16 @@ const DataStructureTable = forwardRef(({
         }
         fetch();
     }, [registry]);
+
+    /**
+     * Clearing selected row when filteredDataStructure is changing.
+     * It prevents from saving selected row after changing route or registry.
+     */
+    useEffect(() => {
+        return (() => {
+            tableRef.current.dataManager.changeAllSelected(false);
+        })
+    }, [filteredDataStructures])
 
 
     const onDataStructuresRefresh = () => {
@@ -141,31 +153,40 @@ const DataStructureTable = forwardRef(({
                 await requestCache.checkIfExistsInMapOrAdd(SDMX_DSD(registry!.id, dataStructure!.agencyId, dataStructure!.id, dataStructure!.version),
                     async () => await fetchDataStructureDefinition(dataStructure!));
             setDataStructureDefinition(dsd);
-            const codeListsFromDSD = getCodeListsFromDSD(dsd);
-            setCodeListTotal(codeListsFromDSD.length);
+            const structuresFromDSD: IBaseStruct[] = getCodeListsFromDSD(dsd);
+            setCodeListTotal(structuresFromDSD.length);
             setCodeListLoading(true);
             const codeLists =
                 await requestCache.checkIfExistsInMapOrAdd(`CODE LISTS: ${SDMX_DSD(registry!.id, dataStructure!.agencyId, dataStructure!.id, dataStructure!.version)}`,
-                    () => fetchCodeLists(codeListsFromDSD));
-            setCodeLists(codeLists);
+                    () => fetchCodeLists(structuresFromDSD.map(structure => structure.structureType)));
+            setCodeLists(mapICodeDetails(structuresFromDSD, codeLists))
             setCodeListLoading(false);
             enqueueSnackbar(`${codeLists.length} code list${codeLists.length > 1 ? "s" : ""} downloaded!`, {
                 variant: "success"
             });
-            console.log("codelists", codeLists);
+            history.push("/");
         }
         if (dataStructure) {
             fetch();
         } else {
-            enqueueSnackbar(`Choose data structure from list!`, {
+            enqueueSnackbar(`Choose data structure from the list!`, {
                 variant: "error"
             });
         }
     }
 
-    const getCodeListsFromDSD = (dsd: IDataStructureDefinition): IStructureType[] => {
-        return (dsd.dimensions as IBaseStruct[]).concat(dsd?.attributes as IBaseStruct[] || [])
-            .map(struct => struct.structureType).filter(structureType => structureType.type === "codelist");
+    const mapICodeDetails = (structures: IBaseStruct[], codeLists: ICodeList[]): ICodeListDetails[] => {
+        const structuresMap = structures.reduce((map: { [key: string]: IBaseStruct }, obj) => {
+            map[obj.structureType.id!] = obj;
+            return map;
+        }, {});
+        return codeLists.map(cl => Object.assign({structureId: structuresMap[cl.id].id, name: structuresMap[cl.id].name}, cl));
+    }
+
+
+    const getCodeListsFromDSD = (dsd: IDataStructureDefinition): IBaseStruct[] => {
+        return (dsd.dimensions as IBaseStruct[] || []).concat(dsd?.attributes as IBaseStruct[] || [])
+            .filter(base => base.structureType.type === "codelist");
     }
 
 
@@ -235,7 +256,7 @@ const DataStructureTable = forwardRef(({
                             onSelectionChange={onDataStructureSelect}
                             detailPanel={(rowData: IDataStructure) => {
                                 return (<DataStructureDetailPanel
-                                    retrieveItemFunction={async () => await requestCache.checkIfExistsInMapOrAdd(SDMX_DSD(registry!.id, rowData!.agencyId, rowData!.id, rowData!.version)
+                                    retrieveItemFunction={async () => await requestCache.checkIfExistsInMapOrAdd(SDMX_DSD(registry!.id, rowData.agencyId, rowData.id, rowData.version)
                                         , async () => await fetchDataStructureDefinition(rowData))}/>)
                             }}
                         />
@@ -274,7 +295,7 @@ const LoadingScreen = ({codeListProgress, codeListTotal}: LoadingScreenFooterPro
     return (
         <div className="sdmx-loading-screen">
             <div className="sdmx-loading-content-area">
-                <Box className="sdmx-progess">
+                <Box>
                     <CircularProgress variant="static" value={progress} size={60}/>
                     <Box
                         top={-45}

@@ -1,3 +1,8 @@
+export interface ICodeListDetails extends ICodeList{
+    structureId:string,
+    name:string
+}
+
 export interface ICodeList {
     agencyId: string,
     id: string,

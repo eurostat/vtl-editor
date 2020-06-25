@@ -1,12 +1,13 @@
 import * as EditorApi from 'monaco-editor/esm/vs/editor/editor.api';
-import { Position } from 'monaco-editor/esm/vs/editor/editor.api';
+import {Position} from 'monaco-editor/esm/vs/editor/editor.api';
 import * as React from 'react';
-import { useEffect, useRef } from 'react';
+import {useEffect, useRef} from 'react';
 import MonacoEditor from "react-monaco-editor";
-import { getEditorWillMount, getParserFacade } from "./providers";
+import {getEditorWillMount, getParserFacade} from "./providers";
 
-import { VTL_VERSION } from "./settings";
+import {VTL_VERSION} from "./settings";
 import './vtlEditor.css';
+import {ICodeListDetails} from "../models/api/ICodeList";
 
 declare const window: any;
 
@@ -20,21 +21,23 @@ type VtlEditorProps = {
     setCursorPosition: (e: Position) => void,
     tempCursor: Position,
     setErrors: (array: EditorApi.editor.IMarkerData[]) => void,
+    codeLists: ICodeListDetails[]
 }
 
 let parserFacade: any = {parser: null};
 let errors: any = {value: ""};
 
-const VtlEditor = ({resizeLayout, code, setCode, setCodeChanged, theme, languageVersion, setCursorPosition, tempCursor, setErrors}: VtlEditorProps) => {
-    const monacoRef = useRef(null);
+const VtlEditor = ({resizeLayout, code, setCode, setCodeChanged, theme, languageVersion, setCursorPosition, tempCursor, setErrors, codeLists}: VtlEditorProps) => {
+    const monacoRef = useRef<any>(null);
 
     useEffect(() => {
         if (monacoRef && monacoRef.current) {
             // @ts-ignore
             monacoRef.current.editor.layout();
+            console.log(monacoRef);
         }
     }, [...resizeLayout]);
-
+    
     useEffect(() => {
         if (monacoRef && monacoRef.current) {
             // @ts-ignore
@@ -100,7 +103,7 @@ const VtlEditor = ({resizeLayout, code, setCode, setCodeChanged, theme, language
         <div className="editor-container">
             <MonacoEditor
                 ref={monacoRef}
-                editorWillMount={getEditorWillMount()}
+                editorWillMount={getEditorWillMount(codeLists)}
                 editorDidMount={didMount}
                 height="100%"
                 language={languageVersion}

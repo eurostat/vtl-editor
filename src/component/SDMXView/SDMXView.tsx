@@ -8,14 +8,14 @@ import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import Checkbox from '@material-ui/core/Checkbox';
 import {ISdmxRegistry, ISdmxRegistryObject} from "../../models/api/ISdmxRegistry";
 import {IAgency, IAgencyObject} from "../../models/api/IAgency";
-import {FinalStructureEnum, IDataStructure} from "../../models/api/IDataStructure";
+import {FinalStructureEnum} from "../../models/api/IDataStructure";
 import "./sdmxView.scss"
 import {SDMX_AGENCIES, SDMX_REGISTIRES} from "../../api/apiConsts";
 import {faChevronDown, faFilter, faSyncAlt, faUndoAlt} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useSnackbar} from "notistack";
 import {IResponse} from "../../models/api/IResponse";
-import {ICodeList} from "../../models/api/ICodeList";
+import {ICodeList, ICodeListDetails} from "../../models/api/ICodeList";
 import {ApiCache} from "./ApiCache";
 import DataStructureTable from "./DataStructureTable";
 
@@ -30,10 +30,10 @@ type FilteredState = {
 }
 
 type SDMXViewProps = {
-    setCodeLists:(codeLists:ICodeList[]) => void
+    setCodeLists: (codeLists: ICodeListDetails[]) => void
 }
 
-const SDMXView = ({setCodeLists}:SDMXViewProps) => {
+const SDMXView = ({setCodeLists}: SDMXViewProps) => {
     const [registries, setRegistries] = useState<ISdmxRegistry[]>([]);
     const [registry, setRegistry] = useState<ISdmxRegistry | null>(null);
     const [registriesLoading, setRegistriesLoading] = useState<boolean>(true);
@@ -203,6 +203,7 @@ const SDMXView = ({setCodeLists}:SDMXViewProps) => {
                                 />
                             )}
                         />
+                        {registry ? <p>Selected registry url: {registry.url}</p> : null}
                     </Col>
                     <Col xs={1} className="sdmx-option text-left left-padding-none">
                         {!registriesLoading ?
@@ -279,7 +280,7 @@ const SDMXView = ({setCodeLists}:SDMXViewProps) => {
                         </Row>
                         <Row>
                             <Col xs={2} className="sdmx-option">
-                                <span>Agency type</span>
+                                <span>Final</span>
                             </Col>
                             <Col xs={1}>
                                 <FormControl variant="outlined" margin="normal" style={{minWidth: 70}}>

@@ -1,6 +1,7 @@
 import monarchDefinition from '../grammar/vtl-2.0/monarchDefinition.json';
-import { VtlLexer } from '../grammar/vtl-2.0/VtlLexer';
-import { keywordRgx } from './vocabularyPack';
+import {VtlLexer} from '../grammar/vtl-2.0/VtlLexer';
+import {keywordRgx} from './vocabularyPack';
+import {ICodeListDetails} from "../models/api/ICodeList";
 
 export class TokensProvider {
     private readonly definition: any;
@@ -44,6 +45,11 @@ export class TokensProvider {
 
     public monarchLanguage(version: string): any {
         return this.definition;
+    }
+
+    public addCodeLists(codeLists: ICodeListDetails[]): any {
+        codeLists.forEach(codeList => this.definition.codeLists.push(codeList.structureId))
+        return this;
     }
 
     public addVariables() {

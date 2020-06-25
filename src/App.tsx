@@ -9,9 +9,9 @@ import Header from "./component/Header";
 import Navigation from "./component/Navigation";
 import {languageVersions} from "./editor/settings";
 import EditorView from "./component/EditorView";
-import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
+import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
 import SDMXView from "./component/SDMXView/SDMXView";
-import {ICodeList} from "./models/api/ICodeList";
+import {ICodeListDetails} from "./models/api/ICodeList";
 
 const getTheme = (): string => {
     const item = window.localStorage.getItem("theme");
@@ -31,7 +31,7 @@ function App() {
     const [tempCursor, setTempCursor] = useState(new Position(0, 0));
     const [errors, setErrors] = useState([] as editor.IMarkerData[]);
     const [errorBoxSize, setErrorBoxSize] = useState(0);
-    const [codeLists, setCodeLists] = useState<ICodeList[]>([]);
+    const [codeLists, setCodeLists] = useState<ICodeListDetails[]>([]);
 
     useEffect(() => {
         retrieveFromLocalStorage("code", setCode);
@@ -112,7 +112,8 @@ function App() {
         languageVersion,
         setCursorPosition,
         tempCursor,
-        setErrors
+        setErrors,
+        codeLists
     };
 
     const NavigationProps = {

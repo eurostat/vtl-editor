@@ -9,15 +9,16 @@ type DataStructureDetailPanelProps = {
 const DataStructureDetailPanel = ({retrieveItemFunction}: DataStructureDetailPanelProps) => {
     const [dataStructureDefinition, setDataStructureDefinition] = useState<IDataStructureDefinition | null>(null);
     const [codeLists, setCodeLists] = useState<IStructureType[]>([]);
+    const [structures, setStructures] = useState<IBaseStruct[]>([]);
     const [loadingDataStructureDefinition, setLoadingDataStructureDefinition] = useState(false);
 
     useEffect(() => {
         const fetch = async () => {
             setLoadingDataStructureDefinition(true);
             const dsd: IDataStructureDefinition = await retrieveItemFunction();
-            const cls: IStructureType[] = (dsd.attributes as IBaseStruct[]).concat(dsd.dimensions as IBaseStruct[])
-                .map(struct => struct.structureType).filter(cl => cl.type === "codelist");
-            setCodeLists(cls);
+            const structs: IBaseStruct[] = (dsd.attributes as IBaseStruct[] || [] ).concat(dsd.dimensions as IBaseStruct[] || [])
+                .filter(dsd => dsd.structureType.type === "codelist");
+            setStructures(structs);
             setDataStructureDefinition(dsd);
             setLoadingDataStructureDefinition(false);
         }
@@ -27,8 +28,8 @@ const DataStructureDetailPanel = ({retrieveItemFunction}: DataStructureDetailPan
     return (
         <div style={{minHeight: "100px"}}>
             {loadingDataStructureDefinition ? <span>Loading...</span> : null}
-            {codeLists.map(codeList =>
-                <p>{`agencyId:${codeList.agencyId} id:${codeList.id} version:${codeList.version}`}</p>)}
+            {structures.map(struct =>
+                <p key={struct.id}>{`name: ${struct.name} agencyId:${struct.structureType.agencyId} id:${struct.structureType.id} version:${struct.structureType.version}`}</p>)}
         </div>
     )
 }

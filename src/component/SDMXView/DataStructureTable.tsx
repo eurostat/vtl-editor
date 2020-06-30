@@ -26,14 +26,15 @@ type DataStructureTableProps = {
     selectedAgencies: IAgency[],
     setPrevFilteredState: (value: any) => void,
     finalType: FinalStructureEnum
-    setSdmxResult: (setSdmxResult: ISdmxResult) => void
+    setSdmxResult: (setSdmxResult: ISdmxResult) => void,
+    clearSdmxState: () => void
 }
 
 
 const DataStructureTable = forwardRef(({
                                            registry, requestCache, isFiltered,
                                            selectedAgencies, setPrevFilteredState, finalType,
-                                           setSdmxResult
+                                           setSdmxResult, clearSdmxState
                                        }: DataStructureTableProps, ref: any) => {
     const [dataStructures, setDataStructures] = useState<IDataStructure[]>([]);
     const [dataStructure, setDataStructure] = useState<IDataStructure | null>(null);
@@ -184,6 +185,7 @@ const DataStructureTable = forwardRef(({
     }
 
     const onCancel = () => {
+        clearSdmxState();
         history.push("/");
     }
 
@@ -212,7 +214,9 @@ const DataStructureTable = forwardRef(({
             .filter(base => base.structureType.type === type);
     }
 
-
+    /**
+     * Forwarding onFilterData into parent component
+     */
     useImperativeHandle(ref, () => ({
         onFilterData() {
             if (registry && !dataStructuresLoading) {

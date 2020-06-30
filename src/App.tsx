@@ -42,6 +42,7 @@ function App() {
     const [sdmxResult, setSdmxResult] = useState<ISdmxResult | null>(null);
 
 
+
     useEffect(() => {
         retrieveFromLocalStorage("code", setCode);
         retrieveFromLocalStorage("codeChanged", setCodeChanged);
@@ -112,6 +113,13 @@ function App() {
         updateFileName("untitled.vtl")
     };
 
+    const clearSdmxState = () => {
+        setRegistry(null);
+        setAgencies([]);
+        setSelectedAgencies([]);
+        setFinalType(FinalStructureEnum.ALL);
+    }
+
     const VtlEditorProps = {
         "resizeLayout": [showMenu, showErrorBox, errorBoxSize],
         code,
@@ -159,7 +167,7 @@ function App() {
         ErrorBoxProps
     };
 
-    const SDMXViewProps ={
+    const SDMXViewProps = {
         registry,
         setRegistry,
         agencies,
@@ -168,7 +176,8 @@ function App() {
         setSelectedAgencies,
         finalType,
         setFinalType,
-        setSdmxResult
+        setSdmxResult,
+        clearSdmxState
     }
 
     return (

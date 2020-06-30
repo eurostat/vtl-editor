@@ -38,14 +38,15 @@ type SDMXViewProps = {
     setSelectedAgencies: (agencies: IAgency[]) => void,
     finalType: FinalStructureEnum,
     setFinalType: (finalType: FinalStructureEnum) => void,
-    setSdmxResult: (sdmxResult: ISdmxResult) => void
+    setSdmxResult: (sdmxResult: ISdmxResult) => void,
+    clearSdmxState: () => void
 }
 
 const SDMXView = ({
                       registry, setRegistry,
                       agencies, setAgencies,
                       selectedAgencies, setSelectedAgencies,
-                      finalType, setFinalType, setSdmxResult
+                      finalType, setFinalType, setSdmxResult, clearSdmxState
                   }: SDMXViewProps) => {
     const [registries, setRegistries] = useState<ISdmxRegistry[]>([]);
     const [registriesLoading, setRegistriesLoading] = useState<boolean>(true);
@@ -166,6 +167,16 @@ const SDMXView = ({
             // @ts-ignore
             dataStructureTableRef.current!.onFilterData();
         }
+    }
+    const DataStructureTableProps = {
+        registry,
+        requestCache,
+        isFiltered: !!prevFilteredState,
+        setPrevFilteredState,
+        finalType,
+        selectedAgencies,
+        setSdmxResult,
+        clearSdmxState
     }
 
     return (
@@ -329,10 +340,7 @@ const SDMXView = ({
                 </Row>
             </Container>
             <div className="table-container">
-                <DataStructureTable ref={dataStructureTableRef} registry={registry} requestCache={requestCache}
-                                    isFiltered={!!prevFilteredState}
-                                    setPrevFilteredState={setPrevFilteredState} finalType={finalType}
-                                    selectedAgencies={selectedAgencies} setSdmxResult={setSdmxResult}/>
+                <DataStructureTable ref={dataStructureTableRef} {...DataStructureTableProps}/>
             </div>
         </div>
     );

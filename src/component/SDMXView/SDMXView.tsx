@@ -15,9 +15,9 @@ import {faChevronDown, faFilter, faSyncAlt, faUndoAlt} from "@fortawesome/free-s
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useSnackbar} from "notistack";
 import {IResponse} from "../../models/api/IResponse";
-import {ICodeList, ICodeListDetails} from "../../models/api/ICodeList";
 import {ApiCache} from "./ApiCache";
 import DataStructureTable from "./DataStructureTable";
+import {ISdmxResult} from "../../models/api/ISdmxResult";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small"/>;
 const checkedIcon = <CheckBoxIcon fontSize="small"/>;
@@ -30,23 +30,31 @@ type FilteredState = {
 }
 
 type SDMXViewProps = {
-    setCodeLists: (codeLists: ICodeListDetails[]) => void
+    registry: ISdmxRegistry | null,
+    setRegistry: (registry: ISdmxRegistry | null) => void,
+    agencies: IAgency[],
+    setAgencies: (agencies: IAgency[]) => void,
+    selectedAgencies: IAgency[],
+    setSelectedAgencies: (agencies: IAgency[]) => void,
+    finalType: FinalStructureEnum,
+    setFinalType: (finalType: FinalStructureEnum) => void,
+    setSdmxResult: (sdmxResult: ISdmxResult) => void
 }
 
-const SDMXView = ({setCodeLists}: SDMXViewProps) => {
+const SDMXView = ({
+                      registry, setRegistry,
+                      agencies, setAgencies,
+                      selectedAgencies, setSelectedAgencies,
+                      finalType, setFinalType, setSdmxResult
+                  }: SDMXViewProps) => {
     const [registries, setRegistries] = useState<ISdmxRegistry[]>([]);
-    const [registry, setRegistry] = useState<ISdmxRegistry | null>(null);
     const [registriesLoading, setRegistriesLoading] = useState<boolean>(true);
 
-    const [agencies, setAgencies] = useState<IAgency[]>([]);
-    const [selectedAgencies, setSelectedAgencies] = useState<IAgency[]>([]);
     const [agenciesLoading, setAgenciesLoading] = useState<boolean>(false);
 
     const [showFilters, setShowFilters] = useState(false);
-    const [finalType, setFinalType] = useState<FinalStructureEnum>(FinalStructureEnum.ALL);
     const [prevFilteredState, setPrevFilteredState] = useState<FilteredState | null>(null);
 
-    const [reverted, setReverted] = useState(false);
     const dataStructureTableRef = useRef();
     const {enqueueSnackbar} = useSnackbar();
 
@@ -76,7 +84,6 @@ const SDMXView = ({setCodeLists}: SDMXViewProps) => {
 
     useEffect(() => {
         const fetch = async () => {
-            setSelectedAgencies([]);
             if (registry) {
                 setAgenciesLoading(true);
                 setAgencies(await requestCache.checkIfExistsInMapOrAdd(SDMX_AGENCIES(registry.id), fetchAgencies));
@@ -85,10 +92,6 @@ const SDMXView = ({setCodeLists}: SDMXViewProps) => {
         }
         fetch();
     }, [registry]);
-
-    useEffect(() => {
-        setSelectedAgencies(prevFilteredState?.agencies || []);
-    }, [reverted])
 
 
     /*TODO Ustalic dokladnie co mamy zrobić w przypadku uzycia funkcji "refresh agencies". Czy refreshujemy agencje wszystkich rejestrow czy tylko konkretne.
@@ -135,6 +138,7 @@ const SDMXView = ({setCodeLists}: SDMXViewProps) => {
 
     const onRegistriesChange = (event: any, newRegistry: ISdmxRegistry | null) => {
         setRegistry(newRegistry);
+        setSelectedAgencies([]);
     };
 
     const onAgencyChange = (event: any, newAgencies: IAgency[]) => {
@@ -151,7 +155,6 @@ const SDMXView = ({setCodeLists}: SDMXViewProps) => {
             setRegistry(prevFilteredState.registry)
             setSelectedAgencies(prevFilteredState.agencies)
             setFinalType(prevFilteredState.final);
-            setReverted(!reverted);
             enqueueSnackbar(`Values reverted!`, {
                 variant: "success"
             });
@@ -329,7 +332,7 @@ const SDMXView = ({setCodeLists}: SDMXViewProps) => {
                 <DataStructureTable ref={dataStructureTableRef} registry={registry} requestCache={requestCache}
                                     isFiltered={!!prevFilteredState}
                                     setPrevFilteredState={setPrevFilteredState} finalType={finalType}
-                                    selectedAgencies={selectedAgencies} setCodeLists={setCodeLists}/>
+                                    selectedAgencies={selectedAgencies} setSdmxResult={setSdmxResult}/>
             </div>
         </div>
     );

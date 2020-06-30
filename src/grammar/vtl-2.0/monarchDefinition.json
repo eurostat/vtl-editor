@@ -6,7 +6,7 @@
   "operators": [],
   "specials": [],
   "variables": [],
-  "codeLists": [],
+  "dsdContents": [],
   "symbols": "_RGX_/[=><!~?:&|+\\-*\\/\\^%]+/",
   "escapes": "_RGX_/\\\\(?:[abfnrtv\\\\\"']|x[0-9A-Fa-f]{1,4}|u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{8})/",
   "digits": "_RGX_/\\d+(_+\\d+)*/",
@@ -44,7 +44,7 @@
             "@typeKeywords": "keyword",
             "@keywords": "keyword",
             "@variables": "variable",
-            "@codeLists": "codeList",
+            "@dsdContents": "dsdContent",
             "@default": "identifier"
           }
         }

@@ -7,7 +7,7 @@ import {getEditorWillMount, getParserFacade} from "./providers";
 
 import {VTL_VERSION} from "./settings";
 import './vtlEditor.css';
-import {ICodeListDetails} from "../models/api/ICodeList";
+import {ISdmxResult} from "../models/api/ISdmxResult";
 
 declare const window: any;
 
@@ -21,23 +21,22 @@ type VtlEditorProps = {
     setCursorPosition: (e: Position) => void,
     tempCursor: Position,
     setErrors: (array: EditorApi.editor.IMarkerData[]) => void,
-    codeLists: ICodeListDetails[]
+    sdmxResult: ISdmxResult | null,
 }
 
 let parserFacade: any = {parser: null};
 let errors: any = {value: ""};
 
-const VtlEditor = ({resizeLayout, code, setCode, setCodeChanged, theme, languageVersion, setCursorPosition, tempCursor, setErrors, codeLists}: VtlEditorProps) => {
+const VtlEditor = ({resizeLayout, code, setCode, setCodeChanged, theme, languageVersion, setCursorPosition, tempCursor, setErrors, sdmxResult}: VtlEditorProps) => {
     const monacoRef = useRef<any>(null);
 
     useEffect(() => {
         if (monacoRef && monacoRef.current) {
             // @ts-ignore
             monacoRef.current.editor.layout();
-            console.log(monacoRef);
         }
     }, [...resizeLayout]);
-    
+
     useEffect(() => {
         if (monacoRef && monacoRef.current) {
             // @ts-ignore
@@ -103,7 +102,7 @@ const VtlEditor = ({resizeLayout, code, setCode, setCodeChanged, theme, language
         <div className="editor-container">
             <MonacoEditor
                 ref={monacoRef}
-                editorWillMount={getEditorWillMount(codeLists)}
+                editorWillMount={getEditorWillMount(sdmxResult)}
                 editorDidMount={didMount}
                 height="100%"
                 language={languageVersion}

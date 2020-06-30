@@ -11,7 +11,10 @@ import {languageVersions} from "./editor/settings";
 import EditorView from "./component/EditorView";
 import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
 import SDMXView from "./component/SDMXView/SDMXView";
-import {ICodeListDetails} from "./models/api/ICodeList";
+import {ISdmxResult} from "./models/api/ISdmxResult";
+import {ISdmxRegistry} from "./models/api/ISdmxRegistry";
+import {IAgency} from "./models/api/IAgency";
+import {FinalStructureEnum} from "./models/api/IDataStructure";
 
 const getTheme = (): string => {
     const item = window.localStorage.getItem("theme");
@@ -31,7 +34,13 @@ function App() {
     const [tempCursor, setTempCursor] = useState(new Position(0, 0));
     const [errors, setErrors] = useState([] as editor.IMarkerData[]);
     const [errorBoxSize, setErrorBoxSize] = useState(0);
-    const [codeLists, setCodeLists] = useState<ICodeListDetails[]>([]);
+    /*SDMX STATES */
+    const [registry, setRegistry] = useState<ISdmxRegistry | null>(null);
+    const [agencies, setAgencies] = useState<IAgency[]>([]);
+    const [selectedAgencies, setSelectedAgencies] = useState<IAgency[]>([]);
+    const [finalType, setFinalType] = useState<FinalStructureEnum>(FinalStructureEnum.ALL);
+    const [sdmxResult, setSdmxResult] = useState<ISdmxResult | null>(null);
+
 
     useEffect(() => {
         retrieveFromLocalStorage("code", setCode);
@@ -113,7 +122,7 @@ function App() {
         setCursorPosition,
         tempCursor,
         setErrors,
-        codeLists
+        sdmxResult
     };
 
     const NavigationProps = {
@@ -150,6 +159,18 @@ function App() {
         ErrorBoxProps
     };
 
+    const SDMXViewProps ={
+        registry,
+        setRegistry,
+        agencies,
+        setAgencies,
+        selectedAgencies,
+        setSelectedAgencies,
+        finalType,
+        setFinalType,
+        setSdmxResult
+    }
+
     return (
         //TODO check if it is working without router here
         <Router>
@@ -169,7 +190,7 @@ function App() {
                     <div id="middle-container" className={`middle-container ${theme}`}>
                         <Switch>
                             <Route exact path="/sdmx">
-                                <SDMXView setCodeLists={setCodeLists}/>
+                                <SDMXView {...SDMXViewProps}/>
                             </Route>
                             <Route exact path="/">
                                 <EditorView {...EditorViewProps}/>

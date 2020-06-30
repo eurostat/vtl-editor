@@ -21,7 +21,7 @@ import {ISdmxResult} from "../../models/api/ISdmxResult";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small"/>;
 const checkedIcon = <CheckBoxIcon fontSize="small"/>;
-const requestCache = new ApiCache();
+const requestCache = ApiCache.getInstance();
 
 type FilteredState = {
     registry: ISdmxRegistry,
@@ -168,9 +168,16 @@ const SDMXView = ({
             dataStructureTableRef.current!.onFilterData();
         }
     }
+
+    const isDataStructuresLoading = () => {
+        if(dataStructureTableRef && dataStructureTableRef.current){
+            // @ts-ignore
+            return dataStructureTableRef.current!.isDataStructuresLoading();
+        }
+        return false;
+    }
     const DataStructureTableProps = {
         registry,
-        requestCache,
         isFiltered: !!prevFilteredState,
         setPrevFilteredState,
         finalType,
@@ -317,7 +324,7 @@ const SDMXView = ({
                         </Row>
                         <Row className="justify-content-md-center" style={{marginBottom: "10px"}}>
                             <Col xs={12}>
-                                <button className="btn btn-primary default-button button-margin-right"
+                                <button className={`btn btn-primary default-button button-margin-right`}
                                         onClick={onFilterData}>
                                     <FontAwesomeIcon icon={faFilter}/>
                                     <span>Filter</span>
@@ -332,7 +339,7 @@ const SDMXView = ({
                 </div>
                 <Row style={{marginBottom: "20px"}}>
                     <Col xs={12} className="justify-content-end">
-                        <button className="btn btn-primary default-button"
+                        <button className={`btn btn-primary default-button`}
                                 onClick={onFilterData}>
                             <span>Search</span>
                         </button>

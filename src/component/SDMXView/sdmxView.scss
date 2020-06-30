@@ -147,13 +147,21 @@ $progress-border-radius: 4px;
   .MuiTypography-colorTextSecondary {
     color: white;
   }
-  .MuiTypography-caption{
+
+  .MuiTypography-caption {
     font-size: 0.85em;
   }
 
   .MuiCircularProgress-circleStatic {
     transition: stroke-dashoffset 0ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
   }
+}
+
+
+.dsd-detail-panel {
+  min-height: 100px;
+  background-color: #e4e4e4;
+  padding: 25px 15px;
 }
 
 

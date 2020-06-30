@@ -279,3 +279,10 @@ button {
   justify-content: flex-end!important;
   display: flex;
 }
+
+button {
+  &.gray-background{
+    background-color: #c4c4c4;
+    border-color: #afafaf;
+  }
+}

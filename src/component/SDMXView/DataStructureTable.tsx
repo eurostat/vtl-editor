@@ -6,8 +6,8 @@ import {faSyncAlt} from "@fortawesome/free-solid-svg-icons";
 import MaterialTable from "material-table";
 import {dataStructuresColumns} from "./tableColumns";
 import {FinalStructureEnum, IDataStructure, IDataStructureObject} from "../../models/api/IDataStructure";
-import DataStructureDetailPanel from "./DataStructureDetailPanel";
-import {SDMX_DSD, SDMX_STRUCTURES} from "../../api/apiConsts";
+import DataStructureDetailPanel from "./DataStructureDetailPanel/DataStructureDetailPanel";
+import {SDMX_CODELIST, SDMX_DSD, SDMX_STRUCTURES} from "../../api/apiConsts";
 import {ISdmxRegistry} from "../../models/api/ISdmxRegistry";
 import {ICodeList, ICodeListDetails} from "../../models/api/ICodeList";
 import {ApiCache} from "./ApiCache";
@@ -21,7 +21,6 @@ import {ISdmxResult} from "../../models/api/ISdmxResult";
 
 type DataStructureTableProps = {
     registry: ISdmxRegistry | null,
-    requestCache: ApiCache;
     isFiltered: boolean,
     selectedAgencies: IAgency[],
     setPrevFilteredState: (value: any) => void,
@@ -30,9 +29,11 @@ type DataStructureTableProps = {
     clearSdmxState: () => void
 }
 
+const requestCache = ApiCache.getInstance();
+
 
 const DataStructureTable = forwardRef(({
-                                           registry, requestCache, isFiltered,
+                                           registry, isFiltered,
                                            selectedAgencies, setPrevFilteredState, finalType,
                                            setSdmxResult, clearSdmxState
                                        }: DataStructureTableProps, ref: any) => {
@@ -67,16 +68,24 @@ const DataStructureTable = forwardRef(({
         return [];
     };
 
+    const fetchCodeList = async (registry: ISdmxRegistry, structureType: IStructureType) => {
+        const codeList: IResponse<ICodeList> | undefined = await getCodeList(registry!.id, structureType.agencyId!, structureType.id!, structureType.version!);
+        if (codeList && codeList.data) {
+            return codeList.data;
+        }
+        return null;
+    }
+
 
     const fetchCodeLists = async (structureTypes: IStructureType[]) => {
-        const [codeListsResponses] = await Promise.all([Promise.all(structureTypes
-            .map(structureType => getCodeList(registry!.id, structureType.agencyId!, structureType.id!, structureType.version!))
+        const codeListsResponses = await Promise.all(structureTypes.map(structureType =>
+            requestCache.checkIfExistsInMapOrAdd(SDMX_CODELIST(registry!.id, structureType.agencyId!, structureType.id!, structureType.version!), () => fetchCodeList(registry!, structureType)))
             .map(promise => {
                 promise.then(() => setCodeListProgress(prevState => prevState += 1));
                 return promise;
             })
-        )])
-        return codeListsResponses.filter(response => response && response.data).map(response => response!.data);
+        );
+        return codeListsResponses.filter(response => response);
     }
 
     useEffect(() => {
@@ -149,21 +158,23 @@ const DataStructureTable = forwardRef(({
     const onCodeListsFetch = () => {
         const fetch = async () => {
             setCodeListProgress(0);
+            setCodeListLoading(true);
             const dsd =
                 await requestCache.checkIfExistsInMapOrAdd(SDMX_DSD(registry!.id, dataStructure!.agencyId, dataStructure!.id, dataStructure!.version),
                     async () => await fetchDataStructureDefinition(dataStructure!));
             setDataStructureDefinition(dsd);
             const structuresFromDSD: IBaseStruct[] = getCodeListsFromDSD(dsd);
             setCodeListTotal(structuresFromDSD.length);
-            setCodeListLoading(true);
+
+            const structureTypes = distinctStructureTypes(structuresFromDSD.map(structure => structure.structureType));
             const codeLists =
                 await requestCache.checkIfExistsInMapOrAdd(`CODE LISTS: ${SDMX_DSD(registry!.id, dataStructure!.agencyId, dataStructure!.id, dataStructure!.version)}`,
-                    () => fetchCodeLists(structuresFromDSD.map(structure => structure.structureType)));
+                    () => fetchCodeLists(structureTypes));
             setSdmxResult(createSdmxResult(dsd, codeLists));
-            setCodeListLoading(false);
             enqueueSnackbar(`${codeLists.length} code list${codeLists.length > 1 ? "s" : ""} downloaded!`, {
                 variant: "success"
             });
+            setCodeListLoading(false);
             history.push("/");
         }
         if (dataStructure) {
@@ -173,6 +184,11 @@ const DataStructureTable = forwardRef(({
                 variant: "error"
             });
         }
+    }
+
+    const distinctStructureTypes = (list: IStructureType[]): IStructureType[] => {
+        return list.filter((s, i, arr) =>
+            arr.findIndex(t => t.id === s.id && t.agencyId === s.agencyId && t.version === s.version) === i);
     }
 
     const createSdmxResult = (dsd: IDataStructureDefinition, codeLists: ICodeList[]): ISdmxResult => {
@@ -283,6 +299,8 @@ const DataStructureTable = forwardRef(({
                             onSelectionChange={onDataStructureSelect}
                             detailPanel={(rowData: IDataStructure) => {
                                 return (<DataStructureDetailPanel
+                                    registry={registry}
+                                    fetchCodeList={fetchCodeList}
                                     retrieveItemFunction={async () => await requestCache.checkIfExistsInMapOrAdd(SDMX_DSD(registry!.id, rowData.agencyId, rowData.id, rowData.version)
                                         , async () => await fetchDataStructureDefinition(rowData))}/>)
                             }}

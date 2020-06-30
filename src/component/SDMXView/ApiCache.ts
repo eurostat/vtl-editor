@@ -1,8 +1,16 @@
 export class ApiCache {
-    cache: Map<string, any>;
+    private static instance: ApiCache | undefined = undefined;
+    private cache: Map<string, any> = new Map<string, any>();
 
-    constructor() {
-        this.cache = new Map<string, any>();
+    private constructor() {
+
+    }
+
+    static getInstance = () => {
+        if (!ApiCache.instance) {
+            ApiCache.instance = new ApiCache();
+        }
+        return ApiCache.instance;
     }
 
     clearCacheAndAdd = async (value: string, asyncFunction: any) => {

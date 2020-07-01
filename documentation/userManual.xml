@@ -1,10 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="css/styles.xsl"?>
-<chapter xml:id="user_interface" xml:lang="en" version="5.0" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns="http://docbook.org/ns/docbook"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docbook.org/ns/docbook http://docbook.org/xml/5.0/xsd/docbook.xsd">
-    <title>VRM Editor - User Manual</title>
+<?xml-stylesheet href="./docbook.css" type="text/css"?>
+<!DOCTYPE book [
+        <!ENTITY version "">
+        ]>
+<book xml:id="user-manual" xml:lang="en" version="5.0"
+      xmlns="http://docbook.org/ns/docbook"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://docbook.org/ns/docbook http://docbook.org/xml/5.0/xsd/docbook.xsd">
 
-    <section xml:id="getting_started">
+    <info>
+        <title>VRM - User Manual</title>
+        <subtitle>User Manual for the Validation Rule Manager</subtitle>
+        <releaseinfo>version &version;</releaseinfo>
+        <date>18/05/2020</date>
+        <copyright>
+            <year>2020</year>
+            <holder>European Commission</holder>
+            <holder>EUROSTAT</holder>
+        </copyright>
+        <mediaobject>
+            <imageobject>
+                <imagedata align="center" fileref="images/title_page_logo.png" scalefit="1" width="100%"/>
+            </imageobject>
+        </mediaobject>
+        <authorgroup>
+            <author>
+                <personname>Commission Européenne, 2920 Luxembourg, LUXEMBOURG - Tel. +352 43011</personname>
+            </author>
+        </authorgroup>
+    </info>
+
+    <chapter xml:id="getting_started">
         <title>GETTING STARTED</title>
         <para>The <emphasis role="bold">VRM Editor</emphasis> is an online editor, that allows you to edit all your text files and this documentation describes the features.
         </para>
@@ -31,7 +57,7 @@
                 <title>VRM Editor - Interface</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/vrm_interface.png" align="center" width="100%"/>
+                        <imagedata fileref="images/vrm_interface.png" align="center" width="100%"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -129,9 +155,9 @@
                 </listitem>
             </itemizedlist>
         </section>
-    </section>
+    </chapter>
 
-    <section xml:id="vrm_editing_funcionalities">
+    <chapter xml:id="vrm_editing_funcionalities">
         <title>EDITING FUNCTIONALITIES</title>
         <para>For <emphasis role="bold">VRM Editor</emphasis> you have available all the following functionalities for the files:
         </para>
@@ -322,9 +348,9 @@
                 position with error has red underline.
             </para>
         </section>
-    </section>
+    </chapter>
 
-    <section xml:id="vrm_settings">
+    <chapter xml:id="vrm_settings">
         <title>SETTINGS</title>
         <para>You can edit your preferences by clicking on <emphasis role="bold">Settings</emphasis> in main menu,then will see all the following
             options:
@@ -378,9 +404,9 @@
                 </itemizedlist>
             </para>
         </section>
-    </section>
+    </chapter>
 
-    <section xml:id="vrm_keyboard_shortcuts">
+    <chapter xml:id="vrm_keyboard_shortcuts">
         <title>KEYBOARD SHOTCUTS</title>
         <para>The following commands are available when editing a file:</para>
         <itemizedlist>
@@ -445,10 +471,9 @@
             </listitem>
         </itemizedlist>
 
-    </section>
+    </chapter>
 
-
-    <section xml:id="vrm_accessibilitys">
+    <chapter xml:id="vrm_accessibilitys">
         <title>ACCESSIBILITY</title>
 
         <section xml:id="vrm_accessibility_help">
@@ -468,6 +493,6 @@
                 and select the <emphasis role="bold">High Contrast Dark</emphasis>.
             </para>
         </section>
-    </section>
+    </chapter>
 
-</chapter>
+</book>

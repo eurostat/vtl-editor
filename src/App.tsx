@@ -12,9 +12,9 @@ import EditorView from "./component/EditorView";
 import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
 import SDMXView from "./component/SDMXView/SDMXView";
 import {ISdmxResult} from "./models/api/ISdmxResult";
-import {ISdmxRegistry} from "./models/api/ISdmxRegistry";
-import {IAgency} from "./models/api/IAgency";
-import {FinalStructureEnum} from "./models/api/IDataStructure";
+import {SdmxRegistry} from "./models/api/SdmxRegistry";
+import {Agency} from "./models/api/Agency";
+import {FinalStructureEnum} from "./models/api/DataStructure";
 
 const getTheme = (): string => {
     const item = window.localStorage.getItem("theme");
@@ -35,9 +35,9 @@ function App() {
     const [errors, setErrors] = useState([] as editor.IMarkerData[]);
     const [errorBoxSize, setErrorBoxSize] = useState(0);
     /*SDMX STATES */
-    const [registry, setRegistry] = useState<ISdmxRegistry | null>(null);
-    const [agencies, setAgencies] = useState<IAgency[]>([]);
-    const [selectedAgencies, setSelectedAgencies] = useState<IAgency[]>([]);
+    const [registry, setRegistry] = useState<SdmxRegistry | null>(null);
+    const [agencies, setAgencies] = useState<Agency[]>([]);
+    const [selectedAgencies, setSelectedAgencies] = useState<Agency[]>([]);
     const [finalType, setFinalType] = useState<FinalStructureEnum>(FinalStructureEnum.ALL);
     const [sdmxResult, setSdmxResult] = useState<ISdmxResult | null>(null);
 

@@ -1,4 +1,4 @@
-import {IResponse} from "../models/api/IResponse"
+import {CustomResponse} from "../models/api/CustomResponse"
 
 export async function fetchResponse(url: string) {
     try {
@@ -61,12 +61,12 @@ export function handleError(error: Error):void{
 }
 
 
-const wrapValidResponse = async (response: Response): Promise<IResponse<any>> => {
+const wrapValidResponse = async (response: Response): Promise<CustomResponse<any>> => {
     const data = await response.json();
     return {status: response.ok, data: data, message: response.statusText};
 }
 
-const wrapInvalidResponse = async (response: Response): Promise<IResponse<any>> => {
+const wrapInvalidResponse = async (response: Response): Promise<CustomResponse<any>> => {
     const data = await response.json();
     return {status: response.ok, message: response.statusText, error: data};
 }

@@ -1,9 +1,9 @@
-import {IBaseStruct} from "./IDataStructureDefinition";
-import {ICodeListDetails} from "./ICodeList";
+import {BaseStruct} from "./DataStructureDefinition";
+import {CodeListDetails} from "./CodeList";
 
 export interface ISdmxResult {
-    texts: IBaseStruct[];
-    codeLists: ICodeListDetails[];
+    texts: BaseStruct[];
+    codeLists: CodeListDetails[];
     primaryMeasure: string,
     timeDimension: string;
 }

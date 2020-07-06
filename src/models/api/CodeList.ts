@@ -1,18 +1,18 @@
-export interface ICodeListDetails extends ICodeList{
+export interface CodeListDetails extends CodeList{
     structureId:string,
     name:string
 }
 
-export interface ICodeList {
+export interface CodeList {
     agencyId: string,
     id: string,
     version: string,
     page: number,
     totalPages: number,
-    codes: ICode[]
+    codes: Code[]
 }
 
-interface ICode {
+interface Code {
     id: string,
     value: string
 }

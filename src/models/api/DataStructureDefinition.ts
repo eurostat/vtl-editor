@@ -1,23 +1,23 @@
-export interface IDataStructureDefinition {
+export interface DataStructureDefinition {
     agencyId: string,
     id: string,
     version: string,
     name: string
-    dimensions: IDimension[],
+    dimensions: Dimension[],
     timeDimension: string,
-    attributes: IAttribute[]
+    attributes: Attribute[]
     primaryMeasure: string
 }
 
 
-interface IDimension extends IBaseStruct {
+interface Dimension extends BaseStruct {
     position: number,
 }
 
-interface IAttribute extends IBaseStruct {
+interface Attribute extends BaseStruct {
 }
 
-export interface IStructureType {
+export interface StructureType {
     type: string,
     agencyId?: string,
     id?: string,
@@ -25,8 +25,8 @@ export interface IStructureType {
     textType?: string
 }
 
-export interface IBaseStruct {
+export interface BaseStruct {
     id: string,
     name: string,
-    structureType: IStructureType
+    structureType: StructureType
 }

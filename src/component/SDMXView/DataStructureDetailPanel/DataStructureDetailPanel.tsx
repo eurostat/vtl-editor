@@ -1,34 +1,34 @@
 import React, {useEffect, useState} from "react";
-import {IBaseStruct, IDataStructureDefinition, IStructureType} from "../../../models/api/IDataStructureDefinition";
+import {BaseStruct, DataStructureDefinition, StructureType} from "../../../models/api/DataStructureDefinition";
 import MaterialTable from "material-table";
 import {dataPanelColumns} from "./detailPanelColumns";
 import {ApiCache} from "../ApiCache";
-import {ICodeList} from "../../../models/api/ICodeList";
+import {CodeList} from "../../../models/api/CodeList";
 import {SDMX_CODELIST, SDMX_DSD} from "../../../api/apiConsts";
-import {ISdmxRegistry} from "../../../models/api/ISdmxRegistry";
+import {SdmxRegistry} from "../../../models/api/SdmxRegistry";
 import {fetchCodeList, fetchDataStructureDefinition} from "../../../api/sdmxApi";
-import {IDataStructure} from "../../../models/api/IDataStructure";
+import {DataStructure} from "../../../models/api/DataStructure";
 
 type DataStructureDetailPanelProps = {
-    registry: ISdmxRegistry,
-    dataStructure: IDataStructure
+    registry: SdmxRegistry,
+    dataStructure: DataStructure
 }
 
 const requestCache = ApiCache.getInstance();
 
 const DataStructureDetailPanel = ({registry, dataStructure}: DataStructureDetailPanelProps) => {
-    const [dataStructureDefinition, setDataStructureDefinition] = useState<IDataStructureDefinition | null>(null);
-    const [codeLists, setCodeLists] = useState<IStructureType[]>([]);
-    const [structures, setStructures] = useState<IBaseStruct[]>([]);
+    const [dataStructureDefinition, setDataStructureDefinition] = useState<DataStructureDefinition | null>(null);
+    const [codeLists, setCodeLists] = useState<StructureType[]>([]);
+    const [structures, setStructures] = useState<BaseStruct[]>([]);
     const [loadingDataStructureDefinition, setLoadingDataStructureDefinition] = useState(false);
 
 
     useEffect(() => {
         const fetch = async () => {
             setLoadingDataStructureDefinition(true);
-            const dsd: IDataStructureDefinition = await requestCache.checkIfExistsInMapOrAdd(SDMX_DSD(registry.id, dataStructure.agencyId, dataStructure.id, dataStructure.version)
+            const dsd: DataStructureDefinition = await requestCache.checkIfExistsInMapOrAdd(SDMX_DSD(registry.id, dataStructure.agencyId, dataStructure.id, dataStructure.version)
                 , async () => await fetchDataStructureDefinition(registry!, dataStructure));
-            const structs: IBaseStruct[] = (dsd.attributes as IBaseStruct[] || []).concat(dsd.dimensions as IBaseStruct[] || []);
+            const structs: BaseStruct[] = (dsd.attributes as BaseStruct[] || []).concat(dsd.dimensions as BaseStruct[] || []);
             setStructures(structs);
             setDataStructureDefinition(dsd);
             setLoadingDataStructureDefinition(false);
@@ -36,9 +36,9 @@ const DataStructureDetailPanel = ({registry, dataStructure}: DataStructureDetail
         fetch();
     }, [])
 
-    const previewCodeList = (structure: IBaseStruct) => {
+    const previewCodeList = (structure: BaseStruct) => {
         const fetch = async () => {
-            const codeList: ICodeList = await requestCache.checkIfExistsInMapOrAdd(SDMX_CODELIST(registry!.id, structure.structureType.agencyId!, structure.structureType.id!, structure.structureType.version!), () => fetchCodeList(registry!, structure.structureType));
+            const codeList: CodeList = await requestCache.checkIfExistsInMapOrAdd(SDMX_CODELIST(registry!.id, structure.structureType.agencyId!, structure.structureType.id!, structure.structureType.version!), () => fetchCodeList(registry!, structure.structureType));
             //Temp solution
             alert(codeList.codes.map(code => `${code.id} ${code.value}\n`));
         }
@@ -57,7 +57,7 @@ const DataStructureDetailPanel = ({registry, dataStructure}: DataStructureDetail
                     pageSize: 10
                 }}
                 actions={[
-                    (rowData: IBaseStruct) => {
+                    (rowData: BaseStruct) => {
                         return {
                             icon: "visibilityOutlined",
                             tooltip: "Preview",

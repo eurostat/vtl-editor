@@ -5,14 +5,14 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSyncAlt} from "@fortawesome/free-solid-svg-icons";
 import MaterialTable from "material-table";
 import {dataStructuresColumns} from "./tableColumns";
-import {FinalStructureEnum, IDataStructure, IDataStructureObject} from "../../models/api/IDataStructure";
+import {FinalStructureEnum, DataStructure, DataStructureObject} from "../../models/api/DataStructure";
 import DataStructureDetailPanel from "./DataStructureDetailPanel/DataStructureDetailPanel";
 import {SDMX_CODELIST, SDMX_DSD, SDMX_STRUCTURES} from "../../api/apiConsts";
-import {ISdmxRegistry} from "../../models/api/ISdmxRegistry";
-import {ICodeList, ICodeListDetails} from "../../models/api/ICodeList";
+import {SdmxRegistry} from "../../models/api/SdmxRegistry";
+import {CodeList, CodeListDetails} from "../../models/api/CodeList";
 import {ApiCache} from "./ApiCache";
-import {IResponse} from "../../models/api/IResponse";
-import {IBaseStruct, IDataStructureDefinition, IStructureType} from "../../models/api/IDataStructureDefinition";
+import {CustomResponse} from "../../models/api/CustomResponse";
+import {BaseStruct, DataStructureDefinition, StructureType} from "../../models/api/DataStructureDefinition";
 import {
     fetchCodeList,
     fetchDataStructureDefinition,
@@ -21,14 +21,14 @@ import {
     getSdmxDataStructures
 } from "../../api/sdmxApi";
 import {useSnackbar} from "notistack";
-import {IAgency} from "../../models/api/IAgency";
+import {Agency} from "../../models/api/Agency";
 import {useHistory} from 'react-router-dom'
 import {ISdmxResult} from "../../models/api/ISdmxResult";
 
 type DataStructureTableProps = {
-    registry: ISdmxRegistry | null,
+    registry: SdmxRegistry | null,
     isFiltered: boolean,
-    selectedAgencies: IAgency[],
+    selectedAgencies: Agency[],
     setPrevFilteredState: (value: any) => void,
     finalType: FinalStructureEnum
     setSdmxResult: (setSdmxResult: ISdmxResult) => void,
@@ -43,12 +43,12 @@ const DataStructureTable = forwardRef(({
                                            selectedAgencies, setPrevFilteredState, finalType,
                                            setSdmxResult, clearSdmxState
                                        }: DataStructureTableProps, ref: any) => {
-    const [dataStructures, setDataStructures] = useState<IDataStructure[]>([]);
-    const [dataStructure, setDataStructure] = useState<IDataStructure | null>(null);
+    const [dataStructures, setDataStructures] = useState<DataStructure[]>([]);
+    const [dataStructure, setDataStructure] = useState<DataStructure | null>(null);
     const [dataStructuresLoading, setDataStructuresLoading] = useState(false);
-    const [filteredDataStructures, setFilteredDataStructures] = useState<IDataStructure[]>([]);
+    const [filteredDataStructures, setFilteredDataStructures] = useState<DataStructure[]>([]);
 
-    const [dataStructureDefinition, setDataStructureDefinition] = useState<IDataStructureDefinition | null>(null);
+    const [dataStructureDefinition, setDataStructureDefinition] = useState<DataStructureDefinition | null>(null);
 
     const [codeListLoading, setCodeListLoading] = useState<boolean>(false);
     const [codeListProgress, setCodeListProgress] = useState<number>(0);
@@ -58,7 +58,7 @@ const DataStructureTable = forwardRef(({
     const history = useHistory();
 
     const fetchDataStructures = async () => {
-        const dataStructures: IResponse<IDataStructureObject> | undefined = await getSdmxDataStructures(registry!.id);
+        const dataStructures: CustomResponse<DataStructureObject> | undefined = await getSdmxDataStructures(registry!.id);
         if (dataStructures && dataStructures.data) {
             return dataStructures.data.dataStructures;
         }
@@ -66,7 +66,7 @@ const DataStructureTable = forwardRef(({
     };
 
 
-    const fetchCodeLists = async (structureTypes: IStructureType[]) => {
+    const fetchCodeLists = async (structureTypes: StructureType[]) => {
         const codeListsResponses = await Promise.all(structureTypes.map(structureType =>
             requestCache.checkIfExistsInMapOrAdd(SDMX_CODELIST(registry!.id, structureType.agencyId!, structureType.id!, structureType.version!), () => fetchCodeList(registry!, structureType)))
             .map(promise => {
@@ -136,7 +136,7 @@ const DataStructureTable = forwardRef(({
         setDataStructure(rowData);
     }
 
-    const getItemIndex = (item: IDataStructure): number => {
+    const getItemIndex = (item: DataStructure): number => {
         for (let index in dataStructures) {
             let ds = dataStructures[index];
             if (ds.id === item.id) return parseInt(index);
@@ -152,7 +152,7 @@ const DataStructureTable = forwardRef(({
                 await requestCache.checkIfExistsInMapOrAdd(SDMX_DSD(registry!.id, dataStructure!.agencyId, dataStructure!.id, dataStructure!.version),
                     async () => await fetchDataStructureDefinition(registry!, dataStructure!));
             setDataStructureDefinition(dsd);
-            const structuresFromDSD: IBaseStruct[] = getCodeListsFromDSD(dsd);
+            const structuresFromDSD: BaseStruct[] = getCodeListsFromDSD(dsd);
             setCodeListTotal(structuresFromDSD.length);
 
             const structureTypes = distinctStructureTypes(structuresFromDSD.map(structure => structure.structureType));
@@ -175,12 +175,12 @@ const DataStructureTable = forwardRef(({
         }
     }
 
-    const distinctStructureTypes = (list: IStructureType[]): IStructureType[] => {
+    const distinctStructureTypes = (list: StructureType[]): StructureType[] => {
         return list.filter((s, i, arr) =>
             arr.findIndex(t => t.id === s.id && t.agencyId === s.agencyId && t.version === s.version) === i);
     }
 
-    const createSdmxResult = (dsd: IDataStructureDefinition, codeLists: ICodeList[]): ISdmxResult => {
+    const createSdmxResult = (dsd: DataStructureDefinition, codeLists: CodeList[]): ISdmxResult => {
         return {
             texts: getTextFromDSD(dsd),
             codeLists: mapICodeDetails(getCodeListsFromDSD(dsd), codeLists),
@@ -194,8 +194,8 @@ const DataStructureTable = forwardRef(({
         history.push("/");
     }
 
-    const mapICodeDetails = (structures: IBaseStruct[], codeLists: ICodeList[]): ICodeListDetails[] => {
-        const structuresMap = structures.reduce((map: { [key: string]: IBaseStruct }, obj) => {
+    const mapICodeDetails = (structures: BaseStruct[], codeLists: CodeList[]): CodeListDetails[] => {
+        const structuresMap = structures.reduce((map: { [key: string]: BaseStruct }, obj) => {
             map[obj.structureType.id!] = obj;
             return map;
         }, {});
@@ -206,16 +206,16 @@ const DataStructureTable = forwardRef(({
     }
 
 
-    const getTextFromDSD = (dsd: IDataStructureDefinition): IBaseStruct[] => {
+    const getTextFromDSD = (dsd: DataStructureDefinition): BaseStruct[] => {
         return getListByType(dsd, "text");
     }
 
-    const getCodeListsFromDSD = (dsd: IDataStructureDefinition): IBaseStruct[] => {
+    const getCodeListsFromDSD = (dsd: DataStructureDefinition): BaseStruct[] => {
         return getListByType(dsd, "codelist");
     }
 
-    const getListByType = (dsd: IDataStructureDefinition, type: "codelist" | "text"): IBaseStruct[] => {
-        return (dsd.dimensions as IBaseStruct[] || []).concat(dsd?.attributes as IBaseStruct[] || [])
+    const getListByType = (dsd: DataStructureDefinition, type: "codelist" | "text"): BaseStruct[] => {
+        return (dsd.dimensions as BaseStruct[] || []).concat(dsd?.attributes as BaseStruct[] || [])
             .filter(base => base.structureType.type === type);
     }
 
@@ -245,7 +245,7 @@ const DataStructureTable = forwardRef(({
      * If there is no selected agency we are returning all data structures
      * Filtering by final status: if option "NO" has been choose data structures with @enum {FinalStructureEnum.UNSET} will be also on the list.
      */
-    const filterData = (data: IDataStructure[]): IDataStructure[] => {
+    const filterData = (data: DataStructure[]): DataStructure[] => {
         let result = [];
         if (selectedAgencies.length > 0) {
             const mappedAgenciesId = selectedAgencies.map(agency => agency.id);
@@ -286,7 +286,7 @@ const DataStructureTable = forwardRef(({
                                 showTitle: false
                             }}
                             onSelectionChange={onDataStructureSelect}
-                            detailPanel={(rowData: IDataStructure) => {
+                            detailPanel={(rowData: DataStructure) => {
                                 return (<DataStructureDetailPanel
                                     registry={registry!}
                                     dataStructure={rowData}

@@ -1,12 +1,12 @@
-export interface IResponse<T> {
+export interface CustomResponse<T> {
     status: boolean,
     data?: T;
     message: string,
-    error?: IApiError
+    error?: ApiError
 }
 
 
-export interface IApiError{
+export interface ApiError{
     timestamp: string,
     status:number,
     error: string,

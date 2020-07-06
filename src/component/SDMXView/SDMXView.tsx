@@ -6,15 +6,15 @@ import {Col, Container, Row} from "react-bootstrap";
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import Checkbox from '@material-ui/core/Checkbox';
-import {ISdmxRegistry, ISdmxRegistryObject} from "../../models/api/ISdmxRegistry";
-import {IAgency, IAgencyObject} from "../../models/api/IAgency";
-import {FinalStructureEnum} from "../../models/api/IDataStructure";
+import {SdmxRegistry, SdmxRegistryObject} from "../../models/api/SdmxRegistry";
+import {Agency, AgencyObject} from "../../models/api/Agency";
+import {FinalStructureEnum} from "../../models/api/DataStructure";
 import "./sdmxView.scss"
 import {SDMX_AGENCIES, SDMX_REGISTIRES} from "../../api/apiConsts";
 import {faChevronDown, faFilter, faSyncAlt, faUndoAlt} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useSnackbar} from "notistack";
-import {IResponse} from "../../models/api/IResponse";
+import {CustomResponse} from "../../models/api/CustomResponse";
 import {ApiCache} from "./ApiCache";
 import DataStructureTable from "./DataStructureTable";
 import {ISdmxResult} from "../../models/api/ISdmxResult";
@@ -24,18 +24,18 @@ const checkedIcon = <CheckBoxIcon fontSize="small"/>;
 const requestCache = ApiCache.getInstance();
 
 type FilteredState = {
-    registry: ISdmxRegistry,
-    agencies: IAgency[],
+    registry: SdmxRegistry,
+    agencies: Agency[],
     final: FinalStructureEnum
 }
 
 type SDMXViewProps = {
-    registry: ISdmxRegistry | null,
-    setRegistry: (registry: ISdmxRegistry | null) => void,
-    agencies: IAgency[],
-    setAgencies: (agencies: IAgency[]) => void,
-    selectedAgencies: IAgency[],
-    setSelectedAgencies: (agencies: IAgency[]) => void,
+    registry: SdmxRegistry | null,
+    setRegistry: (registry: SdmxRegistry | null) => void,
+    agencies: Agency[],
+    setAgencies: (agencies: Agency[]) => void,
+    selectedAgencies: Agency[],
+    setSelectedAgencies: (agencies: Agency[]) => void,
     finalType: FinalStructureEnum,
     setFinalType: (finalType: FinalStructureEnum) => void,
     setSdmxResult: (sdmxResult: ISdmxResult) => void,
@@ -48,7 +48,7 @@ const SDMXView = ({
                       selectedAgencies, setSelectedAgencies,
                       finalType, setFinalType, setSdmxResult, clearSdmxState
                   }: SDMXViewProps) => {
-    const [registries, setRegistries] = useState<ISdmxRegistry[]>([]);
+    const [registries, setRegistries] = useState<SdmxRegistry[]>([]);
     const [registriesLoading, setRegistriesLoading] = useState<boolean>(true);
 
     const [agenciesLoading, setAgenciesLoading] = useState<boolean>(false);
@@ -60,7 +60,7 @@ const SDMXView = ({
     const {enqueueSnackbar} = useSnackbar();
 
     const fetchRegistries = async () => {
-        let registries: IResponse<ISdmxRegistryObject> | undefined = await getSdmxRegistries();
+        let registries: CustomResponse<SdmxRegistryObject> | undefined = await getSdmxRegistries();
         if (registries && registries.data) {
             return registries.data.registries;
         }
@@ -68,7 +68,7 @@ const SDMXView = ({
     };
 
     const fetchAgencies = async () => {
-        let agencies: IResponse<IAgencyObject> | undefined = await getAgencies(registry!.id);
+        let agencies: CustomResponse<AgencyObject> | undefined = await getAgencies(registry!.id);
         if (agencies && agencies.data) {
             return agencies.data.agencies;
         }
@@ -133,12 +133,12 @@ const SDMXView = ({
         }
     }
 
-    const onRegistriesChange = (event: any, newRegistry: ISdmxRegistry | null) => {
+    const onRegistriesChange = (event: any, newRegistry: SdmxRegistry | null) => {
         setRegistry(newRegistry);
         setSelectedAgencies([]);
     };
 
-    const onAgencyChange = (event: any, newAgencies: IAgency[]) => {
+    const onAgencyChange = (event: any, newAgencies: Agency[]) => {
         setSelectedAgencies(newAgencies);
     };
 
@@ -190,7 +190,7 @@ const SDMXView = ({
                             id="registries-select"
                             options={registries}
                             className="sdmx-autocomplete"
-                            getOptionLabel={(option: ISdmxRegistry) => option.name}
+                            getOptionLabel={(option: SdmxRegistry) => option.name}
                             loading={registriesLoading}
                             value={registry}
                             onChange={onRegistriesChange}
@@ -245,10 +245,10 @@ const SDMXView = ({
                                     options={agencies}
                                     disableCloseOnSelect
                                     value={selectedAgencies}
-                                    getOptionLabel={(option: IAgency) => option.name}
+                                    getOptionLabel={(option: Agency) => option.name}
                                     loading={agenciesLoading}
                                     onChange={onAgencyChange}
-                                    renderOption={(option: IAgency, {selected}) => (
+                                    renderOption={(option: Agency, {selected}) => (
                                         <>
                                             <Checkbox
                                                 icon={icon}

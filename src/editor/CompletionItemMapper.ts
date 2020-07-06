@@ -1,8 +1,8 @@
 import {IRange, languages} from 'monaco-editor/esm/vs/editor/editor.api';
-import {ICodeListDetails} from "../models/api/ICodeList";
+import {CodeListDetails} from "../models/api/CodeList";
 import {KEYWORD} from "./constants";
 import {ISdmxResult} from "../models/api/ISdmxResult";
-import {IBaseStruct} from "../models/api/IDataStructureDefinition";
+import {BaseStruct} from "../models/api/DataStructureDefinition";
 
 
 export const fromISdmxResult = (source: ISdmxResult, range: IRange): languages.CompletionItem[] => {
@@ -13,7 +13,7 @@ export const fromISdmxResult = (source: ISdmxResult, range: IRange): languages.C
         fromString(source.primaryMeasure, "Primary measure", range)]
 }
 
-const fromICodeDetail = (source: ICodeListDetails, range: IRange): languages.CompletionItem => {
+const fromICodeDetail = (source: CodeListDetails, range: IRange): languages.CompletionItem => {
     return {
         label: source.structureId,
         kind: KEYWORD,
@@ -25,7 +25,7 @@ const fromICodeDetail = (source: ICodeListDetails, range: IRange): languages.Com
     }
 }
 
-const fromIBaseStruct = (source: IBaseStruct, range: IRange): languages.CompletionItem => {
+const fromIBaseStruct = (source: BaseStruct, range: IRange): languages.CompletionItem => {
     return {
         label: source.id,
         kind: KEYWORD,

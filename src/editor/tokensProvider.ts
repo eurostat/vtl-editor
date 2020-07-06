@@ -1,7 +1,7 @@
 import monarchDefinition from '../grammar/vtl-2.0/monarchDefinition.json';
 import {VtlLexer} from '../grammar/vtl-2.0/VtlLexer';
 import {keywordRgx} from './vocabularyPack';
-import {ICodeListDetails} from "../models/api/ICodeList";
+import {CodeListDetails} from "../models/api/CodeList";
 import {ISdmxResult} from "../models/api/ISdmxResult";
 
 export class TokensProvider {

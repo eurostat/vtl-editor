@@ -1,8 +1,8 @@
-export interface IDataStructureObject {
-    dataStructures:IDataStructure[]
+export interface DataStructureObject {
+    dataStructures:DataStructure[]
 }
 
-export interface IDataStructure {
+export interface DataStructure {
     agencyId: string,
     id: string,
     version: string,

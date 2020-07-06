@@ -18,7 +18,7 @@ const classes = {
 const EditorView = ({fileName, codeChanged, VtlEditorProps,ErrorBoxProps}: EditorViewProps) => {
 
     return (
-        <div style={classes}>
+        <div className={`vtl-box ${VtlEditorProps.theme}`} style={classes}>
             <div id="top-bar" className="top-bar">
                 <span>{fileName}&nbsp;{codeChanged ? "*" : ""}</span>
             </div>

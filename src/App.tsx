@@ -15,10 +15,18 @@ import {ISdmxResult} from "./models/api/ISdmxResult";
 import {SdmxRegistry} from "./models/api/SdmxRegistry";
 import {Agency} from "./models/api/Agency";
 import {FinalStructureEnum} from "./models/api/DataStructure";
+import {
+    getEditorStoredValues,
+    getSdmxStoredValues,
+    setEditorStorageValue,
+    setSdmxStorageValue
+} from "./utility/localStorage";
+import {EditorStorage} from "./models/storage/EditorStorage";
+import {SdmxStorage} from "./models/storage/SdmxStorage";
 
 const getTheme = (): string => {
-    const item = window.localStorage.getItem("theme");
-    return item ? JSON.parse(item) : "vtl";
+    const item = getEditorStoredValues();
+    return item?.theme || "vtl";
 };
 
 function App() {
@@ -41,54 +49,59 @@ function App() {
     const [finalType, setFinalType] = useState<FinalStructureEnum>(FinalStructureEnum.ALL);
     const [sdmxResult, setSdmxResult] = useState<ISdmxResult | null>(null);
 
-
+    useEffect(() => {
+        const editorStoredValues: EditorStorage = getEditorStoredValues();
+        if(editorStoredValues) {
+            setValue(editorStoredValues.code, setCode);
+            setValue(editorStoredValues.codeChanged, setCodeChanged);
+            setValue(editorStoredValues.fileName, setFileName);
+            setValue(editorStoredValues.showErrorBox, setShowErrorBox);
+            setValue(editorStoredValues.theme, setTheme);
+        }
+    }, [])
 
     useEffect(() => {
-        retrieveFromLocalStorage("code", setCode);
-        retrieveFromLocalStorage("codeChanged", setCodeChanged);
-        retrieveFromLocalStorage("theme", setTheme);
-        retrieveFromLocalStorage("showErrorBox", setShowErrorBox);
-        retrieveFromLocalStorage("fileName", setFileName);
+        const vtlContainer = document.getElementById("vtl-container");
+        if (vtlContainer) {
+            setTempCursor(new Position(1, 1));
+        }
+    }, [])
+
+    useEffect(() => {
+        const sdmxStoredValues: SdmxStorage = getSdmxStoredValues();
+
     }, []);
 
-    const retrieveFromLocalStorage = (key: string, setter: (v: any) => void): any => {
-        const value = window.localStorage.getItem(key);
+    const setValue = (value: any, setter: (value: any) => any) => {
         if (value) {
-            setter(JSON.parse(value));
+            setter(value);
         }
-    };
-
-    const saveToLocalStorage = (key: string, value: any) => {
-        window.localStorage.setItem(key, JSON.stringify(value));
-    };
+    }
 
     const updateFiles = (newFiles: string[], fileName: string) => {
         updateCodeChanged(false);
-        // @ts-ignore
-        //document.getElementsByClassName("logo")[0].focus();
         updateCode(newFiles[0]);
-        //setFiles(newFiles);
         updateFileName(fileName);
     };
 
     const updateFileName = (fileName: string) => {
-        saveToLocalStorage("fileName", fileName);
         setFileName(fileName)
+        setEditorStorageValue({fileName: fileName})
     };
 
-    const updateCode = (val: string) => {
-        saveToLocalStorage("code", val);
-        setCode(val);
+    const updateCode = (code: string) => {
+        setCode(code);
+        setEditorStorageValue({code: code})
     };
 
     const updateTheme = (theme: string) => {
         setTheme(theme);
-        saveToLocalStorage("theme", theme);
+        setEditorStorageValue({theme: theme});
     };
 
-    const updateCodeChanged = (val: boolean) => {
-        saveToLocalStorage("codeChanged", val);
-        setCodeChanged(val);
+    const updateCodeChanged = (codeChanged: boolean) => {
+        setCodeChanged(codeChanged);
+        setEditorStorageValue({codeChanged: codeChanged})
     };
 
     const changeMenuState = () => {
@@ -96,8 +109,8 @@ function App() {
     };
 
     const changeErrorBoxState = () => {
-        saveToLocalStorage("showErrorBox", !showErrorBox);
         setShowErrorBox(!showErrorBox);
+        setEditorStorageValue({showErrorBox: !showErrorBox})
     };
 
     const getStyles = () => {
@@ -196,7 +209,7 @@ function App() {
                 <div className={getStyles()}>
                     <Header/>
                     <Navigation {...NavigationProps}/>
-                    <div id="middle-container" className={`middle-container ${theme}`}>
+                    <div id="middle-container" className={`middle-container`}>
                         <Switch>
                             <Route exact path="/sdmx">
                                 <SDMXView {...SDMXViewProps}/>

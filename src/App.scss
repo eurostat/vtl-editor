@@ -166,11 +166,11 @@ button {
   overflow: auto;
 }
 
-.middle-container.vtl, .middle-container.default {
+.vtl-box.vtl, .vtl-box.default {
   background-color: white;
 }
 
-.middle-container.vs-dark, .middle-container.hc-black {
+.vtl-box.vs-dark, .vtl-box.hc-black {
   background-color: #1e1e1e;
 
   .error-hr {
@@ -178,7 +178,7 @@ button {
   }
 }
 
-.middle-container.hc-black {
+.vtl-box.hc-black {
   background-color: black;
 }
 

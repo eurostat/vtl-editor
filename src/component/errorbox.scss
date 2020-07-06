@@ -154,7 +154,7 @@ $errorColor: #e04f5f;
   cursor: pointer;
 }
 
-.middle-container.vs-dark, .middle-container.hc-black {
+.vtl-box.vs-dark, .vtl-box.hc-black {
   .error-top {
     background-color: #383838;
     color: white;
@@ -169,13 +169,13 @@ $errorColor: #e04f5f;
   }
 }
 
-.middle-container.vs-dark {
+.vtl-box.vs-dark {
   .error-list {
     background-color: #1e1e1e;
   }
 }
 
-.middle-container.hc-black {
+.vtl-box.hc-black {
   .error-list {
     background-color: black;
   }

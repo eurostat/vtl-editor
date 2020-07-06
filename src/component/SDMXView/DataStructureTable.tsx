@@ -5,7 +5,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSyncAlt} from "@fortawesome/free-solid-svg-icons";
 import MaterialTable from "material-table";
 import {dataStructuresColumns} from "./tableColumns";
-import {FinalStructureEnum, DataStructure, DataStructureObject} from "../../models/api/DataStructure";
+import {DataStructure, DataStructureObject, FinalStructureEnum} from "../../models/api/DataStructure";
 import DataStructureDetailPanel from "./DataStructureDetailPanel/DataStructureDetailPanel";
 import {SDMX_CODELIST, SDMX_DSD, SDMX_STRUCTURES} from "../../api/apiConsts";
 import {SdmxRegistry} from "../../models/api/SdmxRegistry";
@@ -13,17 +13,13 @@ import {CodeList, CodeListDetails} from "../../models/api/CodeList";
 import {ApiCache} from "./ApiCache";
 import {CustomResponse} from "../../models/api/CustomResponse";
 import {BaseStruct, DataStructureDefinition, StructureType} from "../../models/api/DataStructureDefinition";
-import {
-    fetchCodeList,
-    fetchDataStructureDefinition,
-    getCodeList,
-    getDataStructureDefinition,
-    getSdmxDataStructures
-} from "../../api/sdmxApi";
+import {fetchCodeList, fetchDataStructureDefinition, getSdmxDataStructures} from "../../api/sdmxApi";
 import {useSnackbar} from "notistack";
 import {Agency} from "../../models/api/Agency";
 import {useHistory} from 'react-router-dom'
 import {ISdmxResult} from "../../models/api/ISdmxResult";
+import {setSdmxStorageValue} from "../../utility/localStorage";
+import SdmxDownloadScreen from "./SdmxLoadingScreen/SdmxDownloadScreen";
 
 type DataStructureTableProps = {
     registry: SdmxRegistry | null,
@@ -133,7 +129,9 @@ const DataStructureTable = forwardRef(({
             tableRef.current.dataManager.changeAllSelected(false);
             tableRef.current.dataManager.changeRowSelected(true, [getItemIndex(rowData)]);
         }
-        setDataStructure(rowData);
+        let copy = Object.assign({}, rowData);
+        delete copy.tableData;
+        setDataStructure(copy);
     }
 
     const getItemIndex = (item: DataStructure): number => {
@@ -148,23 +146,24 @@ const DataStructureTable = forwardRef(({
         const fetch = async () => {
             setCodeListProgress(0);
             setCodeListLoading(true);
-            const dsd =
-                await requestCache.checkIfExistsInMapOrAdd(SDMX_DSD(registry!.id, dataStructure!.agencyId, dataStructure!.id, dataStructure!.version),
-                    async () => await fetchDataStructureDefinition(registry!, dataStructure!));
+
+            const dsd = await requestCache.checkIfExistsInMapOrAdd(SDMX_DSD(registry!.id, dataStructure!.agencyId, dataStructure!.id, dataStructure!.version),
+                async () => await fetchDataStructureDefinition(registry!, dataStructure!));
             setDataStructureDefinition(dsd);
             const structuresFromDSD: BaseStruct[] = getCodeListsFromDSD(dsd);
             setCodeListTotal(structuresFromDSD.length);
-
             const structureTypes = distinctStructureTypes(structuresFromDSD.map(structure => structure.structureType));
-            const codeLists =
-                await requestCache.checkIfExistsInMapOrAdd(`CODE LISTS: ${SDMX_DSD(registry!.id, dataStructure!.agencyId, dataStructure!.id, dataStructure!.version)}`,
-                    () => fetchCodeLists(structureTypes));
+
+            const codeLists = await requestCache.checkIfExistsInMapOrAdd(`CODE LISTS: ${SDMX_DSD(registry!.id, dataStructure!.agencyId, dataStructure!.id, dataStructure!.version)}`,
+                () => fetchCodeLists(structureTypes));
             setSdmxResult(createSdmxResult(dsd, codeLists));
             enqueueSnackbar(`${codeLists.length} code list${codeLists.length > 1 ? "s" : ""} downloaded!`, {
                 variant: "success"
             });
             setCodeListLoading(false);
             history.push("/");
+            console.log("datastructure table", dataStructure);
+            saveStateToLocaleStorage(registry!, dataStructure!);
         }
         if (dataStructure) {
             fetch();
@@ -173,6 +172,10 @@ const DataStructureTable = forwardRef(({
                 variant: "error"
             });
         }
+    }
+
+    const saveStateToLocaleStorage = (registry: SdmxRegistry, ds: DataStructure) => {
+        setSdmxStorageValue({registryId: registry.id, dataStructure: ds});
     }
 
     const distinctStructureTypes = (list: StructureType[]): StructureType[] => {
@@ -290,7 +293,7 @@ const DataStructureTable = forwardRef(({
                                 return (<DataStructureDetailPanel
                                     registry={registry!}
                                     dataStructure={rowData}
-                                    />)
+                                />)
                             }}
                         />
                     </Col>
@@ -308,39 +311,10 @@ const DataStructureTable = forwardRef(({
                 </Row>
             </Container>
             {codeListLoading ?
-                <LoadingScreen codeListProgress={codeListProgress} codeListTotal={codeListTotal}/> : null}
+                <SdmxDownloadScreen codeListProgress={codeListProgress} codeListTotal={codeListTotal}/> : null}
         </>
     )
 });
 
-type LoadingScreenFooterProps = {
-    codeListProgress: number,
-    codeListTotal: number
-}
-const LoadingScreen = ({codeListProgress, codeListTotal}: LoadingScreenFooterProps) => {
-    const progress = Math.round(codeListProgress / codeListTotal * 100);
-    return (
-        <div className="sdmx-loading-screen">
-            <div className="sdmx-loading-content-area">
-                <Box>
-                    <CircularProgress variant="static" value={progress} size={60}/>
-                    <Box
-                        top={-45}
-                        left={0}
-                        bottom={0}
-                        right={0}
-                        position="absolute"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                    >
-                        <Typography variant="caption" component="div"
-                                    color="textSecondary">{`${progress}%`}</Typography>
-                    </Box>
-                </Box>
-                <p>Downloading code lists...</p>
-            </div>
-        </div>
-    )
-}
+
 export default DataStructureTable;

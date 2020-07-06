@@ -1,5 +1,5 @@
 import {faFile, faQuestionCircle, faSave, IconDefinition, faEdit} from "@fortawesome/free-regular-svg-icons";
-import {faCog, faUpload, faCrown} from "@fortawesome/free-solid-svg-icons";
+import {faCog, faUpload, faTools} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Tooltip} from "@material-ui/core";
 import React, {forwardRef, useEffect, useState} from "react";
@@ -100,7 +100,7 @@ const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, 
             {title: "New File (Ctrl+E)", clazz: "menu-new menu-first-item", icon: faFile, onClick: makeNewFile},
             {title: "Save file (Ctrl+S)", clazz: "menu-save", icon: faSave, onClick: downloadFile},
             {title: "Open file (Ctrl+O)", clazz: "menu-open", icon: faUpload, onClick: openFile},
-            {title: "SDMX Options", clazz: "menu-sdmx", icon: faCrown, link: "/sdmx"},
+            {title: "SDMX Options", clazz: "menu-sdmx", icon: faTools, link: "/sdmx"},
         ]
     };
 

@@ -95,10 +95,6 @@ const SDMXView = ({
     }, [registry]);
 
 
-    /*TODO Ustalic dokladnie co mamy zrobić w przypadku uzycia funkcji "refresh agencies". Czy refreshujemy agencje wszystkich rejestrow czy tylko konkretne.
-    *  Co za tym idzie aby móc zrefreshowac agencje musimy miec wybrany juz jakiś konkretny rejest
-    *  Aktualnie refreshujemy jedynie agencje powiazane z obecnie wybranym rejestrem
-   */
     const onRegistriesRefresh = () => {
         setSelectedAgencies([]);
         setRegistry(null);
@@ -169,13 +165,6 @@ const SDMXView = ({
         }
     }
 
-    const isDataStructuresLoading = () => {
-        if(dataStructureTableRef && dataStructureTableRef.current){
-            // @ts-ignore
-            return dataStructureTableRef.current!.isDataStructuresLoading();
-        }
-        return false;
-    }
     const DataStructureTableProps = {
         registry,
         isFiltered: !!prevFilteredState,

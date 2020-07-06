@@ -13,7 +13,13 @@ import {ICodeList, ICodeListDetails} from "../../models/api/ICodeList";
 import {ApiCache} from "./ApiCache";
 import {IResponse} from "../../models/api/IResponse";
 import {IBaseStruct, IDataStructureDefinition, IStructureType} from "../../models/api/IDataStructureDefinition";
-import {getCodeList, getDataStructureDefinition, getSdmxDataStructures} from "../../api/sdmxApi";
+import {
+    fetchCodeList,
+    fetchDataStructureDefinition,
+    getCodeList,
+    getDataStructureDefinition,
+    getSdmxDataStructures
+} from "../../api/sdmxApi";
 import {useSnackbar} from "notistack";
 import {IAgency} from "../../models/api/IAgency";
 import {useHistory} from 'react-router-dom'
@@ -51,15 +57,6 @@ const DataStructureTable = forwardRef(({
     const {enqueueSnackbar} = useSnackbar();
     const history = useHistory();
 
-    const fetchDataStructureDefinition = async (ds: IDataStructure) => {
-        const dataStructureDefinition: IResponse<IDataStructureDefinition> | undefined =
-            await getDataStructureDefinition(registry!.id, ds.agencyId, ds.id, ds.version);
-        if (dataStructureDefinition && dataStructureDefinition.data) {
-            return dataStructureDefinition.data;
-        }
-        return null;
-    }
-
     const fetchDataStructures = async () => {
         const dataStructures: IResponse<IDataStructureObject> | undefined = await getSdmxDataStructures(registry!.id);
         if (dataStructures && dataStructures.data) {
@@ -67,14 +64,6 @@ const DataStructureTable = forwardRef(({
         }
         return [];
     };
-
-    const fetchCodeList = async (registry: ISdmxRegistry, structureType: IStructureType) => {
-        const codeList: IResponse<ICodeList> | undefined = await getCodeList(registry!.id, structureType.agencyId!, structureType.id!, structureType.version!);
-        if (codeList && codeList.data) {
-            return codeList.data;
-        }
-        return null;
-    }
 
 
     const fetchCodeLists = async (structureTypes: IStructureType[]) => {
@@ -161,7 +150,7 @@ const DataStructureTable = forwardRef(({
             setCodeListLoading(true);
             const dsd =
                 await requestCache.checkIfExistsInMapOrAdd(SDMX_DSD(registry!.id, dataStructure!.agencyId, dataStructure!.id, dataStructure!.version),
-                    async () => await fetchDataStructureDefinition(dataStructure!));
+                    async () => await fetchDataStructureDefinition(registry!, dataStructure!));
             setDataStructureDefinition(dsd);
             const structuresFromDSD: IBaseStruct[] = getCodeListsFromDSD(dsd);
             setCodeListTotal(structuresFromDSD.length);
@@ -299,10 +288,9 @@ const DataStructureTable = forwardRef(({
                             onSelectionChange={onDataStructureSelect}
                             detailPanel={(rowData: IDataStructure) => {
                                 return (<DataStructureDetailPanel
-                                    registry={registry}
-                                    fetchCodeList={fetchCodeList}
-                                    retrieveItemFunction={async () => await requestCache.checkIfExistsInMapOrAdd(SDMX_DSD(registry!.id, rowData.agencyId, rowData.id, rowData.version)
-                                        , async () => await fetchDataStructureDefinition(rowData))}/>)
+                                    registry={registry!}
+                                    dataStructure={rowData}
+                                    />)
                             }}
                         />
                     </Col>

@@ -4,27 +4,30 @@ import MaterialTable from "material-table";
 import {dataPanelColumns} from "./detailPanelColumns";
 import {ApiCache} from "../ApiCache";
 import {ICodeList} from "../../../models/api/ICodeList";
-import {SDMX_CODELIST} from "../../../api/apiConsts";
+import {SDMX_CODELIST, SDMX_DSD} from "../../../api/apiConsts";
 import {ISdmxRegistry} from "../../../models/api/ISdmxRegistry";
+import {fetchCodeList, fetchDataStructureDefinition} from "../../../api/sdmxApi";
+import {IDataStructure} from "../../../models/api/IDataStructure";
 
 type DataStructureDetailPanelProps = {
-    retrieveItemFunction: () => Promise<IDataStructureDefinition>,
-    fetchCodeList: (registry: ISdmxRegistry, structureType: IStructureType) => Promise<ICodeList | null>,
-    registry: ISdmxRegistry | null
+    registry: ISdmxRegistry,
+    dataStructure: IDataStructure
 }
 
 const requestCache = ApiCache.getInstance();
 
-const DataStructureDetailPanel = ({retrieveItemFunction, fetchCodeList, registry}: DataStructureDetailPanelProps) => {
+const DataStructureDetailPanel = ({registry, dataStructure}: DataStructureDetailPanelProps) => {
     const [dataStructureDefinition, setDataStructureDefinition] = useState<IDataStructureDefinition | null>(null);
     const [codeLists, setCodeLists] = useState<IStructureType[]>([]);
     const [structures, setStructures] = useState<IBaseStruct[]>([]);
     const [loadingDataStructureDefinition, setLoadingDataStructureDefinition] = useState(false);
 
+
     useEffect(() => {
         const fetch = async () => {
             setLoadingDataStructureDefinition(true);
-            const dsd: IDataStructureDefinition = await retrieveItemFunction();
+            const dsd: IDataStructureDefinition = await requestCache.checkIfExistsInMapOrAdd(SDMX_DSD(registry.id, dataStructure.agencyId, dataStructure.id, dataStructure.version)
+                , async () => await fetchDataStructureDefinition(registry!, dataStructure));
             const structs: IBaseStruct[] = (dsd.attributes as IBaseStruct[] || []).concat(dsd.dimensions as IBaseStruct[] || []);
             setStructures(structs);
             setDataStructureDefinition(dsd);
@@ -44,10 +47,6 @@ const DataStructureDetailPanel = ({retrieveItemFunction, fetchCodeList, registry
 
     return (
         <div className="dsd-detail-panel">
-            {/*{loadingDataStructureDefinition ? <span>Loading...</span> : null}*/}
-            {/*{structures.map(struct =>*/}
-            {/*    <p key={struct.id}>{`name: ${struct.name} agencyId:${struct.structureType.agencyId} id:${struct.structureType.id} version:${struct.structureType.version}`}</p>)}*/}
-
             <MaterialTable
                 isLoading={loadingDataStructureDefinition}
                 columns={dataPanelColumns}

@@ -17,7 +17,7 @@ import {useSnackbar} from "notistack";
 import {CustomResponse} from "../../models/api/CustomResponse";
 import {ApiCache} from "./ApiCache";
 import DataStructureTable from "./DataStructureTable";
-import {ISdmxResult} from "../../models/api/ISdmxResult";
+import {SdmxResult} from "../../models/api/SdmxResult";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small"/>;
 const checkedIcon = <CheckBoxIcon fontSize="small"/>;
@@ -38,7 +38,7 @@ type SDMXViewProps = {
     setSelectedAgencies: (agencies: Agency[]) => void,
     finalType: FinalStructureEnum,
     setFinalType: (finalType: FinalStructureEnum) => void,
-    setSdmxResult: (sdmxResult: ISdmxResult) => void,
+    setSdmxResult: (sdmxResult: SdmxResult) => void,
     clearSdmxState: () => void
 }
 

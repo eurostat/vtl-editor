@@ -1,6 +1,6 @@
 import React, {forwardRef, useEffect, useImperativeHandle, useRef, useState} from "react";
 import {Col, Container, Row} from "react-bootstrap";
-import {Box, CircularProgress, Tooltip, Typography} from "@material-ui/core";
+import {Tooltip} from "@material-ui/core";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSyncAlt} from "@fortawesome/free-solid-svg-icons";
 import MaterialTable from "material-table";
@@ -17,7 +17,7 @@ import {fetchCodeList, fetchDataStructureDefinition, getSdmxDataStructures} from
 import {useSnackbar} from "notistack";
 import {Agency} from "../../models/api/Agency";
 import {useHistory} from 'react-router-dom'
-import {ISdmxResult} from "../../models/api/ISdmxResult";
+import {SdmxResult} from "../../models/api/SdmxResult";
 import {setSdmxStorageValue} from "../../utility/localStorage";
 import SdmxDownloadScreen from "./SdmxLoadingScreen/SdmxDownloadScreen";
 
@@ -27,7 +27,7 @@ type DataStructureTableProps = {
     selectedAgencies: Agency[],
     setPrevFilteredState: (value: any) => void,
     finalType: FinalStructureEnum
-    setSdmxResult: (setSdmxResult: ISdmxResult) => void,
+    setSdmxResult: (setSdmxResult: SdmxResult) => void,
     clearSdmxState: () => void
 }
 
@@ -183,8 +183,9 @@ const DataStructureTable = forwardRef(({
             arr.findIndex(t => t.id === s.id && t.agencyId === s.agencyId && t.version === s.version) === i);
     }
 
-    const createSdmxResult = (dsd: DataStructureDefinition, codeLists: CodeList[]): ISdmxResult => {
+    const createSdmxResult = (dsd: DataStructureDefinition, codeLists: CodeList[]): SdmxResult => {
         return {
+            dataStructureInfo: {id: dsd.id, name: dsd.name},
             texts: getTextFromDSD(dsd),
             codeLists: mapICodeDetails(getCodeListsFromDSD(dsd), codeLists),
             timeDimension: dsd.timeDimension,

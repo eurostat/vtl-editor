@@ -11,7 +11,7 @@ import {languageVersions} from "./editor/settings";
 import EditorView from "./component/EditorView";
 import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
 import SDMXView from "./component/SDMXView/SDMXView";
-import {ISdmxResult} from "./models/api/ISdmxResult";
+import {SdmxResult} from "./models/api/SdmxResult";
 import {SdmxRegistry} from "./models/api/SdmxRegistry";
 import {Agency} from "./models/api/Agency";
 import {FinalStructureEnum} from "./models/api/DataStructure";
@@ -47,11 +47,11 @@ function App() {
     const [agencies, setAgencies] = useState<Agency[]>([]);
     const [selectedAgencies, setSelectedAgencies] = useState<Agency[]>([]);
     const [finalType, setFinalType] = useState<FinalStructureEnum>(FinalStructureEnum.ALL);
-    const [sdmxResult, setSdmxResult] = useState<ISdmxResult | null>(null);
+    const [sdmxResult, setSdmxResult] = useState<SdmxResult | undefined>(undefined);
 
     useEffect(() => {
         const editorStoredValues: EditorStorage = getEditorStoredValues();
-        if(editorStoredValues) {
+        if (editorStoredValues) {
             setValue(editorStoredValues.code, setCode);
             setValue(editorStoredValues.codeChanged, setCodeChanged);
             setValue(editorStoredValues.fileName, setFileName);
@@ -170,7 +170,8 @@ function App() {
         languageVersion,
         cursorPosition,
         errors,
-        setTempCursor
+        setTempCursor,
+        "dataStructureInfo": sdmxResult?.dataStructureInfo
     };
 
     const EditorViewProps = {

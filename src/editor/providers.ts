@@ -16,7 +16,7 @@ import {languageVersions, VTL_VERSION} from "./settings";
 import {TokensProvider} from "./tokensProvider";
 import {VocabularyPack} from './vocabularyPack';
 import {fromISdmxResult} from "./CompletionItemMapper";
-import {ISdmxResult} from "../models/api/ISdmxResult";
+import {SdmxResult} from "../models/api/SdmxResult";
 
 
 const lexer = createLexer("");
@@ -50,7 +50,7 @@ export const getBracketsConfiguration = (): languages.LanguageConfiguration => {
 };
 let completionItemDispose: IDisposable | undefined = undefined;
 
-export const getEditorWillMount = (sdmxResult: ISdmxResult | null) => {
+export const getEditorWillMount = (sdmxResult: SdmxResult | null) => {
     return (monaco: typeof EditorApi) => {
         languageVersions.forEach(version => {
             monaco.languages.register({id: version.code});
@@ -67,7 +67,7 @@ export const getEditorWillMount = (sdmxResult: ISdmxResult | null) => {
     };
 };
 
-const getSuggestions = (version: VTL_VERSION, monaco: typeof EditorApi, sdmxResult: ISdmxResult | null): any => {
+const getSuggestions = (version: VTL_VERSION, monaco: typeof EditorApi, sdmxResult: SdmxResult | null): any => {
     return function (model: editor.ITextModel, position: Position, context: languages.CompletionContext, token: CancellationToken) {
         const textUntilPosition = model.getValueInRange({
             startLineNumber: 1,
@@ -106,7 +106,7 @@ const getSuggestions = (version: VTL_VERSION, monaco: typeof EditorApi, sdmxResu
         };
     };
 
-    function removeCodeListsFromList(sdmxResult: ISdmxResult, vars: string[]) {
+    function removeCodeListsFromList(sdmxResult: SdmxResult, vars: string[]) {
         const codeListsId: string[] = sdmxResult.codeLists.map(cl => cl.structureId);
         const textsId: string[] = sdmxResult.texts.map(cl => cl.id);
         const listToRemove = [...codeListsId, ...textsId, sdmxResult.timeDimension, sdmxResult.primaryMeasure];

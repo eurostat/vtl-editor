@@ -1,11 +1,11 @@
 import {IRange, languages} from 'monaco-editor/esm/vs/editor/editor.api';
 import {CodeListDetails} from "../models/api/CodeList";
 import {KEYWORD} from "./constants";
-import {ISdmxResult} from "../models/api/ISdmxResult";
+import {SdmxResult} from "../models/api/SdmxResult";
 import {BaseStruct} from "../models/api/DataStructureDefinition";
 
 
-export const fromISdmxResult = (source: ISdmxResult, range: IRange): languages.CompletionItem[] => {
+export const fromISdmxResult = (source: SdmxResult, range: IRange): languages.CompletionItem[] => {
     const codeLists = source.codeLists.map(cl => fromICodeDetail(cl, range));
     const texts = source.texts.map(text => fromIBaseStruct(text, range));
     return [...codeLists, ...texts,

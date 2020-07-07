@@ -2,7 +2,7 @@ import monarchDefinition from '../grammar/vtl-2.0/monarchDefinition.json';
 import {VtlLexer} from '../grammar/vtl-2.0/VtlLexer';
 import {keywordRgx} from './vocabularyPack';
 import {CodeListDetails} from "../models/api/CodeList";
-import {ISdmxResult} from "../models/api/ISdmxResult";
+import {SdmxResult} from "../models/api/SdmxResult";
 
 export class TokensProvider {
     private readonly definition: any;
@@ -48,7 +48,7 @@ export class TokensProvider {
         return this.definition;
     }
 
-    public addDsdContent(dsdContent: ISdmxResult | null): any {
+    public addDsdContent(dsdContent: SdmxResult | null): any {
         if (dsdContent) {
             dsdContent.codeLists.forEach(codeList => this.definition.dsdContents.push(codeList.structureId))
             dsdContent.texts.forEach(codeList => this.definition.dsdContents.push(codeList.id));

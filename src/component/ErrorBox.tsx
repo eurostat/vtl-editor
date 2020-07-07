@@ -1,11 +1,12 @@
-import { faTimesCircle } from "@fortawesome/free-regular-svg-icons";
-import { faChevronUp, faTimes, faTimesCircle as faTimesCircleSolid } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Tooltip } from "@material-ui/core";
-import { editor, Position } from "monaco-editor";
-import React, { useEffect } from "react";
-import { languageVersions, VTL_VERSION } from "../editor/settings";
+import {faTimesCircle} from "@fortawesome/free-regular-svg-icons";
+import {faChevronUp, faTimes, faTimesCircle as faTimesCircleSolid} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {Tooltip} from "@material-ui/core";
+import {editor, Position} from "monaco-editor";
+import React, {useEffect} from "react";
+import {languageVersions, VTL_VERSION} from "../editor/settings";
 import "./errorbox.scss";
+import {DataStructureInfo} from "../models/api/SdmxResult";
 
 type ErrorBoxProps = {
     showErrorBox: boolean,
@@ -15,9 +16,13 @@ type ErrorBoxProps = {
     cursorPosition: Position,
     errors: editor.IMarkerData[],
     setTempCursor: (position: Position) => void,
+    dataStructureInfo: DataStructureInfo | undefined
 }
 
-const ErrorBox = ({showErrorBox, changeErrorBoxState, setErrorBoxSize, languageVersion, cursorPosition, errors, setTempCursor}: ErrorBoxProps) => {
+const ErrorBox = ({
+                      showErrorBox, changeErrorBoxState, setErrorBoxSize, languageVersion, cursorPosition,
+                      errors, setTempCursor, dataStructureInfo
+                  }: ErrorBoxProps) => {
     const errorsCount = errors.length;
     const version = languageVersions.find(l => l.code === languageVersion)!.name;
 
@@ -159,6 +164,14 @@ const ErrorBox = ({showErrorBox, changeErrorBoxState, setErrorBoxSize, languageV
                     </Tooltip>
                 </div>
                 <div className="position-right">
+                    {dataStructureInfo ?
+                        <Tooltip title={dataStructureInfo.name} placement="top" arrow>
+                            <div>
+                                {dataStructureInfo.id}
+                            </div>
+                        </Tooltip>
+                        : null
+                    }
                     <Tooltip title="Line and column" placement="top" arrow>
                         <div>
                             Line {cursorPosition.lineNumber}, Col {cursorPosition.column}

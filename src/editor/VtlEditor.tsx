@@ -7,7 +7,7 @@ import {getEditorWillMount, getParserFacade} from "./providers";
 
 import {VTL_VERSION} from "./settings";
 import './vtlEditor.css';
-import {ISdmxResult} from "../models/api/ISdmxResult";
+import {SdmxResult} from "../models/api/SdmxResult";
 
 declare const window: any;
 
@@ -21,7 +21,7 @@ type VtlEditorProps = {
     setCursorPosition: (e: Position) => void,
     tempCursor: Position,
     setErrors: (array: EditorApi.editor.IMarkerData[]) => void,
-    sdmxResult: ISdmxResult | null,
+    sdmxResult: SdmxResult | null,
 }
 
 let parserFacade: any = {parser: null};

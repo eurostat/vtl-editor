@@ -1,14 +1,13 @@
-import {faFile, faQuestionCircle, faSave, IconDefinition, faEdit} from "@fortawesome/free-regular-svg-icons";
-import {faCog, faUpload, faTools} from "@fortawesome/free-solid-svg-icons";
+import {faEdit, faFile, faQuestionCircle, faSave, IconDefinition} from "@fortawesome/free-regular-svg-icons";
+import {faCog, faTools, faUpload} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Tooltip} from "@material-ui/core";
-import React, {forwardRef, useEffect, useState} from "react";
+import React, {forwardRef, useEffect} from "react";
 import ModalFactory from "react-modal-promise";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import {decisionModal} from "./DecisionModal";
 import "./navigation.scss"
 import SettingsNav from "./SettingsNav";
-import {useLocation} from 'react-router-dom'
 
 type NavigationProps = {
     showDialog: (value: boolean) => void,
@@ -67,7 +66,7 @@ const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, 
             title: "Warning!",
             text
         });
-        if (res === "save") {
+        if (res === "yes") {
             if (codeChanged) {
                 downloadFile()
             }
@@ -83,7 +82,7 @@ const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, 
                 text:
                     "You have unsaved changes. Do you want to save your progress before opening new file?"
             });
-            if (res === "save") {
+            if (res === "yes") {
                 downloadFile()
             }
         }

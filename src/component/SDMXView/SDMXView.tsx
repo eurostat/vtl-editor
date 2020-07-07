@@ -213,7 +213,7 @@ const SDMXView = ({
                                 />
                             )}
                         />
-                        {registry ? <p>Selected registry url: {registry.url}</p> : null}
+                        {registry?.url ? <p>Selected registry url: {registry.url}</p> : null}
                     </Col>
                     <Col xs={1} className="sdmx-option text-left left-padding-none">
                         {!registriesLoading ?

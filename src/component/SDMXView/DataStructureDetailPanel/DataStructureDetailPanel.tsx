@@ -17,8 +17,8 @@ type DataStructureDetailPanelProps = {
 const requestCache = ApiCache.getInstance();
 
 const DataStructureDetailPanel = ({registry, dataStructure}: DataStructureDetailPanelProps) => {
-    const [dataStructureDefinition, setDataStructureDefinition] = useState<DataStructureDefinition | null>(null);
-    const [codeLists, setCodeLists] = useState<StructureType[]>([]);
+    const [dataStructureDefinition, setDataStructureDefinition] = useState<DataStructureDefinition | undefined>(undefined);
+    const [codeList, setCodeList] = useState<CodeList | undefined>(undefined);
     const [structures, setStructures] = useState<BaseStruct[]>([]);
     const [loadingDataStructureDefinition, setLoadingDataStructureDefinition] = useState(false);
 
@@ -40,6 +40,7 @@ const DataStructureDetailPanel = ({registry, dataStructure}: DataStructureDetail
         const fetch = async () => {
             const codeList: CodeList = await requestCache.checkIfExistsInMapOrAdd(SDMX_CODELIST(registry!.id, structure.structureType.agencyId!, structure.structureType.id!, structure.structureType.version!), () => fetchCodeList(registry!, structure.structureType));
             //Temp solution
+            setCodeList(codeList);
             alert(codeList.codes.map(code => `${code.id} ${code.value}\n`));
         }
         fetch();

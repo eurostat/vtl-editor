@@ -5,7 +5,7 @@ import ModalHeader from "react-bootstrap/ModalHeader";
 
 
 const DecisionModal = ({open, close, text, title}: any) => {
-    const save = () => close("save");
+    const save = () => close("yes");
     const no = () => close("no");
     const cancel = () => close("cancel");
 

@@ -14,7 +14,7 @@ import SDMXView from "./component/SDMXView/SDMXView";
 import {SdmxResult} from "./models/api/SdmxResult";
 import {SdmxRegistry} from "./models/api/SdmxRegistry";
 import {Agency} from "./models/api/Agency";
-import {FinalStructureEnum} from "./models/api/DataStructure";
+import {DataStructure, FinalStructureEnum} from "./models/api/DataStructure";
 import {
     getEditorStoredValues,
     getSdmxStoredValues,
@@ -23,6 +23,9 @@ import {
 } from "./utility/localStorage";
 import {EditorStorage} from "./models/storage/EditorStorage";
 import {SdmxStorage} from "./models/storage/SdmxStorage";
+import {DataStructureDefinition} from "./models/api/DataStructureDefinition";
+import {decisionModal} from "./component/DecisionModal";
+import SdmxDownloadScreen from "./component/SDMXView/SdmxLoadingScreen/SdmxDownloadScreen";
 
 const getTheme = (): string => {
     const item = getEditorStoredValues();
@@ -47,6 +50,8 @@ function App() {
     const [agencies, setAgencies] = useState<Agency[]>([]);
     const [selectedAgencies, setSelectedAgencies] = useState<Agency[]>([]);
     const [finalType, setFinalType] = useState<FinalStructureEnum>(FinalStructureEnum.ALL);
+    const [dataStructure, setDataStructure] = useState<DataStructure | undefined>(undefined);
+    const [importDSD, setImportDSD] = useState<boolean>(false);
     const [sdmxResult, setSdmxResult] = useState<SdmxResult | undefined>(undefined);
 
     useEffect(() => {
@@ -68,8 +73,24 @@ function App() {
     }, [])
 
     useEffect(() => {
+        const decision = async (dataStructure: DataStructure) => {
+            const res = await decisionModal({
+                title: "Warning!",
+                text:
+                    `In your previous session you imported ${dataStructure.name} content. Do you want to import data again?`
+            });
+            if (res === "yes") {
+                setImportDSD(true);
+            }
+        }
         const sdmxStoredValues: SdmxStorage = getSdmxStoredValues();
-
+        if (sdmxStoredValues) {
+            if (sdmxStoredValues.dataStructure && sdmxStoredValues.registryId) {
+                setDataStructure(sdmxStoredValues.dataStructure);
+                setRegistry({id: sdmxStoredValues.registryId!, name: "", url: ""});
+                decision(sdmxStoredValues.dataStructure);
+            }
+        }
     }, []);
 
     const setValue = (value: any, setter: (value: any) => any) => {
@@ -224,6 +245,9 @@ function App() {
                     {showDialog ?
                         <OpenDialog {...UploadDialogProps}/> : null}
                     {false ? <GuideOverlay/> : null}
+                    {importDSD ?
+                        <SdmxDownloadScreen registry={registry} dataStructure={dataStructure} showScreen={importDSD}
+                                            setSdmxResult={setSdmxResult}/> : null}
                 </div>
             </SnackbarProvider>
         </Router>

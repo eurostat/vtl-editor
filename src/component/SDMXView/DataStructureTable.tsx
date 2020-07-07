@@ -7,18 +7,16 @@ import MaterialTable from "material-table";
 import {dataStructuresColumns} from "./tableColumns";
 import {DataStructure, DataStructureObject, FinalStructureEnum} from "../../models/api/DataStructure";
 import DataStructureDetailPanel from "./DataStructureDetailPanel/DataStructureDetailPanel";
-import {SDMX_CODELIST, SDMX_DSD, SDMX_STRUCTURES} from "../../api/apiConsts";
+import {SDMX_STRUCTURES} from "../../api/apiConsts";
 import {SdmxRegistry} from "../../models/api/SdmxRegistry";
-import {CodeList, CodeListDetails} from "../../models/api/CodeList";
 import {ApiCache} from "./ApiCache";
 import {CustomResponse} from "../../models/api/CustomResponse";
-import {BaseStruct, DataStructureDefinition, StructureType} from "../../models/api/DataStructureDefinition";
-import {fetchCodeList, fetchDataStructureDefinition, getSdmxDataStructures} from "../../api/sdmxApi";
+import {DataStructureDefinition} from "../../models/api/DataStructureDefinition";
+import {getSdmxDataStructures} from "../../api/sdmxApi";
 import {useSnackbar} from "notistack";
 import {Agency} from "../../models/api/Agency";
 import {useHistory} from 'react-router-dom'
 import {SdmxResult} from "../../models/api/SdmxResult";
-import {setSdmxStorageValue} from "../../utility/localStorage";
 import SdmxDownloadScreen from "./SdmxLoadingScreen/SdmxDownloadScreen";
 
 type DataStructureTableProps = {
@@ -44,11 +42,7 @@ const DataStructureTable = forwardRef(({
     const [dataStructuresLoading, setDataStructuresLoading] = useState(false);
     const [filteredDataStructures, setFilteredDataStructures] = useState<DataStructure[]>([]);
 
-    const [dataStructureDefinition, setDataStructureDefinition] = useState<DataStructureDefinition | null>(null);
-
     const [codeListLoading, setCodeListLoading] = useState<boolean>(false);
-    const [codeListProgress, setCodeListProgress] = useState<number>(0);
-    const [codeListTotal, setCodeListTotal] = useState<number>(0);
     const tableRef = useRef<any>();
     const {enqueueSnackbar} = useSnackbar();
     const history = useHistory();
@@ -61,17 +55,6 @@ const DataStructureTable = forwardRef(({
         return [];
     };
 
-
-    const fetchCodeLists = async (structureTypes: StructureType[]) => {
-        const codeListsResponses = await Promise.all(structureTypes.map(structureType =>
-            requestCache.checkIfExistsInMapOrAdd(SDMX_CODELIST(registry!.id, structureType.agencyId!, structureType.id!, structureType.version!), () => fetchCodeList(registry!, structureType)))
-            .map(promise => {
-                promise.then(() => setCodeListProgress(prevState => prevState += 1));
-                return promise;
-            })
-        );
-        return codeListsResponses.filter(response => response);
-    }
 
     useEffect(() => {
         const fetch = async () => {
@@ -143,53 +126,12 @@ const DataStructureTable = forwardRef(({
     }
 
     const onCodeListsFetch = () => {
-        const fetch = async () => {
-            setCodeListProgress(0);
-            setCodeListLoading(true);
-
-            const dsd = await requestCache.checkIfExistsInMapOrAdd(SDMX_DSD(registry!.id, dataStructure!.agencyId, dataStructure!.id, dataStructure!.version),
-                async () => await fetchDataStructureDefinition(registry!, dataStructure!));
-            setDataStructureDefinition(dsd);
-            const structuresFromDSD: BaseStruct[] = getCodeListsFromDSD(dsd);
-            setCodeListTotal(structuresFromDSD.length);
-            const structureTypes = distinctStructureTypes(structuresFromDSD.map(structure => structure.structureType));
-
-            const codeLists = await requestCache.checkIfExistsInMapOrAdd(`CODE LISTS: ${SDMX_DSD(registry!.id, dataStructure!.agencyId, dataStructure!.id, dataStructure!.version)}`,
-                () => fetchCodeLists(structureTypes));
-            setSdmxResult(createSdmxResult(dsd, codeLists));
-            enqueueSnackbar(`${codeLists.length} code list${codeLists.length > 1 ? "s" : ""} downloaded!`, {
-                variant: "success"
-            });
-            setCodeListLoading(false);
-            history.push("/");
-            console.log("datastructure table", dataStructure);
-            saveStateToLocaleStorage(registry!, dataStructure!);
-        }
         if (dataStructure) {
-            fetch();
+            setCodeListLoading(true)
         } else {
             enqueueSnackbar(`Choose data structure from the list!`, {
                 variant: "error"
             });
-        }
-    }
-
-    const saveStateToLocaleStorage = (registry: SdmxRegistry, ds: DataStructure) => {
-        setSdmxStorageValue({registryId: registry.id, dataStructure: ds});
-    }
-
-    const distinctStructureTypes = (list: StructureType[]): StructureType[] => {
-        return list.filter((s, i, arr) =>
-            arr.findIndex(t => t.id === s.id && t.agencyId === s.agencyId && t.version === s.version) === i);
-    }
-
-    const createSdmxResult = (dsd: DataStructureDefinition, codeLists: CodeList[]): SdmxResult => {
-        return {
-            dataStructureInfo: {id: dsd.id, name: dsd.name},
-            texts: getTextFromDSD(dsd),
-            codeLists: mapICodeDetails(getCodeListsFromDSD(dsd), codeLists),
-            timeDimension: dsd.timeDimension,
-            primaryMeasure: dsd.primaryMeasure
         }
     }
 
@@ -198,30 +140,6 @@ const DataStructureTable = forwardRef(({
         history.push("/");
     }
 
-    const mapICodeDetails = (structures: BaseStruct[], codeLists: CodeList[]): CodeListDetails[] => {
-        const structuresMap = structures.reduce((map: { [key: string]: BaseStruct }, obj) => {
-            map[obj.structureType.id!] = obj;
-            return map;
-        }, {});
-        return codeLists.map(cl => Object.assign({
-            structureId: structuresMap[cl.id].id,
-            name: structuresMap[cl.id].name
-        }, cl));
-    }
-
-
-    const getTextFromDSD = (dsd: DataStructureDefinition): BaseStruct[] => {
-        return getListByType(dsd, "text");
-    }
-
-    const getCodeListsFromDSD = (dsd: DataStructureDefinition): BaseStruct[] => {
-        return getListByType(dsd, "codelist");
-    }
-
-    const getListByType = (dsd: DataStructureDefinition, type: "codelist" | "text"): BaseStruct[] => {
-        return (dsd.dimensions as BaseStruct[] || []).concat(dsd?.attributes as BaseStruct[] || [])
-            .filter(base => base.structureType.type === type);
-    }
 
     /**
      * Forwarding onFilterData into parent component
@@ -312,7 +230,8 @@ const DataStructureTable = forwardRef(({
                 </Row>
             </Container>
             {codeListLoading ?
-                <SdmxDownloadScreen codeListProgress={codeListProgress} codeListTotal={codeListTotal}/> : null}
+                <SdmxDownloadScreen registry={registry} dataStructure={dataStructure} setSdmxResult={setSdmxResult}
+                                    showScreen={codeListLoading}/> : null}
         </>
     )
 });

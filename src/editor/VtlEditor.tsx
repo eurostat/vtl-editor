@@ -47,6 +47,13 @@ const VtlEditor = ({resizeLayout, code, setCode, setCodeChanged, theme, language
     }, [tempCursor]);
 
     useEffect(() => {
+        // @ts-ignore
+        // if (monacoRef && monacoRef.current) {
+        //     monacoRef.current.editor.dispose();
+        // }
+    }, [sdmxResult])
+
+    useEffect(() => {
         parserFacade = getParserFacade(languageVersion);
     }, [languageVersion]);
 
@@ -101,6 +108,7 @@ const VtlEditor = ({resizeLayout, code, setCode, setCodeChanged, theme, language
     return (
         <div className="editor-container">
             <MonacoEditor
+                key={sdmxResult?.dataStructureInfo.name || ""}
                 ref={monacoRef}
                 editorWillMount={getEditorWillMount(sdmxResult)}
                 editorDidMount={didMount}

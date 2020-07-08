@@ -3,13 +3,18 @@ import {CodeListDetails} from "./CodeList";
 
 export interface SdmxResult {
     dataStructureInfo: DataStructureInfo
-    texts: BaseStruct[];
-    codeLists: CodeListDetails[];
+    dimension: ResultStructure,
+    attribute: ResultStructure
     primaryMeasure: string,
     timeDimension: string;
 }
 
-export interface DataStructureInfo{
-    id:string,
-    name:string
+interface ResultStructure {
+    texts: BaseStruct[],
+    codeLists: CodeListDetails[]
+}
+
+export interface DataStructureInfo {
+    id: string,
+    name: string
 }

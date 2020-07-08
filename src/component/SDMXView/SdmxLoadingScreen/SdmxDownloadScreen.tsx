@@ -71,8 +71,24 @@ const SdmxDownloadScreen = ({registry, dataStructure, showScreen, setSdmxResult}
     }, [showScreen])
 
 
-    const getTextFromDSD = (dsd: DataStructureDefinition): BaseStruct[] => {
-        return getListByType(dsd, "text");
+    const getTextFromAttributes = (dsd: DataStructureDefinition): BaseStruct[] => {
+        return getTypeFromBaseStruct(dsd.attributes, "text");
+    }
+
+    const getTextFromDimensions = (dsd: DataStructureDefinition): BaseStruct[] => {
+        return getTypeFromBaseStruct(dsd.dimensions, "text");
+    }
+
+    const getCodeListFromAttributes = (dsd: DataStructureDefinition): BaseStruct[] => {
+        return getTypeFromBaseStruct(dsd.attributes, "codelist");
+    }
+
+    const getCodeListFromDimensions = (dsd: DataStructureDefinition): BaseStruct[] => {
+        return getTypeFromBaseStruct(dsd.dimensions, "codelist");
+    }
+
+    const getTypeFromBaseStruct = (array: BaseStruct[], type: "codelist" | "text") => {
+        return array.filter(base => base.structureType.type === type);
     }
 
     const getCodeListsFromDSD = (dsd: DataStructureDefinition): BaseStruct[] => {
@@ -89,7 +105,7 @@ const SdmxDownloadScreen = ({registry, dataStructure, showScreen, setSdmxResult}
             map[obj.structureType.id!] = obj;
             return map;
         }, {});
-        return codeLists.map(cl => Object.assign({
+        return codeLists.filter(cl => structuresMap[cl.id]).map(cl => Object.assign({
             structureId: structuresMap[cl.id].id,
             name: structuresMap[cl.id].name
         }, cl));
@@ -106,8 +122,14 @@ const SdmxDownloadScreen = ({registry, dataStructure, showScreen, setSdmxResult}
     const createSdmxResult = (dsd: DataStructureDefinition, codeLists: CodeList[]): SdmxResult => {
         return {
             dataStructureInfo: {id: dsd.id, name: dsd.name},
-            texts: getTextFromDSD(dsd),
-            codeLists: mapICodeDetails(getCodeListsFromDSD(dsd), codeLists),
+            dimension: {
+                texts: getTextFromDimensions(dsd),
+                codeLists: mapICodeDetails(getCodeListFromDimensions(dsd), codeLists)
+            },
+            attribute: {
+                texts: getTextFromAttributes(dsd),
+                codeLists: mapICodeDetails(getCodeListFromAttributes(dsd), codeLists)
+            },
             timeDimension: dsd.timeDimension,
             primaryMeasure: dsd.primaryMeasure
         }

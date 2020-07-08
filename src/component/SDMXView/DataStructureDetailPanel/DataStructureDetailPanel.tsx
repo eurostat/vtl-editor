@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {BaseStruct, DataStructureDefinition, StructureType} from "../../../models/api/DataStructureDefinition";
+import {BaseStruct, DataStructureDefinition} from "../../../models/api/DataStructureDefinition";
 import MaterialTable from "material-table";
 import {dataPanelColumns} from "./detailPanelColumns";
 import {ApiCache} from "../ApiCache";
@@ -14,12 +14,20 @@ type DataStructureDetailPanelProps = {
     dataStructure: DataStructure
 }
 
+interface DataStructureTableRow extends BaseStruct {
+    type: DataStructureTableRowType
+}
+
+type DataStructureTableRowType =
+    "attribute" | "dimension" | "timeDimension" | "primaryMeasure"
+
+
 const requestCache = ApiCache.getInstance();
 
 const DataStructureDetailPanel = ({registry, dataStructure}: DataStructureDetailPanelProps) => {
     const [dataStructureDefinition, setDataStructureDefinition] = useState<DataStructureDefinition | undefined>(undefined);
     const [codeList, setCodeList] = useState<CodeList | undefined>(undefined);
-    const [structures, setStructures] = useState<BaseStruct[]>([]);
+    const [structures, setStructures] = useState<DataStructureTableRow[]>([]);
     const [loadingDataStructureDefinition, setLoadingDataStructureDefinition] = useState(false);
 
 
@@ -28,7 +36,21 @@ const DataStructureDetailPanel = ({registry, dataStructure}: DataStructureDetail
             setLoadingDataStructureDefinition(true);
             const dsd: DataStructureDefinition = await requestCache.checkIfExistsInMapOrAdd(SDMX_DSD(registry.id, dataStructure.agencyId, dataStructure.id, dataStructure.version)
                 , async () => await fetchDataStructureDefinition(registry!, dataStructure));
-            const structs: BaseStruct[] = (dsd.attributes as BaseStruct[] || []).concat(dsd.dimensions as BaseStruct[] || []);
+            const mapDimensions = (): DataStructureTableRow[] => {
+                return mapToDataStructureTableRow(dsd.attributes, "attribute");
+            }
+
+            const mapAttributes = (): DataStructureTableRow[] => {
+                return mapToDataStructureTableRow(dsd.dimensions, "dimension");
+            }
+            const mapToDataStructureTableRow = (array: BaseStruct[], dataType: DataStructureTableRowType): DataStructureTableRow[] => {
+                return (array || []).map(baseStruct => {
+                    return {type: dataType, ...baseStruct}
+                });
+            }
+
+            const structs: DataStructureTableRow[] = mapDimensions()
+                .concat(mapAttributes());
             setStructures(structs);
             setDataStructureDefinition(dsd);
             setLoadingDataStructureDefinition(false);
@@ -36,7 +58,7 @@ const DataStructureDetailPanel = ({registry, dataStructure}: DataStructureDetail
         fetch();
     }, [])
 
-    const previewCodeList = (structure: BaseStruct) => {
+    const previewCodeList = (structure: DataStructureTableRow) => {
         const fetch = async () => {
             const codeList: CodeList = await requestCache.checkIfExistsInMapOrAdd(SDMX_CODELIST(registry!.id, structure.structureType.agencyId!, structure.structureType.id!, structure.structureType.version!), () => fetchCodeList(registry!, structure.structureType));
             //Temp solution
@@ -58,7 +80,7 @@ const DataStructureDetailPanel = ({registry, dataStructure}: DataStructureDetail
                     pageSize: 10
                 }}
                 actions={[
-                    (rowData: BaseStruct) => {
+                    (rowData: DataStructureTableRow) => {
                         return {
                             icon: "visibilityOutlined",
                             tooltip: "Preview",

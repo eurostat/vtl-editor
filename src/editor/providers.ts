@@ -33,7 +33,9 @@ export const getVtlTheme = (): EditorApi.editor.IStandaloneThemeData => {
             {token: 'string', foreground: '018B03'},
             {token: 'comment', foreground: '939393'},
             {token: 'operator', foreground: '8B3301'},
-            {token: 'dsdContent', foreground: 'ff002e'},
+            {token: 'attribute', foreground: 'ff002e'},
+            {token: 'dimension', foreground: 'd93d5a'},
+            {token: 'primaryMeasure', foreground: 'ce6a7b'},
             {token: 'delimiter.bracket', foreground: '8B3301'},
             {token: 'operator.special', foreground: '8B3301', fontStyle: 'bold'},
         ],
@@ -107,8 +109,8 @@ const getSuggestions = (version: VTL_VERSION, monaco: typeof EditorApi, sdmxResu
     };
 
     function removeCodeListsFromList(sdmxResult: SdmxResult, vars: string[]) {
-        const codeListsId: string[] = sdmxResult.codeLists.map(cl => cl.structureId);
-        const textsId: string[] = sdmxResult.texts.map(cl => cl.id);
+        const codeListsId: string[] = sdmxResult.dimension.codeLists.concat(sdmxResult.attribute.codeLists).map(cl => cl.structureId);
+        const textsId: string[] = sdmxResult.dimension.texts.concat(sdmxResult.attribute.texts).map(cl => cl.id);
         const listToRemove = [...codeListsId, ...textsId, sdmxResult.timeDimension, sdmxResult.primaryMeasure];
         return removeItemsFromList(listToRemove, vars);
     }

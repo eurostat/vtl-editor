@@ -1,6 +1,7 @@
 import {BaseStruct} from "../../../models/api/DataStructureDefinition";
 
 export const dataPanelColumns = [
+    {title: 'Type', field: "type"},
     {title: 'Id', field: 'id'},
     {title: 'Name', field: 'name'},
     {

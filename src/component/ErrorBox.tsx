@@ -1,5 +1,5 @@
 import {faTimesCircle} from "@fortawesome/free-regular-svg-icons";
-import {faChevronUp, faTimes, faTimesCircle as faTimesCircleSolid} from "@fortawesome/free-solid-svg-icons";
+import {faChevronUp, faTimes, faTimesCircle as faTimesCircleSolid, faDatabase} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Tooltip} from "@material-ui/core";
 import {editor, Position} from "monaco-editor";
@@ -153,7 +153,7 @@ const ErrorBox = ({
                         </div>
                     </Tooltip>
                     <Tooltip title="Error count" placement="top-start" arrow>
-                        <div>
+                        <div  className="error-box-item-container">
                             <div>
                                 <FontAwesomeIcon icon={faTimesCircle}/>
                             </div>
@@ -162,16 +162,24 @@ const ErrorBox = ({
                             </div>
                         </div>
                     </Tooltip>
-                </div>
-                <div className="position-right">
-                    {dataStructureInfo ?
+                    { dataStructureInfo ?
                         <Tooltip title={dataStructureInfo.name} placement="top" arrow>
-                            <div>
-                                {dataStructureInfo.id}
+                            <div className="error-box-item-container">
+                                <div>
+                                    <FontAwesomeIcon icon={faDatabase}/>
+                                </div>
+                                <div>
+                                    {dataStructureInfo.id}
+                                </div>
                             </div>
                         </Tooltip>
                         : null
                     }
+
+
+                </div>
+                <div className="position-right">
+
                     <Tooltip title="Line and column" placement="top" arrow>
                         <div>
                             Line {cursorPosition.lineNumber}, Col {cursorPosition.column}

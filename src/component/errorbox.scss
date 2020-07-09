@@ -34,20 +34,35 @@ $errorColor: #e04f5f;
   svg {
     font-size: 1.3em;
   }
+
+  .position-left {
+    & > div {
+      padding-top: 3px;
+    }
+  }
 }
+
 
 .position-left {
   div {
     display: inline-block;
     vertical-align: middle;
     padding-left: 10px;
-    line-height: 20px;
-    padding-top: 4px;
+
   }
 
-  div:last-of-type {
-    padding-left: 5px;
-    padding-top: 0;
+  & > div {
+    line-height: 20px;
+  }
+
+  .error-box-item-container {
+    padding-left: 7px;
+    & > div:first-of-type{
+      padding-top: 2px;
+    }
+    & > div:last-of-type {
+      padding-left: 7px;
+    }
   }
 
   text-align: left;

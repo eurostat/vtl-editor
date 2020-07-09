@@ -21,10 +21,6 @@ type DecisionModalButton = {
 }
 
 const DecisionModal = ({open, close, text, title, settings}: DecisionModalProps) => {
-    const save = () => close("yes");
-    const no = () => close("no");
-    const cancel = () => close("cancel");
-
     return (
         <Modal show={open}>
             <ModalHeader>{title}</ModalHeader>

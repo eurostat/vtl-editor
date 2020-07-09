@@ -118,7 +118,7 @@ $errorColor: #e04f5f;
 
 }
 
-.error-list {
+.info-container {
   height: calc(100% - 25px);
   background-color: white;
   //max-height: calc(#{$errorBoxHeight} - #{$errorBarHeight} - 5px);
@@ -126,33 +126,32 @@ $errorColor: #e04f5f;
   overflow: auto;
   text-align: left;
   padding-left: 15px;
-  color: $errorColor;
   font-size: .8em;
   margin: 0 auto;
+  padding-top: 7px;
 
+
+
+  svg {
+    font-size: .8em;
+  }
+}
+.error-list{
+  span {
+    padding-left: 10px;
+    color: #d82323;
+  }
+  color: $errorColor;
   div {
     cursor: pointer;
-
-    &:first-of-type {
-      margin-top: 7px;
-    }
-
     margin-bottom: 2.8px;
 
     &:hover {
       background-color: #d0d0d0;
     }
   }
-
-  span {
-    padding-left: 10px;
-    color: #d82323;
-  }
-
-  svg {
-    font-size: .8em;
-  }
 }
+
 
 .position-right .close-button {
   border-left: 2px #d5d5d5 solid;
@@ -175,7 +174,7 @@ $errorColor: #e04f5f;
     color: white;
   }
 
-  .error-list {
+  .info-container {
     div {
       &:hover {
         background-color: #323232;
@@ -185,13 +184,13 @@ $errorColor: #e04f5f;
 }
 
 .vtl-box.vs-dark {
-  .error-list {
+  .info-container {
     background-color: #1e1e1e;
   }
 }
 
 .vtl-box.hc-black {
-  .error-list {
+  .info-container {
     background-color: black;
   }
 }

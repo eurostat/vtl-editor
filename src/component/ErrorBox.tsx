@@ -3,10 +3,13 @@ import {faChevronUp, faTimes, faTimesCircle as faTimesCircleSolid, faDatabase} f
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Tooltip} from "@material-ui/core";
 import {editor, Position} from "monaco-editor";
-import React, {useEffect} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {languageVersions, VTL_VERSION} from "../editor/settings";
 import "./errorbox.scss";
 import {DataStructureInfo} from "../models/api/SdmxResult";
+import DataStructureDetailPanel from "./SDMXView/DataStructureDetailPanel/DataStructureDetailPanel";
+import {SdmxRegistry} from "../models/api/SdmxRegistry";
+import {DataStructure} from "../models/api/DataStructure";
 
 type ErrorBoxProps = {
     showErrorBox: boolean,
@@ -16,19 +19,26 @@ type ErrorBoxProps = {
     cursorPosition: Position,
     errors: editor.IMarkerData[],
     setTempCursor: (position: Position) => void,
-    dataStructureInfo: DataStructureInfo | undefined
+    dataStructureInfo: DataStructureInfo | undefined,
+    registry: SdmxRegistry,
+    dataStructure: DataStructure,
 }
+
+type EditorTabs = "errorList" | "dsdPreview";
 
 const ErrorBox = ({
                       showErrorBox, changeErrorBoxState, setErrorBoxSize, languageVersion, cursorPosition,
-                      errors, setTempCursor, dataStructureInfo
+                      errors, setTempCursor, dataStructureInfo, registry, dataStructure
                   }: ErrorBoxProps) => {
     const errorsCount = errors.length;
     const version = languageVersions.find(l => l.code === languageVersion)!.name;
-
-    const newCursorPosition = (error: editor.IMarkerData) => {
-        setTempCursor(new Position(error.startLineNumber, error.startColumn));
-    };
+    const [currentTab, setCurrentTab] = useState<EditorTabs>("errorList");
+    const memoDataStructureDetails = useMemo(() => {
+        return (<DataStructureDetailPanel registry={registry} dataStructure={dataStructure}/>)
+    }, [registry, dataStructure])
+    const memoErrorList = useMemo(() => {
+        return (<ErrorList errors={errors} setTempCursor={setTempCursor}/>)
+    }, [errors]);
 
     useEffect(() => {
         const middleContainer = document.getElementById("middle-container");
@@ -105,7 +115,7 @@ const ErrorBox = ({
                 <div id="resize" className="error-top">
                     <div className="position-left">
                         <div>
-                            {errorsCount ? "[Line, Column] Message" : ""}
+                            {errorsCount && currentTab === 'errorList' ? "[Line, Column] Message" : ""}
                         </div>
 
                     </div>
@@ -130,16 +140,15 @@ const ErrorBox = ({
                         </Tooltip>
                     </div>
                 </div>
-                <div className="error-list">
-                    {errors.map((e, i) => {
-                        const {startLineNumber, startColumn, message} = e;
-                        const messageUpper = message.charAt(0).toUpperCase() + message.slice(1);
-                        return (
-                            <div onClick={() => newCursorPosition(e)} key={i}>
-                                <FontAwesomeIcon icon={faTimesCircleSolid}/>
-                                <span>{`[${startLineNumber}, ${startColumn}] ${messageUpper}`}</span>
-                            </div>)
-                    })}
+                <div className="info-container">
+                    <Tabs activeTab={currentTab}>
+                        <div title="errorList">
+                            {memoErrorList}
+                        </div>
+                        <div title="dsdPreview">
+                            {memoDataStructureDetails}
+                        </div>
+                    </Tabs>
                 </div>
             </div>
             <div id="error-bar" className="error-bar">
@@ -153,7 +162,7 @@ const ErrorBox = ({
                         </div>
                     </Tooltip>
                     <Tooltip title="Error count" placement="top-start" arrow>
-                        <div  className="error-box-item-container">
+                        <div className="error-box-item-container" onClick={() => setCurrentTab("errorList")}>
                             <div>
                                 <FontAwesomeIcon icon={faTimesCircle}/>
                             </div>
@@ -162,9 +171,9 @@ const ErrorBox = ({
                             </div>
                         </div>
                     </Tooltip>
-                    { dataStructureInfo ?
+                    {dataStructureInfo ?
                         <Tooltip title={dataStructureInfo.name} placement="top" arrow>
-                            <div className="error-box-item-container">
+                            <div className="error-box-item-container" onClick={() => setCurrentTab("dsdPreview")}>
                                 <div>
                                     <FontAwesomeIcon icon={faDatabase}/>
                                 </div>
@@ -195,5 +204,45 @@ const ErrorBox = ({
         </>
     )
 };
+
+type ErrorListProps = {
+    errors: editor.IMarkerData[],
+    setTempCursor: (position: Position) => void,
+}
+
+
+const ErrorList = ({errors, setTempCursor}: ErrorListProps) => {
+    const newCursorPosition = (error: editor.IMarkerData) => {
+        setTempCursor(new Position(error.startLineNumber, error.startColumn));
+    };
+    return (
+        <div className="error-list">
+            {
+                errors.map((e, i) => {
+                    const {startLineNumber, startColumn, message} = e;
+                    const messageUpper = message.charAt(0).toUpperCase() + message.slice(1);
+                    return (
+                        <div onClick={() => newCursorPosition(e)} key={i}>
+                            <FontAwesomeIcon icon={faTimesCircleSolid}/>
+                            <span>{`[${startLineNumber}, ${startColumn}] ${messageUpper}`}</span>
+                        </div>)
+                })
+            }
+        </div>
+    )
+}
+type TabsProps = {
+    activeTab: string,
+    children: any[];
+}
+
+const Tabs = ({activeTab, children}: TabsProps) => {
+    return (<div>
+        {children.map(child => {
+            if (child.props.title !== activeTab) return undefined;
+            return child.props.children;
+        })}
+    </div>)
+}
 
 export default ErrorBox;

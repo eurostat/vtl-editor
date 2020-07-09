@@ -192,7 +192,9 @@ function App() {
         cursorPosition,
         errors,
         setTempCursor,
-        "dataStructureInfo": sdmxResult?.dataStructureInfo
+        "dataStructureInfo": sdmxResult?.dataStructureInfo,
+        registry,
+        dataStructure
     };
 
     const EditorViewProps = {

@@ -1,7 +1,8 @@
 {
   "name": "vrm-frontend",
-  "version": "0.5.0",
+  "version": "0.6.0-SNAPSHOT",
   "private": true,
+  "homepage": "./",
   "dependencies": {
     "@babel/core": "7.8.4",
     "@fortawesome/fontawesome-svg-core": "^1.2.27",
@@ -83,6 +84,7 @@
     "semver": "6.3.0",
     "sonarqube-scanner": "^2.6.0",
     "style-loader": "0.23.1",
+    "sync-pom-version-to-package": "^1.5.0",
     "terser-webpack-plugin": "2.3.4",
     "ts-pnp": "1.1.5",
     "typescript": "^3.7.5",
@@ -97,7 +99,8 @@
     "build": "node --max-old-space-size=4096 scripts/build.js",
     "test": "node --max-old-space-size=4096 scripts/test.js",
     "antlr4ts": "antlr4ts -visitor src/grammar/vtl-3.0/Vtl.g4",
-    "sonar": "node sonar-project.js"
+    "sonar": "node sonar-project.js",
+    "postinstall": "sync-pom-version"
   },
   "eslintConfig": {
     "extends": "react-app"

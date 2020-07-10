@@ -13,9 +13,9 @@
             <outputDirectory>/</outputDirectory>
             <filtered>false</filtered>
             <includes>
-                <include>User Manual v.${pretty.version}.pdf</include>
-                <include>Administrator Guide v.${pretty.version}.pdf</include>
-                <include>Release Notes v.${pretty.version}.pdf</include>
+                <include>User Manual v.${release.version}.pdf</include>
+                <include>Administrator Guide v.${release.version}.pdf</include>
+                <include>Release Notes v.${release.version}.pdf</include>
             </includes>
         </fileSet>
     </fileSets>

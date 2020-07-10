@@ -212,6 +212,7 @@ const DataStructureTable = forwardRef(({
                                 return (<DataStructureDetailPanel
                                     registry={registry!}
                                     dataStructure={rowData}
+                                    showCodeListPreview={false}
                                 />)
                             }}
                         />

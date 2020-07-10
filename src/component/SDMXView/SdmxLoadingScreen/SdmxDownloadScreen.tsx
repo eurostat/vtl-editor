@@ -46,10 +46,10 @@ const SdmxDownloadScreen = ({registry, dataStructure, showScreen, setSdmxResult}
                 async () => await fetchDataStructureDefinition(registry!, dataStructure!));
             const structuresFromDSD: BaseStruct[] = getCodeListsFromDSD(dsd);
             setCodeListTotal(structuresFromDSD.length);
-            const structureTypes = distinctStructureTypes(structuresFromDSD.map(structure => structure.structureType));
+            const disStructureTypes = distinctStructureTypes(structuresFromDSD.map(structure => structure.structureType));
 
             const codeLists = await requestCache.checkIfExistsInMapOrAdd(`CODE LISTS: ${SDMX_DSD(registry!.id, dataStructure!.agencyId, dataStructure!.id, dataStructure!.version)}`,
-                () => fetchCodeLists(structureTypes));
+                () => fetchCodeLists(disStructureTypes));
             let result = createSdmxResult(dsd, codeLists);
             setSdmxResult(result);
             enqueueSnackbar(`${codeLists.length} code list${codeLists.length > 1 ? "s" : ""} downloaded!`, {
@@ -101,14 +101,17 @@ const SdmxDownloadScreen = ({registry, dataStructure, showScreen, setSdmxResult}
     }
 
     const mapICodeDetails = (structures: BaseStruct[], codeLists: CodeList[]): CodeListDetails[] => {
-        const structuresMap = structures.reduce((map: { [key: string]: BaseStruct }, obj) => {
-            map[obj.structureType.id!] = obj;
+        const codeListsMap = codeLists.reduce((map: { [key: string]: CodeList }, obj) => {
+            map[obj.id!] = obj;
             return map;
         }, {});
-        return codeLists.filter(cl => structuresMap[cl.id]).map(cl => Object.assign({
-            structureId: structuresMap[cl.id].id,
-            name: structuresMap[cl.id].name
-        }, cl));
+
+        return structures.filter(structure => codeListsMap[structure.structureType.id!]).map(structure => Object.assign(
+            {
+                structureId: structure.id,
+                name: structure.name
+            }, codeListsMap[structure.structureType.id!]
+        ));
     }
     const saveStateToLocaleStorage = (registry: SdmxRegistry, ds: DataStructure) => {
         setSdmxStorageValue({registryId: registry.id, dataStructure: ds});

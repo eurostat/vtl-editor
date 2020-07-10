@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {BaseStruct, DataStructureDefinition} from "../../../models/api/DataStructureDefinition";
-import MaterialTable from "material-table";
+import MaterialTable, {DetailPanel} from "material-table";
 import {dataPanelColumns} from "./detailPanelColumns";
 import {ApiCache} from "../ApiCache";
 import {CodeList} from "../../../models/api/CodeList";
@@ -8,10 +8,12 @@ import {SDMX_CODELIST, SDMX_DSD} from "../../../api/apiConsts";
 import {SdmxRegistry} from "../../../models/api/SdmxRegistry";
 import {fetchCodeList, fetchDataStructureDefinition} from "../../../api/sdmxApi";
 import {DataStructure} from "../../../models/api/DataStructure";
+import CodeListDetailPanel from "./CodeListDetailPanel/CodeListDetailPanel";
 
 type DataStructureDetailPanelProps = {
     registry: SdmxRegistry,
-    dataStructure: DataStructure
+    dataStructure: DataStructure,
+    showCodeListPreview: boolean
 }
 
 interface DataStructureTableRow extends BaseStruct {
@@ -24,7 +26,7 @@ type DataStructureTableRowType =
 
 const requestCache = ApiCache.getInstance();
 
-const DataStructureDetailPanel = ({registry, dataStructure}: DataStructureDetailPanelProps) => {
+const DataStructureDetailPanel = ({registry, dataStructure, showCodeListPreview}: DataStructureDetailPanelProps) => {
     const [dataStructureDefinition, setDataStructureDefinition] = useState<DataStructureDefinition | undefined>(undefined);
     const [codeList, setCodeList] = useState<CodeList | undefined>(undefined);
     const [structures, setStructures] = useState<DataStructureTableRow[]>([]);
@@ -58,14 +60,19 @@ const DataStructureDetailPanel = ({registry, dataStructure}: DataStructureDetail
         fetch();
     }, [])
 
-    const previewCodeList = (structure: DataStructureTableRow) => {
-        const fetch = async () => {
-            const codeList: CodeList = await requestCache.checkIfExistsInMapOrAdd(SDMX_CODELIST(registry!.id, structure.structureType.agencyId!, structure.structureType.id!, structure.structureType.version!), () => fetchCodeList(registry!, structure.structureType));
-            //Temp solution
-            setCodeList(codeList);
-            alert(codeList.codes.map(code => `${code.id} ${code.value}\n`));
-        }
-        fetch();
+    const conditionalRenderCodeListPreview = (showCodeListPreview: boolean) => {
+        return showCodeListPreview ?
+            {
+                "detailPanel": [(rowData: DataStructureTableRow) => {
+                    return {
+                        disabled: rowData.structureType.type !== "codelist",
+                        icon: rowData.structureType.type === "codelist" ? "chevron_right" : "  ",
+                        render: (rowData: DataStructureTableRow) => <CodeListDetailPanel registry={registry!}
+                                                                                         baseStruct={rowData}/>
+                    } as DetailPanel<DataStructureTableRow>
+                }]
+            }
+            : {}
     }
 
     return (
@@ -79,16 +86,8 @@ const DataStructureDetailPanel = ({registry, dataStructure}: DataStructureDetail
                     showTitle: false,
                     pageSize: 10
                 }}
-                actions={[
-                    (rowData: DataStructureTableRow) => {
-                        return {
-                            icon: "visibilityOutlined",
-                            tooltip: "Preview",
-                            onClick: (event) => previewCodeList(rowData),
-                            hidden: rowData.structureType.type !== "codelist"
-                        }
-                    }
-                ]}
+                {...conditionalRenderCodeListPreview(showCodeListPreview)}
+
             />
         </div>
     )

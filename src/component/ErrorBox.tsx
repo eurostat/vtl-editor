@@ -34,7 +34,7 @@ const ErrorBox = ({
     const version = languageVersions.find(l => l.code === languageVersion)!.name;
     const [currentTab, setCurrentTab] = useState<EditorTabs>("errorList");
     const memoDataStructureDetails = useMemo(() => {
-        return (<DataStructureDetailPanel registry={registry} dataStructure={dataStructure}/>)
+        return (<DataStructureDetailPanel registry={registry} dataStructure={dataStructure} showCodeListPreview={true}/>)
     }, [registry, dataStructure])
     const memoErrorList = useMemo(() => {
         return (<ErrorList errors={errors} setTempCursor={setTempCursor}/>)

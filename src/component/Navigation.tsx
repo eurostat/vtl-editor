@@ -7,7 +7,8 @@ import ModalFactory from "react-modal-promise";
 import {Link, useLocation} from "react-router-dom";
 import {decisionModal} from "./DecisionModal";
 import "./navigation.scss"
-import SettingsNav from "./SettingsNav";
+import DropdownMenu from "./DropdownMenu";
+import SettingsPanel from "./DropdownMenu/panel/SettingsPanel";
 
 type NavigationProps = {
     showDialog: (value: boolean) => void,
@@ -120,7 +121,14 @@ const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, 
                     </Link>
                 </Tooltip>
             </div>
-            <SettingsNav {...settingsNavProps}/>
+            <DropdownMenu currentElement={""}>
+                <div>
+                    <SettingsPanel {...settingsNavProps}/>
+                </div>
+                <div>
+                    <SettingsPanel {...settingsNavProps}/>
+                </div>
+            </DropdownMenu>
             <div style={{display: "inline-block"}}>
                 <ModalFactory/>
             </div>

@@ -2,17 +2,19 @@ import {faEdit, faFile, faQuestionCircle, faSave, IconDefinition} from "@fortawe
 import {faCog, faTools, faUpload} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Tooltip} from "@material-ui/core";
-import React, {forwardRef, useEffect} from "react";
+import React, {forwardRef, useEffect, useState} from "react";
 import ModalFactory from "react-modal-promise";
 import {Link, useLocation} from "react-router-dom";
 import {decisionModal} from "./DecisionModal";
 import "./navigation.scss"
 import DropdownMenu from "./DropdownMenu";
 import SettingsPanel from "./DropdownMenu/panel/SettingsPanel";
+import {MenuOption} from "../models/editor/MenuOption";
+import FileExplorerPanel from "./DropdownMenu/panel/FIleExplorerPanel";
 
 type NavigationProps = {
     showDialog: (value: boolean) => void,
-    changeMenu: () => void,
+    changeMenu: (menuOption: MenuOption) => void,
     code: string,
     setCodeChanged: (value: boolean) => void,
     codeChanged: boolean,
@@ -27,6 +29,7 @@ type MenuContent = {
 type MenuContentMap = Record<string, MenuContent[]>;
 
 const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, fileName, createNewFile, settingsNavProps}: NavigationProps) => {
+    const [currentMenuElement, setCurrentMenuElement] = useState<MenuOption>(MenuOption.NONE);
     const location = useLocation();
     const downloadFile = () => {
         let url = window.URL;
@@ -97,6 +100,12 @@ const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, 
             {title: "Editor", clazz: "menu-first-item", icon: faEdit, link: "/"}
         ],
         "/": [
+            {
+                title: "File Explorer", clazz: "menu-file-explorer menu-first-item", icon: faFile, onClick: () => {
+                    changeMenu(MenuOption.FILE_EXPLORER)
+                    setCurrentMenuElement(MenuOption.FILE_EXPLORER)
+                }
+            },
             {title: "New File (Ctrl+E)", clazz: "menu-new menu-first-item", icon: faFile, onClick: makeNewFile},
             {title: "Save file (Ctrl+S)", clazz: "menu-save", icon: faSave, onClick: downloadFile},
             {title: "Open file (Ctrl+O)", clazz: "menu-open", icon: faUpload, onClick: openFile},
@@ -109,7 +118,10 @@ const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, 
             <div className="nav flex-column nav-pills left-nav" aria-orientation="vertical">
                 {menuOptions[location.pathname].map(option => <MenuItem key={option.clazz} item={option}/>)}
                 <Tooltip title="Settings" placement="right" arrow>
-                    <button className="menu-settings" id="setting-icon" onClick={changeMenu}>
+                    <button className="menu-settings" id="setting-icon" onClick={() => {
+                        changeMenu(MenuOption.SETTINGS)
+                        setCurrentMenuElement(MenuOption.SETTINGS)
+                    }}>
                         <FontAwesomeIcon icon={faCog}/>
                     </button>
                 </Tooltip>
@@ -121,12 +133,12 @@ const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, 
                     </Link>
                 </Tooltip>
             </div>
-            <DropdownMenu currentElement={""}>
-                <div>
+            <DropdownMenu currentElement={currentMenuElement}>
+                <div title={MenuOption.SETTINGS}>
                     <SettingsPanel {...settingsNavProps}/>
                 </div>
-                <div>
-                    <SettingsPanel {...settingsNavProps}/>
+                <div title={MenuOption.FILE_EXPLORER}>
+                    <FileExplorerPanel/>
                 </div>
             </DropdownMenu>
             <div style={{display: "inline-block"}}>

@@ -47,7 +47,7 @@
   }
 }
 
-#setting-icon {
+.open-settings #setting-icon, .open-file-explorer .menu-file-explorer {
   border-left: 1px solid #1276ff;
 
   & > svg {

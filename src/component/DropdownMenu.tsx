@@ -14,8 +14,7 @@ const DropdownMenu = ({currentElement, children}: DropdownMenuProps) => {
 
     return (
         <div className="nav flex-column nav-pills left-nav settings-nav" aria-orientation="vertical">
-            {console.log(children)}
-            {children[0].props.children}
+            {children.find(child => child.props.title === currentElement)?.props.children || undefined}
         </div>
     )
 };

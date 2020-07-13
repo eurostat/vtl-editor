@@ -15,26 +15,30 @@ import {SdmxResult} from "./models/api/SdmxResult";
 import {SdmxRegistry} from "./models/api/SdmxRegistry";
 import {Agency} from "./models/api/Agency";
 import {DataStructure, FinalStructureEnum} from "./models/api/DataStructure";
-import {
-    getEditorStoredValues,
-    getSdmxStoredValues,
-    setEditorStorageValue,
-    setSdmxStorageValue
-} from "./utility/localStorage";
+import {getEditorStoredValues, getSdmxStoredValues, setEditorStorageValue} from "./utility/localStorage";
 import {EditorStorage} from "./models/storage/EditorStorage";
 import {SdmxStorage} from "./models/storage/SdmxStorage";
-import {DataStructureDefinition} from "./models/api/DataStructureDefinition";
 import {decisionModal} from "./component/DecisionModal";
 import SdmxDownloadScreen from "./component/SDMXView/SdmxLoadingScreen/SdmxDownloadScreen";
+import {MenuOption} from "./models/editor/MenuOption";
 
 const getTheme = (): string => {
     const item = getEditorStoredValues();
     return item?.theme || "vtl";
 };
 
+type DropdownMenuStatus = {
+    option: MenuOption,
+    visible: boolean
+}
+
 function App() {
     const [showDialog, setShowDialog] = useState(false);
     const [showMenu, setShowMenu] = useState(false);
+    const [dropdownMenuStatus, setDropdownMenuStatus] = useState<DropdownMenuStatus>({
+        option: MenuOption.NONE,
+        visible: false
+    });
     const [showErrorBox, setShowErrorBox] = useState(false);
     const [code, setCode] = useState("");
     const [codeChanged, setCodeChanged] = useState(false);
@@ -125,9 +129,13 @@ function App() {
         setEditorStorageValue({codeChanged: codeChanged})
     };
 
-    const changeMenuState = () => {
+    const changeMenuState = (menuOption: MenuOption) => {
+        setDropdownMenuStatus({
+            option: menuOption,
+            visible: menuOption !== dropdownMenuStatus.option || !dropdownMenuStatus.visible
+        });
         setShowMenu(!showMenu);
-    };
+    }
 
     const changeErrorBoxState = () => {
         setShowErrorBox(!showErrorBox);
@@ -136,7 +144,7 @@ function App() {
 
     const getStyles = () => {
         let styling = "App";
-        styling += showMenu ? "" : " hide-settings-nav";
+        styling += dropdownMenuStatus.visible ? ` open-${dropdownMenuStatus.option}` : " hide-settings-nav";
         styling += showErrorBox ? "" : " hide-error-box";
         return styling;
     };

@@ -28,7 +28,7 @@ const DecisionModal = ({open, close, text, title, settings}: DecisionModalProps)
             <ModalFooter>
                 {settings?.buttons.map(button => {
                     const buttonValue = button.value.charAt(0).toUpperCase() + button.value.slice(1);
-                    return (<Button color={button.color} onClick={() => close(button.value)}>
+                    return (<Button key={buttonValue} color={button.color} onClick={() => close(button.value)}>
                         {buttonValue}
                     </Button>)
                 })}

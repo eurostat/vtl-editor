@@ -1,4 +1,4 @@
-import {faEdit, faFile, faQuestionCircle, faSave, IconDefinition} from "@fortawesome/free-regular-svg-icons";
+import {faEdit, faFile, faQuestionCircle, faSave, IconDefinition, faCopy} from "@fortawesome/free-regular-svg-icons";
 import {faCog, faTools, faUpload} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Tooltip} from "@material-ui/core";
@@ -7,10 +7,10 @@ import ModalFactory from "react-modal-promise";
 import {Link, useLocation} from "react-router-dom";
 import {decisionModal} from "./DecisionModal";
 import "./navigation.scss"
-import DropdownMenu from "./DropdownMenu";
-import SettingsPanel from "./DropdownMenu/panel/SettingsPanel";
+import DropdownMenu from "./DropdownMenu/DropdownMenu";
+import SettingsPanel from "./DropdownMenu/SettingsPanel/SettingsPanel";
 import {MenuOption} from "../models/editor/MenuOption";
-import FileExplorerPanel from "./DropdownMenu/panel/FIleExplorerPanel";
+import FileExplorerPanel from "./DropdownMenu/FileExplorerPanel/FIleExplorerPanel";
 
 type NavigationProps = {
     showDialog: (value: boolean) => void,
@@ -95,33 +95,40 @@ const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, 
         }
     };
 
+    const fileExplorerMenuClick = () => {
+        changeMenu(MenuOption.FILE_EXPLORER)
+        setCurrentMenuElement(MenuOption.FILE_EXPLORER)
+    }
+
     const menuOptions: MenuContentMap = {
         "/sdmx": [
             {title: "Editor", clazz: "menu-first-item", icon: faEdit, link: "/"}
         ],
         "/": [
             {
-                title: "File Explorer", clazz: "menu-file-explorer menu-first-item", icon: faFile, onClick: () => {
-                    changeMenu(MenuOption.FILE_EXPLORER)
-                    setCurrentMenuElement(MenuOption.FILE_EXPLORER)
-                }
+                title: "File Explorer",
+                clazz: "menu-file-explorer menu-first-item",
+                icon: faCopy,
+                onClick: fileExplorerMenuClick
             },
-            {title: "New File (Ctrl+E)", clazz: "menu-new menu-first-item", icon: faFile, onClick: makeNewFile},
+            {title: "New File (Ctrl+E)", clazz: "menu-new", icon: faFile, onClick: makeNewFile},
             {title: "Save file (Ctrl+S)", clazz: "menu-save", icon: faSave, onClick: downloadFile},
             {title: "Open file (Ctrl+O)", clazz: "menu-open", icon: faUpload, onClick: openFile},
             {title: "SDMX Options", clazz: "menu-sdmx", icon: faTools, link: "/sdmx"},
         ]
     };
 
+    const settingsMenuClick = () => {
+        changeMenu(MenuOption.SETTINGS)
+        setCurrentMenuElement(MenuOption.SETTINGS)
+    }
+
     return (
         <>
             <div className="nav flex-column nav-pills left-nav" aria-orientation="vertical">
                 {menuOptions[location.pathname].map(option => <MenuItem key={option.clazz} item={option}/>)}
                 <Tooltip title="Settings" placement="right" arrow>
-                    <button className="menu-settings" id="setting-icon" onClick={() => {
-                        changeMenu(MenuOption.SETTINGS)
-                        setCurrentMenuElement(MenuOption.SETTINGS)
-                    }}>
+                    <button className="menu-settings" id="setting-icon" onClick={settingsMenuClick}>
                         <FontAwesomeIcon icon={faCog}/>
                     </button>
                 </Tooltip>

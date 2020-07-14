@@ -79,6 +79,8 @@
     "react-modal-promise": "^0.5.2",
     "react-monaco-editor": "^0.34.0",
     "react-router-dom": "^5.1.2",
+    "react-treebeard": "^3.2.4",
+    "react-treebeard-ts": "^3.2.5",
     "resolve": "1.15.0",
     "resolve-url-loader": "3.1.1",
     "sass-loader": "8.0.2",

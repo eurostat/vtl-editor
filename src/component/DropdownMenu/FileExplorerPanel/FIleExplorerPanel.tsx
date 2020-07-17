@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from "react";
-import {Treebeard, TreeNode, decorators, animations} from 'react-treebeard-ts';
+import {Treebeard, TreeNode, decorators, animations, theme, TreeTheme} from 'react-treebeard-ts';
 import "./fileExplorer.scss";
 import Header from "./Header";
+import Container from "./Container";
 
 const files = {
     name: 'root',
@@ -26,6 +27,15 @@ const files = {
                     name: 'nested parent',
                     children: [
                         {name: 'nested child 1'},
+                        {name: 'nested child 1'},
+                        {name: 'nested child 1'},
+                        {name: 'nested child 1'},
+                        {name: 'nested child 1'},
+                        {name: 'nested child 1'},
+                        {name: 'nested child 1'},
+                        {name: 'nested child 1'},
+                        {name: 'nested child 1'},
+                        {name: 'nested child 1'},
                         {name: 'nested child 2'}
                     ]
                 }
@@ -43,7 +53,7 @@ const FileExplorerPanel = () => {
         // document.addEventListener("click", handleClick);
         elementById?.addEventListener("contextmenu", (e) => {
             e.preventDefault();
-           // console.log("container event", e);
+            // console.log("container event", e);
         });
         return () => {
             //document.addEventListener("click", handleClick);
@@ -62,9 +72,17 @@ const FileExplorerPanel = () => {
         setCursor(node);
         setData(Object.assign({}, data))
     }
+
+    const updatedStyle = () => {
+        const newTheme: TreeTheme = Object.assign(theme, {});
+        newTheme.tree.base.backgroundColor = "transparent";
+        return newTheme;
+    }
+
     return (
         <div id="file-explorer" className="file-explorer-container">
-            <Treebeard data={data} onToggle={onToggle} decorators={{...decorators, Header}} animations={animations}/>
+            <Treebeard style={updatedStyle()} data={data} onToggle={onToggle}
+                       decorators={{...decorators, Header, Container}} animations={animations}/>
         </div>
     )
 }

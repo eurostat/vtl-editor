@@ -23,20 +23,37 @@ const Header = ({onSelect, style, customStyles, node}: HeaderProps) => {
     return (
         <>
             <div style={style.base} onClick={onSelect}>
-                <div ref={divRef}  style={node.selected ? {...style.title, ...customStyles.header.title} : style.title}>
+                <div ref={divRef} style={node.selected ? {...style.title, ...customStyles.header.title} : style.title}>
                     <FontAwesomeIcon icon={iconType} style={iconStyle}/>
                     {node.name}
                 </div>
             </div>
-            <ContextMenu menu={<CustomMenu/>} domElementRef={divRef!}/>
+            {/*<ContextMenu menu={<CustomMenu/>} domElementRef={divRef!}/>*/}
         </>
     );
 }
 const CustomMenu = () => (
     <ul className="menu">
-        <li>Login</li>
-        <li>Register</li>
-        <li>Open Profile</li>
+        <li onClick={() => console.log("test")}>Open</li>
+        <li>Delete</li>
+        <li>Copy</li>
+        <li>Share</li>
+        <li>Rename</li>
+        <hr/>
+        <li>View versions</li>
+        <hr/>
+        <li>Show file list</li>
+        <hr/>
+        <li>Move up</li>
+        <li>Move down</li>
+        <li className="with-submenu" >
+            Sort
+            <ul className="submenu">
+                <li>Name</li>
+                <li>Date</li>
+                <li>Custom</li>
+            </ul>
+        </li>
     </ul>
 );
 export default Header;

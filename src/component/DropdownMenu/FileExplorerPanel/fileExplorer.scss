@@ -2,8 +2,37 @@
 .file-explorer-container {
   text-align: left;
   padding: 5px;
-  svg{
+
+  svg {
     vertical-align: inherit;
     font-size: 15px;
   }
+
+  .with-submenu {
+    position: relative;
+
+    //&:hover {
+    //  .submenu {
+    //    display: block;
+    //    position: absolute;
+    //    left: 258px;
+    //    top: 0;
+    //  }
+    //}
+  }
+
+  .hide-menu {
+    visibility: hidden;
+   // display: none;
+  }
+
+  .position-right{
+    padding-right: 5px;
+    padding-top: 2px;
+  }
+}
+
+
+.visible-menu{
+  visibility: visible;
 }

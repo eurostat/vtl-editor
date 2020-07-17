@@ -1,15 +1,36 @@
-import React, {MutableRefObject} from "react";
+import React, {Component, MutableRefObject, useEffect, useRef, useState} from "react";
 import useContextMenu from "./useContextMenu";
 import {Motion, spring} from "react-motion";
 import "./contextMenu.scss";
+import {dom} from "@fortawesome/fontawesome-svg-core";
 
 type ContextMenuProps = {
     menu: any,
     domElementRef: MutableRefObject<any>
 }
 
-const ContextMenu = ({menu,domElementRef}: ContextMenuProps) => {
+const ContextMenu = ({menu, domElementRef}: ContextMenuProps) => {
     const {xPos, yPos, showMenu} = useContextMenu({domElementRef});
+    const [menuYPos, setMenuYPos] = useState(yPos)
+    const menuRef = useRef(null);
+    useEffect(() => {
+        console.log("test");
+        if (menuRef.current) {
+            // @ts-ignore
+            const menuHeight = menuRef?.current?.scrollHeight;
+            const documentHeight = document.body.getBoundingClientRect().height;
+            const domBounding = domElementRef.current.getBoundingClientRect();
+            const elBottom = domBounding.height + domBounding.top;
+            if (elBottom + menuHeight > documentHeight) {
+                setMenuYPos(`${documentHeight - menuHeight - elBottom}px`);
+            } else {
+                setMenuYPos(yPos);
+            }
+        }
+
+    })
+
+
     return (
         <Motion
             defaultStyle={{opacity: 0}}
@@ -19,9 +40,10 @@ const ContextMenu = ({menu,domElementRef}: ContextMenuProps) => {
                 <>
                     {showMenu ? (
                         <div
+                            ref={menuRef}
                             className="menu-container"
                             style={{
-                                top: yPos,
+                                top: menuYPos,
                                 left: xPos,
                                 opacity: interpolatedStyle.opacity,
                             }}

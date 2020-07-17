@@ -9,10 +9,6 @@ const useContextMenu = ({domElementRef}: useContextMenuProps) => {
     const [yPos, setYPos] = useState("0px");
     const [showMenu, setShowMenu] = useState(false);
 
-    useEffect(() => {
-        console.log(domElementRef);
-    })
-
     const handleContextMenu = useCallback(
         (e) => {
             e.preventDefault();
@@ -23,12 +19,12 @@ const useContextMenu = ({domElementRef}: useContextMenuProps) => {
         [setXPos, setYPos]
     );
 
-    const handleClick = useCallback(() => {
+    const handleClick = useCallback((e: MouseEvent) => {
+        if (e.defaultPrevented) return;
         showMenu && setShowMenu(false);
     }, [showMenu]);
 
-    const test = (e: MouseEvent) => {
-
+    const preventHidingContext = (e: MouseEvent) => {
         showMenu && setShowMenu(false);
         if (e.target === domElementRef.current) {
             setShowMenu(true);
@@ -37,11 +33,11 @@ const useContextMenu = ({domElementRef}: useContextMenuProps) => {
 
     useEffect(() => {
         document.addEventListener("click", handleClick);
-        document.addEventListener("contextmenu", test);
+        document.addEventListener("contextmenu", preventHidingContext);
         domElementRef?.current?.addEventListener("contextmenu", handleContextMenu);
         return () => {
             document.removeEventListener("click", handleClick);
-            document.removeEventListener("contextmenu", test);
+            document.removeEventListener("contextmenu", preventHidingContext);
             domElementRef?.current?.removeEventListener("contextmenu", handleContextMenu);
         };
     });

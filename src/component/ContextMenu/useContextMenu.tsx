@@ -20,7 +20,7 @@ const useContextMenu = ({domElementRef}: useContextMenuProps) => {
     );
 
     const handleClick = useCallback((e: MouseEvent) => {
-        if (e.defaultPrevented) return;
+        if (e.defaultPrevented || !showMenu) return;
         showMenu && setShowMenu(false);
     }, [showMenu]);
 
@@ -32,13 +32,13 @@ const useContextMenu = ({domElementRef}: useContextMenuProps) => {
     }
 
     useEffect(() => {
-        document.addEventListener("click", handleClick);
-        document.addEventListener("contextmenu", preventHidingContext);
-        domElementRef?.current?.addEventListener("contextmenu", handleContextMenu);
+       document.addEventListener("click", handleClick);
+       document.addEventListener("contextmenu", preventHidingContext);
+       domElementRef?.current?.addEventListener("contextmenu", handleContextMenu);
         return () => {
-            document.removeEventListener("click", handleClick);
-            document.removeEventListener("contextmenu", preventHidingContext);
-            domElementRef?.current?.removeEventListener("contextmenu", handleContextMenu);
+           document.removeEventListener("click", handleClick);
+           document.removeEventListener("contextmenu", preventHidingContext);
+           domElementRef?.current?.removeEventListener("contextmenu", handleContextMenu);
         };
     });
 

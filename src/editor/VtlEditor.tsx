@@ -1,7 +1,7 @@
 import * as EditorApi from 'monaco-editor/esm/vs/editor/editor.api';
 import {Position} from 'monaco-editor/esm/vs/editor/editor.api';
 import * as React from 'react';
-import {useEffect, useRef} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import MonacoEditor from "react-monaco-editor";
 import {getEditorWillMount, getParserFacade} from "./providers";
 
@@ -11,7 +11,7 @@ import {SdmxResult} from "../models/api/SdmxResult";
 
 declare const window: any;
 
-type VtlEditorProps = {
+export type VtlEditorProps = {
     resizeLayout: any[],
     code: string,
     setCode: (value: string) => void,
@@ -27,9 +27,23 @@ type VtlEditorProps = {
 let parserFacade: any = {parser: null};
 let errors: any = {value: ""};
 
-const VtlEditor = ({resizeLayout, code, setCode, setCodeChanged, theme, languageVersion, setCursorPosition, tempCursor, setErrors, sdmxResult}: VtlEditorProps) => {
-    const monacoRef = useRef<any>(null);
 
+const VtlEditor = ({resizeLayout, code, setCode, setCodeChanged, theme, languageVersion, setCursorPosition, tempCursor, setErrors, sdmxResult}: VtlEditorProps) => {
+    const [innerCode, setInnerCode] = useState<string>("");
+
+    const monacoRef = useRef<any>(null);
+    // useTraceUpdate({
+    //     resizeLayout,
+    //     code,
+    //     setCode,
+    //     setCodeChanged,
+    //     theme,
+    //     languageVersion,
+    //     setCursorPosition,
+    //     tempCursor,
+    //     setErrors,
+    //     sdmxResult
+    // });
     useEffect(() => {
         if (monacoRef && monacoRef.current) {
             // @ts-ignore
@@ -47,11 +61,8 @@ const VtlEditor = ({resizeLayout, code, setCode, setCodeChanged, theme, language
     }, [tempCursor]);
 
     useEffect(() => {
-        // @ts-ignore
-        // if (monacoRef && monacoRef.current) {
-        //     monacoRef.current.editor.dispose();
-        // }
-    }, [sdmxResult])
+        setInnerCode(code)
+    }, [code])
 
     useEffect(() => {
         parserFacade = getParserFacade(languageVersion);
@@ -59,6 +70,12 @@ const VtlEditor = ({resizeLayout, code, setCode, setCodeChanged, theme, language
 
     const didMount = (editor: EditorApi.editor.IStandaloneCodeEditor, monaco: typeof EditorApi) => {
         let to: NodeJS.Timeout;
+        let cursorTO: NodeJS.Timeout;
+        let delayCursorSettingAction = (e: any) => {
+            cursorTO = setTimeout(() => {
+                setCursorPosition(e.position);
+            }, 400);
+        }
         let onDidChangeTimout = (e: any) => {
             to = setTimeout(() => onDidChange(e), 2000);
         };
@@ -66,6 +83,8 @@ const VtlEditor = ({resizeLayout, code, setCode, setCodeChanged, theme, language
         const onDidChange = (e: any) => {
             // @ts-ignore
             let syntaxErrors = parserFacade.parser.validate(editor.getValue());
+            setCode(editor.getValue());
+            setCodeChanged(true);
             let monacoErrors = [];
             for (let e of syntaxErrors) {
                 monacoErrors.push({
@@ -90,13 +109,15 @@ const VtlEditor = ({resizeLayout, code, setCode, setCodeChanged, theme, language
             if (to) clearTimeout(to);
             return onDidChangeTimout(e);
         });
-        editor.onDidChangeCursorPosition((e: EditorApi.editor.ICursorPositionChangedEvent) => setCursorPosition(e.position));
+        //editor.onDidChangeCursorPosition((e: EditorApi.editor.ICursorPositionChangedEvent) => setCursorPosition(e.position));
+        editor.onDidChangeCursorPosition((e: EditorApi.editor.ICursorPositionChangedEvent) => {
+            if (cursorTO) clearTimeout(cursorTO);
+            return delayCursorSettingAction(e);
+        });
     };
 
     const onChange = (newValue: string, e: EditorApi.editor.IModelContentChangedEvent) => {
-        setCode(newValue);
-        setCodeChanged(true);
-
+        setInnerCode(newValue);
     };
 
     const options = {
@@ -117,7 +138,7 @@ const VtlEditor = ({resizeLayout, code, setCode, setCodeChanged, theme, language
                 theme={theme}
                 defaultValue=''
                 options={options}
-                value={code}
+                value={innerCode}
                 onChange={onChange}/>
         </div>)
 };

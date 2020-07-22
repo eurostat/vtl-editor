@@ -1,8 +1,8 @@
-import {faEdit, faFile, faQuestionCircle, faSave, IconDefinition, faCopy} from "@fortawesome/free-regular-svg-icons";
+import {faCopy, faEdit, faFile, faQuestionCircle, faSave, IconDefinition} from "@fortawesome/free-regular-svg-icons";
 import {faCog, faTools, faUpload} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Tooltip} from "@material-ui/core";
-import React, {forwardRef, useEffect, useState} from "react";
+import React, {forwardRef, useEffect, useMemo, useState} from "react";
 import ModalFactory from "react-modal-promise";
 import {Link, useLocation} from "react-router-dom";
 import {decisionModal} from "./DecisionModal";
@@ -31,6 +31,9 @@ type MenuContentMap = Record<string, MenuContent[]>;
 const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, fileName, createNewFile, settingsNavProps}: NavigationProps) => {
     const [currentMenuElement, setCurrentMenuElement] = useState<MenuOption>(MenuOption.NONE);
     const location = useLocation();
+    const memoFileExplorer = useMemo(() => {
+        return (<FileExplorerPanel/>)
+    }, [])
     const downloadFile = () => {
         let url = window.URL;
         let file = url.createObjectURL(new File([code], (!fileName || fileName === "") ? "untitled.vtl" : fileName));
@@ -43,7 +46,7 @@ const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, 
 
     useEffect(() => {
         window.onkeydown = (event: KeyboardEvent) => checkKeyEvent(event);
-    });
+    },[]);
 
     const checkKeyEvent = (event: KeyboardEvent) => {
         if (event.ctrlKey) {
@@ -145,7 +148,7 @@ const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, 
                     <SettingsPanel {...settingsNavProps}/>
                 </div>
                 <div title={MenuOption.FILE_EXPLORER}>
-                    <FileExplorerPanel/>
+                    {memoFileExplorer}
                 </div>
             </DropdownMenu>
             <div style={{display: "inline-block"}}>

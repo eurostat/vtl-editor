@@ -190,9 +190,10 @@ const SDMXView = ({
                             id="registries-select"
                             options={registries}
                             className="sdmx-autocomplete"
-                            getOptionLabel={(option: SdmxRegistry) => option.name}
-                            loading={registriesLoading}
                             value={registry}
+                            getOptionLabel={(option: SdmxRegistry) => option.name}
+                            getOptionSelected={(option: SdmxRegistry, value: SdmxRegistry) => option.id === value.id}
+                            loading={registriesLoading}
                             onChange={onRegistriesChange}
                             renderInput={(params) => (
                                 <TextField

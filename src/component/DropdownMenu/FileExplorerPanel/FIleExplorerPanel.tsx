@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {Treebeard, TreeNode, decorators, animations, theme, TreeTheme} from 'react-treebeard-ts';
 import "./fileExplorer.scss";
-import Header from "./Header";
-import Container from "./Container";
+import CustomHeader from "./CustomHeader";
+import CustomContainer from "./CustomContainer";
 
 const files = {
     name: 'root',
@@ -49,17 +49,18 @@ const FileExplorerPanel = () => {
     const [cursor, setCursor] = useState<TreeNode | undefined>(undefined);
 
     useEffect(() => {
+        console.log("file explorer usefefect");
+    })
+
+    useEffect(() => {
         const elementById = document.getElementById("file-explorer");
-        // document.addEventListener("click", handleClick);
         elementById?.addEventListener("contextmenu", (e) => {
             e.preventDefault();
-            // console.log("container event", e);
         });
         return () => {
-            //document.addEventListener("click", handleClick);
             elementById?.removeEventListener("contextmenu", (e) => e.preventDefault());
         };
-    });
+    },[]);
 
     const onToggle = (node: TreeNode, toggled: boolean) => {
         if (cursor) {
@@ -82,7 +83,7 @@ const FileExplorerPanel = () => {
     return (
         <div id="file-explorer" className="file-explorer-container">
             <Treebeard style={updatedStyle()} data={data} onToggle={onToggle}
-                       decorators={{...decorators, Header, Container}} animations={animations}/>
+                       decorators={{...decorators, Header: CustomHeader, Container: CustomContainer}} animations={animations}/>
         </div>
     )
 }

@@ -21,6 +21,7 @@ import {SdmxStorage} from "./models/storage/SdmxStorage";
 import {decisionModal} from "./component/DecisionModal";
 import SdmxDownloadScreen from "./component/SDMXView/SdmxLoadingScreen/SdmxDownloadScreen";
 import {MenuOption} from "./models/editor/MenuOption";
+import {VtlEditorProps} from "./editor/VtlEditor";
 
 const getTheme = (): string => {
     const item = getEditorStoredValues();
@@ -45,8 +46,8 @@ function App() {
     const [fileName, setFileName] = useState("untitled.vtl");
     const [theme, setTheme] = useState(getTheme());
     const [languageVersion, setLanguageVersion] = useState(languageVersions[languageVersions.length - 1].code);
-    const [cursorPosition, setCursorPosition] = useState(new Position(0, 0));
-    const [tempCursor, setTempCursor] = useState(new Position(0, 0));
+    const [cursorPosition, setCursorPosition] = useState(new Position(1, 1));
+    const [tempCursor, setTempCursor] = useState(new Position(1, 1));
     const [errors, setErrors] = useState([] as editor.IMarkerData[]);
     const [errorBoxSize, setErrorBoxSize] = useState(0);
     /*SDMX STATES */
@@ -66,13 +67,6 @@ function App() {
             setValue(editorStoredValues.fileName, setFileName);
             setValue(editorStoredValues.showErrorBox, setShowErrorBox);
             setValue(editorStoredValues.theme, setTheme);
-        }
-    }, [])
-
-    useEffect(() => {
-        const vtlContainer = document.getElementById("vtl-container");
-        if (vtlContainer) {
-            setTempCursor(new Position(1, 1));
         }
     }, [])
 
@@ -173,7 +167,7 @@ function App() {
         tempCursor,
         setErrors,
         sdmxResult
-    };
+    } as VtlEditorProps;
 
     const NavigationProps = {
         "showDialog": setShowDialog,

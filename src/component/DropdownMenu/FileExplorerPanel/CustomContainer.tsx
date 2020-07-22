@@ -15,7 +15,7 @@ type ContainerProps = {
 };
 
 
-const Container = ({customStyles, style, decorators, terminal, onSelect, onClick, animations, node}: ContainerProps) => {
+const CustomContainer = ({customStyles, style, decorators, terminal, onSelect, onClick, animations, node}: ContainerProps) => {
     const divRef = useRef(null);
 
     const renderToggleDecorator = () => {
@@ -29,7 +29,7 @@ const Container = ({customStyles, style, decorators, terminal, onSelect, onClick
                 {!terminal ? renderToggleDecorator() : null}
                 <decorators.Header node={node} style={style.header} customStyles={customStyles} onSelect={onSelect}/>
             </div>
-            <ContextMenu menu={<CustomMenu/>} domElementRef={divRef!}/>
+            {/*<ContextMenu menu={<CustomMenu/>} domElementRef={divRef!}/>*/}
         </>
     );
 
@@ -67,4 +67,4 @@ const CustomMenu = () => {
         </ul>
     );
 }
-export default Container;
+export default CustomContainer;

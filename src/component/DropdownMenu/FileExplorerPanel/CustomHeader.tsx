@@ -10,15 +10,10 @@ type HeaderProps = {
     customStyles: any
 }
 
-const Header = ({onSelect, style, customStyles, node}: HeaderProps) => {
+const CustomHeader = ({onSelect, style, customStyles, node}: HeaderProps) => {
     const iconType = node.children ? faFolder : faFileAlt;
     const iconStyle = {marginRight: '5px'};
     const divRef = useRef(null);
-
-    useEffect(() => {
-        //console.log(node.name, divRef);
-    })
-
 
     return (
         <>
@@ -28,32 +23,8 @@ const Header = ({onSelect, style, customStyles, node}: HeaderProps) => {
                     {node.name}
                 </div>
             </div>
-            {/*<ContextMenu menu={<CustomMenu/>} domElementRef={divRef!}/>*/}
         </>
     );
 }
-const CustomMenu = () => (
-    <ul className="menu">
-        <li onClick={() => console.log("test")}>Open</li>
-        <li>Delete</li>
-        <li>Copy</li>
-        <li>Share</li>
-        <li>Rename</li>
-        <hr/>
-        <li>View versions</li>
-        <hr/>
-        <li>Show file list</li>
-        <hr/>
-        <li>Move up</li>
-        <li>Move down</li>
-        <li className="with-submenu" >
-            Sort
-            <ul className="submenu">
-                <li>Name</li>
-                <li>Date</li>
-                <li>Custom</li>
-            </ul>
-        </li>
-    </ul>
-);
-export default Header;
+
+export default CustomHeader;

@@ -17,7 +17,8 @@ type DecisionModalSettings = {
 
 type DecisionModalButton = {
     value: string,
-    color: "primary" | "secondary"
+    color: "primary" | "secondary",
+    className?: string
 }
 
 const DecisionModal = ({open, close, text, title, settings}: DecisionModalProps) => {
@@ -28,7 +29,8 @@ const DecisionModal = ({open, close, text, title, settings}: DecisionModalProps)
             <ModalFooter>
                 {settings?.buttons.map(button => {
                     const buttonValue = button.value.charAt(0).toUpperCase() + button.value.slice(1);
-                    return (<Button key={buttonValue} color={button.color} onClick={() => close(button.value)}>
+                    return (<Button key={buttonValue} color={button.color} className={button.className}
+                                    onClick={() => close(button.value)}>
                         {buttonValue}
                     </Button>)
                 })}
@@ -41,7 +43,7 @@ DecisionModal.defaultProps = {
         buttons: [
             {value: "yes", color: "primary"} as DecisionModalButton,
             {value: "no", color: "secondary"} as DecisionModalButton,
-            {value: "cancel", color: "secondary"} as DecisionModalButton
+            {value: "cancel", color: "secondary", className: "default-button outline-button"} as DecisionModalButton
         ]
     }
 }

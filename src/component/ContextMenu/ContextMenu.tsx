@@ -13,8 +13,8 @@ const ContextMenu = ({menu, domElementRef}: ContextMenuProps) => {
     const {xPos, yPos, showMenu} = useContextMenu({domElementRef});
     const [menuYPos, setMenuYPos] = useState(yPos)
     const menuRef = useRef(null);
+
     useEffect(() => {
-        console.log("test");
         if (menuRef.current) {
             // @ts-ignore
             const menuHeight = menuRef?.current?.scrollHeight;
@@ -27,8 +27,7 @@ const ContextMenu = ({menu, domElementRef}: ContextMenuProps) => {
                 setMenuYPos(yPos);
             }
         }
-
-    })
+    },[domElementRef])
 
 
     return (

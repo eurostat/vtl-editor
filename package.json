@@ -95,9 +95,9 @@
     "workbox-webpack-plugin": "4.3.1"
   },
   "scripts": {
-    "start": "node --max-old-space-size=4096 scripts/start.js",
-    "build": "node --max-old-space-size=4096 scripts/build.js",
-    "test": "node --max-old-space-size=4096 scripts/test.js",
+    "start": "node --max-old-space-size=1024 scripts/start.js",
+    "build": "node --max-old-space-size=1024 scripts/build.js",
+    "test": "node --max-old-space-size=1024 scripts/test.js",
     "antlr4ts": "antlr4ts -visitor src/grammar/vtl-3.0/Vtl.g4",
     "sonar": "node sonar-project.js",
     "postinstall": "sync-pom-version"

@@ -50,7 +50,7 @@ const SdmxDownloadScreen = ({registry, dataStructure, showScreen, setSdmxResult}
 
             const codeLists = await requestCache.checkIfExistsInMapOrAdd(`CODE LISTS: ${SDMX_DSD(registry!.id, dataStructure!.agencyId, dataStructure!.id, dataStructure!.version)}`,
                 () => fetchCodeLists(disStructureTypes));
-            let result = createSdmxResult(dsd, codeLists);
+            let result = createSdmxResult(dataStructure!, dsd, codeLists);
             setSdmxResult(result);
             enqueueSnackbar(`${codeLists.length} code list${codeLists.length > 1 ? "s" : ""} downloaded!`, {
                 variant: "success"
@@ -122,8 +122,9 @@ const SdmxDownloadScreen = ({registry, dataStructure, showScreen, setSdmxResult}
             arr.findIndex(t => t.id === s.id && t.agencyId === s.agencyId && t.version === s.version) === i);
     }
 
-    const createSdmxResult = (dsd: DataStructureDefinition, codeLists: CodeList[]): SdmxResult => {
+    const createSdmxResult = (ds: DataStructure, dsd: DataStructureDefinition, codeLists: CodeList[]): SdmxResult => {
         return {
+            dataStructure: ds,
             dataStructureInfo: {id: dsd.id, name: dsd.name},
             dimension: {
                 texts: getTextFromDimensions(dsd),

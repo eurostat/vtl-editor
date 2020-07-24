@@ -9,8 +9,8 @@ export const getEditorStoredValues = (): EditorStorage => {
     return getFromLocalStorage("editor") || {};
 }
 
-export const setSdmxStorageValue = (object: SdmxStorage) => {
-    setToLocalStorage("sdmx", {...getSdmxStoredValues(), ...object});
+export const setSdmxStorageValue = (object: SdmxStorage | undefined) => {
+    setToLocalStorage("sdmx", object);
 }
 export const getSdmxStoredValues = (): SdmxStorage => {
     return getFromLocalStorage("sdmx") || {};

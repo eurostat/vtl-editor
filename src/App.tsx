@@ -15,7 +15,12 @@ import {SdmxResult} from "./models/api/SdmxResult";
 import {SdmxRegistry} from "./models/api/SdmxRegistry";
 import {Agency} from "./models/api/Agency";
 import {DataStructure, FinalStructureEnum} from "./models/api/DataStructure";
-import {getEditorStoredValues, getSdmxStoredValues, setEditorStorageValue} from "./utility/localStorage";
+import {
+    getEditorStoredValues,
+    getSdmxStoredValues,
+    setEditorStorageValue,
+    setSdmxStorageValue
+} from "./utility/localStorage";
 import {EditorStorage} from "./models/storage/EditorStorage";
 import {SdmxStorage} from "./models/storage/SdmxStorage";
 import {decisionModal} from "./component/DecisionModal";
@@ -80,6 +85,9 @@ function App() {
             if (res === "yes") {
                 setImportDSD(true);
             }
+            else if(res==="cancel"){
+                setSdmxStorageValue({});
+            }
         }
         const sdmxStoredValues: SdmxStorage = getSdmxStoredValues();
         if (sdmxStoredValues) {
@@ -90,6 +98,10 @@ function App() {
             }
         }
     }, []);
+
+    useEffect(() => {
+        setDataStructure(sdmxResult?.dataStructure);
+    }, [sdmxResult])
 
     const setValue = (value: any, setter: (value: any) => any) => {
         if (value) {

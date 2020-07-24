@@ -34,6 +34,7 @@ const DataStructureDetailPanel = ({registry, dataStructure, showCodeListPreview}
 
 
     useEffect(() => {
+        console.log(dataStructure, registry);
         const fetch = async () => {
             setLoadingDataStructureDefinition(true);
             const dsd: DataStructureDefinition = await requestCache.checkIfExistsInMapOrAdd(SDMX_DSD(registry.id, dataStructure.agencyId, dataStructure.id, dataStructure.version)

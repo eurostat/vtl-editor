@@ -29,7 +29,7 @@ const CustomContainer = ({customStyles, style, decorators, terminal, onSelect, o
                 {!terminal ? renderToggleDecorator() : null}
                 <decorators.Header node={node} style={style.header} customStyles={customStyles} onSelect={onSelect}/>
             </div>
-            {/*<ContextMenu menu={<CustomMenu/>} domElementRef={divRef!}/>*/}
+            <ContextMenu menu={<CustomMenu/>} domElementRef={divRef!}/>
         </>
     );
 

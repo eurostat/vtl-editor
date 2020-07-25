@@ -11,9 +11,10 @@ const useContextMenu = ({domElementRef}: useContextMenuProps) => {
 
     const handleContextMenu = useCallback(
         (e) => {
+            console.log(e);
             e.preventDefault();
-            setXPos(`${e.layerX}px`);
-            setYPos(`${e.layerY}px`);
+            setXPos(`${e.clientX}px`);
+            setYPos(`${e.clientY}px`);
             setShowMenu(true);
         },
         [setXPos, setYPos]

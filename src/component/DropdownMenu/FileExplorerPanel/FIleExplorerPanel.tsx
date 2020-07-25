@@ -36,6 +36,16 @@ const files = {
                         {name: 'nested child 1'},
                         {name: 'nested child 1'},
                         {name: 'nested child 1'},
+                        {name: 'nested child 1'},
+                        {name: 'nested child 1'},
+                        {name: 'nested child 1'},
+                        {name: 'nested child 1'},
+                        {name: 'nested child 1'},
+                        {name: 'nested child 1'},
+                        {name: 'nested child 1'},
+                        {name: 'nested child 1'},
+                        {name: 'nested child 1'},
+                        {name: 'nested child 1'},
                         {name: 'nested child 2'}
                     ]
                 }

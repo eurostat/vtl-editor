@@ -1,7 +1,7 @@
 
 .menu-container, .submenu {
   opacity: 1;
-  position: absolute;
+  position: fixed;
   z-index: 1000;
   box-shadow: 7px 8px 3px -5px rgba(0, 0, 0, 0.62);
   color: white;

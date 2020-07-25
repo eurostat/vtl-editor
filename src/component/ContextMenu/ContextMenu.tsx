@@ -21,13 +21,16 @@ const ContextMenu = ({menu, domElementRef}: ContextMenuProps) => {
             const documentHeight = document.body.getBoundingClientRect().height;
             const domBounding = domElementRef.current.getBoundingClientRect();
             const elBottom = domBounding.height + domBounding.top;
+            console.log(menuHeight, documentHeight,elBottom);
+            console.log(documentHeight - menuHeight - elBottom);
             if (elBottom + menuHeight > documentHeight) {
-                setMenuYPos(`${documentHeight - menuHeight - elBottom}px`);
+                setMenuYPos(`${documentHeight - menuHeight}px`);
             } else {
-                setMenuYPos(yPos);
+                setMenuYPos(yPos)
             }
         }
-    },[domElementRef])
+        console.log(menuRef)
+    })
 
 
     return (

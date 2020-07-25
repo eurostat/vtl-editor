@@ -46,7 +46,7 @@ const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, 
 
     useEffect(() => {
         window.onkeydown = (event: KeyboardEvent) => checkKeyEvent(event);
-    },[]);
+    }, []);
 
     const checkKeyEvent = (event: KeyboardEvent) => {
         if (event.ctrlKey) {
@@ -107,6 +107,7 @@ const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, 
         "/sdmx": [
             {title: "Editor", clazz: "menu-first-item", icon: faEdit, link: "/"}
         ],
+        "/diff": [],
         "/": [
             {
                 title: "File Explorer",

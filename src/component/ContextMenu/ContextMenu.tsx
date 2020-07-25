@@ -1,8 +1,7 @@
-import React, {Component, MutableRefObject, useEffect, useRef, useState} from "react";
+import React, {MutableRefObject, useEffect, useRef, useState} from "react";
 import useContextMenu from "./useContextMenu";
 import {Motion, spring} from "react-motion";
 import "./contextMenu.scss";
-import {dom} from "@fortawesome/fontawesome-svg-core";
 
 type ContextMenuProps = {
     menu: any,
@@ -21,15 +20,12 @@ const ContextMenu = ({menu, domElementRef}: ContextMenuProps) => {
             const documentHeight = document.body.getBoundingClientRect().height;
             const domBounding = domElementRef.current.getBoundingClientRect();
             const elBottom = domBounding.height + domBounding.top;
-            console.log(menuHeight, documentHeight,elBottom);
-            console.log(documentHeight - menuHeight - elBottom);
             if (elBottom + menuHeight > documentHeight) {
                 setMenuYPos(`${documentHeight - menuHeight}px`);
             } else {
                 setMenuYPos(yPos)
             }
         }
-        console.log(menuRef)
     })
 
 

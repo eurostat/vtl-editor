@@ -27,6 +27,7 @@ import {decisionModal} from "./component/DecisionModal";
 import SdmxDownloadScreen from "./component/SDMXView/SdmxLoadingScreen/SdmxDownloadScreen";
 import {MenuOption} from "./models/editor/MenuOption";
 import {VtlEditorProps} from "./editor/VtlEditor";
+import DiffEditor from "./component/DiffEditor/DiffEditor";
 
 const getTheme = (): string => {
     const item = getEditorStoredValues();
@@ -84,8 +85,7 @@ function App() {
             });
             if (res === "yes") {
                 setImportDSD(true);
-            }
-            else if(res==="cancel"){
+            } else if (res === "cancel") {
                 setSdmxStorageValue({});
             }
         }
@@ -251,6 +251,9 @@ function App() {
                         <Switch>
                             <Route exact path="/sdmx">
                                 <SDMXView {...SDMXViewProps}/>
+                            </Route>
+                            <Route exact path="/diff">
+                                <DiffEditor/>
                             </Route>
                             <Route exact path="/">
                                 <EditorView {...EditorViewProps}/>

@@ -18,6 +18,7 @@ import {CustomResponse} from "../../models/api/CustomResponse";
 import {ApiCache} from "./ApiCache";
 import DataStructureTable from "./DataStructureTable";
 import {SdmxResult} from "../../models/api/SdmxResult";
+import PageHeader from "../PageHeader/PageHeader";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small"/>;
 const checkedIcon = <CheckBoxIcon fontSize="small"/>;
@@ -177,9 +178,7 @@ const SDMXView = ({
 
     return (
         <div className="sdmx-container">
-            <div className="view-name-container">
-                <h3>Import SDMX</h3>
-            </div>
+            <PageHeader name={"Import SDMX"}/>
             <Container>
                 <Row className="justify-content-md-left">
                     <Col xs={2} className="sdmx-option">

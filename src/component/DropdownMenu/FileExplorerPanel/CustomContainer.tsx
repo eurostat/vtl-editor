@@ -2,6 +2,9 @@ import React, {useEffect, useRef, useState} from 'react';
 import ContextMenu from "../../ContextMenu/ContextMenu";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCaretRight} from "@fortawesome/free-solid-svg-icons";
+import {DataStructure} from "../../../models/api/DataStructure";
+import {decisionModal} from "../../DecisionModal";
+import {setSdmxStorageValue} from "../../../utility/localStorage";
 
 type ContainerProps = {
     customStyles: any,
@@ -29,20 +32,48 @@ const CustomContainer = ({customStyles, style, decorators, terminal, onSelect, o
                 {!terminal ? renderToggleDecorator() : null}
                 <decorators.Header node={node} style={style.header} customStyles={customStyles} onSelect={onSelect}/>
             </div>
-            <ContextMenu menu={<CustomMenu/>} domElementRef={divRef!}/>
+            <ContextMenu menu={<CustomMenu node={node}/>} domElementRef={divRef!}/>
         </>
     );
 
 }
-const CustomMenu = () => {
+type CustomMenuType = {
+    node: any
+}
+
+const CustomMenu = ({node}: CustomMenuType) => {
     const [showSortMenu, setShowSortMenu] = useState(false);
+
+    const onDeleteClick = () => {
+        const decision = async () => {
+            const res = await decisionModal({
+                title: "Warning!",
+                text:
+                    `Do you really want to delete this ${node.children ? "folder" : "file"}?`
+            });
+            if (res === "yes") {
+                alert("TODO");
+            }
+        }
+        decision()
+    }
+
+    const subMenuOperation = (event: any) => {
+        event.preventDefault();
+        setShowSortMenu(!showSortMenu);
+    }
+
+    const onRename = () => {
+        node.name = "TODO";
+    }
+
     return (
         <ul className="menu">
             <li onClick={() => console.log("test")}>Open</li>
-            <li>Delete</li>
+            <li onClick={onDeleteClick}>Delete</li>
             <li>Copy</li>
             <li>Share</li>
-            <li>Rename</li>
+            <li onClick={onRename}>Rename</li>
             <hr/>
             <li>View versions</li>
             <hr/>
@@ -50,10 +81,7 @@ const CustomMenu = () => {
             <hr/>
             <li>Move up</li>
             <li>Move down</li>
-            <li className="with-submenu" onClick={(e) => {
-                e.preventDefault();
-                setShowSortMenu(!showSortMenu);
-            }}>
+            <li className="with-submenu" onClick={subMenuOperation}>
                 <span>Sort</span>
                 <div className="position-right">
                     <FontAwesomeIcon icon={faCaretRight}/>

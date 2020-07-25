@@ -8,18 +8,6 @@ $progress-border-radius: 4px;
   overflow: auto;
 }
 
-.view-name-container {
-  text-align: left;
-  height: 50px;
-  background-color: $gray-background-color;
-  border-bottom: $gray-border-color 1px solid;
-
-  h3 {
-    padding-top: 10px;
-    padding-left: 20px;
-    font-size: 18px;
-  }
-}
 
 .sdmx-option {
   text-align: right;

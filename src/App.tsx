@@ -28,6 +28,7 @@ import SdmxDownloadScreen from "./component/SDMXView/SdmxLoadingScreen/SdmxDownl
 import {MenuOption} from "./models/editor/MenuOption";
 import {VtlEditorProps} from "./editor/VtlEditor";
 import DiffEditor from "./component/DiffEditor/DiffEditor";
+import HistoricalVersions from "./component/HistoricalVersions/HistoricalVersions";
 
 const getTheme = (): string => {
     const item = getEditorStoredValues();
@@ -254,6 +255,9 @@ function App() {
                             </Route>
                             <Route exact path="/diff">
                                 <DiffEditor/>
+                            </Route>
+                            <Route exact path="/historical">
+                                <HistoricalVersions/>
                             </Route>
                             <Route exact path="/">
                                 <EditorView {...EditorViewProps}/>

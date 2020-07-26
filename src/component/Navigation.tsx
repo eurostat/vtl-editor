@@ -108,6 +108,7 @@ const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, 
             {title: "Editor", clazz: "menu-first-item", icon: faEdit, link: "/"}
         ],
         "/diff": [],
+        "/historical": [],
         "/": [
             {
                 title: "File Explorer",
@@ -130,7 +131,7 @@ const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, 
     return (
         <>
             <div className="nav flex-column nav-pills left-nav" aria-orientation="vertical">
-                {menuOptions[location.pathname].map(option => <MenuItem key={option.clazz} item={option}/>)}
+                {menuOptions[location.pathname]?.map(option => <MenuItem key={option.clazz} item={option}/>) || []}
                 <Tooltip title="Settings" placement="right" arrow>
                     <button className="menu-settings" id="setting-icon" onClick={settingsMenuClick}>
                         <FontAwesomeIcon icon={faCog}/>

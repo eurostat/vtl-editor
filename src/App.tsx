@@ -29,6 +29,7 @@ import {MenuOption} from "./models/editor/MenuOption";
 import {VtlEditorProps} from "./editor/VtlEditor";
 import DiffEditor from "./component/DiffEditor/DiffEditor";
 import HistoricalVersions from "./component/HistoricalVersions/HistoricalVersions";
+import DirectoryPreview from "./component/DirectoryPreview/DirectoryPreview";
 
 const getTheme = (): string => {
     const item = getEditorStoredValues();
@@ -258,6 +259,9 @@ function App() {
                             </Route>
                             <Route exact path="/historical">
                                 <HistoricalVersions/>
+                            </Route>
+                            <Route exact path="/directory">
+                                <DirectoryPreview/>
                             </Route>
                             <Route exact path="/">
                                 <EditorView {...EditorViewProps}/>

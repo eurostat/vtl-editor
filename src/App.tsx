@@ -92,9 +92,10 @@ function App() {
             }
         }
         const sdmxStoredValues: SdmxStorage = getSdmxStoredValues();
+        console.log(sdmxStoredValues);
         if (sdmxStoredValues) {
             if (sdmxStoredValues.dataStructure && sdmxStoredValues.registryId) {
-                setDataStructure(sdmxStoredValues.dataStructure);
+                setDataStructure({...sdmxStoredValues.dataStructure});
                 setRegistry({id: sdmxStoredValues.registryId!, name: "", url: ""});
                 decision(sdmxStoredValues.dataStructure);
             }
@@ -102,7 +103,8 @@ function App() {
     }, []);
 
     useEffect(() => {
-        setDataStructure(sdmxResult?.dataStructure);
+        if (sdmxResult?.dataStructure)
+            setDataStructure(sdmxResult?.dataStructure);
     }, [sdmxResult])
 
     const setValue = (value: any, setter: (value: any) => any) => {
@@ -273,7 +275,7 @@ function App() {
                         <OpenDialog {...UploadDialogProps}/> : null}
                     {false ? <GuideOverlay/> : null}
                     {importDSD ?
-                        <SdmxDownloadScreen registry={registry} dataStructure={dataStructure} showScreen={importDSD}
+                        <SdmxDownloadScreen registry={registry} dataStructure={dataStructure!} showScreen={importDSD}
                                             setSdmxResult={setSdmxResult}/> : null}
                 </div>
             </SnackbarProvider>

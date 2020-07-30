@@ -14,7 +14,7 @@ import {useSnackbar} from "notistack";
 
 type SdmxDownloadScreenPropsNew = {
     registry: SdmxRegistry | null,
-    dataStructure: DataStructure | undefined | null,
+    dataStructure: DataStructure,
     showScreen: boolean,
     setSdmxResult: (result: SdmxResult) => void
 }

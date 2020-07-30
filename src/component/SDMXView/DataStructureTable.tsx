@@ -231,7 +231,7 @@ const DataStructureTable = forwardRef(({
                 </Row>
             </Container>
             {codeListLoading ?
-                <SdmxDownloadScreen registry={registry} dataStructure={dataStructure} setSdmxResult={setSdmxResult}
+                <SdmxDownloadScreen registry={registry} dataStructure={dataStructure!} setSdmxResult={setSdmxResult}
                                     showScreen={codeListLoading}/> : null}
         </>
     )

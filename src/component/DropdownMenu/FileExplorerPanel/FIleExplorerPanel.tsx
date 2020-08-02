@@ -3,9 +3,24 @@ import {Treebeard, TreeNode, decorators, animations, theme, TreeTheme} from 'rea
 import "./fileExplorer.scss";
 import CustomHeader from "./CustomHeader";
 import CustomContainer from "./CustomContainer";
+//
+// id:string
+// owner: string;
+// creator: string;
+// modifiedOn: Date;
+// createdOn: Date;
+// size: string;
+// version: string;
+
 
 const files = {
     name: 'root',
+    owner: "owner1",
+    creator: "26/10/2020 15:34",
+    modifiedOn: "26/10/2020 15:34",
+    createdOn: "26/10/2020 15:34",
+    size: "15KB",
+    version: "1.01",
     toggled: true,
     children: [
         {
@@ -26,8 +41,22 @@ const files = {
                 {
                     name: 'nested parent',
                     children: [
-                        {name: 'nested child 1'},
-                        {name: 'nested child 1'},
+                        {
+                            name: 'nested child 1', owner: "owner1",
+                            creator: "26/10/2020 15:34",
+                            modifiedOn: "26/10/2020 15:34",
+                            createdOn: "26/10/2020 15:34",
+                            size: "15KB",
+                            version: "1.01",
+                        },
+                        {
+                            name: 'nested child 1', owner: "owner1",
+                            creator: "26/10/2020 15:34",
+                            modifiedOn: "26/10/2020 15:34",
+                            createdOn: "26/10/2020 15:34",
+                            size: "15KB",
+                            version: "1.01",
+                        },
                         {name: 'nested child 1'},
                         {name: 'nested child 1'},
                         {name: 'nested child 1'},
@@ -70,7 +99,7 @@ const FileExplorerPanel = () => {
         return () => {
             elementById?.removeEventListener("contextmenu", (e) => e.preventDefault());
         };
-    },[]);
+    }, []);
 
     const onToggle = (node: TreeNode, toggled: boolean) => {
         if (cursor) {
@@ -93,7 +122,8 @@ const FileExplorerPanel = () => {
     return (
         <div id="file-explorer" className="file-explorer-container">
             <Treebeard style={updatedStyle()} data={data} onToggle={onToggle}
-                       decorators={{...decorators, Header: CustomHeader, Container: CustomContainer}} animations={animations}/>
+                       decorators={{...decorators, Header: CustomHeader, Container: CustomContainer}}
+                       animations={animations}/>
         </div>
     )
 }

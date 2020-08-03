@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react';
-import VtlEditor, {VtlEditorProps} from "../editor/VtlEditor";
-import ErrorBox from "./ErrorBox";
-import {languageVersions} from "../editor/settings";
+import VtlEditor, {VtlEditorProps} from "../../editor/VtlEditor";
+import ErrorBox from "./ErrorBox/ErrorBox";
+import {languageVersions} from "../../editor/settings";
 
 
 type EditorViewProps = {
@@ -17,11 +17,6 @@ const classes = {
 };
 
 const EditorView = ({fileName, codeChanged, VtlEditorProps, ErrorBoxProps}: EditorViewProps) => {
-
-    const memoMonaco = useMemo(() => {
-        return (
-            <VtlEditor {...VtlEditorProps}/>)
-    }, [VtlEditorProps.code, VtlEditorProps.theme, VtlEditorProps.languageVersion, VtlEditorProps.tempCursor, VtlEditorProps.sdmxResult, VtlEditorProps.resizeLayout])
     return (
         <div className={`vtl-box ${VtlEditorProps.theme}`} style={classes}>
             <div id="top-bar" className="top-bar">
@@ -29,7 +24,6 @@ const EditorView = ({fileName, codeChanged, VtlEditorProps, ErrorBoxProps}: Edit
             </div>
             <div id="vtl-container" className="vtl-container">
                 <VtlEditor {...VtlEditorProps}/>
-                {/*{memoMonaco}*/}
             </div>
             <ErrorBox {...ErrorBoxProps} />
         </div>

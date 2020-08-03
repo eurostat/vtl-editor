@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {TreeNode, decorators, animations, theme, TreeTheme} from 'react-treebeard-ts';
-import TreeBeard from "../../TreeExplorer/components";
+import TreeBeard from "../../../TreeExplorer/components";
 import "./fileExplorer.scss";
 import CustomHeader from "./CustomHeader";
 import CustomContainer from "./CustomContainer";

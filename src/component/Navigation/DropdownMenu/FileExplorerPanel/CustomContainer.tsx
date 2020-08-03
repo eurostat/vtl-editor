@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import ContextMenu from "../../ContextMenu/ContextMenu";
+import ContextMenu from "../../../ContextMenu/ContextMenu";
 import CustomMenu from "./CustomMenu";
 
 type ContainerProps = {

@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {decisionModal} from "../../DecisionModal";
+import {decisionModal} from "../../../DecisionModal/DecisionModal";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCaretRight} from "@fortawesome/free-solid-svg-icons";
 

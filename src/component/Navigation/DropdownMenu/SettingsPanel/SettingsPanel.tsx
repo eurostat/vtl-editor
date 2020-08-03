@@ -1,6 +1,6 @@
 import React from "react";
 import {Form} from "react-bootstrap";
-import {languageVersions, themes, VTL_VERSION} from "../../../editor/settings";
+import {languageVersions, themes, VTL_VERSION} from "../../../../editor/settings";
 
 type SettingsPanelProps = {
     languageVersion: VTL_VERSION,

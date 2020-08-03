@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFileAlt, faFolder} from "@fortawesome/free-solid-svg-icons";
-import ContextMenu from "../../ContextMenu/ContextMenu";
+import ContextMenu from "../../../ContextMenu/ContextMenu";
 
 type HeaderProps = {
     onSelect: () => void,

@@ -1,4 +1,4 @@
-import logo from "../assets/european-logo.png";
+import logo from "../../assets/european-logo.png";
 import React from "react";
 
 

@@ -5,11 +5,11 @@ import {Tooltip} from "@material-ui/core";
 import React, {forwardRef, useEffect, useMemo, useState} from "react";
 import ModalFactory from "react-modal-promise";
 import {Link, useLocation} from "react-router-dom";
-import {decisionModal} from "./DecisionModal";
+import {decisionModal} from "../DecisionModal/DecisionModal";
 import "./navigation.scss"
 import DropdownMenu from "./DropdownMenu/DropdownMenu";
 import SettingsPanel from "./DropdownMenu/SettingsPanel/SettingsPanel";
-import {MenuOption} from "../models/editor/MenuOption";
+import {MenuOption} from "../../models/editor/MenuOption";
 import FileExplorerPanel from "./DropdownMenu/FileExplorerPanel/FIleExplorerPanel";
 
 type NavigationProps = {

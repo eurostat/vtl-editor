@@ -3,7 +3,7 @@ import {editor, Position} from "monaco-editor";
 import {SnackbarProvider} from "notistack";
 import React, {useEffect, useState} from 'react';
 import './App.scss';
-import OpenDialog from "./component/dialog/openDialog";
+import OpenDialog from "./component/Dialog/OpenDialog";
 import GuideOverlay from "./component/GuideOverlay/GuideOverlay";
 import Header from "./component/Header/Header";
 import Navigation from "./component/Navigation/Navigation";
@@ -92,7 +92,6 @@ function App() {
             }
         }
         const sdmxStoredValues: SdmxStorage = getSdmxStoredValues();
-        console.log(sdmxStoredValues);
         if (sdmxStoredValues) {
             if (sdmxStoredValues.dataStructure && sdmxStoredValues.registryId) {
                 setDataStructure({...sdmxStoredValues.dataStructure});

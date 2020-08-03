@@ -90,7 +90,6 @@ const getSuggestions = (version: VTL_VERSION, monaco: typeof EditorApi, sdmxResu
         const suggestionList: languages.CompletionItem[] = getSuggestionsForVersion(version, range);
         uniquetext = removeLanguageSyntaxFromList(suggestionList, uniquetext);
         let mappedCodeLists: languages.CompletionItem[] = [];
-        console.log("autocomplete");
         if (sdmxResult) {
             uniquetext = removeCodeListsFromList(sdmxResult, uniquetext);
             mappedCodeLists = fromISdmxResult(sdmxResult, range);

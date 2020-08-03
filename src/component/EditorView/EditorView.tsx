@@ -1,7 +1,6 @@
-import React, {useMemo} from 'react';
+import React from 'react';
 import VtlEditor, {VtlEditorProps} from "../../editor/VtlEditor";
-import ErrorBox from "./ErrorBox/ErrorBox";
-import {languageVersions} from "../../editor/settings";
+import ResizableEditorArea from "./ResizableEditorArea/ResizableEditorArea";
 
 
 type EditorViewProps = {
@@ -25,7 +24,7 @@ const EditorView = ({fileName, codeChanged, VtlEditorProps, ErrorBoxProps}: Edit
             <div id="vtl-container" className="vtl-container">
                 <VtlEditor {...VtlEditorProps}/>
             </div>
-            <ErrorBox {...ErrorBoxProps} />
+            <ResizableEditorArea {...ErrorBoxProps} />
         </div>
     );
 };

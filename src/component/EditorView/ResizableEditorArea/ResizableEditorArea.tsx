@@ -5,14 +5,14 @@ import {Tooltip} from "@material-ui/core";
 import {editor, Position} from "monaco-editor";
 import React, {useEffect, useMemo, useState} from "react";
 import {languageVersions, VTL_VERSION} from "../../../editor/settings";
-import "./errorbox.scss";
+import "./resizableEditorArea.scss";
 import {DataStructureInfo} from "../../../models/api/SdmxResult";
 import DataStructureDetailPanel from "../../SDMXView/DataStructureDetailPanel/DataStructureDetailPanel";
 import {SdmxRegistry} from "../../../models/api/SdmxRegistry";
 import {DataStructure} from "../../../models/api/DataStructure";
 import ErrorList from "./ErrorList/ErrorList";
 
-type ErrorBoxProps = {
+type ResizableEditorAreaProps = {
     showErrorBox: boolean,
     changeErrorBoxState: () => void,
     setErrorBoxSize: (size: number) => void,
@@ -27,10 +27,10 @@ type ErrorBoxProps = {
 
 type EditorTabs = "errorList" | "dsdPreview";
 
-const ErrorBox = ({
+const ResizableEditorArea = ({
                       showErrorBox, changeErrorBoxState, setErrorBoxSize, languageVersion, cursorPosition,
                       errors, setTempCursor, dataStructureInfo, registry, dataStructure
-                  }: ErrorBoxProps) => {
+                  }: ResizableEditorAreaProps) => {
     const errorsCount = errors.length;
     const version = languageVersions.find(l => l.code === languageVersion)!.name;
     const [currentTab, setCurrentTab] = useState<EditorTabs>("errorList");
@@ -222,4 +222,4 @@ const Tabs = ({activeTab, children}: TabsProps) => {
     </div>)
 }
 
-export default ErrorBox;
+export default ResizableEditorArea;

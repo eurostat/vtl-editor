@@ -30,20 +30,8 @@ let errors: any = {value: ""};
 
 const VtlEditor = ({resizeLayout, code, setCode, setCodeChanged, theme, languageVersion, setCursorPosition, tempCursor, setErrors, sdmxResult}: VtlEditorProps) => {
     const [innerCode, setInnerCode] = useState<string>("");
-
     const monacoRef = useRef<any>(null);
-    // useTraceUpdate({
-    //     resizeLayout,
-    //     code,
-    //     setCode,
-    //     setCodeChanged,
-    //     theme,
-    //     languageVersion,
-    //     setCursorPosition,
-    //     tempCursor,
-    //     setErrors,
-    //     sdmxResult
-    // });
+
     useEffect(() => {
         if (monacoRef && monacoRef.current) {
             // @ts-ignore
@@ -109,7 +97,6 @@ const VtlEditor = ({resizeLayout, code, setCode, setCodeChanged, theme, language
             if (to) clearTimeout(to);
             return onDidChangeTimout(e);
         });
-        //editor.onDidChangeCursorPosition((e: EditorApi.editor.ICursorPositionChangedEvent) => setCursorPosition(e.position));
         editor.onDidChangeCursorPosition((e: EditorApi.editor.ICursorPositionChangedEvent) => {
             if (cursorTO) clearTimeout(cursorTO);
             return delayCursorSettingAction(e);

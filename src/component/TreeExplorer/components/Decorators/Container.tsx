@@ -1,8 +1,23 @@
 import React, {PureComponent} from 'react';
-import PropTypes from 'prop-types';
 import {VelocityComponent} from 'velocity-react';
 
-class Container extends PureComponent {
+type ContainerProps = {
+    customStyles?: any,
+    style: any,
+    decorators: any,
+    terminal: any,
+    onClick: any,
+    onSelect?: any,
+    animations: any,
+    node: any,
+};
+
+class Container extends PureComponent<ContainerProps> {
+    public static defaultProps = {
+        onSelect: undefined,
+        customStyles: {}
+    };
+
     renderToggle() {
         const {animations} = this.props;
 
@@ -34,24 +49,5 @@ class Container extends PureComponent {
         );
     }
 }
-
-Container.propTypes = {
-    customStyles: PropTypes.object,
-    style: PropTypes.object.isRequired,
-    decorators: PropTypes.object.isRequired,
-    terminal: PropTypes.bool.isRequired,
-    onClick: PropTypes.func.isRequired,
-    onSelect: PropTypes.func,
-    animations: PropTypes.oneOfType([
-        PropTypes.object,
-        PropTypes.bool
-    ]).isRequired,
-    node: PropTypes.object.isRequired
-};
-
-Container.defaultProps = {
-    onSelect: null,
-    customStyles: {}
-};
 
 export default Container;

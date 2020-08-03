@@ -1,9 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import {Ul} from '../common';
 
-const Loading = ({style, decorators}) => (
+type LoadingProps = {
+    decorators: any,
+    style: any
+}
+
+const Loading = ({style, decorators}:LoadingProps) => (
     <Ul style={style.subtree}>
         <li>
             <decorators.Loading style={style.loading}/>
@@ -11,9 +15,5 @@ const Loading = ({style, decorators}) => (
     </Ul>
 );
 
-Loading.propTypes = {
-    decorators: PropTypes.object.isRequired,
-    style: PropTypes.object.isRequired
-};
 
 export default Loading;

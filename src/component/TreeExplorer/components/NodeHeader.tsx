@@ -1,19 +1,34 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import shallowEqual from 'shallowequal';
 import deepEqual from 'deep-equal';
 
-class NodeHeader extends Component {
-    shouldComponentUpdate(nextProps) {
-        const props = this.props;
+type NodeHeaderProps = {
+    style: any
+    customStyles?: any,
+    decorators: any,
+    animations: object | boolean,
+    node: any
+    parent: any
+    onClick?: any,
+    onSelect?: any
+}
+
+
+class NodeHeader extends Component<NodeHeaderProps> {
+    public static defaultProps = {
+        customStyles: {}
+    };
+    shouldComponentUpdate(nextProps: NodeHeaderProps) {
+        const props: NodeHeaderProps = this.props;
         const nextPropKeys = Object.keys(nextProps);
 
         for (let i = 0; i < nextPropKeys.length; i++) {
-            const key = nextPropKeys[i];
+            const key:string = nextPropKeys[i];
             if (key === 'animations') {
                 continue;
             }
 
+            // @ts-ignore
             const isEqual = shallowEqual(props[key], nextProps[key]);
             if (!isEqual) {
                 return true;
@@ -50,23 +65,5 @@ class NodeHeader extends Component {
         );
     }
 }
-
-NodeHeader.propTypes = {
-    style: PropTypes.object.isRequired,
-    customStyles: PropTypes.object,
-    decorators: PropTypes.object.isRequired,
-    animations: PropTypes.oneOfType([
-        PropTypes.object,
-        PropTypes.bool
-    ]).isRequired,
-    node: PropTypes.object.isRequired,
-    parent: PropTypes.object.isRequired,
-    onClick: PropTypes.func,
-    onSelect: PropTypes.func
-};
-
-NodeHeader.defaultProps = {
-    customStyles: {}
-};
 
 export default NodeHeader;

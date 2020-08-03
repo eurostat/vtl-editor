@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
-import {Treebeard, TreeNode, decorators, animations, theme, TreeTheme} from 'react-treebeard-ts';
+import {TreeNode, decorators, animations, theme, TreeTheme} from 'react-treebeard-ts';
+import TreeBeard from "../../TreeExplorer/components";
 import "./fileExplorer.scss";
 import CustomHeader from "./CustomHeader";
 import CustomContainer from "./CustomContainer";
@@ -121,7 +122,7 @@ const FileExplorerPanel = () => {
 
     return (
         <div id="file-explorer" className="file-explorer-container">
-            <Treebeard style={updatedStyle()} data={data} onToggle={onToggle}
+            <TreeBeard style={updatedStyle()} data={data} onToggle={onToggle}
                        decorators={{...decorators, Header: CustomHeader, Container: CustomContainer}}
                        animations={animations}/>
         </div>

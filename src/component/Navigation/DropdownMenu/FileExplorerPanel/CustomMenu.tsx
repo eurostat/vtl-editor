@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {decisionModal} from "../../../DecisionModal/DecisionModal";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCaretRight} from "@fortawesome/free-solid-svg-icons";
+import {decisionModalInput} from "../../../DecisionModal/DecisionModalInput";
 
 type CustomMenuType = {
     node: any,
@@ -31,10 +32,21 @@ const CustomMenu = ({node, setCurrentNode}: CustomMenuType) => {
     }
 
     const onRename = () => {
-        node.name = "TODO";
-        setCurrentNode((prev: any) => {
-            return {...prev, name: "TODO"}
-        });
+        const decision = async () => {
+            const type = node.children ? "directory" : "file";
+            const res = await decisionModalInput({
+                title: "Rename!",
+                text:
+                    `Renaming ${type} ${node.name.toUpperCase()}. Enter new ${type} value.`,
+                acceptButton: {value: "rename", color: "primary"}
+            });
+            if (res !== 'cancel' && res !== node.name) {
+                setCurrentNode((prev: any) => {
+                    return {...prev, name: res}
+                });
+            }
+        }
+        decision();
     }
 
     return (

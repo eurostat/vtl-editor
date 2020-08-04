@@ -98,3 +98,12 @@
     box-shadow: none;
   }
 }
+
+.modal-content {
+  .form-control{
+    color: #494949;
+    &:focus{
+      border: 1px solid #8d9295;
+    }
+  }
+}

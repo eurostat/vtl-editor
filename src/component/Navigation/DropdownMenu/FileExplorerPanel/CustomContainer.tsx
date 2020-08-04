@@ -25,7 +25,7 @@ const CustomContainer = ({customStyles, style, decorators, terminal, onSelect, o
     }
 
     useEffect(() => {
-        console.log(parent);
+       // console.log(parent);
     }, [])
 
     return (

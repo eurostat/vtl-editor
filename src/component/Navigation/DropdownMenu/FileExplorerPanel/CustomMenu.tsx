@@ -35,12 +35,13 @@ const CustomMenu = ({node, setCurrentNode}: CustomMenuType) => {
         const decision = async () => {
             const type = node.children ? "directory" : "file";
             const res = await decisionModalInput({
-                title: "Rename!",
+                title: "Rename",
                 text:
                     `Renaming ${type} ${node.name.toUpperCase()}. Enter new ${type} value.`,
                 acceptButton: {value: "rename", color: "primary"}
             });
             if (res !== 'cancel' && res !== node.name) {
+                node.name = res;
                 setCurrentNode((prev: any) => {
                     return {...prev, name: res}
                 });

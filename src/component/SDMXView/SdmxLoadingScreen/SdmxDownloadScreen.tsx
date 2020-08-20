@@ -52,7 +52,7 @@ const SdmxDownloadScreen = ({registry, dataStructure, showScreen, setSdmxResult}
                 () => fetchCodeLists(disStructureTypes));
             let result = createSdmxResult(dataStructure!, dsd, codeLists);
             setSdmxResult(result);
-            enqueueSnackbar(`${codeLists.length} code list${codeLists.length > 1 ? "s" : ""} downloaded!`, {
+            enqueueSnackbar(`${codeLists.length} ${codeLists.length > 1 ? "unique code lists" : "code list"} downloaded!`, {
                 variant: "success"
             });
             setShow(false);

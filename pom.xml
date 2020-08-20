@@ -23,6 +23,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
 
+        <node.install.directory>C:\Program Files\nodejs</node.install.directory>
         <npm.output.directory>build</npm.output.directory>
 
         <!-- Dependency Versions -->
@@ -30,13 +31,44 @@
         <maven.clean.plugin.version>3.1.0</maven.clean.plugin.version>
         <maven.antrun.plugin.version>3.0.0</maven.antrun.plugin.version>
         <maven.assembly.plugin.version>3.3.0</maven.assembly.plugin.version>
-        <maven.frontend.plugin.version>1.9.1</maven.frontend.plugin.version>
+        <maven.frontend.plugin.version>1.10.0</maven.frontend.plugin.version>
         <maven.war.plugin.version>3.2.3</maven.war.plugin.version>
         <maven.exec.plugin.version>1.6.0</maven.exec.plugin.version>
     </properties>
 
     <build>
         <finalName>${project.artifactId}-${project.version}</finalName>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>com.github.eirslett</groupId>
+                    <artifactId>frontend-maven-plugin</artifactId>
+                    <version>${maven.frontend.plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>npm.install</id>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <phase>none</phase>
+                            <configuration>
+                                <arguments>install --production</arguments>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>npm.build</id>
+                            <phase>none</phase>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <configuration>
+                                <arguments>run-script build</arguments>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -232,32 +264,31 @@
             </plugin>
 
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>${maven.exec.plugin.version}</version>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>${maven.frontend.plugin.version}</version>
+                <configuration>
+                    <npmDownloadRoot>https://citnet.tech.ec.europa.eu/CITnet/nexus/content/repositories/npm/</npmDownloadRoot>
+                    <installDirectory>${node.install.directory}</installDirectory>
+                </configuration>
                 <executions>
                     <execution>
-                        <id>npm run build</id>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
+                        <id>npm.install</id>
+                        <phase>generate-resources</phase>
+                    </execution>
+                    <execution>
+                        <id>npm.build</id>
                         <phase>compile</phase>
                         <configuration>
-                            <executable>npm</executable>
-                            <arguments>
-                                <argument>run</argument>
-                                <argument>build</argument>
-                            </arguments>
+                            <environmentVariables>
+                                <PUBLIC_URL>${deploy.host}${deploy.port}${deploy.path}</PUBLIC_URL>
+                                <REACT_APP_ROUTER_BASE>${deploy.path}</REACT_APP_ROUTER_BASE>
+                                <REACT_APP_API_URL>${deploy.api.url}</REACT_APP_API_URL>
+                                <GENERATE_SOURCEMAP>${deploy.sourcemap}</GENERATE_SOURCEMAP>
+                            </environmentVariables>
                         </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <environmentVariables>
-                        <PUBLIC_URL>${deploy.host}:${deploy.port}/${deploy.path}</PUBLIC_URL>
-                        <REACT_APP_ROUTER_BASE>/${deploy.path}</REACT_APP_ROUTER_BASE>
-                        <GENERATE_SOURCEMAP>${deploy.sourcemap}</GENERATE_SOURCEMAP>
-                    </environmentVariables>
-                </configuration>
             </plugin>
 
             <plugin>
@@ -287,41 +318,91 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <deploy.host>http://192.168.1.2</deploy.host>
-                <deploy.port>8080</deploy.port>
-                <deploy.path>vrm</deploy.path>
+                <deploy.host>http://localhost</deploy.host>
+                <deploy.port>:8080</deploy.port>
+                <deploy.path>/vrm</deploy.path>
                 <deploy.sourcemap>true</deploy.sourcemap>
+                <deploy.api.url>http://localhost:8080/vrm-backend</deploy.api.url>
             </properties>
         </profile>
 
         <profile>
             <id>dev-weblogic</id>
             <properties>
-                <deploy.host>http://127.0.0.1</deploy.host>
-                <deploy.port>7001</deploy.port>
-                <deploy.path>vrm</deploy.path>
+                <deploy.host>http://localhost</deploy.host>
+                <deploy.port>:7001</deploy.port>
+                <deploy.path>/vrm</deploy.path>
                 <deploy.sourcemap>true</deploy.sourcemap>
+                <deploy.api.url>http://localhost:7001/vrm-backend</deploy.api.url>
             </properties>
         </profile>
 
         <profile>
             <id>prod-tomcat</id>
             <properties>
-                <deploy.host>http://ec.europa.eu</deploy.host>
-                <deploy.port>8080</deploy.port>
-                <deploy.path>vrm</deploy.path>
+                <deploy.host>https://intragate.test.ec.europa.eu</deploy.host>
+                <deploy.port />
+                <deploy.path>/vrm</deploy.path>
                 <deploy.sourcemap>false</deploy.sourcemap>
+                <deploy.api.url>https://localhost/vrm-backend</deploy.api.url>
             </properties>
         </profile>
 
         <profile>
             <id>prod-weblogic</id>
             <properties>
-                <deploy.host>http://ec.europa.eu</deploy.host>
-                <deploy.port>7001</deploy.port>
-                <deploy.path>vrm</deploy.path>
+                <deploy.host>https://intragate.test.ec.europa.eu</deploy.host>
+                <deploy.port />
+                <deploy.path>/vrm</deploy.path>
                 <deploy.sourcemap>false</deploy.sourcemap>
+                <deploy.api.url>https://localhost/vrm-backend</deploy.api.url>
             </properties>
         </profile>
     </profiles>
+
+    <repositories>
+        <repository>
+            <id>eurostat</id>
+            <url>https://citnet.tech.ec.europa.eu/CITnet/nexus/content/repositories/estat</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>estatreleases</id>
+            <url>https://citnet.tech.ec.europa.eu/CITnet/nexus/content/repositories/estat</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>estatsnapshots</id>
+            <url>https://citnet.tech.ec.europa.eu/CITnet/nexus/content/repositories/estat-snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>thirdparty</id>
+            <url>https://citnet.tech.ec.europa.eu/CITnet/nexus/content/groups/public-thirdparty</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 </project>

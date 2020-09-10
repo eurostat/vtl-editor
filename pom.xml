@@ -52,7 +52,7 @@
                             </goals>
                             <phase>none</phase>
                             <configuration>
-                                <arguments>install --production</arguments>
+                                <arguments>install</arguments>
                             </configuration>
                         </execution>
                         <execution>

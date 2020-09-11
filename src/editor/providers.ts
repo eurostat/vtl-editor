@@ -16,7 +16,7 @@ import {languageVersions, VTL_VERSION} from "./settings";
 import {TokensProvider} from "./tokensProvider";
 import {VocabularyPack} from './vocabularyPack';
 import {fromISdmxResult} from "./CompletionItemMapper";
-import {SdmxResult} from "../models/api/SdmxResult";
+import {SdmxResult} from "../sdmx/entity/SdmxResult";
 
 
 const lexer = createLexer("");

@@ -78,7 +78,7 @@
                     <failOnError>false</failOnError>
                     <filesets>
                         <fileset>
-                            <directory>src/documentation</directory>
+                            <directory>src/documentation/contents</directory>
                         </fileset>
                     </filesets>
                 </configuration>
@@ -96,7 +96,7 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>src/documentation</outputDirectory>
+                            <outputDirectory>src/documentation/contents</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>${project.basedir}/documentation</directory>
@@ -149,7 +149,7 @@
                         <configuration>
                             <sourceDirectory>${project.build.directory}/documentation</sourceDirectory>
                             <includes>userManual.xml</includes>
-                            <targetDirectory>${project.basedir}/src/documentation</targetDirectory>
+                            <targetDirectory>${project.basedir}/src/documentation/contents</targetDirectory>
                             <chunkSectionDepth>2</chunkSectionDepth>
                         </configuration>
                     </execution>
@@ -201,13 +201,13 @@
                         <configuration>
                             <target name="guidenames">
                                 <move file="${project.build.directory}/documentation/userManual.pdf"
-                                      tofile="${project.basedir}/src/documentation/User Manual v.${release.version}.pdf"
+                                      tofile="${project.basedir}/src/documentation/contents/User Manual v.${release.version}.pdf"
                                       failonerror="true"/>
                                 <move file="${project.build.directory}/documentation/administratorGuide.pdf"
-                                      tofile="${project.basedir}/src/documentation/Administrator Guide v.${release.version}.pdf"
+                                      tofile="${project.basedir}/src/documentation/contents/Administrator Guide v.${release.version}.pdf"
                                       failonerror="true"/>
                                 <move file="${project.build.directory}/documentation/releaseNotes.pdf"
-                                      tofile="${project.basedir}/src/documentation/Release Notes v.${release.version}.pdf"
+                                      tofile="${project.basedir}/src/documentation/contents/Release Notes v.${release.version}.pdf"
                                       failonerror="true"/>
                             </target>
                         </configuration>
@@ -220,8 +220,8 @@
                         </goals>
                         <configuration>
                             <target name="docbookcss">
-                                <move file="${project.basedir}/src/documentation/docbook.css"
-                                      tofile="${project.basedir}/src/documentation/docbook.module.css"
+                                <move file="${project.basedir}/src/documentation/contents/docbook.css"
+                                      tofile="${project.basedir}/src/documentation/contents/docbook.module.css"
                                       failonerror="true"/>
                             </target>
                         </configuration>
@@ -234,7 +234,7 @@
                         </goals>
                         <configuration>
                             <target name="styles">
-                                <replace file="${project.basedir}/src/documentation/userManual.html"
+                                <replace file="${project.basedir}/src/documentation/contents/userManual.html"
                                          token="class=&quot;"
                                          value="class=&quot;docbook."/>
                             </target>

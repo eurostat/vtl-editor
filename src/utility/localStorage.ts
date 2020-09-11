@@ -1,5 +1,5 @@
-import {EditorStorage} from "../models/storage/EditorStorage";
-import {SdmxStorage} from "../models/storage/SdmxStorage";
+import {EditorStorage} from "../editor/EditorStorage";
+import {SdmxStorage} from "../sdmx/SdmxStorage";
 
 export const setEditorStorageValue = (object: EditorStorage) => {
     setToLocalStorage("editor", {...getEditorStoredValues(), ...object});

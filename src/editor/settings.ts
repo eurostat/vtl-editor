@@ -1,4 +1,4 @@
-import './vtlEditor.css';
+import "./vtl-editor/vtlEditor.css";
 
 export enum VTL_VERSION {
     VTL_2_0 = "vtl-2.0",

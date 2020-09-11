@@ -1,35 +1,35 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {editor, Position} from "monaco-editor";
 import {SnackbarProvider} from "notistack";
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState} from "react";
 import './App.scss';
-import OpenDialog from "./component/Dialog/OpenDialog";
-import GuideOverlay from "./component/GuideOverlay/GuideOverlay";
-import Header from "./component/Header/Header";
-import Navigation from "./component/Navigation/Navigation";
+import OpenDialog from "./main-view/open-dialog/OpenDialog";
+import GuideOverlay from "./main-view/guide-overlay/GuideOverlay";
+import Header from "./main-view/header/Header";
+import Navigation from "./main-view/navigation/Navigation";
 import {languageVersions} from "./editor/settings";
-import EditorView from "./component/EditorView/EditorView";
+import EditorView from "./editor/EditorView";
 import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
-import SDMXView from "./component/SDMXView/SDMXView";
-import {SdmxResult} from "./models/api/SdmxResult";
-import {SdmxRegistry} from "./models/api/SdmxRegistry";
-import {Agency} from "./models/api/Agency";
-import {DataStructure, FinalStructureEnum} from "./models/api/DataStructure";
+import SDMXView from "./sdmx/SDMXView";
+import {SdmxResult} from "./sdmx/entity/SdmxResult";
+import {SdmxRegistry} from "./sdmx/entity/SdmxRegistry";
+import {Agency} from "./sdmx/entity/Agency";
+import {DataStructure, FinalStructureEnum} from "./sdmx/entity/DataStructure";
 import {
     getEditorStoredValues,
     getSdmxStoredValues,
     setEditorStorageValue,
     setSdmxStorageValue
 } from "./utility/localStorage";
-import {EditorStorage} from "./models/storage/EditorStorage";
-import {SdmxStorage} from "./models/storage/SdmxStorage";
-import {decisionModal} from "./component/DecisionModal/DecisionModal";
-import SdmxDownloadScreen from "./component/SDMXView/SdmxLoadingScreen/SdmxDownloadScreen";
-import {MenuOption} from "./models/editor/MenuOption";
-import {VtlEditorProps} from "./editor/VtlEditor";
-import DiffEditor from "./component/DiffEditor/DiffEditor";
-import HistoricalVersions from "./component/HistoricalVersions/HistoricalVersions";
-import DirectoryPreview from "./component/DirectoryPreview/DirectoryPreview";
+import {EditorStorage} from "./editor/EditorStorage";
+import {SdmxStorage} from "./sdmx/SdmxStorage";
+import {decisionModal} from "./main-view/decision-dialog/DecisionModal";
+import SdmxDownloadScreen from "./sdmx/loading-screen/SdmxDownloadScreen";
+import {MenuOption} from "./main-view/MenuOption";
+import {VtlEditorProps} from "./editor/vtl-editor/VtlEditor";
+import DiffEditor from "./repository/version-compare/DiffEditor";
+import HistoricalVersions from "./repository/file-versions/HistoricalVersions";
+import DirectoryPreview from "./repository/folder-details/DirectoryPreview";
 
 const getTheme = (): string => {
     const item = getEditorStoredValues();

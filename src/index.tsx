@@ -4,7 +4,7 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
-import Documentation from "./component/Documentation/Documentation";
+import Documentation from "./documentation/documentation";
 
 if (process.env.NODE_ENV !== "production") {
     localStorage.setItem("debug", "VRM:*");

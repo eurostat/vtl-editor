@@ -1,29 +1,29 @@
-import {editor, Position} from "monaco-editor";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faTimesCircle as faTimesCircleSolid} from "@fortawesome/free-solid-svg-icons";
-import React from "react";
+import { faTimesCircle as faTimesCircleSolid } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { memo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { editorErrors, jumpCursor } from "../editorSlice";
+import { CursorPosition, VtlError } from "../vtl-editor/VtlEditor";
 
+const ErrorList = () => {
+    const dispatch = useDispatch();
+    const errors = useSelector(editorErrors);
 
-type ErrorListProps = {
-    errors: editor.IMarkerData[],
-    setTempCursor: (position: Position) => void,
-}
-
-
-const ErrorList = ({errors, setTempCursor}: ErrorListProps) => {
-    const newCursorPosition = (error: editor.IMarkerData) => {
-        setTempCursor(new Position(error.startLineNumber, error.startColumn));
+    const onMoveCursor = (error: VtlError) => {
+        const position: CursorPosition = {line: error.line, column: error.column}
+        dispatch(jumpCursor(position));
     };
+
     return (
         <div className="error-list">
             {
-                errors.map((e, i) => {
-                    const {startLineNumber, startColumn, message} = e;
+                errors.map((error, index) => {
+                    const {line, column, message} = error;
                     const messageUpper = message.charAt(0).toUpperCase() + message.slice(1);
                     return (
-                        <div onClick={() => newCursorPosition(e)} key={i}>
+                        <div onClick={() => onMoveCursor(error)} key={index}>
                             <FontAwesomeIcon icon={faTimesCircleSolid}/>
-                            <span>{`[${startLineNumber}, ${startColumn}] ${messageUpper}`}</span>
+                            <span>{`[${line}, ${column}] ${messageUpper}`}</span>
                         </div>)
                 })
             }
@@ -31,4 +31,4 @@ const ErrorList = ({errors, setTempCursor}: ErrorListProps) => {
     )
 }
 
-export default ErrorList;
+export default memo(ErrorList);

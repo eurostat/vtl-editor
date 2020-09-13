@@ -1,13 +1,15 @@
 import React from 'react';
-import VtlEditor, {VtlEditorProps} from "./vtl-editor/VtlEditor";
+import { useDispatch, useSelector } from "react-redux";
+import { setEditorStorageValue } from "../utility/localStorage";
 import ResizableEditorArea from "./detail-pane/ResizableEditorArea";
-
+import { listErrors, movedCursor, updateContent, updateCursor } from './editorSlice';
+import { loadedFile } from "./loaderSlice";
+import TitleBar from "./title-bar/titleBar";
+import VtlEditor, { CursorPosition, VtlEditorProps, VtlError } from "./vtl-editor/VtlEditor";
 
 type EditorViewProps = {
-    fileName: string,
-    codeChanged: boolean,
-    VtlEditorProps: VtlEditorProps,
-    ErrorBoxProps: any
+    vtlEditorProps: VtlEditorProps,
+    errorBoxProps: any
 }
 
 const classes = {
@@ -15,19 +17,41 @@ const classes = {
     overflow: "hidden"
 };
 
-const EditorView = ({fileName, codeChanged, VtlEditorProps, ErrorBoxProps}: EditorViewProps) => {
+const EditorView = ({vtlEditorProps, errorBoxProps}: EditorViewProps) => {
+    const dispatch = useDispatch();
+    const cursor = useSelector(movedCursor);
+    const loaded = useSelector(loadedFile);
+
+    const onCursorChange = (position: CursorPosition) => {
+        dispatch(updateCursor(position));
+    };
+
+    const onContentChange = (content: string) => {
+        dispatch(updateContent(content));
+        setEditorStorageValue({edited: true});
+        setEditorStorageValue({content: content});
+    }
+
+    const onListErrors = (errors: VtlError[]) => {
+        dispatch(listErrors(errors));
+    }
+
+    vtlEditorProps.onCursorChange = onCursorChange;
+    vtlEditorProps.onContentChange = onContentChange;
+    vtlEditorProps.onListErrors = onListErrors;
+    vtlEditorProps.movedCursor = cursor;
+    vtlEditorProps.code = loaded.content;
+
+    console.log("editor view render");
     return (
-        <div className={`vtl-box ${VtlEditorProps.theme}`} style={classes}>
-            <div id="top-bar" className="top-bar">
-                <span>{fileName}&nbsp;{codeChanged ? "*" : ""}</span>
-            </div>
+        <div className={`vtl-box ${vtlEditorProps.theme}`} style={classes}>
+            <TitleBar/>
             <div id="vtl-container" className="vtl-container">
-                <VtlEditor {...VtlEditorProps}/>
+                <VtlEditor {...vtlEditorProps}/>
             </div>
-            <ResizableEditorArea {...ErrorBoxProps} />
+            <ResizableEditorArea {...errorBoxProps} />
         </div>
     );
 };
-
 
 export default EditorView;

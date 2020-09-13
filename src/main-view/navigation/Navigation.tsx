@@ -1,24 +1,24 @@
-import {faCopy, faEdit, faFile, faQuestionCircle, faSave, IconDefinition} from "@fortawesome/free-regular-svg-icons";
-import {faCog, faTools, faUpload} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {Tooltip} from "@material-ui/core";
-import React, {forwardRef, useEffect, useMemo, useState} from "react";
+import { faCopy, faEdit, faFile, faQuestionCircle, faSave, IconDefinition } from "@fortawesome/free-regular-svg-icons";
+import { faCog, faTools, faUpload } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Tooltip } from "@material-ui/core";
+import React, { forwardRef, useEffect, useMemo, useState } from "react";
 import ModalFactory from "react-modal-promise";
-import {Link, useLocation} from "react-router-dom";
-import {decisionModal} from "../decision-dialog/DecisionModal";
-import "./navigation.scss"
-import DropdownMenu from "../side-panel/DropdownMenu";
-import SettingsPanel from "../../settings/SettingsPanel";
-import {MenuOption} from "../MenuOption";
+import { useDispatch } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
+import { DEFAULT_FILENAME } from "../../editor/editorFile";
+import { editorFile, fileEdited, markUnedited } from "../../editor/editorSlice";
 import FileExplorerPanel from "../../repository/explorer/FIleExplorerPanel";
+import SettingsPanel from "../../settings/SettingsPanel";
+import { readState } from "../../utility/store";
+import { decisionModal } from "../decision-dialog/DecisionModal";
+import { MenuOption } from "../MenuOption";
+import DropdownMenu from "../side-panel/DropdownMenu";
+import "./navigation.scss"
 
 type NavigationProps = {
     showDialog: (value: boolean) => void,
     changeMenu: (menuOption: MenuOption) => void,
-    code: string,
-    setCodeChanged: (value: boolean) => void,
-    codeChanged: boolean,
-    fileName: string,
     createNewFile: () => void,
     settingsNavProps: any,
 }
@@ -28,25 +28,29 @@ type MenuContent = {
 }
 type MenuContentMap = Record<string, MenuContent[]>;
 
-const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, fileName, createNewFile, settingsNavProps}: NavigationProps) => {
+const Navigation = ({showDialog, changeMenu, createNewFile, settingsNavProps}: NavigationProps) => {
     const [currentMenuElement, setCurrentMenuElement] = useState<MenuOption>(MenuOption.NONE);
     const location = useLocation();
     const memoFileExplorer = useMemo(() => {
         return (<FileExplorerPanel/>)
     }, [])
+    const dispatch = useDispatch();
+
     const downloadFile = () => {
+        const editedFile = readState(editorFile);
         let url = window.URL;
-        let file = url.createObjectURL(new File([code], (!fileName || fileName === "") ? "untitled.vtl" : fileName));
+        let file = url.createObjectURL(new File([editedFile.content],
+            (!editedFile.name || editedFile.name === "") ? DEFAULT_FILENAME : editedFile.name));
         let a = document.createElement('a');
         a.href = file;
-        a.download = fileName;
+        a.download = editedFile.name;
         a.click();
-        setCodeChanged(false);
+        dispatch(markUnedited());
     };
 
     useEffect(() => {
         window.onkeydown = (event: KeyboardEvent) => checkKeyEvent(event);
-    }, []);
+    });
 
     const checkKeyEvent = (event: KeyboardEvent) => {
         if (event.ctrlKey) {
@@ -67,23 +71,23 @@ const Navigation = ({showDialog, changeMenu, code, setCodeChanged, codeChanged, 
     };
 
     const makeNewFile = async () => {
-        const text = codeChanged ? "You have unsaved changes. Do you want to save your progress before creating new file?"
+        const edited = readState(fileEdited);
+        const text = edited ? "You have unsaved changes. Do you want to save your progress before creating new file?"
             : "You will lose your code. Do you want to continue?";
         let res = await decisionModal({
             title: "Warning!",
             text
         });
         if (res === "yes") {
-            if (codeChanged) {
-                downloadFile()
-            }
+            if (edited) downloadFile();
             createNewFile();
         }
     };
 
     const openFile = async () => {
+        const edited = readState(fileEdited);
         let res: any = true;
-        if (codeChanged) {
+        if (edited) {
             res = await decisionModal({
                 title: "Warning!",
                 text:
@@ -192,6 +196,5 @@ const ButtonComponent = forwardRef(function ButtonComponent(props: any, ref) {
     return (<button ref={ref} className={clazz} onClick={afterClick} {...tooltipProps}><FontAwesomeIcon icon={icon}/>
     </button>);
 });
-
 
 export default Navigation;

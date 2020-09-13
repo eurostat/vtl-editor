@@ -1,11 +1,11 @@
-import {EditorStorage} from "../editor/EditorStorage";
-import {SdmxStorage} from "../sdmx/SdmxStorage";
+import { StoredFile } from "../editor/editorFile";
+import { SdmxStorage } from "../sdmx/SdmxStorage";
 
-export const setEditorStorageValue = (object: EditorStorage) => {
+export const setEditorStorageValue = (object: StoredFile) => {
     setToLocalStorage("editor", {...getEditorStoredValues(), ...object});
 }
 
-export const getEditorStoredValues = (): EditorStorage => {
+export const getEditorStoredValues = (): StoredFile => {
     return getFromLocalStorage("editor") || {};
 }
 

@@ -1,35 +1,35 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {editor, Position} from "monaco-editor";
-import {SnackbarProvider} from "notistack";
-import React, {useEffect, useState} from "react";
+import { SnackbarProvider } from "notistack";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 import './App.scss';
-import OpenDialog from "./main-view/open-dialog/OpenDialog";
-import GuideOverlay from "./main-view/guide-overlay/GuideOverlay";
-import Header from "./main-view/header/Header";
-import Navigation from "./main-view/navigation/Navigation";
-import {languageVersions} from "./editor/settings";
+import { buildFile, StoredFile } from "./editor/editorFile";
 import EditorView from "./editor/EditorView";
-import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
+import { loadFile } from "./editor/loaderSlice";
+import { languageVersions } from "./editor/settings";
+import { VtlEditorProps } from "./editor/vtl-editor/VtlEditor";
+import { decisionModal } from "./main-view/decision-dialog/DecisionModal";
+import Header from "./main-view/header/Header";
+import { MenuOption } from "./main-view/MenuOption";
+import Navigation from "./main-view/navigation/Navigation";
+import OpenDialog from "./main-view/open-dialog/OpenDialog";
+import HistoricalVersions from "./repository/file-versions/HistoricalVersions";
+import DirectoryPreview from "./repository/folder-details/DirectoryPreview";
+import DiffEditor from "./repository/version-compare/DiffEditor";
+import { Agency } from "./sdmx/entity/Agency";
+import { DataStructure, FinalStructureEnum } from "./sdmx/entity/DataStructure";
+import { SdmxRegistry } from "./sdmx/entity/SdmxRegistry";
+import { SdmxResult } from "./sdmx/entity/SdmxResult";
+import SdmxDownloadScreen from "./sdmx/loading-screen/SdmxDownloadScreen";
+import { SdmxStorage } from "./sdmx/SdmxStorage";
 import SDMXView from "./sdmx/SDMXView";
-import {SdmxResult} from "./sdmx/entity/SdmxResult";
-import {SdmxRegistry} from "./sdmx/entity/SdmxRegistry";
-import {Agency} from "./sdmx/entity/Agency";
-import {DataStructure, FinalStructureEnum} from "./sdmx/entity/DataStructure";
 import {
     getEditorStoredValues,
     getSdmxStoredValues,
     setEditorStorageValue,
     setSdmxStorageValue
 } from "./utility/localStorage";
-import {EditorStorage} from "./editor/EditorStorage";
-import {SdmxStorage} from "./sdmx/SdmxStorage";
-import {decisionModal} from "./main-view/decision-dialog/DecisionModal";
-import SdmxDownloadScreen from "./sdmx/loading-screen/SdmxDownloadScreen";
-import {MenuOption} from "./main-view/MenuOption";
-import {VtlEditorProps} from "./editor/vtl-editor/VtlEditor";
-import DiffEditor from "./repository/version-compare/DiffEditor";
-import HistoricalVersions from "./repository/file-versions/HistoricalVersions";
-import DirectoryPreview from "./repository/folder-details/DirectoryPreview";
 
 const getTheme = (): string => {
     const item = getEditorStoredValues();
@@ -49,14 +49,8 @@ function App() {
         visible: false
     });
     const [showErrorBox, setShowErrorBox] = useState(false);
-    const [code, setCode] = useState("");
-    const [codeChanged, setCodeChanged] = useState(false);
-    const [fileName, setFileName] = useState("untitled.vtl");
     const [theme, setTheme] = useState(getTheme());
     const [languageVersion, setLanguageVersion] = useState(languageVersions[languageVersions.length - 1].code);
-    const [cursorPosition, setCursorPosition] = useState(new Position(1, 1));
-    const [tempCursor, setTempCursor] = useState(new Position(1, 1));
-    const [errors, setErrors] = useState([] as editor.IMarkerData[]);
     const [errorBoxSize, setErrorBoxSize] = useState(0);
     /*SDMX STATES */
     const [registry, setRegistry] = useState<SdmxRegistry | null>(null);
@@ -67,16 +61,19 @@ function App() {
     const [importDSD, setImportDSD] = useState<boolean>(false);
     const [sdmxResult, setSdmxResult] = useState<SdmxResult | undefined>(undefined);
 
+    const dispatch = useDispatch();
+
     useEffect(() => {
-        const editorStoredValues: EditorStorage = getEditorStoredValues();
+        const editorStoredValues: StoredFile = getEditorStoredValues();
         if (editorStoredValues) {
-            setValue(editorStoredValues.code, setCode);
-            setValue(editorStoredValues.codeChanged, setCodeChanged);
-            setValue(editorStoredValues.fileName, setFileName);
+            const storedFile = buildFile(editorStoredValues.name,
+                editorStoredValues.content,
+                editorStoredValues.edited);
+            dispatch(loadFile(storedFile));
             setValue(editorStoredValues.showErrorBox, setShowErrorBox);
             setValue(editorStoredValues.theme, setTheme);
         }
-    }, [])
+    });
 
     useEffect(() => {
         const decision = async (dataStructure: DataStructure) => {
@@ -112,30 +109,14 @@ function App() {
         }
     }
 
-    const updateFiles = (newFiles: string[], fileName: string) => {
-        updateCodeChanged(false);
-        updateCode(newFiles[0]);
-        updateFileName(fileName);
-    };
-
-    const updateFileName = (fileName: string) => {
-        setFileName(fileName)
-        setEditorStorageValue({fileName: fileName})
-    };
-
-    const updateCode = (code: string) => {
-        setCode(code);
-        setEditorStorageValue({code: code})
+    const openFile = (newFiles: string[], fileName: string) => {
+        const loadedFile = buildFile(fileName, newFiles[0], false);
+        dispatch(loadFile(loadedFile));
     };
 
     const updateTheme = (theme: string) => {
         setTheme(theme);
         setEditorStorageValue({theme: theme});
-    };
-
-    const updateCodeChanged = (codeChanged: boolean) => {
-        setCodeChanged(codeChanged);
-        setEditorStorageValue({codeChanged: codeChanged})
     };
 
     const changeMenuState = (menuOption: MenuOption) => {
@@ -159,9 +140,8 @@ function App() {
     };
 
     const createNewFile = () => {
-        updateCode("");
-        updateCodeChanged(false);
-        updateFileName("untitled.vtl")
+        const loadedFile = buildFile();
+        dispatch(loadFile(loadedFile));
     };
 
     const clearSdmxState = () => {
@@ -171,54 +151,33 @@ function App() {
         setFinalType(FinalStructureEnum.ALL);
     }
 
-    const VtlEditorProps = {
+    const vtlEditorProps = {
         "resizeLayout": [showMenu, showErrorBox, errorBoxSize],
-        code,
-        "setCode": updateCode,
-        "setCodeChanged": updateCodeChanged,
         theme,
         languageVersion,
-        setCursorPosition,
-        tempCursor,
-        setErrors,
         sdmxResult
     } as VtlEditorProps;
 
     const NavigationProps = {
         "showDialog": setShowDialog,
         "changeMenu": changeMenuState,
-        code,
-        setCodeChanged,
-        codeChanged,
-        fileName,
         createNewFile,
         "settingsNavProps": {theme, "setTheme": updateTheme, languageVersion, setLanguageVersion},
     };
 
-    const UploadDialogProps = {
-        "onClose": setShowDialog,
-        "onLoad": updateFiles,
-        codeChanged
-    };
-
-    const ErrorBoxProps = {
+    const errorBoxProps = {
         showErrorBox,
         changeErrorBoxState,
         setErrorBoxSize,
         languageVersion,
-        cursorPosition,
-        errors,
-        setTempCursor,
         "dataStructureInfo": sdmxResult?.dataStructureInfo,
         registry,
         dataStructure
     };
 
-    const EditorViewProps = {
-        fileName,
-        codeChanged,
-        VtlEditorProps,
-        ErrorBoxProps
+    const editorViewProps = {
+        vtlEditorProps,
+        errorBoxProps
     };
 
     const SDMXViewProps = {
@@ -233,7 +192,7 @@ function App() {
         setSdmxResult,
         clearSdmxState
     }
-
+    console.log("app render");
     return (
         //TODO check if it is working without router here
         <Router>
@@ -265,14 +224,14 @@ function App() {
                                 <DirectoryPreview/>
                             </Route>
                             <Route exact path="/">
-                                <EditorView {...EditorViewProps}/>
+                                <EditorView {...editorViewProps}/>
                             </Route>
                             <Redirect to="/"/>
                         </Switch>
                     </div>
                     {showDialog ?
-                        <OpenDialog {...UploadDialogProps}/> : null}
-                    {false ? <GuideOverlay/> : null}
+                        <OpenDialog onClose={setShowDialog} onLoad={openFile}/> : null}
+                    {/*{showOverlay ? <GuideOverlay/> : null}*/}
                     {importDSD ?
                         <SdmxDownloadScreen registry={registry} dataStructure={dataStructure!} showScreen={importDSD}
                                             setSdmxResult={setSdmxResult}/> : null}

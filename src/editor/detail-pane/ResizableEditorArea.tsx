@@ -1,24 +1,30 @@
-import {faTimesCircle} from "@fortawesome/free-regular-svg-icons";
-import {faChevronUp, faTimes, faTimesCircle as faTimesCircleSolid, faDatabase} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {Tooltip} from "@material-ui/core";
-import {editor, Position} from "monaco-editor";
-import React, {useEffect, useMemo, useState} from "react";
-import {languageVersions, VTL_VERSION} from "../settings";
-import "./resizableEditorArea.scss";
-import {DataStructureInfo} from "../../sdmx/entity/SdmxResult";
+import { faTimesCircle } from "@fortawesome/free-regular-svg-icons";
+import {
+    faChevronUp,
+    faDatabase,
+    faTimes,
+    faTimesCircle as faTimesCircleSolid
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Tooltip } from "@material-ui/core";
+import { Position } from "monaco-editor";
+import React, { useEffect, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
 import DataStructureDetailPanel from "../../sdmx/data-structure-details/DataStructureDetailPanel";
-import {SdmxRegistry} from "../../sdmx/entity/SdmxRegistry";
-import {DataStructure} from "../../sdmx/entity/DataStructure";
+import { DataStructure } from "../../sdmx/entity/DataStructure";
+import { SdmxRegistry } from "../../sdmx/entity/SdmxRegistry";
+import { DataStructureInfo } from "../../sdmx/entity/SdmxResult";
+import { errorCount } from "../editorSlice";
+import { languageVersions, VTL_VERSION } from "../settings";
+import CursorIndicator from "../status-bar/cursorIndicator";
 import ErrorList from "./ErrorList";
+import "./resizableEditorArea.scss";
 
 type ResizableEditorAreaProps = {
     showErrorBox: boolean,
     changeErrorBoxState: () => void,
     setErrorBoxSize: (size: number) => void,
     languageVersion: VTL_VERSION,
-    cursorPosition: Position,
-    errors: editor.IMarkerData[],
     setTempCursor: (position: Position) => void,
     dataStructureInfo: DataStructureInfo | undefined,
     registry: SdmxRegistry,
@@ -28,19 +34,16 @@ type ResizableEditorAreaProps = {
 type EditorTabs = "errorList" | "dsdPreview";
 
 const ResizableEditorArea = ({
-                      showErrorBox, changeErrorBoxState, setErrorBoxSize, languageVersion, cursorPosition,
-                      errors, setTempCursor, dataStructureInfo, registry, dataStructure
-                  }: ResizableEditorAreaProps) => {
-    const errorsCount = errors.length;
+                                 showErrorBox, changeErrorBoxState, setErrorBoxSize, languageVersion,
+                                 dataStructureInfo, registry, dataStructure
+                             }: ResizableEditorAreaProps) => {
+    const errorsCount = useSelector(errorCount);
     const version = languageVersions.find(l => l.code === languageVersion)!.name;
     const [currentTab, setCurrentTab] = useState<EditorTabs>("errorList");
     const memoDataStructureDetails = useMemo(() => {
         return (
             <DataStructureDetailPanel registry={registry} dataStructure={dataStructure} showCodeListPreview={true}/>)
     }, [registry, dataStructure])
-    const memoErrorList = useMemo(() => {
-        return (<ErrorList errors={errors} setTempCursor={setTempCursor}/>)
-    }, [errors]);
 
     useEffect(() => {
         const middleContainer = document.getElementById("middle-container");
@@ -145,7 +148,7 @@ const ResizableEditorArea = ({
                 <div className="info-container">
                     <Tabs activeTab={currentTab}>
                         <div title="errorList">
-                            {memoErrorList}
+                            <ErrorList/>
                         </div>
                         <div title="dsdPreview">
                             {memoDataStructureDetails}
@@ -190,12 +193,7 @@ const ResizableEditorArea = ({
 
                 </div>
                 <div className="position-right">
-
-                    <Tooltip title="Line and column" placement="top" arrow>
-                        <div>
-                            Line {cursorPosition.lineNumber}, Col {cursorPosition.column}
-                        </div>
-                    </Tooltip>
+                    <CursorIndicator/>
                     <Tooltip title="VTL version" placement="top" arrow>
                         <div>
                             VTL {version}
@@ -206,7 +204,6 @@ const ResizableEditorArea = ({
         </>
     )
 };
-
 
 type TabsProps = {
     activeTab: string,

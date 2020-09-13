@@ -1,18 +1,18 @@
-import React, {useCallback, useState} from "react";
-import {useDropzone} from 'react-dropzone';
-import {Dialog} from "@material-ui/core";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
+import { Dialog } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import { useSnackbar } from "notistack";
+import React, { useCallback, useState } from "react";
+import { useDropzone } from 'react-dropzone';
 import "./openDialog.scss";
-import {useSnackbar} from "notistack";
-
 
 const OpenDialog = ({onClose, onLoad}: any) => {
     const [open] = useState(true);
     const [files, setFiles] = useState([] as any[]);
     const {enqueueSnackbar} = useSnackbar();
+
     const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
         if (acceptedFiles.length > 1) {
             enqueueSnackbar("Only one selected file can be loaded.", {
@@ -35,12 +35,15 @@ const OpenDialog = ({onClose, onLoad}: any) => {
         }
 
     }, []);
+
     const {getRootProps, getInputProps} = useDropzone({onDrop, accept: ".vtl"});
+
     const file = files.map((file: File) => (
         <li key={file.name}>
             {file.name}
         </li>
     ));
+
     const handleClose = () => {
         onClose(false);
     };
@@ -49,13 +52,13 @@ const OpenDialog = ({onClose, onLoad}: any) => {
         return new Promise((resolve, reject) => {
             let contents: any = "";
             const reader = new FileReader();
-            reader.onloadend = function (e) {
+            reader.onloadend = function(e) {
                 if (e != null && e.target != null) {
                     contents = e.target.result;
                 }
                 resolve(contents)
             };
-            reader.onerror = function (e) {
+            reader.onerror = function(e) {
                 reject(e)
             };
             reader.readAsText(file)
@@ -80,22 +83,17 @@ const OpenDialog = ({onClose, onLoad}: any) => {
         }
     };
 
-
     return (
         <div>
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                disableBackdropClick={true}
-                aria-labelledby="form-dialog-title">
+            <Dialog open={open} onClose={handleClose}
+                    disableBackdropClick={true} aria-labelledby="form-dialog-title">
                 <div className="dialog-container">
                     <DialogTitle id="form-dialog-title">Open File</DialogTitle>
                     <DialogContent>
                         <div>
                             <section className="">
                                 <div {...getRootProps({className: 'dropzone'})}>
-                                    <input {
-                                               ...getInputProps()} />
+                                    <input {...getInputProps()} />
                                     <p>Drag 'n' drop some files here, or click to select files</p>
                                 </div>
                                 <aside>
@@ -108,7 +106,7 @@ const OpenDialog = ({onClose, onLoad}: any) => {
 
                     <DialogActions>
                         <button onClick={handleAddFiles} className="btn btn-primary default-button">
-                            <span>Open file</span>
+                            <span>Open File</span>
                         </button>
                         <Button onClick={handleClose} color="primary">
                             Cancel

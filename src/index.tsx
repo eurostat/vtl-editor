@@ -5,19 +5,23 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import Documentation from "./documentation/documentation";
+import store from "./utility/store";
+import { Provider } from "react-redux";
 
 if (process.env.NODE_ENV !== "production") {
     localStorage.setItem("debug", "VRM:*");
 }
 
 ReactDOM.render(
-    <Router basename={process.env.REACT_APP_ROUTER_BASE || ''}>
-        <Switch>
-            <Route exact path="/documentation" component={Documentation}/>
-            <Route path="/" component={App}/>
-            <Redirect to="/"/>
-        </Switch>
-    </Router>,
+    <Provider store={store}>
+        <Router basename={process.env.REACT_APP_ROUTER_BASE || ''}>
+            <Switch>
+                <Route exact path="/documentation" component={Documentation}/>
+                <Route path="/" component={App}/>
+                <Redirect to="/"/>
+            </Switch>
+        </Router>
+    </Provider>,
     document.getElementById("root"));
 
 // If you want your app to work offline and load faster, you can change

@@ -1,36 +1,35 @@
 import * as EditorApi from "monaco-editor/esm/vs/editor/editor.api";
-import {Position} from "monaco-editor/esm/vs/editor/editor.api";
+import { editor, Position } from "monaco-editor/esm/vs/editor/editor.api";
 import * as React from "react";
-import {useEffect, useRef, useState} from "react";
+import { useEffect, useRef, useState } from "react";
 import MonacoEditor from "react-monaco-editor";
-import {getEditorWillMount, getParserFacade} from "../providers";
+import { SdmxResult } from "../../sdmx/entity/SdmxResult";
+import { getEditorWillMount, getParserFacade } from "../providers";
 
-import {VTL_VERSION} from "../settings";
+import { VTL_VERSION } from "../settings";
 import "./vtlEditor.css";
-import {SdmxResult} from "../../sdmx/entity/SdmxResult";
-
-declare const window: any;
 
 export type VtlEditorProps = {
-    resizeLayout: any[],
+    onContentChange?: (content: string) => void,
+    onCursorChange?: (position: CursorPosition) => void,
+    onListErrors?: (errors: VtlError[]) => void,
     code: string,
-    setCode: (value: string) => void,
-    setCodeChanged: (value: boolean) => void,
+    movedCursor: CursorPosition,
     theme: string,
     languageVersion: VTL_VERSION,
-    setCursorPosition: (e: Position) => void,
-    tempCursor: Position,
-    setErrors: (array: EditorApi.editor.IMarkerData[]) => void,
     sdmxResult: SdmxResult | null,
+    resizeLayout: any[]
 }
 
 let parserFacade: any = {parser: null};
-let errors: any = {value: ""};
 
-
-const VtlEditor = ({resizeLayout, code, setCode, setCodeChanged, theme, languageVersion, setCursorPosition, tempCursor, setErrors, sdmxResult}: VtlEditorProps) => {
-    const [innerCode, setInnerCode] = useState<string>("");
+const VtlEditor = ({
+                       onContentChange, onCursorChange, onListErrors,
+                       code, movedCursor, theme, languageVersion,
+                       sdmxResult, resizeLayout
+                   }: VtlEditorProps) => {
     const monacoRef = useRef<any>(null);
+    console.log("editor render");
 
     useEffect(() => {
         if (monacoRef && monacoRef.current) {
@@ -44,12 +43,11 @@ const VtlEditor = ({resizeLayout, code, setCode, setCodeChanged, theme, language
             // @ts-ignore
             monacoRef.current.editor.focus();
             // @ts-ignore
-            monacoRef.current.editor.setPosition(new Position(tempCursor.lineNumber, tempCursor.column));
+            monacoRef.current.editor.setPosition(new Position(movedCursor.line, movedCursor.column));
         }
-    }, [tempCursor]);
+    }, [movedCursor]);
 
     useEffect(() => {
-        setInnerCode(code)
     }, [code])
 
     useEffect(() => {
@@ -57,54 +55,56 @@ const VtlEditor = ({resizeLayout, code, setCode, setCodeChanged, theme, language
     }, [languageVersion]);
 
     const didMount = (editor: EditorApi.editor.IStandaloneCodeEditor, monaco: typeof EditorApi) => {
-        let to: NodeJS.Timeout;
-        let cursorTO: NodeJS.Timeout;
-        let delayCursorSettingAction = (e: any) => {
-            cursorTO = setTimeout(() => {
-                setCursorPosition(e.position);
-            }, 400);
-        }
-        let onDidChangeTimout = (e: any) => {
-            to = setTimeout(() => onDidChange(e), 2000);
-        };
 
-        const onDidChange = (e: any) => {
-            // @ts-ignore
-            let syntaxErrors = parserFacade.parser.validate(editor.getValue());
-            setCode(editor.getValue());
-            setCodeChanged(true);
-            let monacoErrors = [];
-            for (let e of syntaxErrors) {
-                monacoErrors.push({
-                    startLineNumber: e.startLine,
-                    startColumn: e.startCol,
-                    endLineNumber: e.endLine,
-                    endColumn: e.endCol,
-                    message: e.message,
-                    severity: monaco.MarkerSeverity.Error
+        const parseContent = () => {
+            const monacoErrors: EditorApi.editor.IMarkerData[] =
+                parserFacade.parser.validate(editor.getValue()).map((error: any) => {
+                    return {
+                        startLineNumber: error.startLine,
+                        startColumn: error.startCol,
+                        endLineNumber: error.endLine,
+                        endColumn: error.endCol,
+                        message: error.message,
+                        severity: monaco.MarkerSeverity.Error
+                    } as EditorApi.editor.IMarkerData;
                 });
-            }
-            let errorsString = monacoErrors.map(e => e.message).reduce((e1, e2) => e1 + ", " + e2, "");
-            if (errorsString !== errors.value) {
-                setErrors(monacoErrors);
-                errors = {value: errorsString};
-            }
-            window.syntaxErrors = syntaxErrors;
-            let model = monaco.editor.getModels()[0];
-            monaco.editor.setModelMarkers(model, "owner", monacoErrors);
+            monaco.editor.setModelMarkers(monaco.editor.getModels()[0], "owner", monacoErrors);
+            if (onListErrors) onListErrors(monacoErrors.map((error) => {
+                return {
+                    line: error.startLineNumber,
+                    column: error.startColumn,
+                    message: error.message
+                } as VtlError;
+            }));
         };
-        editor.onDidChangeModelContent((e: any) => {
-            if (to) clearTimeout(to);
-            return onDidChangeTimout(e);
-        });
-        editor.onDidChangeCursorPosition((e: EditorApi.editor.ICursorPositionChangedEvent) => {
-            if (cursorTO) clearTimeout(cursorTO);
-            return delayCursorSettingAction(e);
-        });
-    };
 
-    const onChange = (newValue: string, e: EditorApi.editor.IModelContentChangedEvent) => {
-        setInnerCode(newValue);
+        let parseContentTO: NodeJS.Timeout;
+        let contentChangeTO: NodeJS.Timeout | undefined;
+
+        editor.onDidChangeModelContent(() => {
+            if (onContentChange) {
+                if (parseContentTO) clearTimeout(parseContentTO);
+                parseContentTO = setTimeout(() => parseContent(), 2000);
+                if (!contentChangeTO) {
+                    contentChangeTO = setTimeout(() => {
+                        onContentChange(editor.getValue());
+                        contentChangeTO = undefined;
+                    }, 200);
+                }
+            }
+        });
+
+        let cursorChangeTO: NodeJS.Timeout | undefined;
+
+        editor.onDidChangeCursorPosition(() => {
+            if (onCursorChange && !cursorChangeTO) {
+                cursorChangeTO = setTimeout(() => {
+                    const position = editor.getPosition();
+                    if (position) onCursorChange({line: position.lineNumber, column: position.column});
+                    cursorChangeTO = undefined;
+                }, 200);
+            }
+        });
     };
 
     const options = {
@@ -113,6 +113,7 @@ const VtlEditor = ({resizeLayout, code, setCode, setCodeChanged, theme, language
         },
         automaticLayout: true
     };
+
     return (
         <div className="editor-container">
             <MonacoEditor
@@ -125,9 +126,19 @@ const VtlEditor = ({resizeLayout, code, setCode, setCodeChanged, theme, language
                 theme={theme}
                 defaultValue=''
                 options={options}
-                value={innerCode}
-                onChange={onChange}/>
+                value={code}/>
         </div>)
 };
+
+export interface CursorPosition {
+    line: number,
+    column: number
+}
+
+export interface VtlError {
+    line: number,
+    column: number,
+    message: string
+}
 
 export default VtlEditor;

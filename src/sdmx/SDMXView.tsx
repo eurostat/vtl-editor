@@ -14,7 +14,7 @@ import {SDMX_AGENCIES, SDMX_REGISTIRES} from "../web-api/apiConsts";
 import {faChevronDown, faFilter, faSyncAlt, faUndoAlt} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useSnackbar} from "notistack";
-import {CustomResponse} from "../web-api/CustomResponse";
+import {ApiResponse} from "../web-api/apiResponse";
 import {ApiCache} from "./ApiCache";
 import DataStructureTable from "./DataStructureTable";
 import {SdmxResult} from "./entity/SdmxResult";
@@ -61,7 +61,7 @@ const SDMXView = ({
     const {enqueueSnackbar} = useSnackbar();
 
     const fetchRegistries = async () => {
-        let registries: CustomResponse<SdmxRegistryObject> | undefined = await getSdmxRegistries();
+        let registries: ApiResponse<SdmxRegistryObject> | undefined = await getSdmxRegistries();
         if (registries && registries.data) {
             return registries.data.registries;
         }
@@ -69,7 +69,7 @@ const SDMXView = ({
     };
 
     const fetchAgencies = async () => {
-        let agencies: CustomResponse<AgencyObject> | undefined = await getAgencies(registry!.id);
+        let agencies: ApiResponse<AgencyObject> | undefined = await getAgencies(registry!.id);
         if (agencies && agencies.data) {
             return agencies.data.agencies;
         }

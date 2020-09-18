@@ -1,10 +1,12 @@
-import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import editorReducer from "../editor/editorSlice";
-import loaderReducer from "../editor/loaderSlice";
+import viewReducer from "../main-view/viewSlice";
+import repositoryReducer from "../repository/repositorySlice";
 
 const rootReducer = combineReducers({
     editor: editorReducer,
-    loader: loaderReducer
+    repository: repositoryReducer,
+    view: viewReducer
 })
 
 const store = configureStore({

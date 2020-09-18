@@ -20,7 +20,7 @@ const HistoricalVersions = ({}: HistoricalVersionsProps) => {
     const [files, setFiles] = useState(filesMockData);
 
     return (<div className="historical-versions-container">
-        <PageHeader name="Historical versions"/>
+        <PageHeader name="Version history"/>
         <Container className="historical-versions-box">
             <MaterialTable
                 columns={historicalVersionsTableColumns}

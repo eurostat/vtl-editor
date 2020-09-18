@@ -1,0 +1,75 @@
+.menu-container, .submenu {
+  opacity: 1;
+  position: fixed;
+  z-index: 1000;
+  box-shadow: 7px 8px 3px -5px rgba(0, 0, 0, 0.62);
+  color: white;
+  background-color: #232323;
+  border: 1px #000000 solid;
+  padding: 3px 10px;
+  width: 270px;
+  font-size: 14px;
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 0;
+  }
+
+  li {
+    padding-left: 12px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #0a4871;
+    }
+  }
+
+  hr {
+    background-color: #858585;
+    margin-top: .3rem;
+    margin-bottom: .3rem;
+  }
+
+  .with-submenu {
+    position: relative;
+
+    //&:hover {
+    //  .submenu {
+    //    display: block;
+    //    position: absolute;
+    //    left: 258px;
+    //    top: 0;
+    //  }
+    //}
+  }
+
+  .hide-menu {
+    visibility: hidden;
+  }
+
+  .position-right {
+    padding-right: 5px;
+    padding-top: 2px;
+  }
+
+  svg {
+    vertical-align: inherit;
+    font-size: 15px;
+  }
+}
+
+.visible-menu{
+  visibility: visible;
+}
+
+.submenu {
+  > ul {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  position: absolute;
+  left: 258px;
+  top: 0;
+}

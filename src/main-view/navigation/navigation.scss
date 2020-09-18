@@ -5,7 +5,6 @@
   vertical-align: top;
   background-color: #333333;
   width: $leftNavWidth;
-  height: 100vh;
   height: calc(100vh - #{$navbarHeight} - #{$barHeight});
 
   .menu-first-item {
@@ -15,17 +14,23 @@
   > button {
     width: 100%;
     margin: 10px auto;
+
+    svg {
+      font-size: 28px;
+      color: #858585;
+      cursor: pointer;
+    }
   }
 
   & > a > button {
     width: 100%;
     margin: 10px auto;
-  }
 
-  svg {
-    font-size: 28px;
-    color: #858585;
-    cursor: pointer;
+    svg {
+      font-size: 28px;
+      color: #858585;
+      cursor: pointer;
+    }
   }
 }
 
@@ -100,9 +105,10 @@
 }
 
 .modal-content {
-  .form-control{
+  .form-control {
     color: #494949;
-    &:focus{
+
+    &:focus {
       border: 1px solid #8d9295;
     }
   }

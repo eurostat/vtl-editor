@@ -1,23 +1,22 @@
-import React, {forwardRef, useEffect, useImperativeHandle, useRef, useState} from "react";
-import {Col, Container, Row} from "react-bootstrap";
-import {Tooltip} from "@material-ui/core";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faSyncAlt} from "@fortawesome/free-solid-svg-icons";
+import { faSyncAlt } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Tooltip } from "@material-ui/core";
 import MaterialTable from "material-table";
-import {dataStructuresColumns} from "./tableColumns";
-import {DataStructure, DataStructureObject, FinalStructureEnum} from "./entity/DataStructure";
+import { useSnackbar } from "notistack";
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import { Col, Container, Row } from "react-bootstrap";
+import { useHistory } from 'react-router-dom'
+import { SDMX_STRUCTURES } from "../web-api/apiConsts";
+import { ApiResponse } from "../web-api/apiResponse";
+import { getSdmxDataStructures } from "../web-api/sdmxApi";
+import { ApiCache } from "./ApiCache";
 import DataStructureDetailPanel from "./data-structure-details/DataStructureDetailPanel";
-import {SDMX_STRUCTURES} from "../web-api/apiConsts";
-import {SdmxRegistry} from "./entity/SdmxRegistry";
-import {ApiCache} from "./ApiCache";
-import {CustomResponse} from "../web-api/CustomResponse";
-import {DataStructureDefinition} from "./entity/DataStructureDefinition";
-import {getSdmxDataStructures} from "../web-api/sdmxApi";
-import {useSnackbar} from "notistack";
-import {Agency} from "./entity/Agency";
-import {useHistory} from 'react-router-dom'
-import {SdmxResult} from "./entity/SdmxResult";
+import { Agency } from "./entity/Agency";
+import { DataStructure, DataStructureObject, FinalStructureEnum } from "./entity/DataStructure";
+import { SdmxRegistry } from "./entity/SdmxRegistry";
+import { SdmxResult } from "./entity/SdmxResult";
 import SdmxDownloadScreen from "./loading-screen/SdmxDownloadScreen";
+import { dataStructuresColumns } from "./tableColumns";
 
 type DataStructureTableProps = {
     registry: SdmxRegistry | null,
@@ -30,7 +29,6 @@ type DataStructureTableProps = {
 }
 
 const requestCache = ApiCache.getInstance();
-
 
 const DataStructureTable = forwardRef(({
                                            registry, isFiltered,
@@ -48,13 +46,12 @@ const DataStructureTable = forwardRef(({
     const history = useHistory();
 
     const fetchDataStructures = async () => {
-        const dataStructures: CustomResponse<DataStructureObject> | undefined = await getSdmxDataStructures(registry!.id);
+        const dataStructures: ApiResponse<DataStructureObject> | undefined = await getSdmxDataStructures(registry!.id);
         if (dataStructures && dataStructures.data) {
             return dataStructures.data.dataStructures;
         }
         return [];
     };
-
 
     useEffect(() => {
         const fetch = async () => {
@@ -72,11 +69,11 @@ const DataStructureTable = forwardRef(({
      * It prevents from saving selected row after changing route or registry.
      */
     useEffect(() => {
+        const dataManager = tableRef.current.dataManager;
         return (() => {
-            tableRef.current.dataManager.changeAllSelected(false);
+            dataManager.changeAllSelected(false);
         })
     }, [filteredDataStructures])
-
 
     const onDataStructuresRefresh = () => {
         const fetch = async () => {
@@ -99,7 +96,6 @@ const DataStructureTable = forwardRef(({
             });
         }
     }
-
 
     /**
      *
@@ -140,7 +136,6 @@ const DataStructureTable = forwardRef(({
         history.push("/");
     }
 
-
     /**
      * Forwarding onFilterData into parent component
      */
@@ -161,14 +156,13 @@ const DataStructureTable = forwardRef(({
         }
     }));
 
-
     /**
      * Filtering data based on form inputs.
      * If there is no selected agency we are returning all data structures
      * Filtering by final status: if option "NO" has been choose data structures with @enum {FinalStructureEnum.UNSET} will be also on the list.
      */
     const filterData = (data: DataStructure[]): DataStructure[] => {
-        let result = [];
+        let result: any[];
         if (selectedAgencies.length > 0) {
             const mappedAgenciesId = selectedAgencies.map(agency => agency.id);
             result = data.filter(ds => mappedAgenciesId.includes(ds.agencyId));
@@ -236,6 +230,5 @@ const DataStructureTable = forwardRef(({
         </>
     )
 });
-
 
 export default DataStructureTable;

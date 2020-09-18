@@ -1,6 +1,5 @@
 const BASE_URL = process.env.REACT_APP_API_URL;
 
-
 /*SDMX ENDPOINTS */
 
 export const SDMX_REGISTIRES = BASE_URL + "/sdmx/registries";

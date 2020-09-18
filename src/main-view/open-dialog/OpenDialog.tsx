@@ -1,10 +1,10 @@
 import { Dialog } from "@material-ui/core";
-import Button from "@material-ui/core/Button";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { useSnackbar } from "notistack";
 import React, { useCallback, useState } from "react";
+import { Button } from "react-bootstrap";
 import { useDropzone } from 'react-dropzone';
 import "./openDialog.scss";
 
@@ -108,7 +108,7 @@ const OpenDialog = ({onClose, onLoad}: any) => {
                         <button onClick={handleAddFiles} className="btn btn-primary default-button">
                             <span>Open File</span>
                         </button>
-                        <Button onClick={handleClose} color="primary">
+                        <Button onClick={handleClose} className="outline-button" color="primary">
                             Cancel
                         </Button>
                     </DialogActions>

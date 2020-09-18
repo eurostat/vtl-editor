@@ -1,11 +1,11 @@
 import {Box, CircularProgress, Typography} from "@material-ui/core";
 import React, {useEffect, useState} from "react";
+import { setSdmxStorageValue } from "../../utility/browserStorage";
 import {DataStructure} from "../entity/DataStructure";
 import {SdmxRegistry} from "../entity/SdmxRegistry";
 import {SDMX_CODELIST, SDMX_DSD} from "../../web-api/apiConsts";
 import {fetchCodeList, fetchDataStructureDefinition} from "../../web-api/sdmxApi";
 import {BaseStruct, DataStructureDefinition, StructureType} from "../entity/DataStructureDefinition";
-import {setSdmxStorageValue} from "../../utility/localStorage";
 import {CodeList, CodeListDetails} from "../entity/CodeList";
 import {SdmxResult} from "../entity/SdmxResult";
 import {useHistory} from "react-router-dom";

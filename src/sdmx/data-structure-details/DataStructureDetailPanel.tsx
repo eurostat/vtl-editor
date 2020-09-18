@@ -1,14 +1,14 @@
-import React, {useEffect, useState} from "react";
-import {BaseStruct, DataStructureDefinition} from "../entity/DataStructureDefinition";
-import MaterialTable, {DetailPanel} from "material-table";
-import {dataPanelColumns} from "./detailPanelColumns";
-import {ApiCache} from "../ApiCache";
-import {CodeList} from "../entity/CodeList";
-import {SDMX_CODELIST, SDMX_DSD} from "../../web-api/apiConsts";
-import {SdmxRegistry} from "../entity/SdmxRegistry";
-import {fetchCodeList, fetchDataStructureDefinition} from "../../web-api/sdmxApi";
-import {DataStructure} from "../entity/DataStructure";
+import MaterialTable, { DetailPanel } from "material-table";
+import React, { useEffect, useState } from "react";
+import { SDMX_DSD } from "../../web-api/apiConsts";
+import { fetchDataStructureDefinition } from "../../web-api/sdmxApi";
+import { ApiCache } from "../ApiCache";
 import CodeListDetailPanel from "../code-list-details/CodeListDetailPanel";
+import { CodeList } from "../entity/CodeList";
+import { DataStructure } from "../entity/DataStructure";
+import { BaseStruct, DataStructureDefinition } from "../entity/DataStructureDefinition";
+import { SdmxRegistry } from "../entity/SdmxRegistry";
+import { dataPanelColumns } from "./detailPanelColumns";
 
 type DataStructureDetailPanelProps = {
     registry: SdmxRegistry,
@@ -23,15 +23,11 @@ interface DataStructureTableRow extends BaseStruct {
 type DataStructureTableRowType =
     "attribute" | "dimension" | "timeDimension" | "primaryMeasure"
 
-
 const requestCache = ApiCache.getInstance();
 
 const DataStructureDetailPanel = ({registry, dataStructure, showCodeListPreview}: DataStructureDetailPanelProps) => {
-    const [dataStructureDefinition, setDataStructureDefinition] = useState<DataStructureDefinition | undefined>(undefined);
-    const [codeList, setCodeList] = useState<CodeList | undefined>(undefined);
     const [structures, setStructures] = useState<DataStructureTableRow[]>([]);
     const [loadingDataStructureDefinition, setLoadingDataStructureDefinition] = useState(false);
-
 
     useEffect(() => {
         const fetch = async () => {
@@ -54,7 +50,6 @@ const DataStructureDetailPanel = ({registry, dataStructure, showCodeListPreview}
             const structs: DataStructureTableRow[] = mapDimensions()
                 .concat(mapAttributes());
             setStructures(structs);
-            setDataStructureDefinition(dsd);
             setLoadingDataStructureDefinition(false);
         }
         fetch();
@@ -87,11 +82,9 @@ const DataStructureDetailPanel = ({registry, dataStructure, showCodeListPreview}
                     pageSize: 10
                 }}
                 {...conditionalRenderCodeListPreview(showCodeListPreview)}
-
             />
         </div>
     )
 }
-
 
 export default DataStructureDetailPanel;

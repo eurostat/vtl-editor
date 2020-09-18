@@ -1,13 +1,15 @@
 import "./vtl-editor/vtlEditor.css";
 
-export enum VTL_VERSION {
+export enum VtlVersion {
     VTL_2_0 = "vtl-2.0",
-    VTL_3_0 = "vtl-3.0"
+    VTL_2_1 = "vtl-2.1"
 }
+
+export const defaultVtlVersion = VtlVersion.VTL_2_1;
 
 export interface VersionType {
     name: string,
-    code: VTL_VERSION
+    code: VtlVersion
 }
 
 export const themes = [
@@ -16,8 +18,11 @@ export const themes = [
     {name: "Dark", code: "vs-dark"},
     {name: "High Contrast Dark", code: "hc-black"},
 ];
+
+export const defaultTheme = themes[0];
+
 export const languageVersions: VersionType[] = [
-    {name: "2.0", code: VTL_VERSION.VTL_2_0},
-    {name: "3.0", code: VTL_VERSION.VTL_3_0},
+    {name: "2.0", code: VtlVersion.VTL_2_0},
+    {name: "2.1", code: VtlVersion.VTL_2_1},
 ];
 

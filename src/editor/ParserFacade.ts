@@ -2,8 +2,8 @@ import { CommonTokenStream, Recognizer } from 'antlr4ts';
 import { CharStreams, Token } from 'antlr4ts';
 import { ANTLRErrorListener, DefaultErrorStrategy } from 'antlr4ts';
 import { Lexer } from "antlr4ts/Lexer";
-import { VtlLexer } from '../grammar/ts/VtlLexer'
-import { VtlParser } from "../grammar/ts/VtlParser"
+import { VtlLexer } from '../grammar/vtl-2.0/VtlLexer'
+import { VtlParser } from "../grammar/vtl-2.0/VtlParser"
 
 // @ts-ignore VALID
 class ConsoleErrorListener implements ANTLRErrorListener {

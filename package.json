@@ -1,6 +1,6 @@
 {
   "name": "vrm-frontend",
-  "version": "0.6.0-SNAPSHOT",
+  "version": "0.7.0-SNAPSHOT",
   "private": true,
   "homepage": "./",
   "dependencies": {
@@ -19,6 +19,7 @@
     "@types/antlr4": "^4.7.2",
     "@types/deep-equal": "^1.0.1",
     "@types/jest": "^24.9.1",
+    "@types/lodash": "^4.14.161",
     "@types/node": "^12.12.54",
     "@types/react": "^16.9.49",
     "@types/react-dom": "^16.9.8",
@@ -50,6 +51,7 @@
     "fs-extra": "^8.1.0",
     "identity-obj-proxy": "3.0.0",
     "jest-environment-jsdom-fourteen": "1.0.1",
+    "lodash": "^4.17.20",
     "material-table": "^1.66.0",
     "material-ui-dropzone": "^2.5.0",
     "monaco-editor": "^0.20.0",

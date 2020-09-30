@@ -5,7 +5,7 @@
 
     <groupId>eu.europa.ec.estat.vrm.frontend</groupId>
     <artifactId>vrm-frontend</artifactId>
-    <version>0.6.0-SNAPSHOT</version>
+    <version>0.7.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <name>Validation Rule Manager Frontend</name>
@@ -279,8 +279,12 @@
                         <resource>
                             <directory>${npm.output.directory}</directory>
                         </resource>
+                        <resource>
+                            <directory>${basedir}/WEB-INF</directory>
+                            <targetPath>WEB-INF</targetPath>
+                        </resource>
                     </webResources>
-                    <webXml>${basedir}/web.xml</webXml>
+                    <webXml>${basedir}/WEB-INF/web.xml</webXml>
                 </configuration>
             </plugin>
 
@@ -331,7 +335,7 @@
                 <deploy.port />
                 <deploy.path>/vrm</deploy.path>
                 <deploy.sourcemap>false</deploy.sourcemap>
-                <deploy.api.url>https://localhost/vrm-backend</deploy.api.url>
+                <deploy.api.url>https://intragate.test.ec.europa.eu/vrm-backend/api</deploy.api.url>
             </properties>
         </profile>
     </profiles>

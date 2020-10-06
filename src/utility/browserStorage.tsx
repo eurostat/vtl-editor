@@ -26,8 +26,9 @@ const BrowserStorage = () => {
             Log.info("Loading state from browser local storage.", "BrowserStorage");
             let storedValues = fromLocalStorage(StorageKey.EDITOR);
             if (storedValues.file) {
-                const {name, content, edited} = storedValues.file;
-                dispatch(loadFile(buildFile(name, content, edited)));
+                const {name, content, changed, remoteId, optLock, version} = storedValues.file;
+                dispatch(loadFile(buildFile(name, content, changed,
+                    remoteId, optLock, version)));
             }
             if (storedValues.vtlVersion) dispatch(changeVtlVersion(storedValues.vtlVersion));
             storedValues = fromLocalStorage(StorageKey.VIEW);
@@ -38,8 +39,18 @@ const BrowserStorage = () => {
     }, [storageLoaded]);
 
     useEffect(() => {
-        toLocalStorage(StorageKey.EDITOR, {...fromLocalStorage(StorageKey.EDITOR), file: editedFile, vtlVersion: vtlVersion});
-        toLocalStorage(StorageKey.VIEW, {...fromLocalStorage(StorageKey.VIEW), detailPaneVisible: detailPane, theme: theme});
+        if (storageLoaded) {
+            toLocalStorage(StorageKey.EDITOR, {
+                ...fromLocalStorage(StorageKey.EDITOR),
+                file: editedFile,
+                vtlVersion: vtlVersion
+            });
+            toLocalStorage(StorageKey.VIEW, {
+                ...fromLocalStorage(StorageKey.VIEW),
+                detailPaneVisible: detailPane,
+                theme: theme
+            });
+        }
     }, [editedFile, vtlVersion, detailPane, theme])
 
     return (

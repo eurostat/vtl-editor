@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { ContextMenuEvent, ContextMenuEventType } from "./treeExplorerService";
 
 type TreeExplorerMenuProps = {
-    onMenuEvent: (event: ContextMenuEvent) => any
+    onMenuEvent?: (event: ContextMenuEvent) => any
 }
 
 const TreeExplorerMenu = ({onMenuEvent}: TreeExplorerMenuProps) => {
@@ -15,12 +15,20 @@ const TreeExplorerMenu = ({onMenuEvent}: TreeExplorerMenuProps) => {
         setShowNewMenu(!showNewMenu);
     }
 
-    const onNewFile = () => {
-        onMenuEvent({type: ContextMenuEventType.NewFile});
+    const dispatchMenuEvent = (event: ContextMenuEvent) => {
+        if (onMenuEvent) onMenuEvent(event);
     }
 
     const onNewFolder = () => {
-        onMenuEvent({type: ContextMenuEventType.NewFolder});
+        dispatchMenuEvent({type: ContextMenuEventType.NewFolder});
+    }
+
+    const onNewFile = () => {
+        dispatchMenuEvent({type: ContextMenuEventType.NewFile});
+    }
+
+    const onRefresh = () => {
+        dispatchMenuEvent({type: ContextMenuEventType.Refresh});
     }
 
     return (
@@ -35,6 +43,8 @@ const TreeExplorerMenu = ({onMenuEvent}: TreeExplorerMenuProps) => {
                     <li onClick={onNewFile}>File</li>
                 </ul>
             </li>
+            <hr/>
+            <li onClick={onRefresh}>Refresh</li>
         </ul>
     );
 }

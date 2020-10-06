@@ -2,20 +2,19 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { SnackbarProvider } from "notistack";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import './App.scss';
 import { buildFile } from "./editor/editorFile";
 import { loadFile } from './editor/editorSlice';
 import EditorView from "./editor/editorView";
-import { decisionModal } from "./main-view/decision-dialog/decisionModal";
+import { decisionDialog } from "./main-view/decision-dialog/decisionDialog";
 import Header from "./main-view/header/Header";
-import { MenuOption } from "./main-view/MenuOption";
 import Navigation from "./main-view/navigation/navigation";
 import OpenDialog from "./main-view/open-dialog/OpenDialog";
 import { detailPaneVisible, sidePaneView, sidePaneVisible } from "./main-view/viewSlice";
-import HistoricalVersions from "./repository/file-versions/HistoricalVersions";
-import DirectoryPreview from "./repository/folder-details/DirectoryPreview";
-import DiffEditor from "./repository/version-compare/DiffEditor";
+import DirectoryPreview from "./repository/directoryPreview";
+import FileVersions from "./repository/fileVersions";
+import DiffEditor from "./repository/version-compare/diffEditor";
 import { Agency } from "./sdmx/entity/Agency";
 import { DataStructure, FinalStructureEnum } from "./sdmx/entity/DataStructure";
 import { SdmxRegistry } from "./sdmx/entity/SdmxRegistry";
@@ -24,11 +23,6 @@ import SdmxDownloadScreen from "./sdmx/loading-screen/SdmxDownloadScreen";
 import { SdmxStorage } from "./sdmx/SdmxStorage";
 import SDMXView from "./sdmx/SDMXView";
 import BrowserStorage, { getSdmxStoredValues, setSdmxStorageValue } from "./utility/browserStorage";
-
-type DropdownMenuStatus = {
-    option: MenuOption,
-    visible: boolean
-}
 
 function App() {
     const [showDialog, setShowDialog] = useState(false);
@@ -48,7 +42,7 @@ function App() {
 
     useEffect(() => {
         const decision = async (dataStructure: DataStructure) => {
-            const res = await decisionModal({
+            const res = await decisionDialog({
                 title: "Warning",
                 text:
                     `In your previous session you imported ${dataStructure.name} content. Do you want to import the data again?`
@@ -126,53 +120,42 @@ function App() {
         setSdmxResult,
         clearSdmxState
     }
-    console.log("app render");
+
     return (
-        //TODO check if it is working without router here
-        <Router>
-            <SnackbarProvider
-                maxSnack={2}
-                transitionDuration={500}
-                autoHideDuration={4000}
-                anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right"
-                }}
-                dense={true}
-            >
-                <div className={getStyles()}>
-                    <Header/>
-                    <Navigation {...NavigationProps}/>
-                    <div id="middle-container" className={`middle-container`}>
-                        <Switch>
-                            <Route exact path="/sdmx">
-                                <SDMXView {...SDMXViewProps}/>
-                            </Route>
-                            <Route exact path="/diff">
-                                <DiffEditor/>
-                            </Route>
-                            <Route exact path="/historical">
-                                <HistoricalVersions/>
-                            </Route>
-                            <Route exact path="/directory">
-                                <DirectoryPreview/>
-                            </Route>
-                            <Route exact path="/">
-                                <EditorView {...editorViewProps}/>
-                            </Route>
-                            <Redirect to="/"/>
-                        </Switch>
-                    </div>
-                    {showDialog ?
-                        <OpenDialog onClose={setShowDialog} onLoad={openFile}/> : null}
-                    {/*{showOverlay ? <GuideOverlay/> : null}*/}
-                    {importDSD ?
-                        <SdmxDownloadScreen registry={registry} dataStructure={dataStructure!} showScreen={importDSD}
-                                            setSdmxResult={setSdmxResult}/> : null}
+        <SnackbarProvider maxSnack={2} transitionDuration={500} autoHideDuration={4000}
+                          anchorOrigin={{vertical: "top", horizontal: "right"}} dense={true}>
+            <div className={getStyles()}>
+                <Header/>
+                <Navigation {...NavigationProps}/>
+                <div id="middle-container" className={`middle-container`}>
+                    <Switch>
+                        <Route exact path="/sdmx">
+                            <SDMXView {...SDMXViewProps}/>
+                        </Route>
+                        <Route exact path="/diff">
+                            <DiffEditor/>
+                        </Route>
+                        <Route exact path="/versions">
+                            <FileVersions/>
+                        </Route>
+                        <Route exact path="/folder">
+                            <DirectoryPreview/>
+                        </Route>
+                        <Route exact path="/">
+                            <EditorView {...editorViewProps}/>
+                        </Route>
+                        <Redirect to="/"/>
+                    </Switch>
                 </div>
-                <BrowserStorage/>
-            </SnackbarProvider>
-        </Router>
+                {showDialog ?
+                    <OpenDialog onClose={setShowDialog} onLoad={openFile}/> : null}
+                {/*{showOverlay ? <GuideOverlay/> : null}*/}
+                {importDSD ?
+                    <SdmxDownloadScreen registry={registry} dataStructure={dataStructure!} showScreen={importDSD}
+                                        setSdmxResult={setSdmxResult}/> : null}
+            </div>
+            <BrowserStorage/>
+        </SnackbarProvider>
     );
 }
 

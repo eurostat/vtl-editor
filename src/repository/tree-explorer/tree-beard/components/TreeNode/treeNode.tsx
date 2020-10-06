@@ -1,8 +1,8 @@
-import React, {PureComponent} from 'react';
+import React, { PureComponent } from 'react';
 import styled from '@emotion/styled';
 import defaultAnimations from '../../themes/animations';
-import {randomString} from '../../util';
-import {Ul} from '../common';
+import { randomString } from '../../util';
+import { Ul } from '../common';
 import NodeHeader from '../NodeHeader';
 import Drawer from './Drawer';
 import Loading from './Loading';
@@ -11,14 +11,15 @@ import Loading from './Loading';
 const Li = styled('li', {shouldForwardProp: prop => ['className', 'children', 'ref'].indexOf(prop) !== -1})(({style}) => style);
 
 type TreeNodeProps = {
-    onSelect?: (node:any) => void,
-    onToggle?: any,
-    style: any,
-    customStyles?: any,
     node: any,
     parent: any,
+    style: any,
+    customStyles?: any,
+    animations: any,
     decorators: any,
-    animations: any
+    onSelect?: (node: any) => void,
+    onToggle?: any,
+    onMenuEvent?: any
 }
 
 class TreeNode extends PureComponent<TreeNodeProps> {
@@ -57,7 +58,7 @@ class TreeNode extends PureComponent<TreeNodeProps> {
 
     renderChildren(decorators: any) {
         const {
-            animations, decorators: propDecorators, node, style, onToggle, onSelect, customStyles
+            animations, decorators: propDecorators, node, style, onToggle, onSelect, customStyles, onMenuEvent
         } = this.props;
 
         if (node.loading) {
@@ -84,6 +85,7 @@ class TreeNode extends PureComponent<TreeNodeProps> {
                         key={child.id || randomString()}
                         node={child}
                         parent={node}
+                        onMenuEvent={onMenuEvent}
                     />
                 ))}
             </Ul>
@@ -92,7 +94,7 @@ class TreeNode extends PureComponent<TreeNodeProps> {
 
     render() {
         const {
-            node, style, onSelect, customStyles, parent
+            node, style, onSelect, customStyles, parent, onMenuEvent
         } = this.props;
         const decorators = this.decorators();
         const animations = this.animations();
@@ -108,6 +110,7 @@ class TreeNode extends PureComponent<TreeNodeProps> {
                     customStyles={customStyles}
                     onClick={() => this.onClick()}
                     onSelect={onSelect ? (() => onSelect(node)) : undefined}
+                    onMenuEvent={onMenuEvent}
                 />
                 <Drawer restAnimationInfo={{...restAnimationInfo}}>
                     {node.toggled ? this.renderChildren(decorators) : null}
@@ -116,6 +119,5 @@ class TreeNode extends PureComponent<TreeNodeProps> {
         );
     }
 }
-
 
 export default TreeNode;

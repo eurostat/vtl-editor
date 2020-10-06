@@ -39,6 +39,7 @@ declare module "react-treebeard" {
         /** The name prop passed into the Header component. */
         name: string;
         entity?: any;
+        parentId?: string;
         /** The children attached to the node. This value populates the subtree at the specific node.Each child is built from the same basic data structure.
          *
          * Tip: Make this an empty array, if you want to asynchronously load a potential parent. */

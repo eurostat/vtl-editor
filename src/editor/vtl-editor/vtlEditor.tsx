@@ -8,12 +8,14 @@ import { getEditorWillMount, getParserFacade, refreshSuggestions } from "../prov
 
 import { VtlVersion } from "../settings";
 import "./vtlEditor.css";
+import { CursorPosition } from "./cursorPosition";
+import { VtlError } from "./vtlError";
 
 export type VtlEditorProps = {
     onContentChange?: (content: string) => void,
     onCursorChange?: (position: CursorPosition) => void,
     onListErrors?: (errors: VtlError[]) => void,
-    loaded?: { content: string },
+    file?: { content: string },
     movedCursor: CursorPosition,
     theme: string,
     vtlVersion: VtlVersion,
@@ -25,7 +27,7 @@ let parserFacade: any = {parser: null};
 
 const VtlEditor = ({
                        onContentChange, onCursorChange, onListErrors,
-                       loaded, movedCursor, theme, vtlVersion,
+                       file, movedCursor, theme, vtlVersion,
                        sdmxResult, resizeLayout
                    }: VtlEditorProps) => {
     const monacoRef = useRef<MonacoEditor>(null);
@@ -40,10 +42,10 @@ const VtlEditor = ({
     }, [movedCursor]);
 
     useEffect(() => {
-        if (loaded !== undefined && loaded.content !== undefined) {
-            monacoRef?.current?.editor?.setValue(loaded.content);
+        if (file !== undefined && file.content !== undefined) {
+            monacoRef?.current?.editor?.setValue(file.content);
         }
-    }, [loaded])
+    }, [file])
 
     useEffect(() => {
         parserFacade = getParserFacade(vtlVersion);
@@ -68,7 +70,8 @@ const VtlEditor = ({
                         severity: EditorApi.MarkerSeverity.Error
                     } as EditorApi.editor.IMarkerData;
                 });
-            EditorApi.editor.setModelMarkers(EditorApi.editor.getModels()[0], "owner", monacoErrors);
+            const model = editor.getModel();
+            if (model) EditorApi.editor.setModelMarkers(model, "owner", monacoErrors);
             if (onListErrors) onListErrors(monacoErrors.map((error) => {
                 return {
                     line: error.startLineNumber,
@@ -111,7 +114,6 @@ const VtlEditor = ({
         automaticLayout: true
     };
 
-    console.log("vtl editor render");
     return (
         <div className="editor-container">
             <MonacoEditor
@@ -126,16 +128,5 @@ const VtlEditor = ({
             />
         </div>)
 };
-
-export interface CursorPosition {
-    line: number,
-    column: number
-}
-
-export interface VtlError {
-    line: number,
-    column: number,
-    message: string
-}
 
 export default VtlEditor;

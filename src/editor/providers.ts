@@ -24,22 +24,63 @@ const tokensProvider: TokensProvider = new TokensProvider();
 const vocabulary: VocabularyPack<VtlLexer, VtlParser> = new VocabularyPack(lexer, parser);
 const grammarGraph: GrammarGraph<VtlLexer, VtlParser> = new GrammarGraph(vocabulary, grammar);
 
-export const getVtlTheme = (): EditorApi.editor.IStandaloneThemeData => {
-    return {
-        base: 'vs',
-        inherit: true,
-        rules: [
-            {token: 'string', foreground: '018B03'},
-            {token: 'comment', foreground: '939393'},
-            {token: 'operator', foreground: '8B3301'},
-            {token: 'attribute', foreground: 'ff002e'},
-            {token: 'dimension', foreground: 'd93d5a'},
-            {token: 'primaryMeasure', foreground: 'ce6a7b'},
-            {token: 'delimiter.bracket', foreground: '8B3301'},
-            {token: 'operator.special', foreground: '8B3301', fontStyle: 'bold'},
-        ],
-        colors: {}
+export const getVtlTheme = (name: string): EditorApi.editor.IStandaloneThemeData => {
+    switch (name) {
+        case "vtl": {
+            return {
+                base: 'vs',
+                inherit: true,
+                rules: [
+                    {token: 'string', foreground: '018B03'},
+                    {token: 'comment', foreground: '939393'},
+                    {token: 'operator', foreground: '8B3301'},
+                    {token: 'attribute', foreground: '9ffb88'},
+                    {token: 'dimension', foreground: 'f7b74e'},
+                    {token: 'primaryMeasure', foreground: '953d55'},
+                    {token: 'delimiter.bracket', foreground: '8B3301'},
+                    {token: 'operator.special', foreground: '8B3301', fontStyle: 'bold'},
+                ],
+                colors: {}
+            }
+        }
+        case "vtl-vs": {
+            return {
+                base: 'vs',
+                inherit: true,
+                rules: [
+                    {token: 'attribute', foreground: '9ffb88'},
+                    {token: 'dimension', foreground: 'f7b74e'},
+                    {token: 'primaryMeasure', foreground: '953d55'},
+                ],
+                colors: {}
+            }
+        }
+        case "vtl-dark": {
+            return {
+                base: 'vs-dark',
+                inherit: true,
+                rules: [
+                    {token: 'attribute', foreground: '9ffb88'},
+                    {token: 'dimension', foreground: 'f7b74e'},
+                    {token: 'primaryMeasure', foreground: '953d55'},
+                ],
+                colors: {}
+            }
+        }
+        case "vtl-black": {
+            return {
+                base: 'hc-black',
+                inherit: true,
+                rules: [
+                    {token: 'attribute', foreground: '9ffb88'},
+                    {token: 'dimension', foreground: 'f7b74e'},
+                    {token: 'primaryMeasure', foreground: '953d55'},
+                ],
+                colors: {}
+            }
+        }
     }
+    return {base: 'vs', colors: {}, inherit: true, rules: []};
 };
 
 export const getBracketsConfiguration = (): languages.LanguageConfiguration => {
@@ -55,7 +96,10 @@ export const getEditorWillMount = (monaco: typeof EditorApi) => {
     languageVersions.forEach(version => {
         monaco.languages.register({id: version.code});
         monaco.languages.setMonarchTokensProvider(version.code, tokensProvider.monarchLanguage(version.code));
-        monaco.editor.defineTheme('vtl', getVtlTheme());
+        monaco.editor.defineTheme('vtl', getVtlTheme('vtl'));
+        monaco.editor.defineTheme('vtl-vs', getVtlTheme('vtl-vs'));
+        monaco.editor.defineTheme('vtl-dark', getVtlTheme('vtl-dark'));
+        monaco.editor.defineTheme('vtl-black', getVtlTheme('vtl-black'));
         monaco.languages.setLanguageConfiguration(version.code, getBracketsConfiguration());
         if (completionItemDispose) {
             completionItemDispose.dispose();
@@ -69,7 +113,10 @@ export const getEditorWillMount = (monaco: typeof EditorApi) => {
 export const refreshSuggestions = (sdmxResult: SdmxResult | undefined) => {
     languageVersions.forEach(version => {
         EditorApi.languages.setMonarchTokensProvider(version.code, tokensProvider.addDsdContent(sdmxResult).monarchLanguage(version.code));
-        EditorApi.editor.defineTheme('vtl', getVtlTheme());
+        EditorApi.editor.defineTheme('vtl', getVtlTheme('vtl'));
+        EditorApi.editor.defineTheme('vtl-vs', getVtlTheme('vtl-vs'));
+        EditorApi.editor.defineTheme('vtl-dark', getVtlTheme('vtl-dark'));
+        EditorApi.editor.defineTheme('vtl-black', getVtlTheme('vtl-black'));
         if (completionItemDispose) {
             completionItemDispose.dispose();
         }

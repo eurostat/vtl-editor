@@ -5,7 +5,7 @@ export const dataPanelColumns = [
     {title: 'Id', field: 'id'},
     {title: 'Name', field: 'name'},
     {
-        title: 'Type',
+        title: 'Value Type',
         render: (rowData: BaseStruct) => rowData.structureType?.type || "",
         customFilterAndSearch: (term: string, rowData: BaseStruct) => toLowerCase(rowData.structureType.type).includes(term.toLocaleLowerCase()),
         customSort: (a: BaseStruct, b: BaseStruct) => {
@@ -29,7 +29,7 @@ export const dataPanelColumns = [
         }
     },
     {
-        title: 'Code list id',
+        title: 'Code List Id',
         render: (rowData: BaseStruct) => rowData.structureType?.id || "",
         customFilterAndSearch: (term: string, rowData: BaseStruct) => toLowerCase(rowData.structureType?.id).includes(term.toLocaleLowerCase()) || false,
         customSort: (a: BaseStruct, b: BaseStruct) => {
@@ -53,7 +53,7 @@ export const dataPanelColumns = [
         }
     },
     {
-        title: 'Text type',
+        title: 'Text Type',
         render: (rowData: BaseStruct) => rowData.structureType?.textType || "",
         customFilterAndSearch: (term: string, rowData: BaseStruct) => toLowerCase(rowData.structureType?.textType).includes(term.toLocaleLowerCase()) || false,
         customSort: (a: BaseStruct, b: BaseStruct) => {

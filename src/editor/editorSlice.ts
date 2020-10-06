@@ -2,13 +2,16 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../utility/store";
 import { DEFAULT_FILENAME, EditorFile } from "./editorFile";
 import { defaultVtlVersion, VtlVersion } from "./settings";
-import { CursorPosition, VtlError } from "./vtl-editor/vtlEditor";
+import { CursorPosition, VtlError } from "./vtl-editor";
 
 const initialState = {
     file: {
         name: DEFAULT_FILENAME,
         content: "",
-        edited: false
+        changed: false,
+        remoteId: 0,
+        optLock: 0,
+        version: 0
     },
     cursor: {
         line: 1,
@@ -19,13 +22,10 @@ const initialState = {
         line: 1,
         column: 1
     },
+    editedContent: "",
     savedContent: "",
     vtlVersion: defaultVtlVersion,
-    loadedFile: {
-        name: DEFAULT_FILENAME,
-        content: "",
-        edited: false
-    }
+    loadedFile: undefined
 } as EditorState;
 
 export const editorSlice = createSlice({
@@ -34,19 +34,25 @@ export const editorSlice = createSlice({
     reducers: {
         updateContent(state, action: PayloadAction<string>) {
             state.file.content = action.payload
-            if (action.payload !== state.savedContent) state.file.edited = true
+            state.editedContent = action.payload
+            if (action.payload !== state.savedContent) state.file.changed = true
         },
         updateName(state, action: PayloadAction<string>) {
             state.file.name = action.payload
         },
-        updateEdited(state, action: PayloadAction<boolean>) {
-            state.file.edited = action.payload
+        updateFileMeta(state, action: PayloadAction<EditorFile>) {
+            const newFile = Object.assign({}, action.payload);
+            newFile.content = state.file.content;
+            state.file = newFile;
         },
-        markEdited(state) {
-            state.file.edited = true
+        markChanged(state) {
+            state.file.changed = true
         },
-        markUnedited(state) {
-            state.file.edited = false
+        markUnchanged(state) {
+            state.file.changed = false
+        },
+        updateEdited(state, action: PayloadAction<string>) {
+            state.editedContent = action.payload
         },
         updateSaved(state, action: PayloadAction<string>) {
             state.savedContent = action.payload
@@ -66,6 +72,9 @@ export const editorSlice = createSlice({
         loadFile(state, action: PayloadAction<EditorFile>) {
             state.loadedFile = action.payload
             state.savedContent = action.payload.content
+        },
+        clearLoaded(state) {
+            state.loadedFile = undefined
         }
     }
 });
@@ -75,26 +84,30 @@ export interface EditorState {
     cursor: CursorPosition,
     errors: VtlError[],
     movedCursor: CursorPosition,
+    editedContent: string,
     savedContent: string,
     vtlVersion: VtlVersion,
-    loadedFile: EditorFile
+    loadedFile: EditorFile | undefined
 }
 
 export const {
-    updateContent, updateName, updateEdited, markEdited, markUnedited, updateSaved,
-    updateCursor, jumpCursor, listErrors, changeVtlVersion, loadFile
+    updateContent, updateName, updateFileMeta, markChanged, markUnchanged, updateEdited, updateSaved,
+    updateCursor, jumpCursor, listErrors, changeVtlVersion, loadFile, clearLoaded
 } = editorSlice.actions;
 
 export const editorCursor = (state: RootState) => state.editor.cursor;
 export const editorFile = (state: RootState) => state.editor.file;
 export const fileName = (state: RootState) => state.editor.file.name;
 export const fileContent = (state: RootState) => state.editor.file.content;
-export const fileEdited = (state: RootState) => state.editor.file.edited;
+export const fileChanged = (state: RootState) => state.editor.file.changed;
+export const fileRemoteId = (state: RootState) => state.editor.file.remoteId;
+export const fileVersion = (state: RootState) => state.editor.file.version;
 export const movedCursor = (state: RootState) => state.editor.movedCursor;
 export const editorErrors = (state: RootState) => state.editor.errors;
 export const errorCount = (state: RootState) => state.editor.errors.length;
 export const appliedVtlVersion = (state: RootState) => state.editor.vtlVersion;
 export const loadedFile = (state: RootState) => state.editor.loadedFile;
 export const savedContent = (state: RootState) => state.editor.savedContent;
+export const editedContent = (state: RootState) => state.editor.editedContent;
 
 export default editorSlice.reducer;

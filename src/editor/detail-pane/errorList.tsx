@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { editorErrors, jumpCursor } from "../editorSlice";
-import { CursorPosition, VtlError } from "../vtl-editor/vtlEditor";
+import { CursorPosition, VtlError } from "../vtl-editor";
 
 const ErrorList = () => {
     const dispatch = useDispatch();

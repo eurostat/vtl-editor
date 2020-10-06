@@ -57,9 +57,11 @@ $errorColor: #e04f5f;
 
   .error-box-item-container {
     padding-left: 7px;
-    & > div:first-of-type{
+
+    & > div:first-of-type {
       padding-top: 2px;
     }
+
     & > div:last-of-type {
       padding-left: 7px;
     }
@@ -89,6 +91,7 @@ $errorColor: #e04f5f;
     display: inline-block;
     vertical-align: middle;
     padding-right: 10px;
+    padding-left: 10px;
   }
 
   span {
@@ -115,7 +118,6 @@ $errorColor: #e04f5f;
       line-height: 25px;
     }
   }
-
 }
 
 .info-container {
@@ -125,23 +127,22 @@ $errorColor: #e04f5f;
   //max-height: 80%;
   overflow: auto;
   text-align: left;
-  padding-left: 15px;
   font-size: .8em;
   margin: 0 auto;
-  padding-top: 7px;
-
-
 
   svg {
     font-size: .8em;
   }
 }
-.error-list{
+
+.error-list {
   span {
     padding-left: 10px;
     color: #d82323;
   }
+
   color: $errorColor;
+
   div {
     cursor: pointer;
     margin-bottom: 2.8px;

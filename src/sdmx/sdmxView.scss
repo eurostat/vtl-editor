@@ -1,7 +1,5 @@
 @import "src/variables";
 
-$gray-background-color: #f5f5f5;
-$gray-border-color: #d0d0d0;
 $progress-border-radius: 4px;
 
 .sdmx-container {
@@ -149,7 +147,15 @@ $progress-border-radius: 4px;
 .dsd-detail-panel, .code-list-panel {
   min-height: 100px;
   background-color: #e4e4e4;
-  padding: 25px 15px;
+  padding: 2px 2px;
+}
+
+@media (min-width: 600px) {
+  .dsd-detail-panel {
+    .MuiToolbar-regular {
+      min-height: 48px;
+    }
+  }
 }
 
 

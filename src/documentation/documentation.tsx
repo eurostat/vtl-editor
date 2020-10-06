@@ -6,7 +6,7 @@ import html from "./contents/userManual.html";
 const htmlDoc = {__html: html};
 
 const Documentation = () => {
-    return (<div dangerouslySetInnerHTML={htmlDoc}/>)
+    return (<div dangerouslySetInnerHTML={htmlDoc} style={{textAlign: "initial", margin: "20px"}}/>)
 };
 
 export default Documentation;

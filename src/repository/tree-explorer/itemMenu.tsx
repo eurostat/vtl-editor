@@ -1,34 +1,17 @@
 import { faCaretRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
-import { TreeNode } from "react-treebeard";
-import { decisionModalInput } from "../../main-view/decision-dialog/DecisionModalInput";
-import { ScriptFilePayload } from "../entity/scriptFilePayload";
-import { StoredFolderPayload } from "../entity/storedFolderPayload";
 import { StoredItemType } from "../entity/storedItemType";
-import { createFile, createFolder } from "../repositoryService";
-import { buildFileNode, buildFolderNode, createItemDialog } from "./treeExplorerService";
+import { ContextMenuEvent, ContextMenuEventType } from "./treeExplorerService";
 
-type CustomMenuType = {
+type ItemMenuProps = {
     node: any,
-    setCurrentNode: (node: any) => void
+    onMenuEvent?: (event: ContextMenuEvent) => any
 }
 
-const ItemMenu = ({node, setCurrentNode}: CustomMenuType) => {
+const ItemMenu = ({node, onMenuEvent}: ItemMenuProps) => {
     const [showSortMenu, setShowSortMenu] = useState(false);
     const [showNewMenu, setShowNewMenu] = useState(false);
-
-    const onDeleteItem = () => {
-        // deleteItemDialog(node.type).then(async (name: string) => {
-        //     const file = await createFile({name: name} as ScriptFilePayload);
-        //     if (file && file.data) {
-        //         data.push(buildFileNode(file.data));
-        //         onDataChange(data);
-        //     }
-        // })
-        //     .catch(() => {
-        //     });
-    }
 
     const toggleSortMenu = (event: any) => {
         event.preventDefault();
@@ -40,52 +23,60 @@ const ItemMenu = ({node, setCurrentNode}: CustomMenuType) => {
         setShowNewMenu(!showNewMenu);
     }
 
-    const onRename = () => {
-        const decision = async () => {
-            const type = node.children ? "directory" : "file";
-            const res = await decisionModalInput({
-                title: "Rename",
-                text: `Renaming ${type} ${node.name}. Enter new ${type} name.`,
-                acceptButton: {value: "rename", color: "primary"}
-            });
-            if (res !== 'cancel' && res !== node.name) {
-                node.name = res;
-                setCurrentNode((prev: any) => {
-                    return {...prev, name: res}
-                });
+    const dispatchMenuEvent = (event: ContextMenuEvent) => {
+        if (onMenuEvent) onMenuEvent(event);
+    }
+
+    const newParentId = (): number | undefined => {
+        if (node && node.entity) {
+            switch (node.entity.type) {
+                case StoredItemType.FOLDER: {
+                    return node.entity.id;
+                }
+                case StoredItemType.FILE: {
+                    return node.entity.parentFolderId;
+                }
             }
         }
-        decision();
-    }
-
-    const addNewItem = (item: TreeNode) => {
-        if (node.type === StoredItemType.FOLDER) {
-            //node.
-        }
-    }
-
-    const onNewFile = () => {
-        createItemDialog(StoredItemType.FILE)
-            .then(async (name: string) => {
-                const file = await createFile({name: name} as ScriptFilePayload);
-                if (file && file.data) {
-                    addNewItem(buildFileNode(file.data));
-                }
-            })
-            .catch(() => {
-            });
+        return undefined;
     }
 
     const onNewFolder = () => {
-        createItemDialog(StoredItemType.FOLDER)
-            .then(async (name: string) => {
-                const folder = await createFolder({name: name} as StoredFolderPayload);
-                if (folder && folder.data) {
-                    addNewItem(buildFolderNode(folder.data));
-                }
-            })
-            .catch(() => {
-            });
+        dispatchMenuEvent({type: ContextMenuEventType.NewFolder, payload: newParentId()});
+    }
+
+    const onNewFile = () => {
+        dispatchMenuEvent({type: ContextMenuEventType.NewFile, payload: newParentId()});
+    }
+
+    const onOpenFile = () => {
+        if (node && node.entity) {
+            dispatchMenuEvent({type: ContextMenuEventType.OpenFile, payload: node});
+        }
+    }
+
+    const onRenameItem = () => {
+        if (node && node.entity) {
+            dispatchMenuEvent({type: ContextMenuEventType.RenameItem, payload: node.entity});
+        }
+    }
+
+    const onDeleteItem = () => {
+        if (node && node.entity) {
+            dispatchMenuEvent({type: ContextMenuEventType.DeleteItem, payload: node});
+        }
+    }
+
+    const onFolderDetails = () => {
+        if (node && node.entity) {
+            dispatchMenuEvent({type: ContextMenuEventType.FolderDetails, payload: node.entity});
+        }
+    }
+
+    const onFileVersions = (event: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+        if (node && node.entity) {
+            dispatchMenuEvent({type: ContextMenuEventType.FileVersions, payload: node.entity});
+        }
     }
 
     return (
@@ -100,23 +91,23 @@ const ItemMenu = ({node, setCurrentNode}: CustomMenuType) => {
                     <li onClick={onNewFile}>File</li>
                 </ul>
             </li>
-            {!node.children ? <li onClick={() => console.log("test")}>Open</li> : null}
-            <li>Copy</li>
-            <li>Share</li>
-            <li onClick={onRename}>Rename</li>
+            {!node.children ? <li onClick={onOpenFile}>Open</li> : null}
+            <li onClick={onRenameItem}>Rename</li>
             <hr/>
-            {node.children ? <li>Detailed list</li> : <li>Versions</li>}
-            <hr/>
-            <li className="with-submenu" onClick={toggleSortMenu}>
-                <span>Sort</span>
-                <div className="position-right">
-                    <FontAwesomeIcon icon={faCaretRight}/>
-                </div>
-                <ul className={showSortMenu ? "submenu visible-menu" : "submenu hide-menu"}>
-                    <li>Name</li>
-                    <li>Date</li>
-                </ul>
-            </li>
+            {node.children
+                ? <li onClick={onFolderDetails}>Detailed list</li>
+                : <li onClick={onFileVersions}>Versions</li>}
+            {/*<hr/>*/}
+            {/*<li className="with-submenu" onClick={toggleSortMenu}>*/}
+            {/*    <span>Sort</span>*/}
+            {/*    <div className="position-right">*/}
+            {/*        <FontAwesomeIcon icon={faCaretRight}/>*/}
+            {/*    </div>*/}
+            {/*    <ul className={showSortMenu ? "submenu visible-menu" : "submenu hide-menu"}>*/}
+            {/*        <li>Name</li>*/}
+            {/*        <li>Date</li>*/}
+            {/*    </ul>*/}
+            {/*</li>*/}
             <hr/>
             <li onClick={onDeleteItem}>Delete</li>
         </ul>

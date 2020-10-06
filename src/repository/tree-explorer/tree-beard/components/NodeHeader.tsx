@@ -10,7 +10,8 @@ type NodeHeaderProps = {
     node: any
     parent: any
     onClick?: any,
-    onSelect?: any
+    onSelect?: any,
+    onMenuEvent?: any
 }
 
 
@@ -40,7 +41,7 @@ class NodeHeader extends Component<NodeHeaderProps> {
 
     render() {
         const {
-            animations, decorators, node, parent, onClick, style, onSelect, customStyles
+            animations, decorators, node, parent, onClick, style, onSelect, customStyles, onMenuEvent
         } = this.props;
         const {active, children} = node;
         const terminal = !children;
@@ -61,6 +62,7 @@ class NodeHeader extends Component<NodeHeaderProps> {
                 onSelect={onSelect}
                 terminal={terminal}
                 style={styles}
+                onMenuEvent={onMenuEvent}
             />
         );
     }

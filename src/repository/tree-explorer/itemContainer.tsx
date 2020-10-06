@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { VelocityComponent } from "velocity-react";
 import ContextMenu from "./context-menu/ContextMenu";
 import ItemMenu from "./itemMenu";
+import { ContextMenuEvent } from "./treeExplorerService";
 
-type ContainerProps = {
+type ItemContainerProps = {
     customStyles: any,
     style: any,
     decorators: any,
@@ -12,11 +13,14 @@ type ContainerProps = {
     onSelect: any,
     animations: any,
     node: any,
-    parent: any
+    parent: any,
+    onMenuEvent?: (event: ContextMenuEvent) => any
 };
 
-const ItemContainer = ({customStyles, style, decorators, terminal, onSelect, onClick, animations, node, parent}: ContainerProps) => {
-    const [currentNode, setCurrentNode] = useState(node);
+const ItemContainer = ({
+                           customStyles, style, decorators, terminal,
+                           onSelect, onClick, animations, node, parent, onMenuEvent
+                       }: ItemContainerProps) => {
     const divRef = useRef(null);
 
     const renderToggle = () => {
@@ -35,18 +39,13 @@ const ItemContainer = ({customStyles, style, decorators, terminal, onSelect, onC
         return <decorators.Toggle style={style.toggle} onClick={onClick}/>;
     }
 
-    useEffect(() => {
-        // console.log(parent);
-    }, [])
-
     return (
         <>
-            <div ref={divRef!} style={currentNode.active ? {...style.container} : {...style.link}} onClick={onClick}>
+            <div ref={divRef!} style={node.active ? {...style.container} : {...style.link}} onClick={onSelect}>
                 {!terminal ? renderToggle() : null}
-                <decorators.Header node={currentNode} style={style.header} customStyles={customStyles}
-                                   onSelect={onSelect}/>
+                <decorators.Header node={node} style={style.header} customStyles={customStyles}/>
             </div>
-            <ContextMenu menu={<ItemMenu node={currentNode} setCurrentNode={setCurrentNode}/>}
+            <ContextMenu menu={<ItemMenu node={node} onMenuEvent={onMenuEvent}/>}
                          domElementRef={divRef!}/>
         </>
     );

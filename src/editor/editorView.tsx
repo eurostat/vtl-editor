@@ -1,21 +1,25 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { appliedTheme, triggerResize } from "../main-view/viewSlice";
 import { SdmxResult } from "../sdmx/entity/SdmxResult";
+import { readState } from "../utility/store";
 import DetailPane from "./detail-pane/detailPane";
 import {
     appliedVtlVersion,
+    clearLoaded,
+    editedContent, fileContent,
     listErrors,
     loadedFile,
     movedCursor,
     updateContent,
     updateCursor,
     updateEdited,
-    updateName,
+    updateFileMeta,
     updateSaved
 } from './editorSlice';
 import TitleBar from "./title-bar/titleBar";
-import VtlEditor, { CursorPosition, VtlError } from "./vtl-editor/vtlEditor";
+import { CursorPosition, VtlError } from "./vtl-editor";
+import VtlEditor from "./vtl-editor/vtlEditor";
 
 type EditorViewProps = {
     sdmxResult: SdmxResult | undefined,
@@ -34,12 +38,23 @@ const EditorView = ({sdmxResult, errorBoxProps}: EditorViewProps) => {
     const theme = useSelector(appliedTheme);
     const vtlVersion = useSelector(appliedVtlVersion);
     const resizeLayout = useSelector(triggerResize);
+    const [file, setFile] = useState<{ content: string }>();
 
     useEffect(() => {
-        dispatch(updateEdited(loaded.edited));
-        dispatch(updateName(loaded.name));
-        dispatch(updateSaved(loaded.content));
+        if (loaded) {
+            setFile({content: loaded.content});
+            dispatch(updateFileMeta(loaded));
+            dispatch(updateSaved(loaded.content));
+            dispatch(clearLoaded());
+        }
     }, [loaded, dispatch]);
+
+    useEffect(() => {
+        if (!loaded) setFile({content: readState(editedContent)});
+        return () => {
+            dispatch(updateEdited(readState(fileContent)));
+        }
+    }, []);
 
     const onCursorChange = (position: CursorPosition) => {
         dispatch(updateCursor(position));
@@ -53,13 +68,12 @@ const EditorView = ({sdmxResult, errorBoxProps}: EditorViewProps) => {
         dispatch(listErrors(errors));
     }
 
-    console.log("editor view render");
     return (
         <div className={`vtl-box ${theme}`} style={classes}>
             <TitleBar/>
             <div id="vtl-container" className="vtl-container">
                 <VtlEditor onContentChange={onContentChange} onCursorChange={onCursorChange} onListErrors={onListErrors}
-                           loaded={loaded} movedCursor={cursor} theme={theme} vtlVersion={vtlVersion}
+                           file={file} movedCursor={cursor} theme={theme} vtlVersion={vtlVersion}
                            sdmxResult={sdmxResult} resizeLayout={resizeLayout}/>
             </div>
             <DetailPane {...errorBoxProps} />

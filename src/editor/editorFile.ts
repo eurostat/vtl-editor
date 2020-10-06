@@ -1,23 +1,21 @@
 export const DEFAULT_FILENAME = "untitled.vtl";
 
-export interface StoredFile {
-    content?: string,
-    edited?: boolean,
-    theme?: string,
-    showErrorBox?: boolean,
-    name?: string
-}
-
 export interface EditorFile {
     name: string,
     content: string,
-    edited: boolean
+    changed: boolean,
+    remoteId: number,
+    optLock: number,
+    version: number
 }
 
-export const buildFile = (name?: string, content?: string, edited?: boolean): EditorFile => {
+export const buildFile = (name?: string, content?: string, changed?: boolean, remoteId?: number, optLock?: number, version?: number): EditorFile => {
     return {
         name: name || DEFAULT_FILENAME,
         content: content || "",
-        edited: edited || false
+        changed: changed || false,
+        remoteId: remoteId || 0,
+        optLock: optLock || 0,
+        version: version || 0
     } as EditorFile;
 }

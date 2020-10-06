@@ -17,9 +17,10 @@ import { SdmxRegistry } from "../../sdmx/entity/SdmxRegistry";
 import { DataStructureInfo } from "../../sdmx/entity/SdmxResult";
 import { errorCount } from "../editorSlice";
 import CursorIndicator from "../status-bar/cursorIndicator";
-import VersionIndicator from "../status-bar/versionIndicator";
-import ErrorList from "./errorList";
+import FileVersionIndicator from "../status-bar/fileVersionIndicator";
+import VtlVersionIndicator from "../status-bar/vtlVersionIndicator";
 import "./detailPane.scss";
+import ErrorList from "./errorList";
 
 type DetailPaneProps = {
     setTempCursor: (position: Position) => void,
@@ -180,8 +181,9 @@ const DetailPane = ({dataStructureInfo, registry, dataStructure}: DetailPaneProp
                     }
                 </div>
                 <div className="position-right">
+                    <FileVersionIndicator/>
                     <CursorIndicator/>
-                    <VersionIndicator/>
+                    <VtlVersionIndicator/>
                 </div>
             </div>
         </>

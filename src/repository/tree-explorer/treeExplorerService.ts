@@ -1,12 +1,19 @@
 import { TreeNode } from "react-treebeard";
-import { decisionModal } from "../../main-view/decision-dialog/decisionModal";
-import { decisionModalInput } from "../../main-view/decision-dialog/DecisionModalInput";
+import { decisionDialog } from "../../main-view/decision-dialog/decisionDialog";
+import { inputDialog } from "../../main-view/decision-dialog/InputDialog";
 import { StoredItemTransfer } from "../entity/storedItemTransfer";
 import { StoredItemType } from "../entity/storedItemType";
 
 export enum ContextMenuEventType {
+    Refresh,
     NewFile,
-    NewFolder
+    NewFolder,
+    OpenFile,
+    SaveFile,
+    RenameItem,
+    DeleteItem,
+    FolderDetails,
+    FileVersions
 }
 
 export interface ContextMenuEvent {
@@ -16,12 +23,13 @@ export interface ContextMenuEvent {
     payload?: any
 }
 
-export const createItemDialog = (type: StoredItemType) => {
+export const createItemDialog = (type: StoredItemType, input?: string) => {
     const decision = async () => {
         const descriptor = type.toLocaleLowerCase();
-        const result = await decisionModalInput({
+        const result = await inputDialog({
             title: "Create New",
             text: `Enter new ${descriptor} name.`,
+            value: input || "",
             acceptButton: {value: "create", color: "primary"}
         });
         return result !== "cancel"
@@ -34,14 +42,35 @@ export const createItemDialog = (type: StoredItemType) => {
 export const deleteItemDialog = (type: StoredItemType) => {
     const decision = async () => {
         const descriptor = type.toLocaleLowerCase();
-        const result = await decisionModal({
+        const result = await decisionDialog({
             title: "Warning",
-            text: `Do you really want to delete this ${descriptor}?`
+            text: `Do you really want to delete this ${descriptor}?`,
+            settings: {
+                buttons: [
+                    {value: "yes", color: "primary"},
+                    {value: "no", color: "secondary"}
+                ]
+            }
         });
         return result === "yes"
             ? Promise.resolve()
             : Promise.reject();
+    }
+    return decision();
+}
 
+export const renameItemDialog = (type: StoredItemType, name: string) => {
+    const decision = async () => {
+        const descriptor = type.toLocaleLowerCase();
+        const result = await inputDialog({
+            title: "Rename",
+            text: `Renaming ${descriptor} "${name}". Enter new name.`,
+            value: name,
+            acceptButton: {value: "rename", color: "primary"}
+        });
+        return result !== "cancel"
+            ? Promise.resolve(result)
+            : Promise.reject();
     }
     return decision();
 }
@@ -50,6 +79,7 @@ export const buildFolderNode = (folder: StoredItemTransfer) => {
     return {
         name: folder.name,
         id: "F" + folder.id,
+        parentId: folder.parentFolderId ? "F" + folder.parentFolderId : undefined,
         toggled: false,
         children: [],
         entity: folder,
@@ -61,7 +91,22 @@ export const buildFileNode = (file: StoredItemTransfer) => {
     return {
         name: file.name,
         id: "f" + file.id,
+        parentId: file.parentFolderId ? "F" + file.parentFolderId : undefined,
         toggled: false,
         entity: file
     } as TreeNode;
+}
+
+export const buildNode = (item: StoredItemTransfer) => {
+    switch (item.type) {
+        case StoredItemType.FOLDER: {
+            return buildFolderNode(item);
+        }
+        case StoredItemType.FILE: {
+            return buildFileNode(item);
+        }
+        default: {
+            return {name: item.name} as TreeNode;
+        }
+    }
 }

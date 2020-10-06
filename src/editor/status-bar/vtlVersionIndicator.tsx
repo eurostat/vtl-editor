@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { appliedVtlVersion } from "../editorSlice";
 import { languageVersions } from "../settings";
 
-const VersionIndicator = () => {
+const VtlVersionIndicator = () => {
     const vtlVersion = useSelector(appliedVtlVersion);
     const vtlVersionName = languageVersions.find(version => version.code === vtlVersion)!.name;
     return (
@@ -16,4 +16,4 @@ const VersionIndicator = () => {
     )
 }
 
-export default VersionIndicator;
+export default VtlVersionIndicator;

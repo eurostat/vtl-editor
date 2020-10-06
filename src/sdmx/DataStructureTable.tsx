@@ -178,17 +178,6 @@ const DataStructureTable = forwardRef(({
     return (
         <>
             <Container>
-                <Row style={{marginBottom: "5px"}}>
-                    <Col xs={12} className="justify-content-end">
-                        {registry && !dataStructuresLoading ?
-                            <Tooltip title="Refresh DSD's" placement="right" arrow>
-                                <button onClick={onDataStructuresRefresh}>
-                                    <FontAwesomeIcon className="refresh-icon" icon={faSyncAlt}/>
-                                </button>
-                            </Tooltip>
-                            : null}
-                    </Col>
-                </Row>
                 <Row className="justify-content-xs-center">
                     <Col xs={12} className="sdmx-table">
                         <MaterialTable
@@ -209,18 +198,40 @@ const DataStructureTable = forwardRef(({
                                     showCodeListPreview={false}
                                 />)
                             }}
+                            actions={[
+                                {
+                                    icon: () => <FontAwesomeIcon icon={faSyncAlt}
+                                                                 className="refresh-icon"
+                                                                 style={{fontSize: "18.2px"}}/>,
+                                    tooltip: 'Refresh definition list',
+                                    position: 'toolbar',
+                                    onClick: onDataStructuresRefresh
+                                },
+                                {
+                                    icon: () => <FontAwesomeIcon icon={faSyncAlt}
+                                                                 className="refresh-icon"
+                                                                 style={{fontSize: "18.2px"}}/>,
+                                    tooltip: 'Refresh definition list',
+                                    position: 'toolbarOnSelect',
+                                    onClick: onDataStructuresRefresh
+                                }
+                            ]}
                         />
                     </Col>
                 </Row>
                 <Row style={{marginBottom: "20px"}}>
                     <Col xs={12} className="justify-content-end">
-                        <button className="btn btn-primary default-button button-margin-right"
-                                onClick={onCodeListsFetch}>
-                            <span>OK</span>
-                        </button>
-                        <button className="btn btn-primary default-button outline-button" onClick={onCancel}>
-                            <span>Cancel</span>
-                        </button>
+                        <Tooltip title="Import selected definition" placement="top" arrow>
+                            <button className="btn btn-primary default-button button-margin-right"
+                                    onClick={onCodeListsFetch}>
+                                <span>Import</span>
+                            </button>
+                        </Tooltip>
+                        <Tooltip title="Cancel importing" placement="top" arrow>
+                            <button className="btn btn-primary default-button outline-button" onClick={onCancel}>
+                                <span>Cancel</span>
+                            </button>
+                        </Tooltip>
                     </Col>
                 </Row>
             </Container>

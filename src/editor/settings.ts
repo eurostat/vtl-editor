@@ -14,9 +14,9 @@ export interface VersionType {
 
 export const themes = [
     {name: "VTL", code: "vtl"},
-    {name: "Light", code: "vs"},
-    {name: "Dark", code: "vs-dark"},
-    {name: "High Contrast Dark", code: "hc-black"},
+    {name: "Light", code: "vtl-vs"},
+    {name: "Dark", code: "vtl-dark"},
+    {name: "High Contrast Dark", code: "vtl-black"},
 ];
 
 export const defaultTheme = themes[0];

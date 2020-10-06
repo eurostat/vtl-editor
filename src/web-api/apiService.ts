@@ -12,46 +12,68 @@ export enum RequestMethod {
     TRACE = "TRACE"
 }
 
-export async function sendGetRequest(url: string) {
-    return sendRequest(url, RequestMethod.GET);
+export async function sendGetRequest(url: string, accept?: string) {
+    const headers = accept ? {'Accept': accept} : undefined;
+    return sendRequest(url, RequestMethod.GET, headers);
 }
 
-export async function sendPostRequest(url: string, body: object) {
-    return sendRequest(url, RequestMethod.POST, body, {'Content-Type': 'application/json'});
+export async function sendPostRequest(url: string, payload: object | FormData, contentType?: string) {
+    const headers = contentType === "application/json" ? {'Content-Type': 'application/json'} : undefined;
+    const body = contentType === "application/json" ? JSON.stringify(payload) : payload;
+    return sendRequest(url, RequestMethod.POST, headers, body);
 }
 
-export async function sendPutRequest(url: string, body: object) {
-    return sendRequest(url, RequestMethod.PUT, body, {'Content-Type': 'application/json'});
+export async function sendPutRequest(url: string, payload: object | FormData, contentType?: string) {
+    const headers = contentType === "application/json" ? {'Content-Type': 'application/json'} : undefined;
+    const body = contentType === "application/json" ? JSON.stringify(payload) : payload;
+    return sendRequest(url, RequestMethod.PUT, headers, body);
 }
 
 export async function sendDeleteRequest(url: string) {
     return sendRequest(url, RequestMethod.DELETE);
 }
 
-async function sendRequest(url: string, method?: RequestMethod, body?: object, headers?: Record<string, string>): Promise<ApiResponse<any>> {
+async function sendRequest(url: string, method?: RequestMethod, headers?: Record<string, string>,
+                           body?: string | object): Promise<ApiResponse<any>> {
     Log.info((method ? method : "GET") + " request to URL " + url, "ApiService");
     const init = {
         method: method ? method : RequestMethod.GET,
-        body: body ? JSON.stringify(body) : undefined,
+        body: body,
+        mode: "cors",
         headers: headers ? headers : undefined
-    };
+    } as RequestInit;
     try {
-        return handleResponse(await fetch(url, init));
+        const response: Response = await fetch(url, init);
+        const data = await parseData(response);
+        if (response.bodyUsed && data === undefined) return Promise.reject(handleError(new Error("Unknown data received")));
+        return response.ok
+            ? handleResponse(response, data)
+            : Promise.reject(handleError(new Error(data.error)));
     } catch (error) {
         return Promise.reject(handleError(error));
     }
 }
 
-export async function handleResponse(response: Response): Promise<ApiResponse<any>> {
-    const data = await response.json();
+export async function parseData(response: Response) {
+    const contentType = response.headers.get("content-type") || "";
+    const hasJson = contentType.indexOf("application/json") !== -1;
+    const hasBlob = contentType.indexOf("application/octet-stream") !== -1;
+    return hasJson
+        ? await response.json()
+        : hasBlob
+            ? await response.blob()
+            : undefined;
+}
+
+export function handleResponse(response: Response, data: any) {
     const result: ApiResponse<any> = Object.assign({}, {
         success: response.ok,
         status: response.status,
         message: response.statusText
     });
-    return response.ok
-        ? Object.assign(result, {data: data})
-        : Object.assign(result, {error: data});
+    if (response.ok) result.data = data;
+    else result.error = data;
+    return result;
 }
 
 export function handleError(error: Error): ApiResponse<any> {

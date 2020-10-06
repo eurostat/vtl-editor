@@ -1,24 +1,24 @@
-import React, {useEffect, useRef, useState} from "react";
-import {getAgencies, getSdmxRegistries} from "../web-api/sdmxApi";
-import {CircularProgress, FormControl, InputLabel, MenuItem, Select, TextField, Tooltip} from "@material-ui/core";
-import {Autocomplete} from "@material-ui/lab";
-import {Col, Container, Row} from "react-bootstrap";
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import { faChevronDown, faFilter, faSyncAlt, faUndoAlt } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { CircularProgress, FormControl, InputLabel, MenuItem, Select, TextField, Tooltip } from "@material-ui/core";
 import Checkbox from '@material-ui/core/Checkbox';
-import {SdmxRegistry, SdmxRegistryObject} from "./entity/SdmxRegistry";
-import {Agency, AgencyObject} from "./entity/Agency";
-import {FinalStructureEnum} from "./entity/DataStructure";
-import "./sdmxView.scss"
-import {SDMX_AGENCIES, SDMX_REGISTIRES} from "../web-api/apiConsts";
-import {faChevronDown, faFilter, faSyncAlt, faUndoAlt} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {useSnackbar} from "notistack";
-import {ApiResponse} from "../web-api/apiResponse";
-import {ApiCache} from "./ApiCache";
-import DataStructureTable from "./DataStructureTable";
-import {SdmxResult} from "./entity/SdmxResult";
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import { Autocomplete } from "@material-ui/lab";
+import { useSnackbar } from "notistack";
+import React, { useEffect, useRef, useState } from "react";
+import { Col, Container, Row } from "react-bootstrap";
 import PageHeader from "../main-view/page-header/PageHeader";
+import { SDMX_AGENCIES, SDMX_REGISTIRES } from "../web-api/apiConsts";
+import { ApiResponse } from "../web-api/apiResponse";
+import { getAgencies, getSdmxRegistries } from "../web-api/sdmxApi";
+import { ApiCache } from "./ApiCache";
+import DataStructureTable from "./DataStructureTable";
+import { Agency, AgencyObject } from "./entity/Agency";
+import { FinalStructureEnum } from "./entity/DataStructure";
+import { SdmxRegistry, SdmxRegistryObject } from "./entity/SdmxRegistry";
+import { SdmxResult } from "./entity/SdmxResult";
+import "./sdmxView.scss"
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small"/>;
 const checkedIcon = <CheckBoxIcon fontSize="small"/>;
@@ -78,7 +78,8 @@ const SDMXView = ({
 
     useEffect(() => {
         const fetch = async () => {
-            setRegistries(await requestCache.checkIfExistsInMapOrAdd(SDMX_REGISTIRES, fetchRegistries));
+            setRegistries(await requestCache.checkIfExistsInMapOrAdd(
+                SDMX_REGISTIRES, fetchRegistries));
             setRegistriesLoading(false);
         }
         fetch();
@@ -88,13 +89,13 @@ const SDMXView = ({
         const fetch = async () => {
             if (registry) {
                 setAgenciesLoading(true);
-                setAgencies(await requestCache.checkIfExistsInMapOrAdd(SDMX_AGENCIES(registry.id), fetchAgencies));
+                setAgencies(await requestCache.checkIfExistsInMapOrAdd(
+                    SDMX_AGENCIES(registry.id), fetchAgencies));
                 setAgenciesLoading(false);
             }
         }
         fetch();
     }, [registry]);
-
 
     const onRegistriesRefresh = () => {
         setSelectedAgencies([]);
@@ -103,9 +104,7 @@ const SDMXView = ({
             setRegistriesLoading(true);
             setRegistries(await requestCache.clearCacheAndAdd(SDMX_REGISTIRES, fetchRegistries));
             setRegistriesLoading(false);
-            enqueueSnackbar(`Registries refreshed successfully!`, {
-                variant: "success"
-            });
+            enqueueSnackbar(`Registries refreshed successfully.`, {variant: "success"});
         }
         fetch();
     };
@@ -119,18 +118,16 @@ const SDMXView = ({
         const fetch = async () => {
             setAgenciesLoading(true);
             setSelectedAgencies([]);
-            setAgencies(await requestCache.clearCacheAndAdd(SDMX_AGENCIES(registry!.id), fetchAgencies));
+            setAgencies(await requestCache.clearCacheAndAdd(
+                SDMX_AGENCIES(registry!.id), fetchAgencies));
             setAgenciesLoading(false);
         }
         if (registry) {
             fetch();
-            enqueueSnackbar(`Agencies for ${registry.name} refreshed successfully!`, {
-                variant: "success"
-            });
+            enqueueSnackbar(`Agencies from ${registry.name} refreshed successfully.`,
+                {variant: "success"});
         } else {
-            enqueueSnackbar(`Specify registry to refresh!`, {
-                variant: "error"
-            });
+            enqueueSnackbar(`Specify registry to refresh.`, {variant: "error"});
         }
     }
 
@@ -147,16 +144,9 @@ const SDMXView = ({
         setFinalType(event.target.value as FinalStructureEnum);
     };
 
-
-    const onRevert = () => {
-        if (prevFilteredState) {
-            setRegistry(prevFilteredState.registry)
-            setSelectedAgencies(prevFilteredState.agencies)
-            setFinalType(prevFilteredState.final);
-            enqueueSnackbar(`Values reverted!`, {
-                variant: "success"
-            });
-        }
+    const onClear = () => {
+        setSelectedAgencies([]);
+        setFinalType(FinalStructureEnum.ALL);
     }
 
     const onFilterData = () => {
@@ -178,7 +168,7 @@ const SDMXView = ({
 
     return (
         <div className="sdmx-container">
-            <PageHeader name={"Import SDMX"}/>
+            <PageHeader name={"Import Data Structure Definition"}/>
             <Container>
                 <Row className="justify-content-md-left">
                     <Col xs={2} className="sdmx-option">
@@ -313,25 +303,32 @@ const SDMXView = ({
                         </Row>
                         <Row className="justify-content-md-center" style={{marginBottom: "10px"}}>
                             <Col xs={12}>
-                                <button className={`btn btn-primary default-button button-margin-right`}
-                                        onClick={onFilterData}>
-                                    <FontAwesomeIcon icon={faFilter}/>
-                                    <span>Filter</span>
-                                </button>
-                                <button className="btn btn-primary default-button outline-button" onClick={onRevert}>
-                                    <FontAwesomeIcon icon={faUndoAlt}/>
-                                    <span>Revert</span>
-                                </button>
+                                <Tooltip title="Apply filter" placement="top" arrow>
+                                    <button className={`btn btn-primary default-button button-margin-right`}
+                                            onClick={onFilterData}>
+                                        <FontAwesomeIcon icon={faFilter}/>
+                                        <span>Apply</span>
+                                    </button>
+                                </Tooltip>
+                                <Tooltip title="Clear filter" placement="top" arrow>
+                                    <button className="btn btn-primary default-button outline-button"
+                                            onClick={onClear}>
+                                        <FontAwesomeIcon icon={faUndoAlt}/>
+                                        <span>Clear</span>
+                                    </button>
+                                </Tooltip>
                             </Col>
                         </Row>
                     </div>
                 </div>
                 <Row style={{marginBottom: "20px"}}>
                     <Col xs={12} className="justify-content-end">
-                        <button className={`btn btn-primary default-button`}
-                                onClick={onFilterData}>
-                            <span>Search</span>
-                        </button>
+                        <Tooltip title="Display data structure definitions" placement="top" arrow>
+                            <button className={`btn btn-primary default-button`}
+                                    onClick={onFilterData}>
+                                <span>Show Definitions</span>
+                            </button>
+                        </Tooltip>
                     </Col>
                 </Row>
             </Container>
@@ -340,7 +337,6 @@ const SDMXView = ({
             </div>
         </div>
     );
-
 
 };
 export default SDMXView;

@@ -1,18 +1,18 @@
+import { useSnackbar } from "notistack";
 import React from "react";
-import {createModal} from "react-modal-promise";
-import {Button, Modal, ModalBody, ModalFooter} from "react-bootstrap";
+import { Button, Modal, ModalBody, ModalFooter } from "react-bootstrap";
 import ModalHeader from "react-bootstrap/ModalHeader";
-import {useSnackbar} from "notistack";
+import { createModal } from "react-modal-promise";
 
 type DecisionModalInputProps = {
     open: any,
     close: any,
     title: string,
     text: string,
+    value?: string,
     acceptButton?: DecisionModalButton,
     cancelButton?: DecisionModalButton,
 }
-
 
 type DecisionModalButton = {
     value: string,
@@ -20,7 +20,7 @@ type DecisionModalButton = {
     className?: string
 }
 
-const DecisionModalInput = ({open, close, text, title, acceptButton, cancelButton}: DecisionModalInputProps) => {
+const InputDialog = ({open, close, text, value, title, acceptButton, cancelButton}: DecisionModalInputProps) => {
     const {enqueueSnackbar} = useSnackbar();
     const onAcceptButton = () => {
         const inputEl = document.getElementById("inputVal") as HTMLInputElement;
@@ -35,7 +35,6 @@ const DecisionModalInput = ({open, close, text, title, acceptButton, cancelButto
     };
     const onCancelButton = () => close(cancelButton?.value)
 
-
     const firstLetterUpperCase = (value: string) => {
         return value.charAt(0).toUpperCase() + value.slice(1);
     }
@@ -47,7 +46,7 @@ const DecisionModalInput = ({open, close, text, title, acceptButton, cancelButto
             <ModalBody>
                 <div>
                     <input type="text" className="form-control" id="inputVal" aria-describedby="inputVal"
-                           placeholder="Enter value"/>
+                           placeholder="Enter value" defaultValue={value}/>
                 </div>
             </ModalBody>
             <ModalFooter>
@@ -64,7 +63,7 @@ const DecisionModalInput = ({open, close, text, title, acceptButton, cancelButto
     );
 };
 
-DecisionModalInput.defaultProps = {
+InputDialog.defaultProps = {
     acceptButton: {value: "accept", color: "primary"} as DecisionModalButton,
     cancelButton: {
         value: "cancel",
@@ -73,5 +72,4 @@ DecisionModalInput.defaultProps = {
     } as DecisionModalButton
 }
 
-
-export const decisionModalInput = createModal(DecisionModalInput);
+export const inputDialog = createModal(InputDialog);

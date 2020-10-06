@@ -1,10 +1,11 @@
+import { createMuiTheme } from "@material-ui/core";
+import { MuiThemeProvider } from "@material-ui/core/styles";
 import MaterialTable, { DetailPanel } from "material-table";
 import React, { useEffect, useState } from "react";
 import { SDMX_DSD } from "../../web-api/apiConsts";
 import { fetchDataStructureDefinition } from "../../web-api/sdmxApi";
 import { ApiCache } from "../ApiCache";
 import CodeListDetailPanel from "../code-list-details/CodeListDetailPanel";
-import { CodeList } from "../entity/CodeList";
 import { DataStructure } from "../entity/DataStructure";
 import { BaseStruct, DataStructureDefinition } from "../entity/DataStructureDefinition";
 import { SdmxRegistry } from "../entity/SdmxRegistry";
@@ -32,8 +33,10 @@ const DataStructureDetailPanel = ({registry, dataStructure, showCodeListPreview}
     useEffect(() => {
         const fetch = async () => {
             setLoadingDataStructureDefinition(true);
-            const dsd: DataStructureDefinition = await requestCache.checkIfExistsInMapOrAdd(SDMX_DSD(registry.id, dataStructure.agencyId, dataStructure.id, dataStructure.version)
-                , async () => await fetchDataStructureDefinition(registry!, dataStructure));
+            const dsd: DataStructureDefinition = await requestCache.checkIfExistsInMapOrAdd(
+                SDMX_DSD(registry.id, dataStructure.agencyId, dataStructure.id, dataStructure.version),
+                async () => await fetchDataStructureDefinition(registry!, dataStructure));
+
             const mapDimensions = (): DataStructureTableRow[] => {
                 return mapToDataStructureTableRow(dsd.attributes || [], "attribute");
             }
@@ -41,14 +44,30 @@ const DataStructureDetailPanel = ({registry, dataStructure, showCodeListPreview}
             const mapAttributes = (): DataStructureTableRow[] => {
                 return mapToDataStructureTableRow(dsd.dimensions || [], "dimension");
             }
+
             const mapToDataStructureTableRow = (array: BaseStruct[], dataType: DataStructureTableRowType): DataStructureTableRow[] => {
                 return (array || []).map(baseStruct => {
                     return {type: dataType, ...baseStruct}
                 });
             }
 
-            const structs: DataStructureTableRow[] = mapDimensions()
-                .concat(mapAttributes());
+            const mapBaseFields = (): DataStructureTableRow[] => {
+                const empty: BaseStruct = {id: "", name: "", structureType: {type: ""}}
+                const fields: DataStructureTableRow[] = [];
+                if (dsd) {
+                    if (dsd.primaryMeasure) {
+                        empty.id = dsd.primaryMeasure;
+                        fields.push({type: "primaryMeasure", ...empty})
+                    }
+                    if (dsd.timeDimension) {
+                        empty.id = dsd.timeDimension;
+                        fields.push({type: "timeDimension", ...empty})
+                    }
+                }
+                return fields;
+            }
+
+            const structs: DataStructureTableRow[] = mapBaseFields().concat(mapDimensions(), mapAttributes());
             setStructures(structs);
             setLoadingDataStructureDefinition(false);
         }
@@ -70,19 +89,31 @@ const DataStructureDetailPanel = ({registry, dataStructure, showCodeListPreview}
             : {}
     }
 
+    const muiTheme = createMuiTheme({
+        overrides: {
+            MuiTableCell: {
+                root: {
+                    padding: '8px'
+                },
+            }
+        }
+    });
+
     return (
         <div className="dsd-detail-panel">
-            <MaterialTable
-                isLoading={loadingDataStructureDefinition}
-                columns={dataPanelColumns}
-                data={structures}
-                options={{
-                    showTextRowsSelected: false,
-                    showTitle: false,
-                    pageSize: 10
-                }}
-                {...conditionalRenderCodeListPreview(showCodeListPreview)}
-            />
+            <MuiThemeProvider theme={muiTheme}>
+                <MaterialTable
+                    isLoading={loadingDataStructureDefinition}
+                    columns={dataPanelColumns}
+                    data={structures}
+                    options={{
+                        showTextRowsSelected: false,
+                        showTitle: false,
+                        pageSize: 10
+                    }}
+                    {...conditionalRenderCodeListPreview(showCodeListPreview)}
+                />
+            </MuiThemeProvider>
         </div>
     )
 }

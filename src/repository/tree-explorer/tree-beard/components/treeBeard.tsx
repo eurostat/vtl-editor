@@ -8,17 +8,18 @@ import defaultDecorators from './Decorators';
 import TreeNode from './TreeNode/treeNode';
 
 type TreeBeardProps = {
+    data: any[],
     style?: any,
     customStyles?: any,
-    data: any[],
     animations?: any,
+    decorators?: any,
     onToggle?: any,
     onSelect?: any,
-    decorators?: any
+    onMenuEvent?: any
 }
 
 const TreeBeard = ({
-                       animations, decorators, data, onToggle, style, onSelect, customStyles
+                       animations, decorators, data, onToggle, style, onSelect, customStyles, onMenuEvent
                    }: TreeBeardProps) => (
 
     <Ul style={{...defaultTheme.tree.base, ...style.tree.base}}>
@@ -33,6 +34,7 @@ const TreeBeard = ({
                 customStyles={customStyles}
                 key={node.id || randomString()}
                 style={{...defaultTheme.tree.node, ...style.tree.node}}
+                onMenuEvent={onMenuEvent}
             />
         ))}
     </Ul>

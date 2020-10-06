@@ -1,7 +1,7 @@
 import React from "react";
-import {createModal} from "react-modal-promise";
-import {Button, Modal, ModalBody, ModalFooter} from "react-bootstrap";
+import { Button, Modal, ModalBody, ModalFooter } from "react-bootstrap";
 import ModalHeader from "react-bootstrap/ModalHeader";
+import { createModal } from "react-modal-promise";
 
 type DecisionModalProps = {
     open: any,
@@ -21,7 +21,7 @@ export type DecisionModalButton = {
     className?: string
 }
 
-const DecisionModal = ({open, close, text, title, settings}: DecisionModalProps) => {
+const DecisionDialog = ({open, close, text, title, settings}: DecisionModalProps) => {
     return (
         <Modal show={open}>
             <ModalHeader>{title}</ModalHeader>
@@ -38,7 +38,8 @@ const DecisionModal = ({open, close, text, title, settings}: DecisionModalProps)
         </Modal>
     );
 };
-DecisionModal.defaultProps = {
+
+DecisionDialog.defaultProps = {
     settings: {
         buttons: [
             {value: "yes", color: "primary"} as DecisionModalButton,
@@ -48,5 +49,4 @@ DecisionModal.defaultProps = {
     }
 }
 
-
-export const decisionModal = createModal(DecisionModal);
+export const decisionDialog = createModal(DecisionDialog);

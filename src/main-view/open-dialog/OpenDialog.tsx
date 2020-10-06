@@ -18,7 +18,6 @@ const OpenDialog = ({onClose, onLoad}: any) => {
             enqueueSnackbar("Only one selected file can be loaded.", {
                 variant: "warning"
             });
-
         }
         if (acceptedFiles.length > 0) {
             let acceptedFile = acceptedFiles[0];
@@ -33,7 +32,6 @@ const OpenDialog = ({onClose, onLoad}: any) => {
                 variant: "warning"
             });
         }
-
     }, []);
 
     const {getRootProps, getInputProps} = useDropzone({onDrop, accept: ".vtl"});
@@ -61,7 +59,7 @@ const OpenDialog = ({onClose, onLoad}: any) => {
             reader.onerror = function(e) {
                 reject(e)
             };
-            reader.readAsText(file)
+            reader.readAsText(file);
         })
     }
 
@@ -72,9 +70,7 @@ const OpenDialog = ({onClose, onLoad}: any) => {
     const handleAddFiles = async () => {
         if (files.length > 0) {
             resolveAllFiles().then(result => onLoad(result, files[0].name));
-            enqueueSnackbar(`File opened successfully.`, {
-                variant: "success"
-            });
+            enqueueSnackbar(`File "${files[0].name}" opened successfully.`, {variant: "success"});
             handleClose();
         } else {
             enqueueSnackbar(`Please select the file first.`, {

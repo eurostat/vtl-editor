@@ -1,7 +1,4 @@
-$base-color: #004494;
-$leftNavWidth: 50px;
-$centerWidth: calc(100% - #{$leftNavWidth});
-$settingsNavWidth: 270px;
+@import "variables";
 
 body {
   overflow: hidden;
@@ -154,26 +151,27 @@ button {
 }
 
 
-
-
 .middle-container {
   display: inline-block;
   vertical-align: top;
   width: calc(#{$centerWidth} - #{$settingsNavWidth});
-  height: calc(100vh - 50px);
+  height: calc(100vh - #{$navbarHeight} - #{$barHeight});
+  position: relative;
 }
-.middle-container.vtl, .middle-container.default{
+
+.middle-container.vtl, .middle-container.default {
   background-color: white;
 }
 
-.middle-container.vs-dark, .middle-container.hc-black{
+.middle-container.vs-dark, .middle-container.hc-black {
   background-color: #1e1e1e;
+
   .error-hr {
     border-top: 2px solid rgba(215, 215, 215, 0.1);
   }
 }
 
-.middle-container.hc-black{
+.middle-container.hc-black {
   background-color: black;
 }
 
@@ -227,24 +225,20 @@ button {
 
 .vtl-container {
   width: 100%;
-  height: 60%;
+  height: calc(100% - #{$topBarHeight} - #{$errorBarHeight} - #{$errorBoxHeight});
+
 }
 
-.editor-container{
+.hide-error-box {
+  .vtl-container {
+    height: calc(100% - #{$topBarHeight} - #{$errorBarHeight});
+  }
+
+  .error-container {
+    display: none;
+  }
+}
+
+.editor-container {
   height: 100%;
 }
-
-.error-hr {
-  width: $centerWidth;
-  display: inline-block;
-  border-top: 2px solid rgba(0, 0, 0, .1);
-  margin: 0;
-}
-
-.error-container {
-  display: inline-block;
-  background-color: transparent;
-  height: 100%;
-  width: $centerWidth;
-}
-

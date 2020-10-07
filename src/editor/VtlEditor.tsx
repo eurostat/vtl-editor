@@ -1,73 +1,63 @@
-import * as React from 'react';
-import {useEffect, useRef} from 'react';
-import MonacoEditor from "react-monaco-editor";
-import {GrammarGraph} from './grammarGraph';
-import {TokensProvider} from './tokensProvider';
-import * as ParserFacade from './ParserFacade';
 import * as EditorApi from 'monaco-editor/esm/vs/editor/editor.api';
+import { Position } from 'monaco-editor/esm/vs/editor/editor.api';
+import * as React from 'react';
+import { useEffect, useRef } from 'react';
+import MonacoEditor from "react-monaco-editor";
+import { getEditorWillMount, getParserFacade } from "./provider/providers";
+
+import { VTL_VERSION } from "./settings";
 //import {AutoSuggestionsGenerator} from '../auto-suggest/AutoSuggestionsGenerator';
 import './vtlEditor.css';
-// @ts-ignore
-// eslint-disable-next-line import/no-webpack-loader-syntax
-import {getSuggestions, getVtlTheme} from "./provider/providers";
-import {VTL_VERSION} from "./settings";
 
 declare const window: any;
 
 type VtlEditorProps = {
-    browsedFiles: string[],
     showMenu: boolean;
+    showErrorBox: boolean,
     code: string,
     setCode: (value: string) => void,
     setCodeChanged: (value: boolean) => void,
     theme: string,
-    languageVersion: VTL_VERSION
+    languageVersion: VTL_VERSION,
+    setCursorPosition: (e: Position) => void,
+    tempCursor: Position,
+    setErrors: (array: EditorApi.editor.IMarkerData[]) => void,
 }
 
-const VtlEditor = ({browsedFiles, showMenu, code, setCode, setCodeChanged, theme, languageVersion}: VtlEditorProps) => {
-    const tokensProvider: TokensProvider = new TokensProvider();
-    const grammarGraph: GrammarGraph = new GrammarGraph();
-    // const [code, setCode] = useState(defaultText);
-    const monacoRef = useRef(null);
+let parserFacade: any = {parser: null};
 
-    useEffect(() => {
-        console.log("USE EFFECT");
-        console.log(browsedFiles.length);
-        if (browsedFiles.length > 0) {
-            console.log("if statement");
-            setCode(browsedFiles[0]);
-        }
-    }, [browsedFiles]);
+const VtlEditor = ({showMenu, showErrorBox, code, setCode, setCodeChanged, theme, languageVersion, setCursorPosition, tempCursor, setErrors}: VtlEditorProps) => {
+    const monacoRef = useRef(null);
 
     useEffect(() => {
         if (monacoRef && monacoRef.current) {
             // @ts-ignore
             monacoRef.current.editor.layout();
         }
-    }, [showMenu]);
+        // console.log(monacoRef.current, "monaco efect");
+    }, [showMenu, showErrorBox]);
 
+    useEffect(() => {
+        if (monacoRef && monacoRef.current) {
+            // @ts-ignore
+            monacoRef.current.editor.focus();
+            // @ts-ignore
+            monacoRef.current.editor.setPosition(new Position(tempCursor.lineNumber, tempCursor.column));
+        }
+    }, [tempCursor]);
 
-    const editorWillMount = (monaco: typeof EditorApi) => {
+    useEffect(() => {
+        parserFacade = getParserFacade(languageVersion);
+    }, [languageVersion]);
 
-        monaco.languages.register({id: languageVersion});
-        monaco.languages.setMonarchTokensProvider(languageVersion, tokensProvider.monarchLanguage(languageVersion));
-        monaco.editor.defineTheme('vtl', getVtlTheme());
-        monaco.languages.registerCompletionItemProvider(languageVersion, {
-            provideCompletionItems: getSuggestions(languageVersion, monaco)
-        });
-
-    };
-
-
-    const didMount = (editor: any, monaco: typeof EditorApi) => {
-        console.log("DID MOUNT");
+    const didMount = (editor: EditorApi.editor.IStandaloneCodeEditor, monaco: typeof EditorApi) => {
         let to: NodeJS.Timeout;
         let onDidChangeTimout = (e: any) => {
             to = setTimeout(() => onDidChange(e), 2000);
         };
-
-        let onDidChange = (e: any) => {
-            let syntaxErrors = ParserFacade.validate(code);
+        const onDidChange = (e: any) => {
+            // @ts-ignore
+            let syntaxErrors = parserFacade.parser.validate(editor.getValue());
             let monacoErrors = [];
             for (let e of syntaxErrors) {
                 monacoErrors.push({
@@ -79,15 +69,16 @@ const VtlEditor = ({browsedFiles, showMenu, code, setCode, setCodeChanged, theme
                     severity: monaco.MarkerSeverity.Error
                 });
             }
-
+            setErrors(monacoErrors);
             window.syntaxErrors = syntaxErrors;
             let model = monaco.editor.getModels()[0];
             monaco.editor.setModelMarkers(model, "owner", monacoErrors);
         };
         editor.onDidChangeModelContent((e: any) => {
             if (to) clearTimeout(to);
-            onDidChangeTimout(e);
+            return onDidChangeTimout(e);
         });
+        editor.onDidChangeCursorPosition((e: EditorApi.editor.ICursorPositionChangedEvent) => setCursorPosition(e.position));
     };
 
     const onChange = (newValue: string, e: EditorApi.editor.IModelContentChangedEvent) => {
@@ -105,17 +96,8 @@ const VtlEditor = ({browsedFiles, showMenu, code, setCode, setCodeChanged, theme
     };
     return (
         <div className="editor-container">
-            <MonacoEditor
-                ref={monacoRef}
-                editorWillMount={editorWillMount}
-                editorDidMount={didMount}
-                height="100%"
-                language={languageVersion}
-                theme={theme}
-                defaultValue=''
-                options={options}
-                value={code}
-                onChange={onChange}/>
+            <MonacoEditor ref={monacoRef} editorWillMount={getEditorWillMount()} editorDidMount={didMount} height="100%" language={languageVersion} theme={theme} defaultValue=''
+                          options={options} value={code} onChange={onChange}/>
         </div>)
 };
 

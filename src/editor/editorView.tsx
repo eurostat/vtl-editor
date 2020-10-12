@@ -17,7 +17,7 @@ import {
     updateFileMeta,
     updateSaved
 } from './editorSlice';
-import TitleBar from "./title-bar/titleBar";
+import TopBar from "./top-bar/topBar";
 import { CursorPosition, VtlError } from "./vtl-editor";
 import VtlEditor from "./vtl-editor/vtlEditor";
 
@@ -70,7 +70,7 @@ const EditorView = ({sdmxResult, errorBoxProps}: EditorViewProps) => {
 
     return (
         <div className={`vtl-box ${theme}`} style={classes}>
-            <TitleBar/>
+            <TopBar/>
             <div id="vtl-container" className="vtl-container">
                 <VtlEditor onContentChange={onContentChange} onCursorChange={onCursorChange} onListErrors={onListErrors}
                            file={file} movedCursor={cursor} theme={theme} vtlVersion={vtlVersion}

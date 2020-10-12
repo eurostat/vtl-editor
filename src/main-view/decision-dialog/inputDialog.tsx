@@ -42,7 +42,7 @@ const InputDialog = ({open, close, text, value, title, acceptButton, cancelButto
     return (
         <Modal show={open} dialogClassName="">
             <ModalHeader>{title}</ModalHeader>
-            <ModalBody>{text}</ModalBody>
+            <ModalBody style={{whiteSpace: "pre-line"}}>{text}</ModalBody>
             <ModalBody>
                 <div>
                     <input type="text" className="form-control" id="inputVal" aria-describedby="inputVal"

@@ -1,6 +1,6 @@
 import { TreeNode } from "react-treebeard";
 import { decisionDialog } from "../../main-view/decision-dialog/decisionDialog";
-import { inputDialog } from "../../main-view/decision-dialog/InputDialog";
+import { inputDialog } from "../../main-view/decision-dialog/inputDialog";
 import { StoredItemTransfer } from "../entity/storedItemTransfer";
 import { StoredItemType } from "../entity/storedItemType";
 
@@ -45,12 +45,10 @@ export const deleteItemDialog = (type: StoredItemType) => {
         const result = await decisionDialog({
             title: "Warning",
             text: `Do you really want to delete this ${descriptor}?`,
-            settings: {
-                buttons: [
-                    {value: "yes", color: "primary"},
-                    {value: "no", color: "secondary"}
-                ]
-            }
+            buttons: [
+                {key: "yes", text: "Yes", color: "primary"},
+                {key: "no", text: "No", color: "secondary"}
+            ]
         });
         return result === "yes"
             ? Promise.resolve()

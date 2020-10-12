@@ -10,13 +10,13 @@ type ItemMenuProps = {
 }
 
 const ItemMenu = ({node, onMenuEvent}: ItemMenuProps) => {
-    const [showSortMenu, setShowSortMenu] = useState(false);
+    // const [showSortMenu, setShowSortMenu] = useState(false);
     const [showNewMenu, setShowNewMenu] = useState(false);
 
-    const toggleSortMenu = (event: any) => {
-        event.preventDefault();
-        setShowSortMenu(!showSortMenu);
-    }
+    // const toggleSortMenu = (event: any) => {
+    //     event.preventDefault();
+    //     setShowSortMenu(!showSortMenu);
+    // }
 
     const toggleNewMenu = (event: any) => {
         event.preventDefault();
@@ -73,7 +73,7 @@ const ItemMenu = ({node, onMenuEvent}: ItemMenuProps) => {
         }
     }
 
-    const onFileVersions = (event: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+    const onFileVersions = () => {
         if (node && node.entity) {
             dispatchMenuEvent({type: ContextMenuEventType.FileVersions, payload: node.entity});
         }
@@ -95,7 +95,7 @@ const ItemMenu = ({node, onMenuEvent}: ItemMenuProps) => {
             <li onClick={onRenameItem}>Rename</li>
             <hr/>
             {node.children
-                ? <li onClick={onFolderDetails}>Detailed list</li>
+                ? <li onClick={onFolderDetails}>Detailed List</li>
                 : <li onClick={onFileVersions}>Versions</li>}
             {/*<hr/>*/}
             {/*<li className="with-submenu" onClick={toggleSortMenu}>*/}

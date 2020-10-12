@@ -7,6 +7,12 @@ import { StoredItemType } from "./entity/storedItemType";
 const BASE_URL = process.env.REACT_APP_API_URL;
 export const REPO_URL = BASE_URL + "/repo";
 
+export async function getFolder(folderId: number) {
+    const response = await sendGetRequest(`${REPO_URL}/folders/${folderId}`);
+    if (response && response.data) return response.data as StoredItemTransfer;
+    return Promise.reject();
+}
+
 export async function getFolderContents(folderId?: number) {
     return folderId
         ? sendGetRequest(`${REPO_URL}/folders/${folderId}/contents`)
@@ -104,7 +110,7 @@ export async function readBlob(blob: Blob) {
             if (event.target != null && event.target.result != null) resolve(event.target.result.toString());
             else reject();
         };
-        reader.onerror = (event) => reject();
+        reader.onerror = () => reject();
         reader.readAsText(blob);
     });
 }

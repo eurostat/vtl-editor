@@ -181,27 +181,6 @@ button {
   background-color: black;
 }
 
-.top-bar {
-  height: 30px;
-  width: 100%;
-  background: #484848;
-  color: white;
-  font-size: 14px;
-  font-weight: 500;
-
-  span {
-    line-height: 2;
-    vertical-align: middle;
-
-  }
-
-  & > span {
-    position: absolute;
-    left: 0;
-    right: 0;
-  }
-}
-
 .version-container {
   float: right;
   margin-right: 80px;

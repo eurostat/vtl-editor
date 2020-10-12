@@ -69,7 +69,7 @@ export const editorSlice = createSlice({
         changeVtlVersion(state, action: PayloadAction<VtlVersion>) {
             state.vtlVersion = action.payload
         },
-        loadFile(state, action: PayloadAction<EditorFile>) {
+        storeLoaded(state, action: PayloadAction<EditorFile>) {
             state.loadedFile = action.payload
             state.savedContent = action.payload.content
         },
@@ -92,7 +92,7 @@ export interface EditorState {
 
 export const {
     updateContent, updateName, updateFileMeta, markChanged, markUnchanged, updateEdited, updateSaved,
-    updateCursor, jumpCursor, listErrors, changeVtlVersion, loadFile, clearLoaded
+    updateCursor, jumpCursor, listErrors, changeVtlVersion, storeLoaded, clearLoaded
 } = editorSlice.actions;
 
 export const editorCursor = (state: RootState) => state.editor.cursor;

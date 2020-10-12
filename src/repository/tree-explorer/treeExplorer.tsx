@@ -3,32 +3,33 @@ import { useSnackbar } from "notistack";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { decorators, theme, TreeNode, TreeTheme } from 'react-treebeard';
+import { decorators, TreeNode, TreeTheme } from 'react-treebeard';
 import { buildFile } from "../../editor/editorFile";
-import { loadFile } from "../../editor/editorSlice";
+import { storeLoaded } from "../../editor/editorSlice";
 import { StoredItemPayload } from "../entity/storedItemPayload";
 import { StoredItemTransfer } from "../entity/storedItemTransfer";
 import { StoredItemType } from "../entity/storedItemType";
 import {
     createFile,
     createFolder,
-    deleteItem, getFile,
+    deleteItem,
+    getFile,
     getFileContent,
     getFolderContents,
     updateItem
 } from "../repositoryService";
 import {
-    addToTree,
-    explorerTree,
-    replaceTree,
-    updateNode,
-    detailFolder,
-    versionFile,
-    addFolderToTree,
     addFileToTree,
-    replaceNode,
+    addFolderToTree,
+    addToTree,
     deleteNode,
-    selectFolder
+    detailFolder,
+    explorerTree,
+    replaceNode,
+    replaceTree,
+    selectFolder,
+    updateNode,
+    versionFile
 } from "../repositorySlice";
 import ContextMenu from "./context-menu/ContextMenu";
 import ItemContainer from "./itemContainer";
@@ -36,11 +37,13 @@ import ItemHeader from "./itemHeader";
 import Toggle from "./tree-beard/components/Decorators/Toggle";
 import TreeBeard from "./tree-beard/components/treeBeard";
 import defaultAnimations from "./tree-beard/themes/animations";
+import defaultTheme from "./tree-beard/themes/defaultTheme";
 import "./treeExplorer.scss";
 import TreeExplorerMenu from "./treeExplorerMenu";
 import {
     buildFileNode,
-    buildFolderNode, buildNode,
+    buildFolderNode,
+    buildNode,
     ContextMenuEvent,
     ContextMenuEventType,
     createItemDialog,
@@ -55,11 +58,11 @@ const TreeExplorer = () => {
     const treeItems = useSelector(explorerTree);
     const history = useHistory();
     const [style] = useState<TreeTheme>((() => {
-        const initial: TreeTheme = _.cloneDeep(theme);
+        const initial: TreeTheme = _.cloneDeep(defaultTheme as TreeTheme);
         initial.tree.base.backgroundColor = "transparent";
         initial.tree.node.header.title.whiteSpace = "nowrap";
         initial.tree.node.header.title.display = "inline";
-        initial.tree.node.header.title.position = "absolute";
+        initial.tree.node.header.title.position = "relative";
         return initial;
     })());
 
@@ -96,21 +99,25 @@ const TreeExplorer = () => {
     }
 
     const onSelect = (node: TreeNode) => {
-        const nodeUpdate: any = {id: node.id, active: true};
-        if (node.entity) {
-            switch (node.entity.type) {
-                case StoredItemType.FOLDER: {
-                    dispatch(selectFolder(node.entity.id));
-                    break;
-                }
-                case StoredItemType.FILE: {
-                    dispatch(selectFolder(node.entity.parentFolderId));
-                    break;
-                }
-                default: {
-                    dispatch(selectFolder(undefined));
+        const nodeUpdate: any = {id: node.id, active: !node.active};
+        if (!node.active) {
+            if (node.entity) {
+                switch (node.entity.type) {
+                    case StoredItemType.FOLDER: {
+                        dispatch(selectFolder(node.entity.id));
+                        break;
+                    }
+                    case StoredItemType.FILE: {
+                        dispatch(selectFolder(node.entity.parentFolderId));
+                        break;
+                    }
+                    default: {
+                        dispatch(selectFolder(undefined));
+                    }
                 }
             }
+        } else {
+            dispatch(selectFolder(undefined));
         }
         dispatch(updateNode(nodeUpdate));
     }
@@ -154,7 +161,7 @@ const TreeExplorer = () => {
                 const nodeUpdate: any = {id: node.id, entity: file};
                 dispatch(updateNode(nodeUpdate));
                 const loadedFile = buildFile(file.name, content, false, file.id, file.optLock, file.version);
-                dispatch(loadFile(loadedFile));
+                dispatch(storeLoaded(loadedFile));
                 enqueueSnackbar(`File "${file.name}" opened successfully.`, {variant: "success"});
                 history.push("/");
             }).catch(() => () => enqueueSnackbar(`Failed to load file "${entity.name}".`, {variant: "error"}))
@@ -223,14 +230,12 @@ const TreeExplorer = () => {
                 break;
             }
             case ContextMenuEventType.FolderDetails: {
-                if (event.payload) {
-                    (async () => {
-                        setTimeout(() => {
-                            dispatch(detailFolder(event.payload));
-                            history.push("/folder")
-                        }, 200);
-                    })();
-                }
+                (async () => {
+                    setTimeout(() => {
+                        dispatch(detailFolder(event.payload?.id));
+                        history.push("/folder")
+                    }, 200);
+                })();
                 break;
             }
             case ContextMenuEventType.FileVersions: {

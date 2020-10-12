@@ -2,16 +2,16 @@ import { MuiThemeProvider } from "@material-ui/core/styles";
 import { Cached, CloudDownloadOutlined, RestorePageOutlined } from "@material-ui/icons";
 import MaterialTable from "material-table";
 import { useSnackbar } from "notistack";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { buildFile } from "../editor/editorFile";
-import { loadFile } from "../editor/editorSlice";
 import { muiTheme } from "../utility/detailTable";
 import { FileVersionTransfer } from "./entity/fileVersionTransfer";
 import { StoredItemTransfer } from "./entity/storedItemTransfer";
 import { getFile, getFileVersions, getVersionContent, restoreFileVersion } from "./repositoryService";
 import { compareVersions, updateNode, versionedFile } from "./repositorySlice";
+import { storeLoaded } from "../editor/editorSlice";
 
 const FileVersions = () => {
     const fileId: number = useSelector(versionedFile);
@@ -29,7 +29,7 @@ const FileVersions = () => {
         return converted;
     }
 
-    const fetchFile = () => {
+    const fetchFile = useCallback(() => {
         if (fileId > 0) {
             getFile(fileId).then((received) => {
                 const nodeUpdate: any = {id: fileId, entity: received};
@@ -38,16 +38,16 @@ const FileVersions = () => {
             }).catch(() => {
             });
         }
-    }
+    }, [fileId, dispatch]);
 
     useEffect(() => {
         setVersions([]);
         fetchFile();
-    }, [fileId]);
+    }, [fileId, fetchFile]);
 
-    const fetchVersions = () => {
+    const fetchVersions = useCallback(() => {
         if (file) {
-            getFileVersions(fileId).then((response) => {
+            getFileVersions(file.id).then((response) => {
                 if (response && response.data) {
                     const received: any[] = [];
                     received.push(...response.data.map((item: FileVersionTransfer) => convertItem(item)));
@@ -57,16 +57,9 @@ const FileVersions = () => {
             }).catch(() => {
             });
         }
-    }
+    }, [file]);
 
-    useEffect(() => fetchVersions(), [file]);
-
-    const columns = [
-        {title: "Version number", field: "version"},
-        {title: "Date", field: "updateDate"},
-        {title: "Author", field: "updatedBy"},
-        {title: "Restored from", field: "restoredFrom"}
-    ];
+    useEffect(() => fetchVersions(), [file, fetchVersions]);
 
     const onSelectionChange = (rows: any[], row: any) => {
         if (row.tableData.checked) {
@@ -99,7 +92,7 @@ const FileVersions = () => {
         if (file) {
             getVersionContent(file.id, row.version).then((content) => {
                 const loadedFile = buildFile(file.name, content, false, file.id, file.optLock, file.version);
-                dispatch(loadFile(loadedFile));
+                dispatch(storeLoaded(loadedFile));
                 enqueueSnackbar(`Version "${row.version}" opened successfully.`, {variant: "success"});
                 history.push("/");
             }).catch(() => enqueueSnackbar(`Failed to load version "${row.version}".`, {variant: "error"}));
@@ -108,7 +101,7 @@ const FileVersions = () => {
 
     const onRestoreVersion = (event: any, row: any) => {
         if (file) {
-            restoreFileVersion(file.id, row.version, {version: file.version}).then((restored) => {
+            restoreFileVersion(file.id, row.version, {version: file.version}).then(() => {
                 fetchFile();
                 enqueueSnackbar(`Version "${row.version}" restored successfully.`, {variant: "success"});
             }).catch(() => enqueueSnackbar(`Failed to restore version "${row.version}".`, {variant: "error"}));
@@ -117,8 +110,15 @@ const FileVersions = () => {
 
     return (
         <MuiThemeProvider theme={muiTheme}>
-            <MaterialTable tableRef={tableRef} title={`Version history: ${file?.name || "—"}`}
-                           columns={columns} data={versions}
+            <MaterialTable tableRef={tableRef}
+                           title={`Version history: ${file?.name || "—"}`}
+                           data={versions}
+                           columns={[
+                               {title: "Version number", field: "version"},
+                               {title: "Date", field: "updateDate"},
+                               {title: "Author", field: "updatedBy"},
+                               {title: "Restored from", field: "restoredFrom"}
+                           ]}
                            options={{
                                showTitle: true,
                                selection: true,

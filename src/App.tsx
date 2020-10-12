@@ -1,16 +1,13 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { SnackbarProvider } from "notistack";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
 import './App.scss';
-import { buildFile } from "./editor/editorFile";
-import { loadFile } from './editor/editorSlice';
 import EditorView from "./editor/editorView";
 import { decisionDialog } from "./main-view/decision-dialog/decisionDialog";
-import Header from "./main-view/header/Header";
+import Header from "./main-view/header/header";
 import Navigation from "./main-view/navigation/navigation";
-import OpenDialog from "./main-view/open-dialog/OpenDialog";
 import { detailPaneVisible, sidePaneView, sidePaneVisible } from "./main-view/viewSlice";
 import DirectoryPreview from "./repository/directoryPreview";
 import FileVersions from "./repository/fileVersions";
@@ -25,7 +22,6 @@ import SDMXView from "./sdmx/SDMXView";
 import BrowserStorage, { getSdmxStoredValues, setSdmxStorageValue } from "./utility/browserStorage";
 
 function App() {
-    const [showDialog, setShowDialog] = useState(false);
     /*SDMX STATES */
     const [registry, setRegistry] = useState<SdmxRegistry | null>(null);
     const [agencies, setAgencies] = useState<Agency[]>([]);
@@ -35,7 +31,6 @@ function App() {
     const [importDSD, setImportDSD] = useState<boolean>(false);
     const [sdmxResult, setSdmxResult] = useState<SdmxResult | undefined>(undefined);
 
-    const dispatch = useDispatch();
     const detailPane = useSelector(detailPaneVisible);
     const sidePane = useSelector(sidePaneVisible);
     const sidePaneMode = useSelector(sidePaneView);
@@ -45,7 +40,17 @@ function App() {
             const res = await decisionDialog({
                 title: "Warning",
                 text:
-                    `In your previous session you imported ${dataStructure.name} content. Do you want to import the data again?`
+                    `In your previous session you imported ${dataStructure.name} content. Do you want to import the data again?`,
+                buttons: [
+                    {key: "yes", text: "Yes", color: "primary"},
+                    {key: "no", text: "No", color: "secondary"},
+                    {
+                        key: "cancel",
+                        text: "No, don't ask again",
+                        color: "secondary",
+                        className: "default-button outline-button"
+                    }
+                ]
             });
             if (res === "yes") {
                 setImportDSD(true);
@@ -68,21 +73,11 @@ function App() {
             setDataStructure(sdmxResult?.dataStructure);
     }, [sdmxResult])
 
-    const openFile = (newFiles: string[], fileName: string) => {
-        const loadedFile = buildFile(fileName, newFiles[0], false);
-        dispatch(loadFile(loadedFile));
-    };
-
     const getStyles = () => {
         let styling = "App";
         styling += sidePane ? ` open-${sidePaneMode}` : " hide-settings-nav";
         styling += detailPane ? "" : " hide-error-box";
         return styling;
-    };
-
-    const createNewFile = () => {
-        const loadedFile = buildFile();
-        dispatch(loadFile(loadedFile));
     };
 
     const clearSdmxState = () => {
@@ -91,11 +86,6 @@ function App() {
         setSelectedAgencies([]);
         setFinalType(FinalStructureEnum.ALL);
     }
-
-    const NavigationProps = {
-        "showDialog": setShowDialog,
-        createNewFile
-    };
 
     const errorBoxProps = {
         "dataStructureInfo": sdmxResult?.dataStructureInfo,
@@ -126,7 +116,7 @@ function App() {
                           anchorOrigin={{vertical: "top", horizontal: "right"}} dense={true}>
             <div className={getStyles()}>
                 <Header/>
-                <Navigation {...NavigationProps}/>
+                <Navigation/>
                 <div id="middle-container" className={`middle-container`}>
                     <Switch>
                         <Route exact path="/sdmx">
@@ -147,8 +137,6 @@ function App() {
                         <Redirect to="/"/>
                     </Switch>
                 </div>
-                {showDialog ?
-                    <OpenDialog onClose={setShowDialog} onLoad={openFile}/> : null}
                 {/*{showOverlay ? <GuideOverlay/> : null}*/}
                 {importDSD ?
                     <SdmxDownloadScreen registry={registry} dataStructure={dataStructure!} showScreen={importDSD}

@@ -7,7 +7,7 @@ const initialState = {
         folders: [],
         files: []
     },
-    selectedFolder: undefined,
+    selectedFolder: 0,
     detailedFolder: undefined,
     versionedFile: 0,
     comparedVersions: {
@@ -74,7 +74,7 @@ export const repositorySlice = createSlice({
         selectFolder(state, action: PayloadAction<number | undefined>) {
             state.selectedFolder = action.payload
         },
-        detailFolder(state, action: PayloadAction<any>) {
+        detailFolder(state, action: PayloadAction<number | undefined>) {
             state.detailedFolder = action.payload
         },
         versionFile(state, action: PayloadAction<number>) {
@@ -91,7 +91,7 @@ export const repositorySlice = createSlice({
 export interface RepositoryState {
     explorerTree: ExplorerTreeState
     selectedFolder: number | undefined
-    detailedFolder: any
+    detailedFolder: number | undefined
     versionedFile: number
     comparedVersions: {
         file: any
@@ -127,6 +127,29 @@ export const explorerTree = (state: RootState) => {
     treeFolders.forEach((folder) => addChildren(folder));
     return [...treeFolders, ...treeFiles];
 }
+
+const folderPath = (state: RootState, folderId: number | undefined) => {
+    const parentPath = (parentId: string | undefined) => {
+        let path: string = "";
+        if (parentId !== undefined) {
+            const branch = state.repository.explorerTree.folders.find(folder => folder.id === parentId);
+            if (branch) path = parentPath(branch.parentId) + branch.name + "/";
+        }
+        return path;
+    }
+
+    let path: string = "/";
+    if (folderId) {
+        const leaf = state.repository.explorerTree.folders.find(folder => folder.entity?.id === folderId);
+        if (leaf) {
+            path = path + parentPath(leaf.parentId) + leaf.name + "/";
+        }
+    }
+    return path;
+}
+
+export const detailedFolderPath = (state: RootState) =>  folderPath(state, state.repository.detailedFolder);
+export const selectedFolderPath = (state: RootState) =>  folderPath(state, state.repository.selectedFolder);
 export const selectedFolder = (state: RootState) => state.repository.selectedFolder;
 export const detailedFolder = (state: RootState) => state.repository.detailedFolder;
 export const versionedFile = (state: RootState) => state.repository.versionedFile;

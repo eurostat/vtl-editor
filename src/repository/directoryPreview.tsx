@@ -1,16 +1,18 @@
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { Cached } from "@material-ui/icons";
 import MaterialTable from "material-table";
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { muiTheme } from "../utility/detailTable";
 import { StoredItemTransfer } from "./entity/storedItemTransfer";
-import { getFolderContents } from "./repositoryService";
-import { detailedFolder } from "./repositorySlice";
+import { getFolder, getFolderContents } from "./repositoryService";
+import { detailedFolder, detailedFolderPath, updateNode } from "./repositorySlice";
 
 const DirectoryPreview = () => {
-    const folder: StoredItemTransfer = useSelector(detailedFolder);
-    const [data, setData] = useState<any[]>([]);
+    const folderId = useSelector(detailedFolder);
+    const [contents, setContents] = useState<any[]>([]);
+    const path: string = useSelector(detailedFolderPath);
+    const dispatch = useDispatch();
 
     const convertItem = (item: StoredItemTransfer) => {
         const converted = Object.assign({} as any, item);
@@ -19,51 +21,60 @@ const DirectoryPreview = () => {
         return converted;
     }
 
-    const fetchContents = () => {
-        if (folder) {
-            getFolderContents(folder.id).then((response) => {
-                if (response && response.data) {
-                    const contents: any[] = [];
-                    contents.push(
-                        ...response.data.folders.map((item: StoredItemTransfer) => convertItem(item)),
-                        ...response.data.files.map((item: StoredItemTransfer) => convertItem(item))
-                    );
-                    setData(contents);
-                }
+    const fetchFolder = useCallback(() => {
+        if (folderId) {
+            getFolder(folderId).then((received) => {
+                const nodeUpdate: any = {id: folderId, entity: received};
+                dispatch(updateNode(nodeUpdate));
             }).catch(() => {
             });
         }
-    }
+    }, [folderId, dispatch]);
+
+    const fetchContents = useCallback(() => {
+        getFolderContents(folderId).then((response) => {
+            if (response && response.data) {
+                const contents: any[] = [];
+                contents.push(
+                    ...response.data.folders.map((item: StoredItemTransfer) => convertItem(item)),
+                    ...response.data.files.map((item: StoredItemTransfer) => convertItem(item))
+                );
+                setContents(contents);
+            }
+        }).catch(() => {
+        });
+    }, [folderId]);
 
     useEffect(() => {
+        fetchFolder();
         fetchContents();
-    }, [folder]);
-
-    const columns = [
-        {title: "Name", field: "name"},
-        {title: "Version", field: "version"},
-        {title: "Created on", field: "createDate"},
-        {title: "Modified on", field: "updateDate"},
-        {title: "Created by", field: "createdBy"},
-        {title: "Modified by", field: "updatedBy"},
-    ];
+    }, [folderId, fetchFolder, fetchContents]);
 
     return (
         <MuiThemeProvider theme={muiTheme}>
-            <MaterialTable title={`Folder: ${folder?.name || "—"}`} columns={columns} data={data}
+            <MaterialTable title={`Folder path: ${path || "—"}`}
+                           data={contents}
+                           columns={[
+                               {title: "Name", field: "name"},
+                               {title: "Version", field: "version"},
+                               {title: "Created on", field: "createDate"},
+                               {title: "Modified on", field: "updateDate"},
+                               {title: "Created by", field: "createdBy"},
+                               {title: "Modified by", field: "updatedBy"},
+                           ]}
                            options={{showTitle: true}}
                            actions={[
                                {
                                    icon: () => <Cached/>,
                                    tooltip: 'Refresh',
                                    position: 'toolbar',
-                                   onClick: fetchContents
+                                   onClick: fetchFolder
                                },
                                {
                                    icon: () => <Cached/>,
                                    tooltip: 'Refresh',
                                    position: 'toolbarOnSelect',
-                                   onClick: fetchContents
+                                   onClick: fetchFolder
                                }
                            ]}
             />

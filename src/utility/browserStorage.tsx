@@ -1,7 +1,7 @@
 import { memo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { buildFile } from "../editor/editorFile";
-import { loadFile, changeVtlVersion, appliedVtlVersion, editorFile } from "../editor/editorSlice";
+import { changeVtlVersion, appliedVtlVersion, editorFile, storeLoaded } from "../editor/editorSlice";
 import { appliedTheme, changeTheme, detailPaneVisible, showDetailPane } from "../main-view/viewSlice";
 import { SdmxStorage } from "../sdmx/SdmxStorage";
 import React from "react";
@@ -27,7 +27,7 @@ const BrowserStorage = () => {
             let storedValues = fromLocalStorage(StorageKey.EDITOR);
             if (storedValues.file) {
                 const {name, content, changed, remoteId, optLock, version} = storedValues.file;
-                dispatch(loadFile(buildFile(name, content, changed,
+                dispatch(storeLoaded(buildFile(name, content, changed,
                     remoteId, optLock, version)));
             }
             if (storedValues.vtlVersion) dispatch(changeVtlVersion(storedValues.vtlVersion));

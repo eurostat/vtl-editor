@@ -8,30 +8,26 @@ type DecisionModalProps = {
     close: any,
     title: string,
     text: string,
-    settings?: DecisionModalSettings
-}
-
-type DecisionModalSettings = {
-    buttons: DecisionModalButton[]
+    buttons?: DecisionModalButton[]
 }
 
 export type DecisionModalButton = {
-    value: string,
+    key: string,
+    text: string,
     color: "primary" | "secondary",
     className?: string
 }
 
-const DecisionDialog = ({open, close, text, title, settings}: DecisionModalProps) => {
+const DecisionDialog = ({open, close, text, title, buttons}: DecisionModalProps) => {
     return (
         <Modal show={open}>
             <ModalHeader>{title}</ModalHeader>
             <ModalBody>{text}</ModalBody>
             <ModalFooter>
-                {settings?.buttons.map(button => {
-                    const buttonValue = button.value.charAt(0).toUpperCase() + button.value.slice(1);
-                    return (<Button key={buttonValue} color={button.color} className={button.className}
-                                    onClick={() => close(button.value)}>
-                        {buttonValue}
+                {buttons?.map(button => {
+                    return (<Button key={button.key} color={button.color} className={button.className}
+                                    onClick={() => close(button.key)}>
+                        {button.text}
                     </Button>)
                 })}
             </ModalFooter>
@@ -40,13 +36,16 @@ const DecisionDialog = ({open, close, text, title, settings}: DecisionModalProps
 };
 
 DecisionDialog.defaultProps = {
-    settings: {
-        buttons: [
-            {value: "yes", color: "primary"} as DecisionModalButton,
-            {value: "no", color: "secondary"} as DecisionModalButton,
-            {value: "cancel", color: "secondary", className: "default-button outline-button"} as DecisionModalButton
-        ]
-    }
+    buttons: [
+        {key: "yes", text: "Yes", color: "primary"} as DecisionModalButton,
+        {key: "no", text: "No", color: "secondary"} as DecisionModalButton,
+        {
+            key: "cancel",
+            text: "Cancel",
+            color: "secondary",
+            className: "default-button outline-button"
+        } as DecisionModalButton
+    ]
 }
 
 export const decisionDialog = createModal(DecisionDialog);

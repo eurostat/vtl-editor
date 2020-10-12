@@ -19,17 +19,10 @@ const TreeExplorerMenu = ({onMenuEvent}: TreeExplorerMenuProps) => {
         if (onMenuEvent) onMenuEvent(event);
     }
 
-    const onNewFolder = () => {
-        dispatchMenuEvent({type: ContextMenuEventType.NewFolder});
-    }
-
-    const onNewFile = () => {
-        dispatchMenuEvent({type: ContextMenuEventType.NewFile});
-    }
-
-    const onRefresh = () => {
-        dispatchMenuEvent({type: ContextMenuEventType.Refresh});
-    }
+    const onNewFolder = () => dispatchMenuEvent({type: ContextMenuEventType.NewFolder});
+    const onNewFile = () => dispatchMenuEvent({type: ContextMenuEventType.NewFile});
+    const onRefresh = () => dispatchMenuEvent({type: ContextMenuEventType.Refresh});
+    const onFolderDetails = () => dispatchMenuEvent({type: ContextMenuEventType.FolderDetails});
 
     return (
         <ul className="menu">
@@ -43,6 +36,7 @@ const TreeExplorerMenu = ({onMenuEvent}: TreeExplorerMenuProps) => {
                     <li onClick={onNewFile}>File</li>
                 </ul>
             </li>
+            <li onClick={onFolderDetails}>Detailed List</li>
             <hr/>
             <li onClick={onRefresh}>Refresh</li>
         </ul>

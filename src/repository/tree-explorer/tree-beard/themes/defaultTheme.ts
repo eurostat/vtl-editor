@@ -6,8 +6,9 @@ export default {
             margin: 0,
             padding: 0,
             color: '#9DA5AB',
-            fontFamily: 'lucida grande ,tahoma,verdana,arial,sans-serif',
-            fontSize: '14px'
+            fontFamily: 'lucida grande,tahoma,verdana,arial,sans-serif',
+            fontSize: '14px',
+            width: '100%'
         },
         node: {
             base: {
@@ -17,10 +18,11 @@ export default {
                 cursor: 'pointer',
                 position: 'relative',
                 padding: '0px 5px',
-                display: 'block'
+                display: 'inline-block',
+                minWidth: '100%'
             },
             activeLink: {
-                background: '#31363F'
+                background: '#494e5b'
             },
             toggle: {
                 base: {

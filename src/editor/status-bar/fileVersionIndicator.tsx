@@ -8,7 +8,7 @@ const FileVersionIndicator = () => {
     return (
         <Tooltip title="Edited file version" placement="top" arrow>
             <div>
-                Ver. {version}
+                Version {version}
             </div>
         </Tooltip>
     )

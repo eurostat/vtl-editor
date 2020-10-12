@@ -1,7 +1,7 @@
 import React from 'react';
 import defaultAnimations from '../themes/animations';
 
-import defaultTheme from '../themes/default';
+import defaultTheme from '../themes/defaultTheme';
 import { randomString } from '../util';
 import { Ul } from './common';
 import defaultDecorators from './Decorators';

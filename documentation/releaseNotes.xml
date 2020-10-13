@@ -2,6 +2,7 @@
 <?xml-stylesheet href="./docbook.css" type="text/css"?>
 <book xml:id="release-notes" xml:lang="en" version="5.0"
       xmlns="http://docbook.org/ns/docbook"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://docbook.org/ns/docbook http://docbook.org/xml/5.0/xsd/docbook.xsd">
 
@@ -27,9 +28,38 @@
         </authorgroup>
     </info>
 
-    <chapter xml:id="VRM-0.5.0" xreflabel="VRM-0.5.0" xml:lang="en" version="5.0" xmlns="http://docbook.org/ns/docbook"
-             xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="http://docbook.org/ns/docbook http://docbook.org/xml/5.0/xsd/docbook.xsd">
+
+    <chapter xml:id="VRM-0.6.0" xreflabel="VRM-0.6.0">
+        <title>Version 0.6.0.200710-a</title>
+        <para>Date: 2020-07-10</para>
+        <section>
+            <title>New Features</title>
+            <itemizedlist>
+                <listitem>
+                    <simpara>
+                        Application package now contains complete documentation in PDF format: User Manual, Administrator Guide and Release Notes.
+                        <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-93">[VRM-93]</link>
+                        <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-96">[VRM-96]</link>
+                    </simpara>
+                </listitem>
+            </itemizedlist>
+        </section>
+        <section>
+            <title>Technical details</title>
+            <itemizedlist>
+                <listitem>
+                    <simpara>
+                        Documentation for the user and administrator of VRM is generated automatically from XML sources at build time using Docbkx Maven plugin.
+                        Target formats are PDF and in case of User Manual also HTML.
+                        <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-93">[VRM-93]</link>
+                        <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-96">[VRM-96]</link>
+                    </simpara>
+                </listitem>
+            </itemizedlist>
+        </section>
+    </chapter>
+
+    <chapter xml:id="VRM-0.5.0" xreflabel="VRM-0.5.0">
         <title>Version 0.5.0.200518-a</title>
         <para>Date: 2020-05-18</para>
         <section>
@@ -37,18 +67,18 @@
             <itemizedlist>
                 <listitem>
                     <simpara>
-                        New file icon in the side menu allows to create new file
+                        New file icon in the side menu allows to create new file.
                     </simpara>
                 </listitem>
                 <listitem>
                     <simpara>
-                        Added tooltips to the menu items and bottom bar
+                        Added tooltips to the menu items and bottom bar.
                         <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-22">[VRM-22]</link>
                     </simpara>
                 </listitem>
                 <listitem>
                     <simpara>
-                        Help icon in the side menu opens a new window with a user manual
+                        Help icon in the side menu opens a new window with a user manual.
                         <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-97">[VRM-97]</link>
                     </simpara>
                 </listitem>
@@ -60,19 +90,19 @@
                 <listitem>
                     <simpara>
                         If current file has unsaved changes when you create new or open another file, you are prompted to save the current file, discard changes or cancel the
-                        action
+                        action.
                         <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-41">[VRM-41]</link>
                     </simpara>
                 </listitem>
                 <listitem>
                     <simpara>
-                        Error box can now be resized with mouse drag
+                        Error box can now be resized with mouse drag.
                         <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-19">[VRM-19]</link>
                     </simpara>
                 </listitem>
                 <listitem>
                     <simpara>
-                        Keyboard shortcuts for creating new file, saving file, opening new file and opening documentation
+                        Keyboard shortcuts for creating new file, saving file, opening new file and opening documentation.
                         <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-22">[VRM-22]</link>
                     </simpara>
                 </listitem>
@@ -80,10 +110,7 @@
         </section>
     </chapter>
 
-    <chapter xml:id="VRM-0.4.0" xreflabel="VRM-0.4.0" xml:lang="en" version="5.0" xmlns="http://docbook.org/ns/docbook"
-             xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="http://docbook.org/ns/docbook http://docbook.org/xml/5.0/xsd/docbook.xsd">
-
+    <chapter xml:id="VRM-0.4.0" xreflabel="VRM-0.4.0">
         <title>Version 0.4.0.200427-a</title>
         <para>Date: 2020-04-27</para>
         <section>
@@ -91,19 +118,19 @@
             <itemizedlist>
                 <listitem>
                     <simpara>
-                        Errors found in the VTL code are listed in the error panel at the bottom of the screen
+                        Errors found in the VTL code are listed in the error panel at the bottom of the screen.
                         <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-19">[VRM-19]</link>
                     </simpara>
                 </listitem>
                 <listitem>
                     <simpara>
-                        For specific VTL functions autocomplete feature inserts snippets (whole syntax with related keywords and parentheses) into the edited code
+                        For specific VTL functions autocomplete feature inserts snippets (whole syntax with related keywords and parentheses) into the edited code.
                         <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-17">[VRM-17]</link>
                     </simpara>
                 </listitem>
                 <listitem>
                     <simpara>
-                        You can select VTL grammar version (2.0 or 3.0) in the settings panel
+                        You can select VTL grammar version (2.0 or 3.0) in the settings panel.
                         <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-21">[VRM-21]</link>
                     </simpara>
                 </listitem>
@@ -114,19 +141,19 @@
             <itemizedlist>
                 <listitem>
                     <simpara>
-                        Editor now supports version 3.0 of VTL grammar
+                        Editor now supports version 3.0 of VTL grammar.
                         <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-21">[VRM-21]</link>
                     </simpara>
                 </listitem>
                 <listitem>
                     <simpara>
-                        Autocomplete suggestions now contain detailed syntax and short description of keyword or function
+                        Autocomplete suggestions now contain detailed syntax and short description of keyword or function.
                         <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-16">[VRM-16]</link>
                     </simpara>
                 </listitem>
                 <listitem>
                     <simpara>
-                        Editor remembers its configuration and contents after you close or refresh the page
+                        Editor remembers its configuration and contents after you close or refresh the page.
                     </simpara>
                 </listitem>
             </itemizedlist>
@@ -136,13 +163,13 @@
             <itemizedlist>
                 <listitem>
                     <simpara>
-                        Round and angle brackets are now colorized properly
+                        Round and angle brackets are now colorized properly.
                         <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-14">[VRM-14]</link>
                     </simpara>
                 </listitem>
                 <listitem>
                     <simpara>
-                        Brackets pairs are matched properly
+                        Brackets pairs are matched properly.
                     </simpara>
                 </listitem>
             </itemizedlist>
@@ -171,9 +198,7 @@
         </section>
     </chapter>
 
-    <chapter xml:id="VRM-0.3.0" xreflabel="VRM-0.3.0" xml:lang="en" version="5.0" xmlns="http://docbook.org/ns/docbook"
-             xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="http://docbook.org/ns/docbook http://docbook.org/xml/5.0/xsd/docbook.xsd">
+    <chapter xml:id="VRM-0.3.0" xreflabel="VRM-0.3.0">
         <title>Version 0.3.0.200415-a</title>
         <para>Date: 2020-04-15</para>
         <section>
@@ -181,25 +206,25 @@
             <itemizedlist>
                 <listitem>
                     <simpara>
-                        Edited VTL code can be saved in a file on local disk
+                        Edited VTL code can be saved in a file on local disk.
                         <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-42">[VRM-42]</link>
                     </simpara>
                 </listitem>
                 <listitem>
                     <simpara>
-                        Text file with VTL code can be loaded from local disk into the editor
+                        Text file with VTL code can be loaded from local disk into the editor.
                         <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-41">[VRM-41]</link>
                     </simpara>
                 </listitem>
                 <listitem>
                     <simpara>
-                        Icons in the side menu (on the left) allow to save and open file, and to display settings
+                        Icons in the side menu (on the left) allow to save and open file, and to display settings.
                         <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-22">[VRM-22]</link>
                     </simpara>
                 </listitem>
                 <listitem>
                     <simpara>
-                        Editor has four color schemes to choose from in the settings panel
+                        Editor has four color schemes to choose from in the settings panel.
                     </simpara>
                 </listitem>
             </itemizedlist>
@@ -209,7 +234,7 @@
             <itemizedlist>
                 <listitem>
                     <simpara>
-                        Added configuration for deployment on WebLogic and Tomcat application servers
+                        Added configuration for deployment on WebLogic and Tomcat application servers.
                         <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-85">[VRM-85]</link>
                         <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-87">[VRM-87]</link>
                     </simpara>
@@ -218,9 +243,7 @@
         </section>
     </chapter>
 
-    <chapter xml:id="VRM-0.2.0" xreflabel="VRM-0.2.0" xml:lang="en" version="5.0" xmlns="http://docbook.org/ns/docbook"
-             xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="http://docbook.org/ns/docbook http://docbook.org/xml/5.0/xsd/docbook.xsd">
+    <chapter xml:id="VRM-0.2.0" xreflabel="VRM-0.2.0">
         <title>Version 0.2.0.200325-a</title>
         <para>Date: 2020-03-25</para>
         <section>
@@ -228,7 +251,7 @@
             <itemizedlist>
                 <listitem>
                     <simpara>
-                        Editor shows autocomplete suggestions for keywords and functions
+                        Editor shows autocomplete suggestions for keywords and functions.
                         <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-16">[VRM-16]</link>
                     </simpara>
                 </listitem>
@@ -239,7 +262,7 @@
             <itemizedlist>
                 <listitem>
                     <simpara>
-                        All VTL code elements are highlighted
+                        All VTL code elements are highlighted.
                         <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-14">[VRM-14]</link>
                     </simpara>
                 </listitem>
@@ -250,13 +273,13 @@
             <itemizedlist>
                 <listitem>
                     <simpara>
-                        Items for autocomplete feature are loaded from VTL grammar
+                        Items for autocomplete feature are loaded from VTL grammar.
                         <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-18">[VRM-18]</link>
                     </simpara>
                 </listitem>
                 <listitem>
                     <simpara>
-                        Keywords and operators for highlighting feature are loaded from VTL grammar
+                        Keywords and operators for highlighting feature are loaded from VTL grammar.
                         <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-15">[VRM-15]</link>
                     </simpara>
                 </listitem>
@@ -264,9 +287,7 @@
         </section>
     </chapter>
 
-    <chapter xml:id="VRM-0.1.0" xreflabel="VRM-0.1.0" xml:lang="en" version="5.0" xmlns="http://docbook.org/ns/docbook"
-             xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="http://docbook.org/ns/docbook http://docbook.org/xml/5.0/xsd/docbook.xsd">
+    <chapter xml:id="VRM-0.1.0" xreflabel="VRM-0.1.0">
         <title>Version 0.1.0.200313-a</title>
         <para>Date: 2020-03-13</para>
         <section>
@@ -274,31 +295,31 @@
             <itemizedlist>
                 <listitem>
                     <simpara>
-                        Integrated Monaco editor allows to edit VTL code
+                        Integrated Monaco editor allows to edit VTL code.
                         <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-68">[VRM-68]</link>
                     </simpara>
                 </listitem>
                 <listitem>
                     <simpara>
-                        Syntax of entered code is validated against VTL grammar
+                        Syntax of entered code is validated against VTL grammar.
                         <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-19">[VRM-19]</link>
                     </simpara>
                 </listitem>
                 <listitem>
                     <simpara>
-                        Basic user interface with top banner and bar and side menu mock
+                        Basic user interface with top banner and bar and side menu mock.
                         <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-22">[VRM-22]</link>
                     </simpara>
                 </listitem>
                 <listitem>
                     <simpara>
-                        Monaco minimap enabled for easier navigation in the file
+                        Monaco minimap enabled for easier navigation in the file.
                         <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-22">[VRM-22]</link>
                     </simpara>
                 </listitem>
                 <listitem>
                     <simpara>
-                        Some VTL code elements are highlighted as per their category
+                        Some VTL code elements are highlighted as per their category.
                         <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-14">[VRM-14]</link>
                     </simpara>
                 </listitem>
@@ -309,20 +330,20 @@
             <itemizedlist>
                 <listitem>
                     <simpara>
-                        Base application generated with
+                        Base application generated with.
                         <link xlink:show="new" xlink:href="https://create-react-app.dev/">Create React App</link>
                         <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-70">[VRM-70]</link>
                     </simpara>
                 </listitem>
                 <listitem>
                     <simpara>
-                        Parsing classes for VTL grammar generated with Antlr4
+                        Parsing classes for VTL grammar generated with Antlr4.
                         <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-21">[VRM-21]</link>
                     </simpara>
                 </listitem>
                 <listitem>
                     <simpara>
-                        Monaco editor connected with Antlr4 parsing classes for VTL syntax validation
+                        Monaco editor connected with Antlr4 parsing classes for VTL syntax validation.
                         <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-19">[VRM-19]</link>
                     </simpara>
                 </listitem>

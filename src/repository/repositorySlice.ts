@@ -7,9 +7,9 @@ const initialState = {
         folders: [],
         files: []
     },
-    selectedFolder: 0,
+    selectedFolder: undefined,
     detailedFolder: undefined,
-    versionedFile: 0,
+    versionedFile: undefined,
     comparedVersions: {
         file: undefined,
         versions: []
@@ -77,7 +77,7 @@ export const repositorySlice = createSlice({
         detailFolder(state, action: PayloadAction<number | undefined>) {
             state.detailedFolder = action.payload
         },
-        versionFile(state, action: PayloadAction<number>) {
+        versionFile(state, action: PayloadAction<number | undefined>) {
             state.versionedFile = action.payload
         },
         compareVersions(state, action: PayloadAction<{ file: any, versions: any[] }>) {
@@ -92,7 +92,7 @@ export interface RepositoryState {
     explorerTree: ExplorerTreeState
     selectedFolder: number | undefined
     detailedFolder: number | undefined
-    versionedFile: number
+    versionedFile: number | undefined
     comparedVersions: {
         file: any
         versions: any[]

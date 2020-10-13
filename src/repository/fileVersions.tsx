@@ -14,7 +14,7 @@ import { compareVersions, updateNode, versionedFile } from "./repositorySlice";
 import { storeLoaded } from "../editor/editorSlice";
 
 const FileVersions = () => {
-    const fileId: number = useSelector(versionedFile);
+    const fileId = useSelector(versionedFile);
     const [file, setFile] = useState<StoredItemTransfer>();
     const [versions, setVersions] = useState<any[]>([]);
     const [selected, setSelected] = useState<any[]>([]);
@@ -30,7 +30,7 @@ const FileVersions = () => {
     }
 
     const fetchFile = useCallback(() => {
-        if (fileId > 0) {
+        if (fileId) {
             getFile(fileId).then((received) => {
                 const nodeUpdate: any = {id: fileId, entity: received};
                 dispatch(updateNode(nodeUpdate));

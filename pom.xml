@@ -298,11 +298,11 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <deploy.host>http://localhost</deploy.host>
+                <deploy.host>http://192.168.1.2</deploy.host>
                 <deploy.port>:8080</deploy.port>
                 <deploy.path>/vrm</deploy.path>
-                <deploy.sourcemap>true</deploy.sourcemap>
-                <deploy.api.url>http://localhost:8080/vrm-backend</deploy.api.url>
+                <deploy.sourcemap>false</deploy.sourcemap>
+                <deploy.api.url>http://192.168.1.2:8080/vrm-backend/api</deploy.api.url>
             </properties>
         </profile>
 
@@ -312,8 +312,8 @@
                 <deploy.host>http://localhost</deploy.host>
                 <deploy.port>:7001</deploy.port>
                 <deploy.path>/vrm</deploy.path>
-                <deploy.sourcemap>true</deploy.sourcemap>
-                <deploy.api.url>http://localhost:7001/vrm-backend</deploy.api.url>
+                <deploy.sourcemap>false</deploy.sourcemap>
+                <deploy.api.url>http://localhost:7001/vrm-backend/api</deploy.api.url>
             </properties>
         </profile>
 
@@ -324,7 +324,7 @@
                 <deploy.port />
                 <deploy.path>/vrm</deploy.path>
                 <deploy.sourcemap>false</deploy.sourcemap>
-                <deploy.api.url>https://localhost/vrm-backend</deploy.api.url>
+                <deploy.api.url>https://intragate.test.ec.europa.eu/vrm-backend/api</deploy.api.url>
             </properties>
         </profile>
 

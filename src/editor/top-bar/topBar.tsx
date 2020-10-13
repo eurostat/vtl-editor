@@ -17,7 +17,7 @@ import { buildFile, DEFAULT_FILENAME, EditorFile } from "../editorFile";
 import {
     editorFile,
     fileChanged,
-    fileName,
+    fileName, fileRemoteId,
     markUnchanged,
     storeLoaded,
     updateFileMeta,
@@ -67,7 +67,15 @@ const TopBar = () => {
         });
         warningText = "Do you want to proceed? " +
             "If save process was canceled, current contents will be lost."
-        if ((res === "yes" && await saveFile(warningText)) || res === "no") {
+        if (res === "yes") {
+            const remoteId = readState(fileRemoteId);
+            if (remoteId > 0) {
+                await uploadFile();
+                action();
+            } else if (await saveFile(warningText)) {
+                action();
+            }
+        } else if (res === "no") {
             action();
         }
     };
@@ -136,19 +144,19 @@ const TopBar = () => {
         return decision();
     }
 
-    const uploadFile = async () => {
-        const updateContent = (file: EditorFile) => {
-            updateFileContent(file).then((response) => {
-                if (response && response.data) {
-                    enqueueSnackbar(`File "${file.name}" saved successfully.`, {variant: "success"});
-                    file = Object.assign({}, file, {changed: false, version: response.data.version});
-                    dispatch(updateFileMeta(file));
-                    dispatch(updateSaved(file.content));
-                    dispatch(markUnchanged());
-                }
-            }).catch(() => enqueueSnackbar(`Failed to save file "${file.name}".`, {variant: "error"}));
-        }
+    const updateContent = async (file: EditorFile) => {
+        await updateFileContent(file).then((response) => {
+            if (response && response.data) {
+                enqueueSnackbar(`File "${file.name}" saved successfully.`, {variant: "success"});
+                file = Object.assign({}, file, {changed: false, version: response.data.version});
+                dispatch(updateFileMeta(file));
+                dispatch(updateSaved(file.content));
+                dispatch(markUnchanged());
+            }
+        }).catch(() => enqueueSnackbar(`Failed to save file "${file.name}".`, {variant: "error"}));
+    }
 
+    const uploadFile = async () => {
         let file = readState(editorFile);
         if (file.remoteId > 0) {
             if (!file.changed) {
@@ -156,11 +164,11 @@ const TopBar = () => {
                     {variant: "info"});
                 return;
             }
-            updateContent(file);
+            await updateContent(file);
         } else {
             const parentId = readState(selectedFolder);
             const path = readState(selectedFolderPath);
-            uploadFileDialog(path, file.name)
+            await uploadFileDialog(path, file.name)
                 .then((name: string) => {
                     const payload: StoredItemPayload = {name: name, parentFolderId: parentId};
                     createFile(payload).then((response) => {

@@ -109,6 +109,12 @@ body {
   padding: 0 10px;
 }
 
+.outline-button{
+  background-color: transparent;
+  border: #004494 solid 2px;
+  color: #004494;
+}
+
 
 .title {
   float: left;
@@ -157,13 +163,14 @@ button {
   width: calc(#{$centerWidth} - #{$settingsNavWidth});
   height: calc(100vh - #{$navbarHeight} - #{$barHeight});
   position: relative;
+  overflow: auto;
 }
 
-.middle-container.vtl, .middle-container.default {
+.vtl-box.vtl, .vtl-box.default {
   background-color: white;
 }
 
-.middle-container.vs-dark, .middle-container.hc-black {
+.vtl-box.vs-dark, .vtl-box.hc-black {
   background-color: #1e1e1e;
 
   .error-hr {
@@ -171,7 +178,7 @@ button {
   }
 }
 
-.middle-container.hc-black {
+.vtl-box.hc-black {
   background-color: black;
 }
 
@@ -250,4 +257,32 @@ button {
   width: 100vw;
   background-color: rgba(0, 0, 0, 0.58);
   z-index: 99;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.left-padding-none {
+  padding-left: 0;
+}
+
+.cursor-pointer{
+  cursor: pointer;
+}
+
+.justify-content-end{
+  justify-content: flex-end!important;
+  display: flex;
+}
+
+button {
+  &.gray-background{
+    background-color: #c4c4c4;
+    border-color: #afafaf;
+  }
 }

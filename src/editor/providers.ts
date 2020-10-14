@@ -1,20 +1,23 @@
 import * as EditorApi from "monaco-editor";
-import { CancellationToken, editor, Position } from "monaco-editor";
-import { languages } from 'monaco-editor/esm/vs/editor/editor.api';
+import {CancellationToken, editor, IDisposable, Position} from "monaco-editor";
+import {languages} from 'monaco-editor/esm/vs/editor/editor.api';
 // @ts-ignore
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import grammar from 'raw-loader!../grammar/vtl-2.0/Vtl.g4';
-import { getSuggestions as getSuggestions2_0 } from '../grammar/vtl-2.0/suggestions';
-import { VtlLexer } from '../grammar/vtl-2.0/VtlLexer';
-import { VtlParser } from '../grammar/vtl-2.0/VtlParser';
-import { getSuggestions as getSuggestions3_0 } from '../grammar/vtl-3.0/suggestions';
-import { GrammarGraph } from './grammar-graph/grammarGraph';
+import {getSuggestions as getSuggestions2_0} from '../grammar/vtl-2.0/suggestions';
+import {VtlLexer} from '../grammar/vtl-2.0/VtlLexer';
+import {VtlParser} from '../grammar/vtl-2.0/VtlParser';
+import {getSuggestions as getSuggestions3_0} from '../grammar/vtl-3.0/suggestions';
+import {GrammarGraph} from './grammar-graph/grammarGraph';
 import * as ParserFacade from './ParserFacade';
-import { createLexer, createParser } from './ParserFacade';
+import {createLexer, createParser} from './ParserFacade';
 import * as ParserFacadeV3 from "./ParserFacadeV3";
-import { languageVersions, VTL_VERSION } from "./settings";
-import { TokensProvider } from "./tokensProvider";
-import { VocabularyPack } from './vocabularyPack';
+import {languageVersions, VTL_VERSION} from "./settings";
+import {TokensProvider} from "./tokensProvider";
+import {VocabularyPack} from './vocabularyPack';
+import {fromISdmxResult} from "./CompletionItemMapper";
+import {SdmxResult} from "../models/api/SdmxResult";
+
 
 const lexer = createLexer("");
 const parser = createParser("");
@@ -30,6 +33,9 @@ export const getVtlTheme = (): EditorApi.editor.IStandaloneThemeData => {
             {token: 'string', foreground: '018B03'},
             {token: 'comment', foreground: '939393'},
             {token: 'operator', foreground: '8B3301'},
+            {token: 'attribute', foreground: 'ff002e'},
+            {token: 'dimension', foreground: 'd93d5a'},
+            {token: 'primaryMeasure', foreground: 'ce6a7b'},
             {token: 'delimiter.bracket', foreground: '8B3301'},
             {token: 'operator.special', foreground: '8B3301', fontStyle: 'bold'},
         ],
@@ -44,23 +50,27 @@ export const getBracketsConfiguration = (): languages.LanguageConfiguration => {
         "brackets": [["{", "}"], ["(", ")"], ["[", "]"]]
     }
 };
+let completionItemDispose: IDisposable | undefined = undefined;
 
-export const getEditorWillMount = () => {
+export const getEditorWillMount = (sdmxResult: SdmxResult | null) => {
     return (monaco: typeof EditorApi) => {
         languageVersions.forEach(version => {
             monaco.languages.register({id: version.code});
-            monaco.languages.setMonarchTokensProvider(version.code, tokensProvider.monarchLanguage(version.code));
+            monaco.languages.setMonarchTokensProvider(version.code, tokensProvider.addDsdContent(sdmxResult).monarchLanguage(version.code));
             monaco.editor.defineTheme('vtl', getVtlTheme());
             monaco.languages.setLanguageConfiguration(version.code, getBracketsConfiguration());
-            monaco.languages.registerCompletionItemProvider(version.code, {
-                provideCompletionItems: getSuggestions(version.code, monaco)
+            if (completionItemDispose) {
+                completionItemDispose.dispose();
+            }
+            completionItemDispose = monaco.languages.registerCompletionItemProvider(version.code, {
+                provideCompletionItems: getSuggestions(version.code, monaco, sdmxResult)
             });
         });
     };
 };
 
-const getSuggestions = (version: VTL_VERSION, monaco: typeof EditorApi): any => {
-    return function(model: editor.ITextModel, position: Position, context: languages.CompletionContext, token: CancellationToken) {
+const getSuggestions = (version: VTL_VERSION, monaco: typeof EditorApi, sdmxResult: SdmxResult | null): any => {
+    return function (model: editor.ITextModel, position: Position, context: languages.CompletionContext, token: CancellationToken) {
         const textUntilPosition = model.getValueInRange({
             startLineNumber: 1,
             startColumn: 1,
@@ -74,12 +84,18 @@ const getSuggestions = (version: VTL_VERSION, monaco: typeof EditorApi): any => 
             startColumn: word.startColumn,
             endColumn: word.endColumn
         };
-
         let uniquetext = Array.from(new Set(textUntilPosition.replace(/"(.*?)"/g, "")
             .replace(/[^a-zA-Z_]/g, " ")
             .split(" ").filter(w => w !== "")).values());
-        const suggestionList = getSuggestionsForVersion(version, range);
-        uniquetext = removeLanguageSyntaxFromList(uniquetext, suggestionList);
+        const suggestionList: languages.CompletionItem[] = getSuggestionsForVersion(version, range);
+        uniquetext = removeLanguageSyntaxFromList(suggestionList, uniquetext);
+        let mappedCodeLists: languages.CompletionItem[] = [];
+        console.log("autocomplete");
+        if (sdmxResult) {
+            uniquetext = removeCodeListsFromList(sdmxResult, uniquetext);
+            mappedCodeLists = fromISdmxResult(sdmxResult, range);
+        }
+
         const array = uniquetext.map(w => {
             return {
                 label: w,
@@ -88,13 +104,30 @@ const getSuggestions = (version: VTL_VERSION, monaco: typeof EditorApi): any => 
             } as languages.CompletionItem
         });
         return {
-            suggestions: [...suggestionList, ...array]
+            suggestions: [...suggestionList, ...array, ...mappedCodeLists]
         };
     };
 
-    function removeLanguageSyntaxFromList(vars: string[], suggestionList: any[]) {
-        const suggestionsLabels = suggestionList.map(s => s.label.toLowerCase());
-        return vars.filter(t => !suggestionsLabels.includes(t.toLowerCase()))
+    function removeCodeListsFromList(sdmxResult: SdmxResult, vars: string[]) {
+        const codeListsId: string[] = sdmxResult.dimension.codeLists.concat(sdmxResult.attribute.codeLists).map(cl => cl.structureId);
+        const textsId: string[] = sdmxResult.dimension.texts.concat(sdmxResult.attribute.texts).map(cl => cl.id);
+        const listToRemove = [...codeListsId, ...textsId, sdmxResult.timeDimension, sdmxResult.primaryMeasure];
+        return removeItemsFromList(listToRemove, vars);
+    }
+
+    function removeLanguageSyntaxFromList(suggestionList: languages.CompletionItem[], vars: string[]) {
+        const suggestionsLabels = suggestionList.map(s => {
+            if (typeof s.label === "string") {
+                return s.label;
+            } else {
+                return s.label.name;
+            }
+        });
+        return removeItemsFromList(suggestionsLabels, vars)
+    }
+
+    function removeItemsFromList<T>(items: T[], list: T[]): T[] {
+        return list.filter(val => !items.includes(val));
     }
 };
 

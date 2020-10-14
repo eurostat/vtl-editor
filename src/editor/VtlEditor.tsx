@@ -1,12 +1,13 @@
 import * as EditorApi from 'monaco-editor/esm/vs/editor/editor.api';
-import { Position } from 'monaco-editor/esm/vs/editor/editor.api';
+import {Position} from 'monaco-editor/esm/vs/editor/editor.api';
 import * as React from 'react';
-import { useEffect, useRef } from 'react';
+import {useEffect, useRef} from 'react';
 import MonacoEditor from "react-monaco-editor";
-import { getEditorWillMount, getParserFacade } from "./providers";
+import {getEditorWillMount, getParserFacade} from "./providers";
 
-import { VTL_VERSION } from "./settings";
+import {VTL_VERSION} from "./settings";
 import './vtlEditor.css';
+import {SdmxResult} from "../models/api/SdmxResult";
 
 declare const window: any;
 
@@ -20,13 +21,14 @@ type VtlEditorProps = {
     setCursorPosition: (e: Position) => void,
     tempCursor: Position,
     setErrors: (array: EditorApi.editor.IMarkerData[]) => void,
+    sdmxResult: SdmxResult | null,
 }
 
 let parserFacade: any = {parser: null};
 let errors: any = {value: ""};
 
-const VtlEditor = ({resizeLayout, code, setCode, setCodeChanged, theme, languageVersion, setCursorPosition, tempCursor, setErrors}: VtlEditorProps) => {
-    const monacoRef = useRef(null);
+const VtlEditor = ({resizeLayout, code, setCode, setCodeChanged, theme, languageVersion, setCursorPosition, tempCursor, setErrors, sdmxResult}: VtlEditorProps) => {
+    const monacoRef = useRef<any>(null);
 
     useEffect(() => {
         if (monacoRef && monacoRef.current) {
@@ -43,6 +45,13 @@ const VtlEditor = ({resizeLayout, code, setCode, setCodeChanged, theme, language
             monacoRef.current.editor.setPosition(new Position(tempCursor.lineNumber, tempCursor.column));
         }
     }, [tempCursor]);
+
+    useEffect(() => {
+        // @ts-ignore
+        // if (monacoRef && monacoRef.current) {
+        //     monacoRef.current.editor.dispose();
+        // }
+    }, [sdmxResult])
 
     useEffect(() => {
         parserFacade = getParserFacade(languageVersion);
@@ -99,8 +108,9 @@ const VtlEditor = ({resizeLayout, code, setCode, setCodeChanged, theme, language
     return (
         <div className="editor-container">
             <MonacoEditor
+                key={sdmxResult?.dataStructureInfo.name || ""}
                 ref={monacoRef}
-                editorWillMount={getEditorWillMount()}
+                editorWillMount={getEditorWillMount(sdmxResult)}
                 editorDidMount={didMount}
                 height="100%"
                 language={languageVersion}

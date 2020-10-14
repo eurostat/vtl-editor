@@ -1,0 +1,169 @@
+@import "../../variables";
+
+$gray-background-color: #f5f5f5;
+$gray-border-color: #d0d0d0;
+$progress-border-radius: 4px;
+
+.sdmx-container {
+  overflow: auto;
+}
+
+.view-name-container {
+  text-align: left;
+  height: 50px;
+  background-color: $gray-background-color;
+  border-bottom: $gray-border-color 1px solid;
+
+  h3 {
+    padding-top: 10px;
+    padding-left: 20px;
+    font-size: 18px;
+  }
+}
+
+.sdmx-option {
+  text-align: right;
+  height: 80px;
+
+  > span, button {
+    height: 100%;
+    display: inline-flex;
+    align-items: center;
+  }
+}
+
+.sdmx-agency {
+  height: 60px;
+}
+
+.sdmx-autocomplete {
+  min-width: 200px;
+}
+
+
+.filter-button {
+  margin-right: 10px;
+}
+
+.agency-row {
+  height: 60px;
+}
+
+.filter-container {
+  background-color: $gray-background-color;
+  margin-left: -5px;
+  padding: 5px 0 5px 5px;
+  border: $gray-border-color 1px solid;
+  margin-bottom: 10px;
+  border-radius: 5px;
+
+  .filter-row {
+    text-align: left;
+
+    span {
+      color: $base-color;
+      font-weight: bold;
+    }
+
+    svg {
+      margin-right: 5px;
+    }
+  }
+}
+
+.filter-options {
+  transform: scaleY(0);
+  height: 0;
+}
+
+.open {
+  height: auto;
+  transform: scaleY(1); // implicit, but good to specify explicitly
+}
+
+
+.refresh-icon {
+  color: #9f9f9f;
+  font-size: 1.3em;
+}
+
+.sdmx-autocomplete, .sdmx-final-select {
+  background-color: white;
+}
+
+.sdmx-table {
+  padding-bottom: 20px;
+}
+
+.table-container {
+  background-color: $gray-background-color;
+  border-top: $gray-border-color 1px solid;
+  padding-top: 20px;
+  padding-bottom: 50px;
+}
+
+.button-margin-right {
+  margin-right: 10px;
+}
+
+.sdmx-progress-bar-container {
+  width: 900px;
+  height: 15px;
+  background: transparent;
+  border: #c1c1c1 1px solid;
+  border-radius: $progress-border-radius;
+  display: flex;
+  font-size: .75rem;
+  color: white;
+}
+
+.sdmx-progress-bar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  height: 100%;
+  width: 0;
+  background-color: #007bff;
+}
+
+
+.sdmx-loading-screen {
+  top: 0;
+  left: 0;
+  position: fixed;
+  width: 100vw;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 999;
+}
+
+.sdmx-loading-content-area {
+  position: fixed;
+  top: 50%;
+  left: 45%;
+  color: white;
+
+  .MuiTypography-colorTextSecondary {
+    color: white;
+  }
+
+  .MuiTypography-caption {
+    font-size: 0.85em;
+  }
+
+  .MuiCircularProgress-circleStatic {
+    transition: stroke-dashoffset 0ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  }
+}
+
+
+.dsd-detail-panel, .code-list-panel {
+  min-height: 100px;
+  background-color: #e4e4e4;
+  padding: 25px 15px;
+}
+
+
+
+

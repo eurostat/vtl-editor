@@ -1,8 +1,8 @@
 import {IRange, languages} from 'monaco-editor/esm/vs/editor/editor.api';
-import {CodeListDetails} from "../models/api/CodeList";
+import {CodeListDetails} from "../sdmx/entity/CodeList";
 import {ENUM, PROPERTY} from "./constants";
-import {SdmxResult} from "../models/api/SdmxResult";
-import {BaseStruct} from "../models/api/DataStructureDefinition";
+import {SdmxResult} from "../sdmx/entity/SdmxResult";
+import {BaseStruct} from "../sdmx/entity/DataStructureDefinition";
 
 
 export const fromISdmxResult = (source: SdmxResult, range: IRange): languages.CompletionItem[] => {

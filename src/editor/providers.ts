@@ -1,23 +1,22 @@
 import * as EditorApi from "monaco-editor";
-import {CancellationToken, editor, IDisposable, Position} from "monaco-editor";
-import {languages} from 'monaco-editor/esm/vs/editor/editor.api';
+import { CancellationToken, editor, IDisposable, Position } from "monaco-editor";
+import { languages } from 'monaco-editor/esm/vs/editor/editor.api';
 // @ts-ignore
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import grammar from 'raw-loader!../grammar/vtl-2.0/Vtl.g4';
-import {getSuggestions as getSuggestions2_0} from '../grammar/vtl-2.0/suggestions';
-import {VtlLexer} from '../grammar/vtl-2.0/VtlLexer';
-import {VtlParser} from '../grammar/vtl-2.0/VtlParser';
-import {getSuggestions as getSuggestions3_0} from '../grammar/vtl-3.0/suggestions';
-import {GrammarGraph} from './grammar-graph/grammarGraph';
+import { getSuggestions as getSuggestions2_0 } from '../grammar/vtl-2.0/suggestions';
+import { VtlLexer } from '../grammar/vtl-2.0/VtlLexer';
+import { VtlParser } from '../grammar/vtl-2.0/VtlParser';
+import { getSuggestions as getSuggestions3_0 } from '../grammar/vtl-3.0/suggestions';
+import { SdmxResult } from "../sdmx/entity/SdmxResult";
+import { fromISdmxResult } from "./CompletionItemMapper";
+import { GrammarGraph } from './grammar-graph/grammarGraph';
 import * as ParserFacade from './ParserFacade';
-import {createLexer, createParser} from './ParserFacade';
+import { createLexer, createParser } from './ParserFacade';
 import * as ParserFacadeV3 from "./ParserFacadeV3";
-import {languageVersions, VTL_VERSION} from "./settings";
-import {TokensProvider} from "./tokensProvider";
-import {VocabularyPack} from './vocabularyPack';
-import {fromISdmxResult} from "./CompletionItemMapper";
-import {SdmxResult} from "../models/api/SdmxResult";
-
+import { languageVersions, VtlVersion } from "./settings";
+import { TokensProvider } from "./tokensProvider";
+import { VocabularyPack } from './vocabularyPack';
 
 const lexer = createLexer("");
 const parser = createParser("");
@@ -25,22 +24,63 @@ const tokensProvider: TokensProvider = new TokensProvider();
 const vocabulary: VocabularyPack<VtlLexer, VtlParser> = new VocabularyPack(lexer, parser);
 const grammarGraph: GrammarGraph<VtlLexer, VtlParser> = new GrammarGraph(vocabulary, grammar);
 
-export const getVtlTheme = (): EditorApi.editor.IStandaloneThemeData => {
-    return {
-        base: 'vs',
-        inherit: true,
-        rules: [
-            {token: 'string', foreground: '018B03'},
-            {token: 'comment', foreground: '939393'},
-            {token: 'operator', foreground: '8B3301'},
-            {token: 'attribute', foreground: 'ff002e'},
-            {token: 'dimension', foreground: 'd93d5a'},
-            {token: 'primaryMeasure', foreground: 'ce6a7b'},
-            {token: 'delimiter.bracket', foreground: '8B3301'},
-            {token: 'operator.special', foreground: '8B3301', fontStyle: 'bold'},
-        ],
-        colors: {}
+export const getVtlTheme = (name: string): EditorApi.editor.IStandaloneThemeData => {
+    switch (name) {
+        case "vtl": {
+            return {
+                base: 'vs',
+                inherit: true,
+                rules: [
+                    {token: 'string', foreground: '018B03'},
+                    {token: 'comment', foreground: '939393'},
+                    {token: 'operator', foreground: '8B3301'},
+                    {token: 'attribute', foreground: '9ffb88'},
+                    {token: 'dimension', foreground: 'f7b74e'},
+                    {token: 'primaryMeasure', foreground: '953d55'},
+                    {token: 'delimiter.bracket', foreground: '8B3301'},
+                    {token: 'operator.special', foreground: '8B3301', fontStyle: 'bold'},
+                ],
+                colors: {}
+            }
+        }
+        case "vtl-vs": {
+            return {
+                base: 'vs',
+                inherit: true,
+                rules: [
+                    {token: 'attribute', foreground: '9ffb88'},
+                    {token: 'dimension', foreground: 'f7b74e'},
+                    {token: 'primaryMeasure', foreground: '953d55'},
+                ],
+                colors: {}
+            }
+        }
+        case "vtl-dark": {
+            return {
+                base: 'vs-dark',
+                inherit: true,
+                rules: [
+                    {token: 'attribute', foreground: '9ffb88'},
+                    {token: 'dimension', foreground: 'f7b74e'},
+                    {token: 'primaryMeasure', foreground: '953d55'},
+                ],
+                colors: {}
+            }
+        }
+        case "vtl-black": {
+            return {
+                base: 'hc-black',
+                inherit: true,
+                rules: [
+                    {token: 'attribute', foreground: '9ffb88'},
+                    {token: 'dimension', foreground: 'f7b74e'},
+                    {token: 'primaryMeasure', foreground: '953d55'},
+                ],
+                colors: {}
+            }
+        }
     }
+    return {base: 'vs', colors: {}, inherit: true, rules: []};
 };
 
 export const getBracketsConfiguration = (): languages.LanguageConfiguration => {
@@ -52,25 +92,42 @@ export const getBracketsConfiguration = (): languages.LanguageConfiguration => {
 };
 let completionItemDispose: IDisposable | undefined = undefined;
 
-export const getEditorWillMount = (sdmxResult: SdmxResult | null) => {
-    return (monaco: typeof EditorApi) => {
-        languageVersions.forEach(version => {
-            monaco.languages.register({id: version.code});
-            monaco.languages.setMonarchTokensProvider(version.code, tokensProvider.addDsdContent(sdmxResult).monarchLanguage(version.code));
-            monaco.editor.defineTheme('vtl', getVtlTheme());
-            monaco.languages.setLanguageConfiguration(version.code, getBracketsConfiguration());
-            if (completionItemDispose) {
-                completionItemDispose.dispose();
-            }
-            completionItemDispose = monaco.languages.registerCompletionItemProvider(version.code, {
-                provideCompletionItems: getSuggestions(version.code, monaco, sdmxResult)
-            });
+export const getEditorWillMount = (monaco: typeof EditorApi) => {
+    languageVersions.forEach(version => {
+        monaco.languages.register({id: version.code});
+        monaco.languages.setMonarchTokensProvider(version.code, tokensProvider.monarchLanguage(version.code));
+        monaco.editor.defineTheme('vtl', getVtlTheme('vtl'));
+        monaco.editor.defineTheme('vtl-vs', getVtlTheme('vtl-vs'));
+        monaco.editor.defineTheme('vtl-dark', getVtlTheme('vtl-dark'));
+        monaco.editor.defineTheme('vtl-black', getVtlTheme('vtl-black'));
+        monaco.languages.setLanguageConfiguration(version.code, getBracketsConfiguration());
+        if (completionItemDispose) {
+            completionItemDispose.dispose();
+        }
+        completionItemDispose = EditorApi.languages.registerCompletionItemProvider(version.code, {
+            provideCompletionItems: getSuggestions(version.code)
         });
-    };
+    });
 };
 
-const getSuggestions = (version: VTL_VERSION, monaco: typeof EditorApi, sdmxResult: SdmxResult | null): any => {
-    return function (model: editor.ITextModel, position: Position, context: languages.CompletionContext, token: CancellationToken) {
+export const refreshSuggestions = (sdmxResult: SdmxResult | undefined) => {
+    languageVersions.forEach(version => {
+        EditorApi.languages.setMonarchTokensProvider(version.code, tokensProvider.addDsdContent(sdmxResult).monarchLanguage(version.code));
+        EditorApi.editor.defineTheme('vtl', getVtlTheme('vtl'));
+        EditorApi.editor.defineTheme('vtl-vs', getVtlTheme('vtl-vs'));
+        EditorApi.editor.defineTheme('vtl-dark', getVtlTheme('vtl-dark'));
+        EditorApi.editor.defineTheme('vtl-black', getVtlTheme('vtl-black'));
+        if (completionItemDispose) {
+            completionItemDispose.dispose();
+        }
+        completionItemDispose = EditorApi.languages.registerCompletionItemProvider(version.code, {
+            provideCompletionItems: getSuggestions(version.code, sdmxResult)
+        });
+    });
+}
+
+const getSuggestions = (version: VtlVersion, sdmxResult?: SdmxResult): any => {
+    return function(model: editor.ITextModel, position: Position, context: languages.CompletionContext, token: CancellationToken) {
         const textUntilPosition = model.getValueInRange({
             startLineNumber: 1,
             startColumn: 1,
@@ -90,7 +147,6 @@ const getSuggestions = (version: VTL_VERSION, monaco: typeof EditorApi, sdmxResu
         const suggestionList: languages.CompletionItem[] = getSuggestionsForVersion(version, range);
         uniquetext = removeLanguageSyntaxFromList(suggestionList, uniquetext);
         let mappedCodeLists: languages.CompletionItem[] = [];
-        console.log("autocomplete");
         if (sdmxResult) {
             uniquetext = removeCodeListsFromList(sdmxResult, uniquetext);
             mappedCodeLists = fromISdmxResult(sdmxResult, range);
@@ -99,7 +155,7 @@ const getSuggestions = (version: VTL_VERSION, monaco: typeof EditorApi, sdmxResu
         const array = uniquetext.map(w => {
             return {
                 label: w,
-                kind: monaco.languages.CompletionItemKind.Variable,
+                kind: EditorApi.languages.CompletionItemKind.Variable,
                 insertText: w
             } as languages.CompletionItem
         });
@@ -131,23 +187,23 @@ const getSuggestions = (version: VTL_VERSION, monaco: typeof EditorApi, sdmxResu
     }
 };
 
-export const getSuggestionsForVersion = (version: VTL_VERSION, range: any) => {
+export const getSuggestionsForVersion = (version: VtlVersion, range: any) => {
     let suggestions: languages.CompletionItem[] | undefined;
     switch (version) {
-        case VTL_VERSION.VTL_2_0:
+        case VtlVersion.VTL_2_0:
             suggestions = getSuggestions2_0(range);
             return suggestions.length !== 0 ? suggestions : grammarGraph.suggestions();
-        case VTL_VERSION.VTL_3_0:
+        case VtlVersion.VTL_2_1:
             suggestions = getSuggestions3_0(range);
             return suggestions.length !== 0 ? suggestions : grammarGraph.suggestions();
     }
 };
 
-export const getParserFacade = (version: VTL_VERSION) => {
+export const getParserFacade = (version: VtlVersion) => {
     switch (version) {
-        case VTL_VERSION.VTL_2_0:
+        case VtlVersion.VTL_2_0:
             return {parser: ParserFacade};
-        case VTL_VERSION.VTL_3_0:
+        case VtlVersion.VTL_2_1:
             return {parser: ParserFacadeV3};
     }
 };

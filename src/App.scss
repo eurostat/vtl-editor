@@ -1,5 +1,4 @@
 @import "variables";
-
 body {
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
@@ -182,28 +181,6 @@ button {
   background-color: black;
 }
 
-.top-bar {
-  height: 30px;
-  width: 100%;
-  background: #484848;
-  margin-bottom: 10px;
-  color: white;
-  font-size: 14px;
-  font-weight: 500;
-
-  span {
-    line-height: 2;
-    vertical-align: middle;
-
-  }
-
-  & > span {
-    position: absolute;
-    left: 0;
-    right: 0;
-  }
-}
-
 .version-container {
   float: right;
   margin-right: 80px;
@@ -284,5 +261,26 @@ button {
   &.gray-background{
     background-color: #c4c4c4;
     border-color: #afafaf;
+  }
+}
+
+
+.position-right{
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding-right: 20px;
+}
+
+.view-name-container {
+  text-align: left;
+  height: 50px;
+  background-color: $gray-background-color;
+  border-bottom: $gray-border-color 1px solid;
+
+  h3 {
+    padding-top: 10px;
+    padding-left: 20px;
+    font-size: 18px;
   }
 }

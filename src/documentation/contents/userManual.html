@@ -1,0 +1,161 @@
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   <title>VRM - User Manual</title><meta name="generator" content="DocBook XSL Stylesheets V1.79.1"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div lang="en" class="docbook.book"><div class="docbook.titlepage"><div><div><h1 class="docbook.title"><a name="user-manual"></a>VRM - User Manual</h1></div><div><h2 class="docbook.subtitle">User Manual for the Validation Rule Manager</h2></div><div><div class="docbook.authorgroup"><div class="docbook.author"><h3 class="docbook.author">Commission Europ&eacute;enne, 2920 Luxembourg, LUXEMBOURG - Tel. +352 43011</h3></div></div></div><div><p class="docbook.releaseinfo">version 0.7.0-SNAPSHOT</p></div><div><p class="docbook.copyright">Copyright &copy; 2020 European Commission, EUROSTAT</p></div></div><hr></div><div class="docbook.chapter"><div class="docbook.titlepage"><div><div><h1 class="docbook.title"><a name="getting_started"></a>Chapter&nbsp;1.&nbsp;GETTING STARTED</h1></div></div></div><p>The <span class="docbook.bold"><strong>VRM Editor</strong></span> is an online editor, that allows you to edit all your text files and this documentation describes the features.
+        </p><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="vrm_open_editor"></a>Open online editor</h2></div></div></div><p>You can open <span class="docbook.bold"><strong>VRM Editor</strong></span> in browser from the dedicated link. It works in consistent manner in browsers <span class="docbook.bold"><strong>
+                Chrome, Firefox, Microsoft Edge
+            </strong></span> (Internet Explorer is NOT supported) on desktop computers.
+            </p></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="vrm_interface"></a>Interface</h2></div></div></div><p>
+                <span class="docbook.bold"><strong>VRM Editor</strong></span>
+                comes with a simple and intuitive layout, that maximizes the space provided for the editor while leaving ample room to browse and access the full context of your
+                folder or project. You have available all the following elements for the interface:
+            </p><div class="docbook.figure"><a name="d0e53"></a><p class="docbook.title"><b>Figure&nbsp;1.1.&nbsp;VRM Editor - Interface</b></p><div class="docbook.figure-contents"><div class="docbook.mediaobject" align="center"><table border="0" summary="manufactured viewport for HTML img" style="cellpadding: 0; cellspacing: 0;" width="100%"><tr><td align="center"><img src="images/vrm_interface.png" align="middle" width="100%" alt="VRM Editor - Interface"></td></tr></table></div></div></div><br class="docbook.figure-break"><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: disc; "><li class="docbook.listitem"><p>
+                        <span class="docbook.bold"><strong>(1) Menu</strong></span>
+                        The options in menu are activated by clicking into the icons on the left part of the main window.
+                        The main menu contains all the following options:
+                        </p><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: circle; "><li class="docbook.listitem"><p>Save</p></li><li class="docbook.listitem"><p>Open</p></li><li class="docbook.listitem"><p>Settings</p></li><li class="docbook.listitem"><p>Help</p></li></ul></div><p>
+                        Hovering over the above items, will display a label with the name.
+                    </p></li><li class="docbook.listitem"><p>
+                        <span class="docbook.bold"><strong>(2) Text Editor</strong></span>
+                        Here you can edit the contents of your assets. In addition, the editor supports autocomplete.
+                    </p></li><li class="docbook.listitem"><p>
+                        <span class="docbook.bold"><strong>(3) Status Bar</strong></span>
+                        Here you can see various helpful details while you are interacting with the <span class="docbook.bold"><strong>VRM Editor</strong></span>:
+                        </p><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: circle; "><li class="docbook.listitem"><p>Arrow to expand the panel with details for errors</p></li><li class="docbook.listitem"><p>Number of errors</p></li><li class="docbook.listitem"><p>Cursor position
+                                    <span class="docbook.bold"><strong>(Line and Column)</strong></span>
+                                </p></li><li class="docbook.listitem"><p>
+                                    <span class="docbook.bold"><strong>VTL language version</strong></span>
+                                    number
+                                </p></li></ul></div><p>
+                    </p></li><li class="docbook.listitem"><p>
+                        <span class="docbook.bold"><strong>(4) Help</strong></span>
+                        This tab contains link to <span class="docbook.bold"><strong>'User Manual'</strong></span> or will displayed in the content from application.
+                    </p></li><li class="docbook.listitem"><p>
+                        <span class="docbook.bold"><strong>(5) Mini Map</strong></span>(code outline) gives you a high-level overview of your source code, which is useful
+                        for quick navigation and code understanding.
+                    </p></li><li class="docbook.listitem"><p>
+                        <span class="docbook.bold"><strong>(6) Panel</strong></span>
+                        The panel displays potential errors with descriptions for the added code.
+                    </p></li><li class="docbook.listitem"><p>
+                        <span class="docbook.bold"><strong>(7) Settings sidebar</strong></span>
+                        The panel displays a drop-down menu for changing the <span class="docbook.bold"><strong>VTL version</strong></span> or theme color.
+
+                    </p></li><li class="docbook.listitem"><p>
+                        <span class="docbook.bold"><strong>(8) Tab</strong></span>
+                        The panel displays the name of the current text file.
+                    </p></li></ul></div></div></div><div class="docbook.chapter"><div class="docbook.titlepage"><div><div><h1 class="docbook.title"><a name="vrm_editing_funcionalities"></a>Chapter&nbsp;2.&nbsp;EDITING FUNCTIONALITIES</h1></div></div></div><p>For <span class="docbook.bold"><strong>VRM Editor</strong></span> you have available all the following functionalities for the files:
+        </p><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: disc; "><li class="docbook.listitem"><p>Create VTL file</p></li><li class="docbook.listitem"><p>Save file</p></li><li class="docbook.listitem"><p>Open file</p></li><li class="docbook.listitem"><p>Search and replace</p></li><li class="docbook.listitem"><p>Syntax highlighting for VTL elements</p></li><li class="docbook.listitem"><p>Autocomplete VTL syntax elements</p></li><li class="docbook.listitem"><p>Display context help regarding VTL syntax elements and snippets</p></li><li class="docbook.listitem"><p>Check VTL grammar for the file</p></li><li class="docbook.listitem"><p>Display syntax errors with details on the list in the error panel</p></li></ul></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="vrm_create_vtl_file"></a>Create VTL file</h2></div></div></div><p>After opening application, you have the document opened, with empty code field in the editor.
+                You can add new code or upload existing<span class="docbook.bold"><strong>VTL file</strong></span> from the storage with using in menu option
+                <span class="docbook.bold"><strong>'Open file'</strong></span>. You can save the file at any time, <span class="docbook.bold"><strong>VRM Editor</strong></span> also has autosave option, so you can go
+                back to adding content even after closing the application.
+            </p></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="vrm_save_vtl_file"></a>Save VTL file</h2></div></div></div><p>You can also add changes to the tab with the code. If you click on the <span class="docbook.bold"><strong>'Save file'</strong></span> option in main menu, you have possibility to
+                save <span class="docbook.bold"><strong>VTL file</strong></span> to local storage at any time. Additionally, if you have unsaved changes and application is closed without saving
+                file, after reopening editor, it will restore last version of used document. File changes and settings from the last opening are saved automatically and when the
+                application is run, last
+                saved version is automatically loaded.
+            </p><p>Procedure of saving <span class="docbook.bold"><strong>VTL Editor</strong></span> contents to local storage:
+            </p><div class="docbook.orderedlist"><ol class="docbook.orderedlist" type="1"><li class="docbook.listitem"><p>Choose icon <span class="docbook.bold"><strong>'Save'</strong></span> in main menu.
+                    </p></li><li class="docbook.listitem"><p>If the file has a path added on your computer, the file will be saved or if not, you will see a
+                        window and you should add the path to save the file.
+                    </p></li><li class="docbook.listitem"><p>You see success/error message for saving file.</p></li></ol></div></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="vrm_load_vtl_file"></a>Open VTL file</h2></div></div></div><p>
+                If you click on the &#8216;<span class="docbook.bold"><strong>Open file</strong></span>&#8217; option in main menu, you have possibility to load file from an external file into the editor.
+                Aditionally, you have possibility to have opened more than one file. New files will be opened in the new carts, after opening new cart in browser.
+            </p><p>Procedure of opening text <span class="docbook.bold"><strong>VTL file</strong></span> from local storage:
+            </p><div class="docbook.orderedlist"><ol class="docbook.orderedlist" type="1"><li class="docbook.listitem"><p>Go to main menu.</p></li><li class="docbook.listitem"><p>Choose icon
+                        <span class="docbook.bold"><strong>'Open file'</strong></span>
+                    </p></li><li class="docbook.listitem"><p>You have two options for upload a text <span class="docbook.bold"><strong>VTL file</strong></span> from local storage:
+                    </p><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: circle; "><li class="docbook.listitem" style="list-style-type: circle"><p>choosing button Add file on the pop-up and uploads file from the path to the file on
+                                local storage,
+                            </p></li><li class="docbook.listitem" style="list-style-type: circle"><p>dragging the file and dropping it in the appropriate field, marked with a dashed line,
+                                on the main screen Procedure of opening
+                                <span class="docbook.bold"><strong>VTL text file.</strong></span>
+                            </p></li></ul></div></li></ol></div></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="vrm_search_and_replace"></a>Search and replace</h2></div></div></div><p>You can search for text in a file by pressing <span class="docbook.bold"><strong>Ctrl + F</strong></span>. This will open up the Find panel on the
+                bottom:
+
+                Enter your search term here and press <span class="docbook.bold"><strong>Enter</strong></span>. You can navigate between matches by
+                continuously hitting <span class="docbook.bold"><strong>Enter</strong></span> (or <span class="docbook.bold"><strong>Shift + Enter</strong></span> to go backwards). The searched phrase is highlighted
+                in the editor and scrollbar.
+                If you want to replace a match, expand the <span class="docbook.bold"><strong>Search widget</strong></span> to display the <span class="docbook.bold"><strong>Replace text box</strong></span> and
+                enter the text you want to replace it with in the Replace input field. Then hit <span class="docbook.bold"><strong>Enter</strong></span> to replace the
+                match and keep hitting <span class="docbook.bold"><strong>Enter</strong></span> to replace each subsequent match or <span class="docbook.bold"><strong>Ctrl+Alt+Enter</strong></span> to
+                immediately replace all. The searched phrase is highlighted in the editor and scrollbar.
+                Highlighting a word in the code editor will highlight all other matches in the file which makes it
+                easier to check where a variable or function is being used. You can replace all in one file or
+                replace a single change.
+            </p></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="vrm_syntax_highliting"></a>Syntax highlighting for VTL elements</h2></div></div></div><p>
+                You have possibility to switch color to a different <span class="docbook.bold"><strong>syntax highlighting for VTL elements</strong></span> in the code editor. You can edit your
+                preferences by clicking on <span class="docbook.bold"><strong>Settings/Color theme</strong></span> and choosing one option to display the theme preferences drop-down:
+            </p><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: circle; "><li class="docbook.listitem" style="list-style-type: circle"><p>VTL
+                    </p></li><li class="docbook.listitem" style="list-style-type: circle"><p>
+                        Light
+                    </p></li><li class="docbook.listitem" style="list-style-type: circle"><p>
+                        Dark
+                    </p></li><li class="docbook.listitem" style="list-style-type: circle"><p>
+                        High Contrast Dark
+                    </p></li></ul></div></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="vrm_autocomplete_VTL_syntax"></a>Autocomplete VTL syntax elements</h2></div></div></div><p>The editor supports autocomplete and when you type a letter or hit <span class="docbook.bold"><strong>Ctrl+Space</strong></span>, you will see a
+                list of autocomplete suggestions. After choosing name from the list, by using mouse cursor or
+                selecting with keyboard, selected keyword is added to the code.
+            </p></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="vrm_display_content_help"></a>Display context help</h2></div></div></div><p>Context help regarding <span class="docbook.bold"><strong>VTL syntax elements and snippet</strong></span> are displayed in the editor, after
+                moving the cursor over the name and selecting the <span class="docbook.bold"><strong>'i'</strong></span> icon in the line with the selected name.
+                <span class="docbook.bold"><strong>Context help</strong></span>
+                is displayed during typing, as shown in the example:
+            </p></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="vrm_check_grammar"></a>Check VTL - grammar for the file</h2></div></div></div><p>For the content of the files, is checked structure. In case of syntax errors, they are underlined in
+                application and details are added on the bottom error panel. Additionally, after moving your
+                cursor to the place with error, you will see the error details.
+            </p></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="vrm_display_errors"></a>Display errors</h2></div></div></div><p>
+                <span class="docbook.bold"><strong>VRM Editor</strong></span>
+                displays of potential errors and warnings in a dedicated section of the page and on
+                the bottom panel. As default blue panel is collapsed. After press arrow on the left, you will see
+                the list in the panel with line, column and message of <span class="docbook.bold"><strong>syntax or grammar error</strong></span>. In the code, the
+                position with error has red underline.
+            </p></div></div><div class="docbook.chapter"><div class="docbook.titlepage"><div><div><h1 class="docbook.title"><a name="vrm_settings"></a>Chapter&nbsp;3.&nbsp;SETTINGS</h1></div></div></div><p>You can edit your preferences by clicking on <span class="docbook.bold"><strong>Settings</strong></span> in main menu,then will see all the following
+            options:
+        </p><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: disc; "><li class="docbook.listitem"><p>Change theme color</p></li><li class="docbook.listitem"><p>Switch VTL language version</p></li></ul></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="vrm_language_version"></a>Language version</h2></div></div></div><p>You have possibility to change the <span class="docbook.bold"><strong>VTL language version</strong></span> in <span class="docbook.bold"><strong>Settings/ VTL Grammar Version</strong></span>. The
+                highest (currently 2.0) will be added as a default option.
+            </p></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="vrm_color_theme"></a>Color theme</h2></div></div></div><p>You have possibility to change theme preferences in <span class="docbook.bold"><strong>Settings/ Color theme</strong></span>. There will be
+                available options to choose:
+                </p><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: circle; "><li class="docbook.listitem" style="list-style-type: circle"><p>
+                            <span class="docbook.bold"><strong>VTL</strong></span>
+                            - similar to Light
+                        </p></li><li class="docbook.listitem" style="list-style-type: circle"><p>
+                            <span class="docbook.bold"><strong>Light</strong></span>
+                            - light view
+                        </p></li><li class="docbook.listitem" style="list-style-type: circle"><p>
+                            <span class="docbook.bold"><strong>Dark</strong></span>
+                            - dark view
+                        </p></li><li class="docbook.listitem" style="list-style-type: circle"><p>
+                            <span class="docbook.bold"><strong>High Contrast Dark</strong></span>
+                            - high contrast
+                        </p></li></ul></div><p>
+            </p></div></div><div class="docbook.chapter"><div class="docbook.titlepage"><div><div><h1 class="docbook.title"><a name="vrm_keyboard_shortcuts"></a>Chapter&nbsp;4.&nbsp;KEYBOARD SHOTCUTS</h1></div></div></div><p>The following commands are available when editing a file:</p><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: disc; "><li class="docbook.listitem"><p>
+                    <span class="docbook.bold"><strong>F1 or Alt+F1</strong></span>&nbsp; Display the full list of commands
+                </p></li><li class="docbook.listitem"><p>
+                    <span class="docbook.bold"><strong>Ctrl-C</strong></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Copy the selected text to the
+                    clipboard
+                </p></li><li class="docbook.listitem"><p>
+                    <span class="docbook.bold"><strong>Ctrl-V</strong></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Paste the clipboard&#8217;s contents to
+                    the selected text
+                </p></li><li class="docbook.listitem"><p>
+                    <span class="docbook.bold"><strong>Ctrl-X</strong></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cut the selected text
+                </p></li><li class="docbook.listitem"><p>
+                    <span class="docbook.bold"><strong>Ctrl-S</strong></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Save current document file
+                </p></li><li class="docbook.listitem"><p>
+                    <span class="docbook.bold"><strong>Ctrl-O</strong></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Open a file in the current software
+                </p></li><li class="docbook.listitem"><p>
+                    <span class="docbook.bold"><strong>Ctrl+Space</strong></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Display the list of autocomplete suggestions
+                </p></li><li class="docbook.listitem"><p>
+                    <span class="docbook.bold"><strong>Ctrl-Z</strong></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Undo editing
+                </p></li><li class="docbook.listitem"><p>
+                    <span class="docbook.bold"><strong>Ctrl-Enter</strong></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Insert a new-line character
+                </p></li><li class="docbook.listitem"><p>
+                    <span class="docbook.bold"><strong>Ctrl-P</strong></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Print active window
+                </p></li><li class="docbook.listitem"><p>
+                    <span class="docbook.bold"><strong>Ctrl-F</strong></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Find text
+                </p></li></ul></div></div><div class="docbook.chapter"><div class="docbook.titlepage"><div><div><h1 class="docbook.title"><a name="vrm_accessibilitys"></a>Chapter&nbsp;5.&nbsp;ACCESSIBILITY</h1></div></div></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="vrm_accessibility_help"></a>Accessibility Help</h2></div></div></div><p>You can press <span class="docbook.bold"><strong>Alt+F1</strong></span> or <span class="docbook.bold"><strong>Ctrl+F1</strong></span> in IE to trigger the <span class="docbook.bold"><strong>'Show Accessibility
+                Help'
+            </strong></span> dialog, while in an
+                editor to find out the current position in the editor and to check the state of various accessibility
+                options. The editor can be dynamically optimized for screen reader software from this dialog.
+            </p></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="vrm_high_contrast_theme"></a>High contrast theme</h2></div></div></div><p>You have possibility to turn on high contrast mode, for window with code in editor, on all
+                platforms in <span class="docbook.bold"><strong>'Settings'</strong></span>. There will be available option to display the Theme preferences drop-down
+                and select the <span class="docbook.bold"><strong>High Contrast Dark</strong></span>.
+            </p></div></div></div></body></html>

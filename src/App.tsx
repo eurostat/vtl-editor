@@ -1,50 +1,27 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {editor, Position} from "monaco-editor";
-import {SnackbarProvider} from "notistack";
-import React, {useEffect, useState} from 'react';
+import { SnackbarProvider } from "notistack";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { Redirect, Route, Switch } from "react-router-dom";
 import './App.scss';
-import OpenDialog from "./component/dialog/openDialog";
-import GuideOverlay from "./component/GuideOverlay";
-import Header from "./component/Header";
-import Navigation from "./component/Navigation";
-import {languageVersions} from "./editor/settings";
-import EditorView from "./component/EditorView";
-import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
-import SDMXView from "./component/SDMXView/SDMXView";
-import {SdmxResult} from "./models/api/SdmxResult";
-import {SdmxRegistry} from "./models/api/SdmxRegistry";
-import {Agency} from "./models/api/Agency";
-import {DataStructure, FinalStructureEnum} from "./models/api/DataStructure";
-import {
-    getEditorStoredValues,
-    getSdmxStoredValues,
-    setEditorStorageValue,
-    setSdmxStorageValue
-} from "./utility/localStorage";
-import {EditorStorage} from "./models/storage/EditorStorage";
-import {SdmxStorage} from "./models/storage/SdmxStorage";
-import {DataStructureDefinition} from "./models/api/DataStructureDefinition";
-import {decisionModal} from "./component/DecisionModal";
-import SdmxDownloadScreen from "./component/SDMXView/SdmxLoadingScreen/SdmxDownloadScreen";
-
-const getTheme = (): string => {
-    const item = getEditorStoredValues();
-    return item?.theme || "vtl";
-};
+import EditorView from "./editor/editorView";
+import { decisionDialog } from "./main-view/decision-dialog/decisionDialog";
+import Header from "./main-view/header/header";
+import Navigation from "./main-view/navigation/navigation";
+import { detailPaneVisible, sidePaneView, sidePaneVisible } from "./main-view/viewSlice";
+import DirectoryPreview from "./repository/directoryPreview";
+import FileVersions from "./repository/fileVersions";
+import DiffEditor from "./repository/version-compare/diffEditor";
+import { Agency } from "./sdmx/entity/Agency";
+import { DataStructure, FinalStructureEnum } from "./sdmx/entity/DataStructure";
+import { SdmxRegistry } from "./sdmx/entity/SdmxRegistry";
+import { SdmxResult } from "./sdmx/entity/SdmxResult";
+import SdmxDownloadScreen from "./sdmx/loading-screen/SdmxDownloadScreen";
+import { SdmxStorage } from "./sdmx/SdmxStorage";
+import SDMXView from "./sdmx/SDMXView";
+import BrowserStorage, { getSdmxStoredValues, setSdmxStorageValue } from "./utility/browserStorage";
 
 function App() {
-    const [showDialog, setShowDialog] = useState(false);
-    const [showMenu, setShowMenu] = useState(false);
-    const [showErrorBox, setShowErrorBox] = useState(false);
-    const [code, setCode] = useState("");
-    const [codeChanged, setCodeChanged] = useState(false);
-    const [fileName, setFileName] = useState("untitled.vtl");
-    const [theme, setTheme] = useState(getTheme());
-    const [languageVersion, setLanguageVersion] = useState(languageVersions[languageVersions.length - 1].code);
-    const [cursorPosition, setCursorPosition] = useState(new Position(0, 0));
-    const [tempCursor, setTempCursor] = useState(new Position(0, 0));
-    const [errors, setErrors] = useState([] as editor.IMarkerData[]);
-    const [errorBoxSize, setErrorBoxSize] = useState(0);
     /*SDMX STATES */
     const [registry, setRegistry] = useState<SdmxRegistry | null>(null);
     const [agencies, setAgencies] = useState<Agency[]>([]);
@@ -54,97 +31,53 @@ function App() {
     const [importDSD, setImportDSD] = useState<boolean>(false);
     const [sdmxResult, setSdmxResult] = useState<SdmxResult | undefined>(undefined);
 
-    useEffect(() => {
-        const editorStoredValues: EditorStorage = getEditorStoredValues();
-        if (editorStoredValues) {
-            setValue(editorStoredValues.code, setCode);
-            setValue(editorStoredValues.codeChanged, setCodeChanged);
-            setValue(editorStoredValues.fileName, setFileName);
-            setValue(editorStoredValues.showErrorBox, setShowErrorBox);
-            setValue(editorStoredValues.theme, setTheme);
-        }
-    }, [])
-
-    useEffect(() => {
-        const vtlContainer = document.getElementById("vtl-container");
-        if (vtlContainer) {
-            setTempCursor(new Position(1, 1));
-        }
-    }, [])
+    const detailPane = useSelector(detailPaneVisible);
+    const sidePane = useSelector(sidePaneVisible);
+    const sidePaneMode = useSelector(sidePaneView);
 
     useEffect(() => {
         const decision = async (dataStructure: DataStructure) => {
-            const res = await decisionModal({
-                title: "Warning!",
+            const res = await decisionDialog({
+                title: "Warning",
                 text:
-                    `In your previous session you imported ${dataStructure.name} content. Do you want to import data again?`
+                    `In your previous session you imported ${dataStructure.name} content. Do you want to import the data again?`,
+                buttons: [
+                    {key: "yes", text: "Yes", color: "primary"},
+                    {key: "no", text: "No", color: "secondary"},
+                    {
+                        key: "cancel",
+                        text: "No, don't ask again",
+                        color: "secondary",
+                        className: "default-button outline-button"
+                    }
+                ]
             });
             if (res === "yes") {
                 setImportDSD(true);
+            } else if (res === "cancel") {
+                setSdmxStorageValue({});
             }
         }
         const sdmxStoredValues: SdmxStorage = getSdmxStoredValues();
         if (sdmxStoredValues) {
             if (sdmxStoredValues.dataStructure && sdmxStoredValues.registryId) {
-                setDataStructure(sdmxStoredValues.dataStructure);
+                setDataStructure({...sdmxStoredValues.dataStructure});
                 setRegistry({id: sdmxStoredValues.registryId!, name: "", url: ""});
                 decision(sdmxStoredValues.dataStructure);
             }
         }
     }, []);
 
-    const setValue = (value: any, setter: (value: any) => any) => {
-        if (value) {
-            setter(value);
-        }
-    }
-
-    const updateFiles = (newFiles: string[], fileName: string) => {
-        updateCodeChanged(false);
-        updateCode(newFiles[0]);
-        updateFileName(fileName);
-    };
-
-    const updateFileName = (fileName: string) => {
-        setFileName(fileName)
-        setEditorStorageValue({fileName: fileName})
-    };
-
-    const updateCode = (code: string) => {
-        setCode(code);
-        setEditorStorageValue({code: code})
-    };
-
-    const updateTheme = (theme: string) => {
-        setTheme(theme);
-        setEditorStorageValue({theme: theme});
-    };
-
-    const updateCodeChanged = (codeChanged: boolean) => {
-        setCodeChanged(codeChanged);
-        setEditorStorageValue({codeChanged: codeChanged})
-    };
-
-    const changeMenuState = () => {
-        setShowMenu(!showMenu);
-    };
-
-    const changeErrorBoxState = () => {
-        setShowErrorBox(!showErrorBox);
-        setEditorStorageValue({showErrorBox: !showErrorBox})
-    };
+    useEffect(() => {
+        if (sdmxResult?.dataStructure)
+            setDataStructure(sdmxResult?.dataStructure);
+    }, [sdmxResult])
 
     const getStyles = () => {
         let styling = "App";
-        styling += showMenu ? "" : " hide-settings-nav";
-        styling += showErrorBox ? "" : " hide-error-box";
+        styling += sidePane ? ` open-${sidePaneMode}` : " hide-settings-nav";
+        styling += detailPane ? "" : " hide-error-box";
         return styling;
-    };
-
-    const createNewFile = () => {
-        updateCode("");
-        updateCodeChanged(false);
-        updateFileName("untitled.vtl")
     };
 
     const clearSdmxState = () => {
@@ -154,54 +87,15 @@ function App() {
         setFinalType(FinalStructureEnum.ALL);
     }
 
-    const VtlEditorProps = {
-        "resizeLayout": [showMenu, showErrorBox, errorBoxSize],
-        code,
-        "setCode": updateCode,
-        "setCodeChanged": updateCodeChanged,
-        theme,
-        languageVersion,
-        setCursorPosition,
-        tempCursor,
-        setErrors,
-        sdmxResult
-    };
-
-    const NavigationProps = {
-        "showDialog": setShowDialog,
-        "changeMenu": changeMenuState,
-        code,
-        setCodeChanged,
-        codeChanged,
-        fileName,
-        createNewFile,
-        "settingsNavProps": {theme, "setTheme": updateTheme, languageVersion, setLanguageVersion},
-    };
-
-    const UploadDialogProps = {
-        "onClose": setShowDialog,
-        "onLoad": updateFiles,
-        codeChanged
-    };
-
-    const ErrorBoxProps = {
-        showErrorBox,
-        changeErrorBoxState,
-        setErrorBoxSize,
-        languageVersion,
-        cursorPosition,
-        errors,
-        setTempCursor,
+    const errorBoxProps = {
         "dataStructureInfo": sdmxResult?.dataStructureInfo,
         registry,
         dataStructure
     };
 
-    const EditorViewProps = {
-        fileName,
-        codeChanged,
-        VtlEditorProps,
-        ErrorBoxProps
+    const editorViewProps = {
+        sdmxResult,
+        errorBoxProps
     };
 
     const SDMXViewProps = {
@@ -218,41 +112,38 @@ function App() {
     }
 
     return (
-        //TODO check if it is working without router here
-        <Router>
-            <SnackbarProvider
-                maxSnack={2}
-                transitionDuration={500}
-                autoHideDuration={4000}
-                anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right"
-                }}
-                dense={true}
-            >
-                <div className={getStyles()}>
-                    <Header/>
-                    <Navigation {...NavigationProps}/>
-                    <div id="middle-container" className={`middle-container`}>
-                        <Switch>
-                            <Route exact path="/sdmx">
-                                <SDMXView {...SDMXViewProps}/>
-                            </Route>
-                            <Route exact path="/">
-                                <EditorView {...EditorViewProps}/>
-                            </Route>
-                            <Redirect to="/"/>
-                        </Switch>
-                    </div>
-                    {showDialog ?
-                        <OpenDialog {...UploadDialogProps}/> : null}
-                    {false ? <GuideOverlay/> : null}
-                    {importDSD ?
-                        <SdmxDownloadScreen registry={registry} dataStructure={dataStructure} showScreen={importDSD}
-                                            setSdmxResult={setSdmxResult}/> : null}
+        <SnackbarProvider maxSnack={2} transitionDuration={500} autoHideDuration={4000}
+                          anchorOrigin={{vertical: "top", horizontal: "right"}} dense={true}>
+            <div className={getStyles()}>
+                <Header/>
+                <Navigation/>
+                <div id="middle-container" className={`middle-container`}>
+                    <Switch>
+                        <Route exact path="/sdmx">
+                            <SDMXView {...SDMXViewProps}/>
+                        </Route>
+                        <Route exact path="/diff">
+                            <DiffEditor/>
+                        </Route>
+                        <Route exact path="/versions">
+                            <FileVersions/>
+                        </Route>
+                        <Route exact path="/folder">
+                            <DirectoryPreview/>
+                        </Route>
+                        <Route exact path="/">
+                            <EditorView {...editorViewProps}/>
+                        </Route>
+                        <Redirect to="/"/>
+                    </Switch>
                 </div>
-            </SnackbarProvider>
-        </Router>
+                {/*{showOverlay ? <GuideOverlay/> : null}*/}
+                {importDSD ?
+                    <SdmxDownloadScreen registry={registry} dataStructure={dataStructure!} showScreen={importDSD}
+                                        setSdmxResult={setSdmxResult}/> : null}
+            </div>
+            <BrowserStorage/>
+        </SnackbarProvider>
     );
 }
 

@@ -69,6 +69,13 @@
                                         <include>docbook.css</include>
                                     </includes>
                                 </resource>
+                                <resource>
+                                    <directory>${project.basedir}/documentation/user-manual</directory>
+                                    <filtering>false</filtering>
+                                    <includes>
+                                        <include>images/*</include>
+                                    </includes>
+                                </resource>
                             </resources>
                         </configuration>
                     </execution>
@@ -83,6 +90,18 @@
                             <resources>
                                 <resource>
                                     <directory>${project.basedir}/documentation</directory>
+                                    <excludes>
+                                        <exclude>**/user-manual/**</exclude>
+                                        <exclude>**/admin-guide/**</exclude>
+                                    </excludes>
+                                    <filtering>false</filtering>
+                                </resource>
+                                <resource>
+                                    <directory>${project.basedir}/documentation/user-manual</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                                <resource>
+                                    <directory>${project.basedir}/documentation/admin-guide</directory>
                                     <filtering>false</filtering>
                                 </resource>
                             </resources>
@@ -124,7 +143,7 @@
                         </goals>
                         <configuration>
                             <sourceDirectory>${project.build.directory}/documentation</sourceDirectory>
-                            <includes>userManual.xml,administratorGuide.xml,releaseNotes.xml</includes>
+                            <includes>userManual.xml,adminGuide.xml,releaseNotes.xml</includes>
                             <targetDirectory>${project.build.directory}/documentation</targetDirectory>
                             <foCustomization>documentation/fo.xsl</foCustomization>
                             <generateToc>book toc,title,figure,table</generateToc>
@@ -133,7 +152,9 @@
                             <tocMaxDepth>3</tocMaxDepth>
                             <tocSectionDepth>3</tocSectionDepth>
                             <paperType>A4</paperType>
-                            <formalTitlePlacement>figure after example before equation after table after procedure after</formalTitlePlacement>
+                            <formalTitlePlacement>
+                                figure after example before equation after table after procedure after
+                            </formalTitlePlacement>
                             <sectionLabelIncludesComponentLabel>true</sectionLabelIncludesComponentLabel>
                         </configuration>
                     </execution>
@@ -166,7 +187,7 @@
                                 <move file="${project.build.directory}/documentation/userManual.pdf"
                                       tofile="${project.basedir}/src/documentation/contents/User Manual v.${release.version}.pdf"
                                       failonerror="true"/>
-                                <move file="${project.build.directory}/documentation/administratorGuide.pdf"
+                                <move file="${project.build.directory}/documentation/adminGuide.pdf"
                                       tofile="${project.basedir}/src/documentation/contents/Administrator Guide v.${release.version}.pdf"
                                       failonerror="true"/>
                                 <move file="${project.build.directory}/documentation/releaseNotes.pdf"
@@ -231,19 +252,6 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>${maven.exec.plugin.version}</version>
                 <executions>
-                    <execution>
-                        <id>install npm packages</id>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <phase>generate-resources</phase>
-                        <configuration>
-                            <executable>npm</executable>
-                            <arguments>
-                                <argument>install</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
                     <execution>
                         <id>build app package</id>
                         <goals>
@@ -321,7 +329,7 @@
             <id>prod-tomcat</id>
             <properties>
                 <deploy.host>https://intragate.test.ec.europa.eu</deploy.host>
-                <deploy.port />
+                <deploy.port/>
                 <deploy.path>/vrm</deploy.path>
                 <deploy.sourcemap>false</deploy.sourcemap>
                 <deploy.api.url>https://intragate.test.ec.europa.eu/vrm-backend/api</deploy.api.url>
@@ -332,11 +340,39 @@
             <id>prod-weblogic</id>
             <properties>
                 <deploy.host>https://intragate.test.ec.europa.eu</deploy.host>
-                <deploy.port />
+                <deploy.port/>
                 <deploy.path>/vrm</deploy.path>
                 <deploy.sourcemap>false</deploy.sourcemap>
                 <deploy.api.url>https://intragate.test.ec.europa.eu/vrm-backend/api</deploy.api.url>
             </properties>
+        </profile>
+
+        <profile>
+            <id>install-packages</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>${maven.exec.plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>install npm packages</id>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <phase>generate-resources</phase>
+                                <configuration>
+                                    <executable>npm</executable>
+                                    <arguments>
+                                        <argument>install</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 

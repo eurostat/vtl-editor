@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="./docbook.css" type="text/css"?>
+<chapter xml:id="data_structure_definitions" xml:lang="en" version="5.0"
+         xmlns="http://docbook.org/ns/docbook"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://docbook.org/ns/docbook http://docbook.org/xml/5.0/xsd/docbook.xsd">
+
+    <title>Data Structure Definitions</title>
+
+    <section xml:id="general_information">
+        <title>General Information</title>
+        <para>
+            The main part of VRM is the VTL Editor, where you can create and modify scripts written in VTL. Statements
+            in VTL scripts may contain references to the data set that
+            adheres to specific Data Structure Definition (DSD). The enhanced functionality of the editor makes it
+            possible for you to use DSD. This chapter will show you the ways
+            how to interact with the application to utilize DSD.
+        </para>
+        <para>
+            Import DSD tab consists of two parts: searching section and result section, where you can proceed with your
+            choices.
+        </para>
+
+        <figure xml:id="dsd_import_view">
+            <title>Import Data Structure Definition view</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="./images/dsd_import_view.png" align="center" width="90%" scalefit="1"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
+    </section>
+
+    <section xml:id="importing_dsd">
+        <title>Importing Data Structure Definition</title>
+        <para>
+            To import Data Structure Definition into the VTL Editor, follow this procedure:
+        </para>
+        <orderedlist>
+            <listitem>
+                <para>
+                    In the <emphasis role="bold">Navigation</emphasis> sidebar select <emphasis role="bold">Import DSD
+                </emphasis> icon.
+                </para>
+                <figure>
+                    <title>Import DSD icon in the Navigation sidebar</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="./images/dsd_import_navigation.png" align="center" contentwidth="66%"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+            </listitem>
+            <listitem>
+                <para>
+                    <emphasis role="bold">Import Data Structure Definition</emphasis>
+                    view is displayed (see&#xa0;<xref linkend="dsd_import_view"/>), where you can proceed with
+                    importing.
+                    First, select registry from the <emphasis role="bold">Registry</emphasis> dropdown list. This step
+                    is mandatory.
+                </para>
+                <figure>
+                    <title>SDMX registry list</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="./images/dsd_registry_list.png" align="center" width="90%" scalefit="1"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+            </listitem>
+            <listitem>
+                <para>
+                    Optionally you may use additional filters by clicking on <emphasis role="bold">Filter</emphasis> bar.
+                    Now you can choose one or more agencies from the dropdown list and/or specific finalized status.
+                    Only data structure definitions that match the filter will be displayed as results.
+                </para>
+                <figure>
+                    <title>Filter panel for the DSD results</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="./images/dsd_filter.png" align="center" width="90%" scalefit="1"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+            </listitem>
+            <listitem>
+                <para>
+                    Click <emphasis role="bold">Apply</emphasis> button to apply the filters. You may also clear all
+                    filters by clicking <emphasis role="bold">Clear</emphasis> button.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    Confirm your choices by clicking <emphasis role="bold">Show Definitions</emphasis> button
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    Now the list of available DSDs is displayed. You can search for specific item in the results by
+                    typing content in <emphasis role="bold">Search</emphasis> field.
+                </para>
+                <figure>
+                    <title>Search field in the DSD result list</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="./images/dsd_search.png" align="center" width="90%" scalefit="1"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+            </listitem>
+            <listitem>
+                <para>
+                    If more detailed information is needed, you can click chevron icon on the left side of particular
+                    item to display preview of DSD.
+                </para>
+                <figure>
+                    <title>Preview of the DSD contents in the result list</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="./images/dsd_preview_import.png" align="center" width="90%" scalefit="1"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+            </listitem>
+            <listitem>
+                <para>
+                    When you’ve decided which DSD you want to import, thick checkbox in the left part of that particular
+                    item. At any time only one item can be selected.
+                </para>
+                <figure>
+                    <title>Selected DSD in the result list</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="./images/dsd_selected.png" align="center" width="90%" scalefit="1"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+            </listitem>
+            <listitem>
+                <para>
+                    When DSD is selected in the list, click <emphasis role="bold">Import</emphasis> button to import DSD
+                    contents and apply it to VTL Editor features.
+                    When import process is successfully proceeded, you will be moved to the VTL Editor view.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    If you want to terminate the importing process, click <emphasis role="bold">Cancel</emphasis> button
+                    and return to VTL Editor without applying new DSD. If any
+                    DSD was imported previously,
+                    it remains applied in the editor features.
+                </para>
+            </listitem>
+        </orderedlist>
+    </section>
+
+    <section xml:id="using_dsd">
+        <title>Using Data Structure Definition</title>
+        <section xml:id="dsd_autocomplete">
+            <title>Autocomplete</title>
+            <para>
+                After DSD is imported into the VTL Editor, their elements appear in the autocomplete feature. When you
+                enter matching string autocomplete popup with element
+                identifiers is displayed.
+            </para>
+            <figure>
+                <title>VTL Editor autocomplete feature with DSD elements</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="./images/dsd_autocomplete.png" align="center" width="55%" scalefit="1"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+        </section>
+        <section xml:id="dsd_highlighting">
+            <title>Highlighting</title>
+            <para>
+                After DSD is imported into the VTL Editor, their elements are recognized by highlighting feature. When
+                user enters element identifier in the VTL code, it is colorized accordingly:
+                <itemizedlist>
+                    <listitem>
+                        <para>Attribute – lime (#9ffb88)</para>
+                    </listitem>
+                    <listitem>
+                        <para>Dimension – orange (#f7b74e)</para>
+                    </listitem>
+                    <listitem>
+                        <para>Primary measure – purple (#953d55)</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <figure>
+                <title>Highlighted DSD elements in the VTL Editor</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="./images/dsd_highlighting.png" align="center" contentwidth="66%"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+        </section>
+        <section xml:id="dsd_preview">
+            <title>Preview of Elements</title>
+            <para>
+                When DSD is imported into the VTL Editor, you’ll see the DSD icon in the blue bar at the bottom of the
+                screen. To switch to DSD preview, click DSD identifier or adjacent icon in the blue bar at the bottom of
+                the screen. Content in the bottom area of VTL Editor view might be toggled between error list and DSD
+                preview.
+            </para>
+            <figure>
+                <title>DSD Preview icon in the Status bar of the VTL Editor</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="./images/dsd_preview_editor.png" align="center" width="90%" scalefit="1"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+            <para>
+                Information about content of currently imported DSD is displayed in bottom area of VTL Editor.
+            </para>
+            <figure>
+                <title>DSD contents in the Details pane of the VTL Editor</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="./images/dsd_details_editor.png" align="center" width="90%" scalefit="1"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+            <para>
+                When you click chevron icon on the left side of DSD elements that have specific codelist assigned,
+                contents of this codelist will be displayed.
+            </para>
+            <figure>
+                <title>Codelist contents in the Details pane of the VTL Editor</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="./images/dsd_codelist_editor.png" align="center" width="90%" scalefit="1"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+        </section>
+    </section>
+
+    <section xml:id="reloading_dsd">
+        <title>Reloading Data Structure Definition</title>
+        <para>
+            Information such as filename and contents of edited script, configuration, view state and recently imported
+            DSD are continuously saved in case you close or reload VRM web page.
+            When VRM web page is displayed again, you will see a message in a pop-up window, where you can proceed with
+            your choice.
+        </para>
+        <figure>
+            <title>Prompt asking if DSD should be imported again</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="./images/dsd_reload.png" align="center" contentwidth="80%"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
+        <para>
+            Click <emphasis role="bold">Yes</emphasis> button to reimport most recently used DSD.
+        </para>
+        <para>
+            Click <emphasis role="bold">No</emphasis> button to skip the reimporting process (the information about this
+            particular DSD is kept in the system and you’ll be asked
+            again, when you reload the page).
+        </para>
+        <para>
+            Click <emphasis role="bold">No, don't ask again</emphasis> to stop the importing process and remove
+            information about most recently used DSD.
+        </para>
+    </section>
+</chapter>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="./docbook.css" type="text/css"?>
+<chapter xml:id="adm_building_backend" xml:lang="en" version="5.0"
+         xmlns="http://docbook.org/ns/docbook"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         xsi:schemaLocation="http://docbook.org/ns/docbook http://docbook.org/xml/5.0/xsd/docbook.xsd">
+    <title>Building Backend Application</title>
+    <section>
+        <title>Eurostat Maven Repository</title>
+        <para>
+            In order to download ESTAT libraries you must configure ESTAT maven repository.
+        </para>
+        <para>
+            Create <computeroutput>settings.xml</computeroutput> file in <computeroutput>~/.m2</computeroutput> directory
+            using the template:
+        </para>
+        <para>
+            Username to use starts with <emphasis>em</emphasis>. Encrypt your password as described
+            <link xlink:href="https://maven.apache.org/guides/mini/guide-encryption.html">here</link>.
+        </para>
+        <para>
+            Do not leave your password in the shell history. Use
+            <link xlink:href="https://maven.apache.org/guides/mini/guide-encryption.html#prompting-for-password">
+                prompting commands</link>.
+        </para>
+        <para>
+            Example <computeroutput>settings.xml</computeroutput> file:
+            <programlisting>
+                <![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <profiles>
+        <profile>
+            <id>estat</id>
+            <properties>
+                <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+            </properties>
+            <repositories>
+                <repository>
+                    <id>eurostat</id>
+                    <url>https://citnet.tech.ec.europa.eu/CITnet/nexus/content/repositories/estat</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+        </profile>
+    </profiles>
+
+    <servers>
+        <server>
+            <id>eurostat</id>
+            <username>Your username starting with - em*</username>
+            <password>{Your encrypted password}</password>
+        </server>
+    </servers>
+
+    <activeProfiles>
+        <activeProfile>estat</activeProfile>
+    </activeProfiles>
+</settings>
+        ]]>
+            </programlisting>
+        </para>
+    </section>
+    <section>
+        <title>Load Time Weaving</title>
+        <para>
+            The application requires load time weaving to be enabled.
+        </para>
+        <para>
+            Download <computeroutput>spring-instrument-5.2.5.RELEASE.jar</computeroutput> and pass it as the java agent
+            using VM option:
+            <emphasis>-javaagent:<![CDATA[<path_to_jar_file>]]>/spring-instrument-5.2.5.RELEASE.jar</emphasis>
+        </para>
+        <para>
+            <computeroutput>spring-instrument-{version}.RELEASE.jar</computeroutput> is available in The Maven Central Repository.
+        </para>
+        <para>
+            Pass an additional <emphasis>-noverify</emphasis> VM option to the WebLogic server.
+        </para>
+    </section>
+</chapter>

@@ -28,6 +28,151 @@
         </authorgroup>
     </info>
 
+    <chapter xml:id="VRM-0.7.0" xreflabel="VRM-0.7.0">
+        <title>Version 0.7.0.201016-a</title>
+        <para>Date: 2020-10-16</para>
+        <section>
+            <title>New Features</title>
+            <itemizedlist>
+                <listitem>
+                    <simpara>
+                        Import SDMX feature allows user to import Data Structure Definition from a SDMX registry and use elements from the definition in edited VTL script.
+                        User can choose one of registries configured in the application to see available DSDs.
+                        <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-199">[VRM-199]</link>
+                    </simpara>
+                    <simpara>
+                        It is possible to filter list of DSDs by agency name and final status. A detailed preview of specific DSD is available in the list.
+                        <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-214">[VRM-214]</link>
+                    </simpara>
+                    <simpara>
+                        When user selects desired DSD and confirms import, the DSD contents are downloaded to the application.
+                        The details of the imported DSD, including codelist contents can be viewed in the bottom pane of the VTL Editor.
+                        Information about recently used DSD is saved in the browser local storage, and the DSD can be automatically imported again
+                        when application is reopened.
+                        <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-218">[VRM-218]</link>
+                    </simpara>
+                    <simpara>
+                        Elements from imported DSD are available in the VTL Editor as suggestions in autocomplete window and are highlighted in the edited code.
+                        <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-234">[VRM-234]</link>
+                        <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-242">[VRM-242]</link>
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        Repository feature allows user to store edited VTL script in their personal space in the VRM repository.
+                        <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-245">[VRM-245]</link>
+                    </simpara>
+                    <simpara>
+                        Using the File Explorer available in the Navigation side bar it is possible to create, rename, and delete folders and files.
+                        Additional information about folder contents, such as dates of creation and last update, or script authors, can be seen in Detailed List for the folder.
+                        Edited VTL script can be saved in a chosen folder in the repository using Upload File icon in the VTL Editor toolbar. Saved files are listed
+                        in the File Explorer and can be opened there using context menu option.
+                        <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-250">[VRM-250]</link>
+                    </simpara>
+                    <simpara>
+                        Each save of the script creates a new version with subsequent number. All previous versions are preserved in the repository.
+                        Version list can be displayed in File Explorer using Versions view. This view allows to open any version, to restore it as most recent one,
+                        and to compare contents of two selected versions.
+                        <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-251">[VRM-251]</link>
+                    </simpara>
+                </listitem>
+            </itemizedlist>
+        </section>
+        <section>
+            <title>Improvements</title>
+            <itemizedlist>
+                <listitem>
+                    <simpara>
+                        New File, Open File and Save File buttons are moved to the toolbar at the top of the VTL Editor.
+                        <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-250">[VRM-250]</link>
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        VTL Editor works more smoothly, without delays when user is rapidly entering or removing characters.
+                        <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-270">[VRM-270]</link>
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        If user tries to create or open file when current one is unsaved and decides to save edited file on disk, additional prompt is displayed,
+                        that allows user to abort the create/open operation if save is canceled in the browser download window.
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        The non-functional Log out button is removed from the VRM application page header.
+                    </simpara>
+                </listitem>
+            </itemizedlist>
+        </section>
+        <section>
+            <title>Technical Details</title>
+            <itemizedlist>
+                <listitem>
+                    <simpara>
+                        The VRM frontend application now communicates through REST API with VRM backend application, that relays information from SDMX registries [VRM-131]
+                        and hosts repository storage for VTL script files.
+                        <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-211">[VRM-211]</link>
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        Currently there are three SDMX registries configured in the VRM: Euro SDMX Registry, Global SDMX Registry and Fusion registry 10.
+                        <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-131">[VRM-131]</link>
+                    </simpara>
+                </listitem>
+            </itemizedlist>
+        </section>
+        <section>
+            <title>Fixes</title>
+            <itemizedlist>
+                <listitem>
+                    <simpara>
+                        Editor contents are no longer selected after opening the application.
+                        <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-270">[VRM-270]</link>
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        Fixed typos in "errorlevel", "keys" and "Value" keywords in the autocomplete suggestions.
+                        <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-267">[VRM-267]</link>
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        After user changes VTL grammar version in Settings, editor contents are parsed and syntax errors are listed immediately
+                        instead of only after the first change in the edited VTL script.
+                        <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-270">[VRM-270]</link>
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        Version 3.0 of the VTL grammar has number changed to 2.1 as per official numbering.
+                    </simpara>
+                </listitem>
+            </itemizedlist>
+        </section>
+        <section>
+            <title>Known Issues</title>
+            <itemizedlist>
+                <listitem>
+                    <simpara>
+                        When application is deployed in WebLogic Server 12c, weblogic.servlet.utils.fileupload.Multipart implementation doesn't recognize
+                        multipart/form-data request correctly, throwing an exception. The multipart/form-data requests are used to upload VTL script file contents
+                        from VRM frontend to backend application. The issue prevents the VRM backend application from saving VTL script file contents
+                        in the repository. The error doesn't appear when application is deployed in Tomcat server.
+                        <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-288">[VRM-288]</link>
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        Euro SDMX Registry configured in the VRM is currently unavailable, because it requires authentication.
+                    </simpara>
+                </listitem>
+            </itemizedlist>
+        </section>
+    </chapter>
 
     <chapter xml:id="VRM-0.6.0" xreflabel="VRM-0.6.0">
         <title>Version 0.6.0.200710-a</title>
@@ -45,7 +190,7 @@
             </itemizedlist>
         </section>
         <section>
-            <title>Technical details</title>
+            <title>Technical Details</title>
             <itemizedlist>
                 <listitem>
                     <simpara>
@@ -175,7 +320,7 @@
             </itemizedlist>
         </section>
         <section>
-            <title>Technical details</title>
+            <title>Technical Details</title>
             <itemizedlist>
                 <listitem>
                     <simpara>
@@ -230,7 +375,7 @@
             </itemizedlist>
         </section>
         <section>
-            <title>Technical details</title>
+            <title>Technical Details</title>
             <itemizedlist>
                 <listitem>
                     <simpara>
@@ -269,7 +414,7 @@
             </itemizedlist>
         </section>
         <section>
-            <title>Technical details</title>
+            <title>Technical Details</title>
             <itemizedlist>
                 <listitem>
                     <simpara>
@@ -326,7 +471,7 @@
             </itemizedlist>
         </section>
         <section>
-            <title>Technical details</title>
+            <title>Technical Details</title>
             <itemizedlist>
                 <listitem>
                     <simpara>

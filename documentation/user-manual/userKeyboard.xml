@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="./docbook.css" type="text/css"?>
+<chapter xml:id="usr_keyboard_shortcuts" xml:lang="en" version="5.0"
+         xmlns="http://docbook.org/ns/docbook"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://docbook.org/ns/docbook http://docbook.org/xml/5.0/xsd/docbook.xsd">
+
+    <title>Keyboard Shortcuts</title>
+
+    <para>The following commands are available when editing a file:</para>
+    <itemizedlist>
+        <listitem>
+            <para>
+                <emphasis role="bold">F1 or Alt+F1</emphasis>  Display the full list of commands
+            </para>
+        </listitem>
+        <listitem>
+            <para>
+                <emphasis role="bold">Ctrl-C</emphasis>               Copy the selected text to the
+                clipboard
+            </para>
+        </listitem>
+        <listitem>
+            <para>
+                <emphasis role="bold">Ctrl-V</emphasis>               Paste the clipboard’s contents to
+                the selected text
+            </para>
+        </listitem>
+        <listitem>
+            <para>
+                <emphasis role="bold">Ctrl-X</emphasis>               Cut the selected text
+            </para>
+        </listitem>
+        <listitem>
+            <para>
+                <emphasis role="bold">Ctrl-S</emphasis>                Save current document file
+            </para>
+        </listitem>
+        <listitem>
+            <para>
+                <emphasis role="bold">Ctrl-O</emphasis>               Open a file in the current software
+            </para>
+        </listitem>
+        <listitem>
+            <para>
+                <emphasis role="bold">Ctrl+Space</emphasis>        Display the list of autocomplete suggestions
+            </para>
+        </listitem>
+        <listitem>
+            <para>
+                <emphasis role="bold">Ctrl-Z</emphasis>                Undo editing
+            </para>
+        </listitem>
+        <listitem>
+            <para>
+                <emphasis role="bold">Ctrl-Enter</emphasis>          Insert a new-line character
+            </para>
+        </listitem>
+
+
+        <listitem>
+            <para>
+                <emphasis role="bold">Ctrl-P</emphasis>                Print active window
+            </para>
+        </listitem>
+        <listitem>
+            <para>
+                <emphasis role="bold">Ctrl-F</emphasis>                Find text
+            </para>
+        </listitem>
+    </itemizedlist>
+
+</chapter>

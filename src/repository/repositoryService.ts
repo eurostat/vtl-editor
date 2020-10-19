@@ -1,5 +1,6 @@
 import { EditorFile } from "../editor/editorFile";
 import { sendDeleteRequest, sendGetRequest, sendPostRequest, sendPutRequest } from '../web-api/apiService';
+import { ScriptContentPayload } from "./entity/scriptContentPayload";
 import { StoredItemPayload } from "./entity/storedItemPayload";
 import { StoredItemTransfer } from "./entity/storedItemTransfer";
 import { StoredItemType } from "./entity/storedItemType";
@@ -38,21 +39,20 @@ export async function updateFile(payload: StoredItemPayload) {
 }
 
 export async function getFileContent(fileId: number) {
-    const response = await sendGetRequest(`${REPO_URL}/files/${fileId}/content`, "application/octet-stream");
-    if (response.data) {
-        const content = await readBlob(response.data);
+    const response = await sendGetRequest(`${REPO_URL}/files/${fileId}/content`);
+    if (response && response.data) {
+        const content = atob(response.data.content);
         if (content !== undefined) return content;
     }
     return Promise.reject();
 }
 
-export async function updateFileContent(payload: EditorFile) {
-    const formData = new FormData();
-    const content = new Blob([payload.content], {type: "plain/text", endings: "native"});
-    const metadata = new Blob([JSON.stringify({"version": payload.version})], {type: "application/json"});
-    formData.append('file', content, payload.name);
-    formData.append('uploadInfo', metadata);
-    return sendPutRequest(`${REPO_URL}/files/${payload.remoteId}/content`, formData);
+export async function updateFileContent(file: EditorFile) {
+    const payload = {
+        version: file.version,
+        content: btoa(file.content)
+    } as ScriptContentPayload;
+    return sendPutRequest(`${REPO_URL}/files/${file.remoteId}/content`, payload, "application/json");
 }
 
 export async function getFileVersions(fileId: number) {
@@ -60,9 +60,9 @@ export async function getFileVersions(fileId: number) {
 }
 
 export async function getVersionContent(fileId: number, versionId: number) {
-    const response = await sendGetRequest(`${REPO_URL}/files/${fileId}/versions/${versionId}`, "application/octet-stream");
+    const response = await sendGetRequest(`${REPO_URL}/files/${fileId}/versions/${versionId}`);
     if (response && response.data) {
-        const content = await readBlob(response.data);
+        const content = atob(response.data.content);
         if (content !== undefined) return content;
     }
     return Promise.reject();
@@ -101,6 +101,30 @@ export async function deleteItem(payload: StoredItemPayload, type: StoredItemTyp
             return Promise.reject();
         }
     }
+}
+
+export async function buildFormData(payload: EditorFile) {
+        const formData = new FormData();
+    const content = new Blob([payload.content], {type: "text/plain", endings: "native"});
+    const arrayContent = await new Promise<ArrayBuffer>((resolve, reject) => {
+        let result: ArrayBuffer = new ArrayBuffer(1);
+        const reader = new FileReader();
+        reader.onloadend = function(event) {
+            if (event != null && event.target != null) {
+                result = event.target.result as ArrayBuffer;
+            }
+            resolve(result);
+        };
+        reader.onerror = function(event) {
+            reject(event);
+        };
+        reader.readAsArrayBuffer(content);
+    })
+    const byteContent = new Blob([arrayContent], {type: "application/octet-stream"});
+    const metadata = new Blob([JSON.stringify({"version": payload.version})], {type: "application/json"});
+    formData.append('file', byteContent, payload.name);
+    formData.append('uploadInfo', metadata);
+    return formData;
 }
 
 export async function readBlob(blob: Blob) {

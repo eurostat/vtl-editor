@@ -1,5 +1,6 @@
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { Cached, CloudDownloadOutlined, RestorePageOutlined } from "@material-ui/icons";
+import _ from "lodash";
 import MaterialTable from "material-table";
 import { useSnackbar } from "notistack";
 import React, { useCallback, useEffect, useRef, useState } from "react";
@@ -42,6 +43,7 @@ const FileVersions = () => {
 
     useEffect(() => {
         setVersions([]);
+        setSelected([]);
         fetchFile();
     }, [fileId, fetchFile]);
 
@@ -59,21 +61,24 @@ const FileVersions = () => {
         }
     }, [file]);
 
-    useEffect(() => fetchVersions(), [file, fetchVersions]);
+    useEffect(() => {
+        setSelected([]);
+        fetchVersions();
+    }, [file, fetchVersions]);
 
-    const onSelectionChange = (rows: any[], row: any) => {
-        if (row.tableData.checked) {
-            const selection = [...selected];
-            const version = Object.assign({}, row);
-            version.tableData = Object.assign({}, row.tableData);
-            selection.push(version);
-            if (selection.length > 2) {
-                const unselect = selection.shift();
-                tableRef.current.dataManager.changeRowSelected(false, [unselect.tableData.id]);
+    const onSelectionChange = (rows: any[], row?: any) => {
+        if (row) {
+            if (row.tableData.checked) {
+                const selection = [...selected];
+                selection.push(_.cloneDeep(row));
+                if (selection.length > 2) {
+                    const unselect = selection.shift();
+                    tableRef.current.dataManager.changeRowSelected(false, [unselect.tableData.id]);
+                }
+                setSelected(selection);
+            } else {
+                setSelected(selected.filter((item) => item.tableData.id !== row.tableData.id));
             }
-            setSelected(selection);
-        } else {
-            setSelected(selected.filter((item) => item.tableData.id !== row.tableData.id));
         }
     }
 

@@ -45,10 +45,11 @@ async function sendRequest(url: string, method?: RequestMethod, headers?: Record
     try {
         const response: Response = await fetch(url, init);
         const data = await parseData(response);
-        if (response.bodyUsed && data === undefined) return Promise.reject(handleError(new Error("Unknown data received")));
+        if (response.bodyUsed && data === undefined) return Promise.reject(handleError(new Error("Unknown response body received")));
         return response.ok
             ? handleResponse(response, data)
-            : Promise.reject(handleError(new Error(data.error)));
+            : Promise.reject(handleError(
+                new Error(response.status + " " + response.statusText + " " + (data?.error || "Unknown response body received"))));
     } catch (error) {
         return Promise.reject(handleError(error));
     }

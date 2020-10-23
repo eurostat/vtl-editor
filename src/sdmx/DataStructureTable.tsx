@@ -1,6 +1,7 @@
 import { faSyncAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tooltip } from "@material-ui/core";
+import _ from "lodash";
 import MaterialTable from "material-table";
 import { useSnackbar } from "notistack";
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
@@ -36,10 +37,9 @@ const DataStructureTable = forwardRef(({
                                            setSdmxResult, clearSdmxState
                                        }: DataStructureTableProps, ref: any) => {
     const [dataStructures, setDataStructures] = useState<DataStructure[]>([]);
-    const [dataStructure, setDataStructure] = useState<DataStructure | null>(null);
+    const [dataStructure, setDataStructure] = useState<any>();
     const [dataStructuresLoading, setDataStructuresLoading] = useState(false);
     const [filteredDataStructures, setFilteredDataStructures] = useState<DataStructure[]>([]);
-
     const [codeListLoading, setCodeListLoading] = useState<boolean>(false);
     const tableRef = useRef<any>();
     const {enqueueSnackbar} = useSnackbar();
@@ -72,6 +72,7 @@ const DataStructureTable = forwardRef(({
         const dataManager = tableRef.current.dataManager;
         return (() => {
             dataManager.changeAllSelected(false);
+            setDataStructure(undefined);
         })
     }, [filteredDataStructures])
 
@@ -99,26 +100,22 @@ const DataStructureTable = forwardRef(({
 
     /**
      *
-     * @param data
-     * @param rowData current selected row in a table
+     * @param rows
+     * @param row
      */
-    const onDataStructureSelect = (data: any[], rowData: any | null) => {
-        const selectedRows = tableRef.current.dataManager.selectedCount;
-        if (selectedRows > 1) {
-            tableRef.current.dataManager.changeAllSelected(false);
-            tableRef.current.dataManager.changeRowSelected(true, [getItemIndex(rowData)]);
+    const onDataStructureSelect = (rows: any[], row?: any) => {
+        if (row) {
+            if (row.tableData.checked) {
+                if (dataStructure && dataStructure.tableData.id !== row.tableData.id
+                    && rows.some((item) => item.tableData.id === dataStructure.tableData.id)) {
+                    tableRef.current.dataManager.changeRowSelected(false, [dataStructure.tableData.id]);
+                }
+                setDataStructure(_.cloneDeep(row));
+            } else {
+                tableRef.current.dataManager.changeAllSelected(false);
+                setDataStructure(undefined);
+            }
         }
-        let copy = Object.assign({}, rowData);
-        delete copy.tableData;
-        setDataStructure(copy);
-    }
-
-    const getItemIndex = (item: DataStructure): number => {
-        for (let index in dataStructures) {
-            let ds = dataStructures[index];
-            if (ds.id === item.id) return parseInt(index);
-        }
-        return -1;
     }
 
     const onCodeListsFetch = () => {

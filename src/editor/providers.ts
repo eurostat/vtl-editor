@@ -1,28 +1,26 @@
 import * as EditorApi from "monaco-editor";
 import { CancellationToken, editor, Position } from "monaco-editor";
-import { getSuggestions as getSuggestions2_0 } from '../../grammar/vtl-2.0/suggestionsV2-0';
-import { VtlLexer } from '../../grammar/vtl-2.0/VtlLexer';
-import { VtlParser } from '../../grammar/vtl-2.0/VtlParser';
-import { getSuggestions as getSuggestions3_0 } from '../../grammar/vtl-3.0/suggestionsV3-0';
-import { AutocompleteProvider } from '../autocompleteProvider';
-import { GrammarGraph } from '../grammar-graph/grammarGraph';
-import { createLexer, createParser } from '../ParserFacade';
-import { VocabularyPack } from '../vocabularyPack';
-import { languageVersions, VTL_VERSION } from "../settings";
 import { languages } from 'monaco-editor/esm/vs/editor/editor.api';
-import { TokensProvider } from "../tokensProvider";
-import * as ParserFacade from "../ParserFacade";
-import * as ParserFacadeV3 from "../ParserFacadeV3";
 // @ts-ignore
 // eslint-disable-next-line import/no-webpack-loader-syntax
-import grammar from 'raw-loader!../../grammar/vtl-2.0/Vtl.g4';
+import grammar from 'raw-loader!../grammar/vtl-2.0/Vtl.g4';
+import { getSuggestions as getSuggestions2_0 } from '../grammar/vtl-2.0/suggestions';
+import { VtlLexer } from '../grammar/vtl-2.0/VtlLexer';
+import { VtlParser } from '../grammar/vtl-2.0/VtlParser';
+import { getSuggestions as getSuggestions3_0 } from '../grammar/vtl-3.0/suggestions';
+import { GrammarGraph } from './grammar-graph/grammarGraph';
+import * as ParserFacade from './ParserFacade';
+import { createLexer, createParser } from './ParserFacade';
+import * as ParserFacadeV3 from "./ParserFacadeV3";
+import { languageVersions, VTL_VERSION } from "./settings";
+import { TokensProvider } from "./tokensProvider";
+import { VocabularyPack } from './vocabularyPack';
 
 const lexer = createLexer("");
 const parser = createParser("");
 const tokensProvider: TokensProvider = new TokensProvider();
 const vocabulary: VocabularyPack<VtlLexer, VtlParser> = new VocabularyPack(lexer, parser);
 const grammarGraph: GrammarGraph<VtlLexer, VtlParser> = new GrammarGraph(vocabulary, grammar);
-const autocompleteProvider: AutocompleteProvider = new AutocompleteProvider(grammarGraph.suggestions());
 
 export const getVtlTheme = (): EditorApi.editor.IStandaloneThemeData => {
     return {
@@ -80,7 +78,6 @@ const getSuggestions = (version: VTL_VERSION, monaco: typeof EditorApi): any => 
         let uniquetext = Array.from(new Set(textUntilPosition.replace(/"(.*?)"/g, "")
             .replace(/[^a-zA-Z_]/g, " ")
             .split(" ").filter(w => w !== "")).values());
-        // const suggestionList = suggestions(version,range, txt);
         const suggestionList = getSuggestionsForVersion(version, range);
         uniquetext = removeLanguageSyntaxFromList(uniquetext, suggestionList);
         const array = uniquetext.map(w => {
@@ -102,7 +99,7 @@ const getSuggestions = (version: VTL_VERSION, monaco: typeof EditorApi): any => 
 };
 
 export const getSuggestionsForVersion = (version: VTL_VERSION, range: any) => {
-    let suggestions :languages.CompletionItem[] | undefined;
+    let suggestions: languages.CompletionItem[] | undefined;
     switch (version) {
         case VTL_VERSION.VTL_2_0:
             suggestions = getSuggestions2_0(range);

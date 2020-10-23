@@ -1,17 +1,11 @@
-import { CharStreams, CommonTokenStream, Lexer, Parser } from 'antlr4ts';
+import { Lexer, Parser } from 'antlr4ts';
 import { languages } from 'monaco-editor';
-// @ts-ignore
-// eslint-disable-next-line import/no-webpack-loader-syntax
-import a4grammar from 'raw-loader!../../grammar/antlr4/ANTLRv4Parser.g4';
-import { ANTLRv4Lexer } from '../../grammar/antlr4/ANTLRv4Lexer';
-import { ANTLRv4Parser } from '../../grammar/antlr4/ANTLRv4Parser';
 import { VocabularyPack } from '../vocabularyPack';
 import { GrammarStatement } from './grammarStatement';
 import { RuleToken } from './ruleToken';
 import { rgxEscape, rgxReplace, RuleTokenizer } from './ruleTokenizer';
 import { StatementType } from './statementType';
 import { SyntaxCollection } from './syntaxCollection';
-import { SyntaxLink } from './syntaxLink';
 
 export class GrammarGraph<L extends Lexer, P extends Parser> {
     private vocabulary: VocabularyPack<L, P>;
@@ -25,37 +19,6 @@ export class GrammarGraph<L extends Lexer, P extends Parser> {
         this.vocabulary = vocabulary;
         this.tokenizer = new RuleTokenizer(vocabulary);
         if (grammar && grammar.length > 0) this.processRaw(grammar);
-    }
-
-    private processAntlr(grammar: string) {
-        // Strip import wrapping, comments, newlines and tabulators
-        let processed = a4grammar
-            .replace(/^export default "|(\\[rnt])+|";$/g, " ");
-        console.log(processed);
-        const lexer = new ANTLRv4Lexer(CharStreams.fromString(processed));
-        // lexer.removeErrorListeners();
-        // lexer.addErrorListener(new ConsoleErrorListener());
-//         let token:Token | undefined | null = lexer.nextToken();
-// let i = 0;
-//         while (token !== null && token !== undefined && i < 100) {
-//             if (token.type !== ANTLRv4Lexer.WS) {
-//                 let tokenTypeName = lexer.vocabulary.getSymbolicName(token.type);
-//                    console.log('token type: ' + tokenTypeName + ' / ' + token.type);
-//             }
-//             token = lexer.nextToken();
-//             i++;
-//         }
-
-        const tokens = new CommonTokenStream(lexer as Lexer);
-        console.log(tokens);
-        const parser = new ANTLRv4Parser(tokens);
-        // parser.removeErrorListeners();
-        //parser.addErrorListener(new ConsoleErrorListener());
-
-        const tree = parser["grammarSpec"]();
-
-        console.log(tree.toStringTree(parser.ruleNames));
-
     }
 
     private processRaw(grammar: string) {
@@ -93,18 +56,16 @@ export class GrammarGraph<L extends Lexer, P extends Parser> {
         // Resolve syntax of functions and operators
         this.rules.forEach((rule) => rule.resolveSyntax(this.keywords));
         this.keywords.distinct();
-        console.log(this.keywords);
 
         // Find root
         const rule0 = this.vocabulary.ruleName(0);
         if (rule0) this.root = this.rules.get(rule0);
-        console.log(this.rules);
 
-        console.log(new Map(
-            (Array.from(this.rules, ([key, value]) => [key, value.syntax])
-                .filter((value) => value[1].length !== 0) as [string, SyntaxLink[]][])
-                //.map((value) => [value[0], value[1].snippet])
-            ));
+        // console.log(new Map(
+        //    (Array.from(this.rules, ([key, value]) => [key, value.syntax])
+        //      .filter((value) => value[1].length !== 0) as [string, SyntaxLink[]][])
+        //      .map((value) => [value[0], value[1].snippet])
+        // ));
     }
 
     private addRule(name: string, tokens: RuleToken[]): GrammarStatement {

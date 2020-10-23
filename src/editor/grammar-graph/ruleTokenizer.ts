@@ -1,10 +1,11 @@
 import { Lexer, Parser } from 'antlr4ts';
+import { Log } from '../../utility/log';
 import { VocabularyPack } from '../vocabularyPack';
 import { RuleToken } from './ruleToken';
 import { TokenizerContext } from './tokenizerContext';
 import { TokenType } from './tokenType';
 
-export const rgxEscape = /[-\/\\^$*+?.()|[\]{}]/g;
+export const rgxEscape = /[-/\\^$*+?.()|[\]{}]/g;
 export const rgxReplace = "\\$&";
 
 export class RuleTokenizer<L extends Lexer, P extends Parser> {
@@ -53,7 +54,7 @@ export class RuleTokenizer<L extends Lexer, P extends Parser> {
                         if (last) {
                             last.type = TokenType.Identifier;
                             this.addToken(value);
-                            console.warn("Unknown operator token " + last.name + " recognized as identifier");
+                            Log.warn("Unknown operator token " + last.name + " recognized as identifier", "RuleTokenizer");
                         }
                         break;
                     }
@@ -136,7 +137,7 @@ export class RuleTokenizer<L extends Lexer, P extends Parser> {
                 type = TokenType.Rule;
             } else {
                 type = TokenType.Unknown;
-                console.warn("Unknown operator token " + name + " at " + index);
+                Log.warn("Unknown operator token " + name + " at " + index, "RuleTokenizer");
             }
 
             this.context.tokens.push(new RuleToken(
@@ -154,7 +155,7 @@ export class RuleTokenizer<L extends Lexer, P extends Parser> {
     }
 
     private unexpected(token: string, index: number) {
-        console.error("Unexpected token " + token + " at " + index);
+        Log.error("Unexpected token " + token + " at " + index, "RuleTokenizer");
     }
 
     private clearContext() {
@@ -178,15 +179,15 @@ export class RuleTokenizer<L extends Lexer, P extends Parser> {
         if (rgx.test(declaration)) {
             return ruleNames[index];
         } else {
-            console.warn("Mismatched rule " + index + " name. Looking for alternatives.");
+            Log.warn("Mismatched rule " + index + " name. Looking for alternatives.", "RuleTokenizer");
             ruleNames.forEach((ruleName, other) => {
                 rgx = new RegExp(ruleName.replace(rgxEscape, rgxReplace), "g");
                 if (rgx.test(declaration)) {
-                    console.warn("Matched name of rule " + other + ".");
+                    Log.warn("Matched name of rule " + other + ".", "RuleTokenizer");
                     return ruleName;
                 }
             });
-            console.error("No alternative for mismatched rule name.")
+            Log.error("No alternative for mismatched rule name.", "RuleTokenizer");
         }
         return declaration;
     }

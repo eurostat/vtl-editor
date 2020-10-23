@@ -7,7 +7,7 @@
   width: $leftNavWidth;
   height: 100vh;
 
-  button {
+  > button {
     &:first-child {
       margin-top: 40px;
     }
@@ -16,9 +16,15 @@
     margin: 10px auto;
   }
 
+  & > a > button {
+    width: 100%;
+    margin: 10px auto;
+  }
+
   svg {
     font-size: 28px;
     color: #858585;
+    cursor: pointer;
   }
 }
 
@@ -34,7 +40,8 @@
 }
 
 .hide-settings-nav #setting-icon {
-  border:none;
+  border: none;
+
   & > svg {
     color: #858585;
   }
@@ -52,6 +59,12 @@
   width: $settingsNavWidth;
   background-color: #232323;
 
+  .group-container {
+    text-align: left;
+    margin: 0 auto 10px;
+    width: 70%;
+  }
+
   label {
     margin-top: 35px;
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
@@ -63,8 +76,6 @@
   }
 
   select {
-    width: 70%;
-    margin: 0 auto;
     background-color: #36393c;
     color: #a2a8ad;
     border: 1px solid #46494d;

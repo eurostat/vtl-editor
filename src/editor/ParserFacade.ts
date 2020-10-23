@@ -1,15 +1,13 @@
-import { CommonTokenStream, Recognizer } from 'antlr4ts';
-import { CharStreams, Token } from 'antlr4ts';
-import { ANTLRErrorListener, DefaultErrorStrategy } from 'antlr4ts';
-import { Lexer } from "antlr4ts/Lexer";
+import { ANTLRErrorListener, CharStreams, CommonTokenStream, DefaultErrorStrategy, Recognizer, Token } from 'antlr4ts';
 import { VtlLexer } from '../grammar/vtl-2.0/VtlLexer'
 import { VtlParser } from "../grammar/vtl-2.0/VtlParser"
+import { Log } from '../utility/log';
 
 // @ts-ignore VALID
 class ConsoleErrorListener implements ANTLRErrorListener {
     // @ts-ignore TS7006 VALID
     syntaxError(recognizer, offendingSymbol, line, column, msg, e) {
-        console.log("ERROR " + msg);
+        Log.info("ERROR " + msg, "ParserFacade");
     }
 }
 
@@ -71,14 +69,8 @@ export function createParser(input: string) {
 }
 
 function createParserFromLexer(lexer: VtlLexer) {
-    const tokens = new CommonTokenStream(lexer as Lexer);
+    const tokens = new CommonTokenStream(lexer);
     return new VtlParser(tokens);
-}
-
-function parseTree(input: string) {
-    const parser = createParser(input);
-
-    return parser.start();
 }
 
 export function parseTreeStr(input: string) {
@@ -117,6 +109,6 @@ export function validate(input: string): Error[] {
     // @ts-ignore TODO
     parser._errHandler = new VtlErrorStrategy();
 
-    const tree = parser.start();
+    parser.start();
     return errors;
 }

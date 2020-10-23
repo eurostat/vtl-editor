@@ -5,7 +5,7 @@
         <title>VRM - Release Notes</title>
         <subtitle>Release notes for the Validation Rule Manager</subtitle>
         <releaseinfo>${project.version}</releaseinfo>
-        <date>27/04/2020</date>
+        <date>18/05/2020</date>
         <copyright>
             <year>2020</year>
             <holder>European Commission</holder>
@@ -13,7 +13,7 @@
         </copyright>
         <mediaobject>
             <imageobject>
-                <imagedata align="center" fileref="./images/title_page_logo.png" scalefit="1" width="100%"/>
+                <imagedata align="center" fileref="../images/title_page_logo.png" scalefit="1" width="100%"/>
             </imageobject>
         </mediaobject>
         <authorgroup>
@@ -26,6 +26,55 @@
              xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://docbook.org/ns/docbook http://docbook.org/xml/5.0/xsd/docbook.xsd">
         <title>Version History</title>
+                <section xml:id="VRM-0.5.0" xreflabel="VRM-0.5.0">
+            <title>Version 0.5.0.200518-a</title>
+            <para>Date: 2020-05-18</para>
+            <section>
+                <title>New Features</title>
+                <itemizedlist>
+                    <listitem>
+                        <simpara>
+                            New file icon in the side menu allows to create new file
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            Added tooltips to the menu items and bottom bar
+                            <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-22">[VRM-22]</link>
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            Help icon in the side menu opens a new window with a user manual
+                            <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-97">[VRM-97]</link>
+                        </simpara>
+                    </listitem>
+                </itemizedlist>
+            </section>
+            <section>
+                <title>Improvements</title>
+                <itemizedlist>
+                    <listitem>
+                        <simpara>
+                            If current file has unsaved changes when you create new or open another file, you are prompted to save the current file, discard changes or cancel the action
+                            <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-41">[VRM-41]</link>
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            Error box can now be resized with mouse drag
+                            <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-19">[VRM-19]</link>
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            Keyboard shortcuts for creating new file, saving file, opening new file and opening documentation
+                            <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-22">[VRM-22]</link>
+                        </simpara>
+                    </listitem>
+                </itemizedlist>
+            </section>
+        </section>
         <section xml:id="VRM-0.4.0" xreflabel="VRM-0.4.0">
             <title>Version 0.4.0.200427-a</title>
             <para>Date: 2020-04-27</para>
@@ -81,6 +130,11 @@
                         <simpara>
                             Round and angle brackets are now colorized properly
                             <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-14">[VRM-14]</link>
+                        </simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>
+                            Brackets pairs are matched properly
                         </simpara>
                     </listitem>
                 </itemizedlist>

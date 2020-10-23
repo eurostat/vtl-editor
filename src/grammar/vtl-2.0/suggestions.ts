@@ -1,5 +1,5 @@
 import { IRange, languages as Languages } from 'monaco-editor';
-import { FUNCTION, KEYWORD, SNIPPET, INSERT_AS_SNIPPET } from "../../editor/constants";
+import { FUNCTION, INSERT_AS_SNIPPET, KEYWORD, SNIPPET } from "../../editor/constants";
 
 export const getSuggestions = (range: IRange) => {
     return [
@@ -510,9 +510,9 @@ export const getSuggestions = (range: IRange) => {
             documentation: {value: "The operator exp returns e (base of the natural logarithm) raised to the op-th power.  \n\n **Syntax** \n\n    exp(op) "}
         },
         {
-            label: "componentRole",
+            label: "role",
             kind: KEYWORD,
-            insertText: "componentRole",
+            insertText: "role",
             range: range,
         },
         {
@@ -1095,12 +1095,6 @@ export const getSuggestions = (range: IRange) => {
             documentation: {value: "The operator transposes several Data Points of the operand Data Set into a single Data Point of the resulting Data Set.  \n\n **Syntax** \n\n    op [ pivot identifier , measure ]   "}
         },
         {
-            label: "customPivot",
-            kind: KEYWORD,
-            insertText: "customPivot",
-            range: range,
-        },
-        {
             label: "unpivot",
             kind: KEYWORD,
             insertText: "unpivot",
@@ -1343,16 +1337,16 @@ export const getSuggestions = (range: IRange) => {
             label: "defdatapoint",
             kind: SNIPPET,
             insertText: [
-                'define datapoint ruleset ${0:name} (${1:signature}) is',
-                '\t$3',
-                'end datapoint ruleset'
-            ].join('\n'),
+                "define datapoint ruleset ${0:name} (${1:signature}) is",
+                "\t$3",
+                "end datapoint ruleset"
+            ].join("\n"),
             insertTextRules: INSERT_AS_SNIPPET,
             documentation: {
                 value: [
-                    '\tdefine datapoint ruleset ruleSetName (signature) is\n',
-                    '\t\trule\n',
-                    '\tend datapoint ruleset'
+                    "\tdefine datapoint ruleset ruleSetName (signature) is\n",
+                    "\t\trule\n",
+                    "\tend datapoint ruleset"
                 ].join("")
             }
         },
@@ -1360,16 +1354,16 @@ export const getSuggestions = (range: IRange) => {
             label: "defhierarchical",
             kind: SNIPPET,
             insertText: [
-                'define hierarchical ruleset ${0:name} (${1:signature}) is',
-                '\t$3',
-                'end hierarchical ruleset'
-            ].join('\n'),
+                "define hierarchical ruleset ${0:name} (${1:signature}) is",
+                "\t$3",
+                "end hierarchical ruleset"
+            ].join("\n"),
             insertTextRules: INSERT_AS_SNIPPET,
             documentation: {
                 value: [
-                    '\tdefine hierarchical ruleset ruleSetName (signature) is\n',
-                    '\t\t{rule}\n',
-                    '\tend hierarchical ruleset'
+                    "\tdefine hierarchical ruleset ruleSetName (signature) is\n",
+                    "\t\t{rule}\n",
+                    "\tend hierarchical ruleset"
                 ].join("")
             }
         },
@@ -1377,18 +1371,18 @@ export const getSuggestions = (range: IRange) => {
             label: "defoperator",
             kind: SNIPPET,
             insertText: [
-                'define operator ${0:name} (${1:parameter})',
-                'returns ${2:returnType} is',
-                '',
-                'end operator'
-            ].join('\n'),
+                "define operator ${0:name} (${1:parameter})",
+                "returns ${2:returnType} is",
+                "",
+                "end operator"
+            ].join("\n"),
             insertTextRules: INSERT_AS_SNIPPET,
             documentation: {
                 value: [
-                    '\tdefine operator operatorName (parameter)\n',
-                    '\treturns {returnType} is\n',
-                    '\t{operatorBody}\n',
-                    '\tend operator'
+                    "\tdefine operator operatorName (parameter)\n",
+                    "\treturns {returnType} is\n",
+                    "\t{operatorBody}\n",
+                    "\tend operator"
                 ].join("")
             }
         },

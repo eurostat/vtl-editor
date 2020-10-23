@@ -1,3 +1,4 @@
+import { Log } from '../../utility/log';
 import { mergeMultiplyMode, MultiplyMode } from './multiplyMode';
 import { StatementType } from './statementType';
 import { SyntaxCollection } from './syntaxCollection';
@@ -100,7 +101,7 @@ export class SyntaxLink {
                     ? identifierPrefix + this._value + identifierPostfix
                     : this._value)
                 + this.multiplyPostfix();
-            if (this.hasChain()) console.warn("Link with chain and value " + this._value);
+            if (this.hasChain()) Log.warn("Link with chain and value " + this._value, "SyntaxLink");
         } else {
             if (this._alternatives) {
                 this._syntax = (this.isMultiplied() ? this.multiplyPrefix() : alternativesPrefix)
@@ -222,7 +223,7 @@ export class SyntaxLink {
         || this._multiplied === MultiplyMode.Zeromore;
 
     collectSyntax(keywords: SyntaxCollection) {
-        keywords.createLevel(this.isOptional() );
+        keywords.createLevel(this.isOptional());
         if (this._alternatives) {
             this._chain.forEach((link) => {
 
@@ -255,7 +256,7 @@ export class SyntaxLink {
                         break;
                     }
                     default: {
-                        console.warn("Unknown syntax link type");
+                        Log.warn("Unknown syntax link type", "SyntaxLink");
                         break;
                     }
                 }

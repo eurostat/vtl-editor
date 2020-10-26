@@ -7,29 +7,25 @@
 
     <title>Data Structure Definitions</title>
 
-    <section xml:id="general_information">
-        <title>General Information</title>
-        <para>
-            The main part of VRM is the VTL Editor, where you can create and modify scripts written in VTL. Statements
-            in VTL scripts may contain references to the data set that
-            adheres to specific Data Structure Definition (DSD). The enhanced functionality of the editor makes it
-            possible for you to use DSD. This chapter will show you the ways
-            how to interact with the application to utilize DSD.
-        </para>
-        <para>
-            Import DSD tab consists of two parts: searching section and result section, where you can proceed with your
-            choices.
-        </para>
+    <para>
+        The main part of the VRM is the VTL Editor, where you can create and modify scripts written in VTL. Statements
+        in VTL scripts may contain references to the data set that adheres to specific Data Structure Definition (DSD).
+        The enhanced functionality of the editor makes it possible for you to use DSD. This chapter will show you the
+        ways how to interact with the application to utilize DSD.
+    </para>
+    <para>
+        Import DSD tab consists of two parts: searching section and result section, where you can proceed with your
+        choices.
+    </para>
 
-        <figure xml:id="dsd_import_view">
-            <title>Import Data Structure Definition view</title>
-            <mediaobject>
-                <imageobject>
-                    <imagedata fileref="./images/dsd_import_view.png" align="center" width="90%" scalefit="1"/>
-                </imageobject>
-            </mediaobject>
-        </figure>
-    </section>
+    <figure xml:id="dsd_import_view">
+        <title>Import Data Structure Definition view</title>
+        <mediaobject>
+            <imageobject>
+                <imagedata fileref="./images/dsd_import_view.png" align="center" width="90%" scalefit="1"/>
+            </imageobject>
+        </mediaobject>
+    </figure>
 
     <section xml:id="importing_dsd">
         <title>Importing Data Structure Definition</title>
@@ -39,11 +35,11 @@
         <orderedlist>
             <listitem>
                 <para>
-                    In the <emphasis role="bold">Navigation</emphasis> sidebar select <emphasis role="bold">Import DSD
+                    On the <emphasis role="bold">Navigation</emphasis> sidebar select <emphasis role="bold">Import DSD
                 </emphasis> icon.
                 </para>
                 <figure>
-                    <title>Import DSD icon in the Navigation sidebar</title>
+                    <title>Import DSD icon on the Navigation sidebar</title>
                     <mediaobject>
                         <imageobject>
                             <imagedata fileref="./images/dsd_import_navigation.png" align="center" contentwidth="66%"/>
@@ -63,7 +59,8 @@
                     <title>SDMX registry list</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="./images/dsd_registry_list.png" align="center" width="90%" scalefit="1"/>
+                            <imagedata fileref="./images/dsd_registry_list.png" align="center" width="90%"
+                                       scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -117,15 +114,16 @@
                     <title>Preview of the DSD contents in the result list</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="./images/dsd_preview_import.png" align="center" width="90%" scalefit="1"/>
+                            <imagedata fileref="./images/dsd_preview_import.png" align="center" width="90%"
+                                       scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
             </listitem>
             <listitem>
                 <para>
-                    When you’ve decided which DSD you want to import, thick checkbox in the left part of that particular
-                    item. At any time only one item can be selected.
+                    When you’ve decided which DSD you want to import, click the checkbox in the left part of that item.
+                    At any time only one item can be selected.
                 </para>
                 <figure>
                     <title>Selected DSD in the result list</title>
@@ -201,13 +199,13 @@
         <section xml:id="dsd_preview">
             <title>Preview of Elements</title>
             <para>
-                When DSD is imported into the VTL Editor, you’ll see the DSD icon in the blue bar at the bottom of the
-                screen. To switch to DSD preview, click DSD identifier or adjacent icon in the blue bar at the bottom of
+                When DSD is imported into the VTL Editor, you’ll see the DSD icon on the blue bar at the bottom of the
+                screen. To switch to DSD preview, click DSD identifier or adjacent icon on the blue bar at the bottom of
                 the screen. Content in the bottom area of VTL Editor view might be toggled between error list and DSD
                 preview.
             </para>
             <figure>
-                <title>DSD Preview icon in the Status bar of the VTL Editor</title>
+                <title>DSD Preview icon on the Status bar of the VTL Editor</title>
                 <mediaobject>
                     <imageobject>
                         <imagedata fileref="./images/dsd_preview_editor.png" align="center" width="90%" scalefit="1"/>

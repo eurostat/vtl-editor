@@ -3,12 +3,12 @@ import { MuiThemeProvider } from "@material-ui/core/styles";
 import MaterialTable, { DetailPanel } from "material-table";
 import React, { useEffect, useState } from "react";
 import { SDMX_DSD } from "../../web-api/apiConsts";
-import { fetchDataStructureDefinition } from "../../web-api/sdmxApi";
-import { ApiCache } from "../ApiCache";
+import { ApiCache } from "../apiCache";
 import CodeListDetailPanel from "../code-list-details/CodeListDetailPanel";
 import { DataStructure } from "../entity/DataStructure";
 import { BaseStruct, DataStructureDefinition } from "../entity/DataStructureDefinition";
 import { SdmxRegistry } from "../entity/SdmxRegistry";
+import { fetchDataStructureDefinition } from "../sdmxService";
 import { dataPanelColumns } from "./detailPanelColumns";
 
 type DataStructureDetailPanelProps = {
@@ -72,7 +72,7 @@ const DataStructureDetailPanel = ({registry, dataStructure, showCodeListPreview}
             setLoadingDataStructureDefinition(false);
         }
         fetch();
-    }, [])
+    }, [registry, dataStructure])
 
     const conditionalRenderCodeListPreview = (showCodeListPreview: boolean) => {
         return showCodeListPreview ?

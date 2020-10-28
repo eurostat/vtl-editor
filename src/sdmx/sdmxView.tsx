@@ -6,23 +6,19 @@ import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import { Autocomplete } from "@material-ui/lab";
 import { useSnackbar } from "notistack";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import PageHeader from "../main-view/page-header/PageHeader";
-import { SDMX_AGENCIES, SDMX_REGISTIRES } from "../web-api/apiConsts";
-import { ApiResponse } from "../web-api/apiResponse";
-import { getAgencies, getSdmxRegistries } from "../web-api/sdmxApi";
-import { ApiCache } from "./ApiCache";
-import DataStructureTable from "./DataStructureTable";
-import { Agency, AgencyObject } from "./entity/Agency";
+import DataStructureTable from "./dataStructureTable";
+import { Agency } from "./entity/Agency";
 import { FinalStructureEnum } from "./entity/DataStructure";
-import { SdmxRegistry, SdmxRegistryObject } from "./entity/SdmxRegistry";
+import { SdmxRegistry } from "./entity/SdmxRegistry";
 import { SdmxResult } from "./entity/SdmxResult";
+import { fetchAgencies, fetchRegistries } from "./sdmxService";
 import "./sdmxView.scss"
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small"/>;
 const checkedIcon = <CheckBoxIcon fontSize="small"/>;
-const requestCache = ApiCache.getInstance();
 
 type FilteredState = {
     registry: SdmxRegistry,
@@ -43,14 +39,14 @@ type SDMXViewProps = {
     clearSdmxState: () => void
 }
 
-const SDMXView = ({
+const SdmxView = ({
                       registry, setRegistry,
                       agencies, setAgencies,
                       selectedAgencies, setSelectedAgencies,
                       finalType, setFinalType, setSdmxResult, clearSdmxState
                   }: SDMXViewProps) => {
     const [registries, setRegistries] = useState<SdmxRegistry[]>([]);
-    const [registriesLoading, setRegistriesLoading] = useState<boolean>(true);
+    const [registriesLoading, setRegistriesLoading] = useState<boolean>(false);
 
     const [agenciesLoading, setAgenciesLoading] = useState<boolean>(false);
 
@@ -60,78 +56,80 @@ const SDMXView = ({
     const dataStructureTableRef = useRef();
     const {enqueueSnackbar} = useSnackbar();
 
-    const fetchRegistries = async () => {
-        let registries: ApiResponse<SdmxRegistryObject> | undefined = await getSdmxRegistries();
-        if (registries && registries.data) {
-            return registries.data.registries;
-        }
-        return [];
-    };
+    const loadRegistries = useCallback(async (refresh: boolean) => {
+        setRegistriesLoading(true);
+        return fetchRegistries(refresh)
+            .then((fetched) => {
+                setRegistriesLoading(false);
+                return fetched;
+            })
+            .catch(() => {
+                setRegistriesLoading(false);
+                enqueueSnackbar(`Failed to load registries.`, {variant: "error"});
+                return Promise.reject();
+            });
+    }, [enqueueSnackbar]);
 
-    const fetchAgencies = async () => {
-        let agencies: ApiResponse<AgencyObject> | undefined = await getAgencies(registry!.id);
-        if (agencies && agencies.data) {
-            return agencies.data.agencies;
-        }
-        return [];
-    };
-
-    useEffect(() => {
-        const fetch = async () => {
-            setRegistries(await requestCache.checkIfExistsInMapOrAdd(
-                SDMX_REGISTIRES, fetchRegistries));
-            setRegistriesLoading(false);
-        }
-        fetch();
-    }, []);
-
-    useEffect(() => {
-        const fetch = async () => {
-            if (registry) {
-                setAgenciesLoading(true);
-                setAgencies(await requestCache.checkIfExistsInMapOrAdd(
-                    SDMX_AGENCIES(registry.id), fetchAgencies));
+    const loadAgencies = useCallback(async (registryId: string, refresh: boolean) => {
+        setAgenciesLoading(true);
+        return fetchAgencies(registryId, refresh)
+            .then((fetched) => {
                 setAgenciesLoading(false);
-            }
+                return fetched;
+            })
+            .catch(() => {
+                setAgenciesLoading(false);
+                enqueueSnackbar(`Failed to load agencies.`, {variant: "error"});
+                return Promise.reject();
+            });
+    }, [enqueueSnackbar]);
+
+    useEffect(() => {
+        loadRegistries(false)
+            .then((loaded) => setRegistries(loaded))
+            .catch(() => {
+            });
+    }, [loadRegistries]);
+
+    useEffect(() => {
+        if (registry) {
+            loadAgencies(registry.id, false)
+                .then((loaded) => setAgencies(loaded))
+                .catch(() => {
+                });
         }
-        fetch();
-    }, [registry]);
+    }, [registry, loadAgencies, setAgencies]);
 
     const onRegistriesRefresh = () => {
-        setSelectedAgencies([]);
-        setRegistry(null);
-        const fetch = async () => {
-            setRegistriesLoading(true);
-            setRegistries(await requestCache.clearCacheAndAdd(SDMX_REGISTIRES, fetchRegistries));
-            setRegistriesLoading(false);
+        loadRegistries(true).then((loaded) => {
+            setSelectedAgencies([]);
+            setRegistry(null);
+            setRegistries(loaded);
             enqueueSnackbar(`Registries refreshed successfully.`, {variant: "success"});
-        }
-        fetch();
+        }).catch(() => {
+        });
     };
 
     /**
      * Clearing current selected agencies.
      * Clearing stored agencies in cache for currently selected registry
-     * It is nessesery to choose registry
+     * It is necessary to choose registry
      */
     const onAgenciesRefresh = () => {
-        const fetch = async () => {
-            setAgenciesLoading(true);
-            setSelectedAgencies([]);
-            setAgencies(await requestCache.clearCacheAndAdd(
-                SDMX_AGENCIES(registry!.id), fetchAgencies));
-            setAgenciesLoading(false);
-        }
         if (registry) {
-            fetch();
-            enqueueSnackbar(`Agencies from ${registry.name} refreshed successfully.`,
-                {variant: "success"});
+            loadAgencies(registry.id, true).then((loaded) => {
+                setSelectedAgencies([]);
+                setAgencies(loaded);
+                enqueueSnackbar(`Agencies from ${registry.name} refreshed successfully.`,
+                    {variant: "success"});
+            }).catch(() => {
+            });
         } else {
-            enqueueSnackbar(`Specify registry to refresh.`, {variant: "error"});
+            enqueueSnackbar(`Select registry first.`, {variant: "error"});
         }
     }
 
-    const onRegistriesChange = (event: any, newRegistry: SdmxRegistry | null) => {
+    const onRegistryChange = (event: any, newRegistry: SdmxRegistry | null) => {
         setRegistry(newRegistry);
         setSelectedAgencies([]);
     };
@@ -140,16 +138,16 @@ const SDMXView = ({
         setSelectedAgencies(newAgencies);
     };
 
-    const onAgencyTypeChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const onFinalChange = (event: React.ChangeEvent<{ value: unknown }>) => {
         setFinalType(event.target.value as FinalStructureEnum);
     };
 
-    const onClear = () => {
+    const onFilterClear = () => {
         setSelectedAgencies([]);
         setFinalType(FinalStructureEnum.ALL);
     }
 
-    const onFilterData = () => {
+    const onFilterApply = () => {
         if (dataStructureTableRef && dataStructureTableRef.current) {
             // @ts-ignore
             dataStructureTableRef.current!.onFilterData();
@@ -183,7 +181,7 @@ const SDMXView = ({
                             getOptionLabel={(option: SdmxRegistry) => option.name}
                             getOptionSelected={(option: SdmxRegistry, value: SdmxRegistry) => option.id === value.id}
                             loading={registriesLoading}
-                            onChange={onRegistriesChange}
+                            onChange={onRegistryChange}
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
@@ -203,7 +201,7 @@ const SDMXView = ({
                                 />
                             )}
                         />
-                        {registry?.url ? <p>Selected registry url: {registry.url}</p> : null}
+                        {registry?.url ? <p>Selected registry URL: {registry.url}</p> : null}
                     </Col>
                     <Col xs={1} className="sdmx-option text-left left-padding-none">
                         {!registriesLoading ?
@@ -290,7 +288,7 @@ const SDMXView = ({
                                         labelId="agency-type-select"
                                         id="agency-type-select"
                                         value={finalType}
-                                        onChange={onAgencyTypeChange}
+                                        onChange={onFinalChange}
                                         label="Agency type"
                                         autoWidth
                                     >
@@ -305,14 +303,14 @@ const SDMXView = ({
                             <Col xs={12}>
                                 <Tooltip title="Apply filter" placement="top" arrow>
                                     <button className={`btn btn-primary default-button button-margin-right`}
-                                            onClick={onFilterData}>
+                                            onClick={onFilterApply}>
                                         <FontAwesomeIcon icon={faFilter}/>
                                         <span>Apply</span>
                                     </button>
                                 </Tooltip>
                                 <Tooltip title="Clear filter" placement="top" arrow>
                                     <button className="btn btn-primary default-button outline-button"
-                                            onClick={onClear}>
+                                            onClick={onFilterClear}>
                                         <FontAwesomeIcon icon={faUndoAlt}/>
                                         <span>Clear</span>
                                     </button>
@@ -325,7 +323,7 @@ const SDMXView = ({
                     <Col xs={12} className="justify-content-end">
                         <Tooltip title="Display data structure definitions" placement="top" arrow>
                             <button className={`btn btn-primary default-button`}
-                                    onClick={onFilterData}>
+                                    onClick={onFilterApply}>
                                 <span>Show Definitions</span>
                             </button>
                         </Tooltip>
@@ -339,4 +337,4 @@ const SDMXView = ({
     );
 
 };
-export default SDMXView;
+export default SdmxView;

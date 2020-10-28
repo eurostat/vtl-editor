@@ -4,19 +4,16 @@ import { Tooltip } from "@material-ui/core";
 import _ from "lodash";
 import MaterialTable from "material-table";
 import { useSnackbar } from "notistack";
-import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useHistory } from 'react-router-dom'
-import { SDMX_STRUCTURES } from "../web-api/apiConsts";
-import { ApiResponse } from "../web-api/apiResponse";
-import { getSdmxDataStructures } from "../web-api/sdmxApi";
-import { ApiCache } from "./ApiCache";
 import DataStructureDetailPanel from "./data-structure-details/DataStructureDetailPanel";
 import { Agency } from "./entity/Agency";
-import { DataStructure, DataStructureObject, FinalStructureEnum } from "./entity/DataStructure";
+import { DataStructure, FinalStructureEnum } from "./entity/DataStructure";
 import { SdmxRegistry } from "./entity/SdmxRegistry";
 import { SdmxResult } from "./entity/SdmxResult";
 import SdmxDownloadScreen from "./loading-screen/SdmxDownloadScreen";
+import { fetchDataStructures } from "./sdmxService";
 import { dataStructuresColumns } from "./tableColumns";
 
 type DataStructureTableProps = {
@@ -28,8 +25,6 @@ type DataStructureTableProps = {
     setSdmxResult: (setSdmxResult: SdmxResult) => void,
     clearSdmxState: () => void
 }
-
-const requestCache = ApiCache.getInstance();
 
 const DataStructureTable = forwardRef(({
                                            registry, isFiltered,
@@ -45,24 +40,28 @@ const DataStructureTable = forwardRef(({
     const {enqueueSnackbar} = useSnackbar();
     const history = useHistory();
 
-    const fetchDataStructures = async () => {
-        const dataStructures: ApiResponse<DataStructureObject> | undefined = await getSdmxDataStructures(registry!.id);
-        if (dataStructures && dataStructures.data) {
-            return dataStructures.data.dataStructures;
-        }
-        return [];
-    };
+    const loadDataStructures = useCallback(async (registryId: string, refresh: boolean) => {
+        setDataStructuresLoading(true);
+        return fetchDataStructures(registryId, refresh)
+            .then((fetched) => {
+                setDataStructuresLoading(false);
+                return fetched;
+            })
+            .catch(() => {
+                setDataStructuresLoading(false);
+                enqueueSnackbar(`Failed to load data structures.`, {variant: "error"});
+                return Promise.reject();
+            });
+    }, [enqueueSnackbar]);
 
     useEffect(() => {
-        const fetch = async () => {
-            if (registry) {
-                setDataStructuresLoading(true);
-                setDataStructures(await requestCache.checkIfExistsInMapOrAdd(SDMX_STRUCTURES(registry.id), fetchDataStructures));
-                setDataStructuresLoading(false);
-            }
+        if (registry) {
+            loadDataStructures(registry.id, false)
+                .then((loaded) => setDataStructures(loaded))
+                .catch(() => {
+                });
         }
-        fetch();
-    }, [registry]);
+    }, [registry, loadDataStructures]);
 
     /**
      * Clearing selected row when filteredDataStructure is changing.
@@ -77,24 +76,16 @@ const DataStructureTable = forwardRef(({
     }, [filteredDataStructures])
 
     const onDataStructuresRefresh = () => {
-        const fetch = async () => {
-            setDataStructuresLoading(true);
-            let dsd = await requestCache.clearCacheAndAdd(SDMX_STRUCTURES(registry!.id), fetchDataStructures);
-            setDataStructures(dataStructures);
-            if (isFiltered) {
-                setFilteredDataStructures(filterData(dsd));
-            }
-            setDataStructuresLoading(false);
-        }
         if (registry) {
-            fetch();
-            enqueueSnackbar(`Data structures for ${registry.name} refreshed successfully!`, {
-                variant: "success"
+            loadDataStructures(registry.id, true).then((loaded) => {
+                setDataStructures(loaded);
+                if (isFiltered) setFilteredDataStructures(filterData(loaded));
+                enqueueSnackbar(`Data structures from ${registry.name} refreshed successfully.`,
+                    {variant: "success"});
+            }).catch(() => {
             });
         } else {
-            enqueueSnackbar(`Specify registry to refresh!`, {
-                variant: "error"
-            });
+            enqueueSnackbar(`Select registry first`, {variant: "error"});
         }
     }
 

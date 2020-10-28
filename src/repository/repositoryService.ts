@@ -6,7 +6,7 @@ import { StoredItemTransfer } from "./entity/storedItemTransfer";
 import { StoredItemType } from "./entity/storedItemType";
 
 const BASE_URL = process.env.REACT_APP_API_URL;
-export const REPO_URL = BASE_URL + "/repo";
+const REPO_URL = BASE_URL + "/repo";
 
 export async function getFolder(folderId: number) {
     const response = await sendGetRequest(`${REPO_URL}/folders/${folderId}`);

@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react";
 import MaterialTable from "material-table";
+import { ApiCache } from "../apiCache";
 import {CodeList} from "../entity/CodeList";
+import { fetchCodeList } from "../sdmxService";
 import {codeListDetailColumns} from "./codeListDetailColumns";
 import {BaseStruct} from "../entity/DataStructureDefinition";
-import {ApiCache} from "../ApiCache";
 import {SDMX_CODELIST} from "../../web-api/apiConsts";
-import {fetchCodeList} from "../../web-api/sdmxApi";
 import {SdmxRegistry} from "../entity/SdmxRegistry";
 
 type CodeListDetailPanelProps = {
@@ -26,7 +26,7 @@ const CodeListDetailPanel = ({registry, baseStruct}: CodeListDetailPanelProps) =
             setLoadingCodeList(false);
         }
         fetch();
-    }, [baseStruct])
+    }, [registry, baseStruct, requestCache])
 
     return (
         <div className="code-list-panel">

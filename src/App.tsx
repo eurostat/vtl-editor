@@ -18,7 +18,7 @@ import { SdmxRegistry } from "./sdmx/entity/SdmxRegistry";
 import { SdmxResult } from "./sdmx/entity/SdmxResult";
 import SdmxDownloadScreen from "./sdmx/loading-screen/SdmxDownloadScreen";
 import { SdmxStorage } from "./sdmx/SdmxStorage";
-import SDMXView from "./sdmx/SDMXView";
+import SdmxView from "./sdmx/sdmxView";
 import BrowserStorage, { getSdmxStoredValues, setSdmxStorageValue } from "./utility/browserStorage";
 
 function App() {
@@ -120,7 +120,7 @@ function App() {
                 <div id="middle-container" className={`middle-container`}>
                     <Switch>
                         <Route exact path="/sdmx">
-                            <SDMXView {...SDMXViewProps}/>
+                            <SdmxView {...SDMXViewProps}/>
                         </Route>
                         <Route exact path="/diff">
                             <DiffEditor/>

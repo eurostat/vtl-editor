@@ -1,16 +1,16 @@
 import {Box, CircularProgress, Typography} from "@material-ui/core";
 import React, {useEffect, useState} from "react";
 import { setSdmxStorageValue } from "../../utility/browserStorage";
+import { ApiCache } from "../apiCache";
 import {DataStructure} from "../entity/DataStructure";
 import {SdmxRegistry} from "../entity/SdmxRegistry";
 import {SDMX_CODELIST, SDMX_DSD} from "../../web-api/apiConsts";
-import {fetchCodeList, fetchDataStructureDefinition} from "../../web-api/sdmxApi";
 import {BaseStruct, DataStructureDefinition, StructureType} from "../entity/DataStructureDefinition";
 import {CodeList, CodeListDetails} from "../entity/CodeList";
 import {SdmxResult} from "../entity/SdmxResult";
 import {useHistory} from "react-router-dom";
-import {ApiCache} from "../ApiCache";
 import {useSnackbar} from "notistack";
+import { fetchCodeList, fetchDataStructureDefinition } from "../sdmxService";
 
 type SdmxDownloadScreenPropsNew = {
     registry: SdmxRegistry | null,

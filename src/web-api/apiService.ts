@@ -78,8 +78,6 @@ export function handleResponse(response: Response, data: any) {
 }
 
 export function handleError(error: Error): ApiResponse<any> {
-    // eslint-disable-next-line no-console
-    console.error("API call failed. " + error);
     return {
         success: false,
         error: {message: "API call failed. " + error} as ApiError

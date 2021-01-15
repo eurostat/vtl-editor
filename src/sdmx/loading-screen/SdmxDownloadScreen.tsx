@@ -1,16 +1,18 @@
-import {Box, CircularProgress, Typography} from "@material-ui/core";
-import React, {useEffect, useState} from "react";
+import { Box, CircularProgress, Typography } from "@material-ui/core";
+import _ from "lodash";
+import { useSnackbar } from "notistack";
+import React, { useCallback, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { setSdmxStorageValue } from "../../utility/browserStorage";
+import { SDMX_DSD } from "../../web-api/apiConsts";
 import { ApiCache } from "../apiCache";
-import {DataStructure} from "../entity/DataStructure";
-import {SdmxRegistry} from "../entity/SdmxRegistry";
-import {SDMX_CODELIST, SDMX_DSD} from "../../web-api/apiConsts";
-import {BaseStruct, DataStructureDefinition, StructureType} from "../entity/DataStructureDefinition";
-import {CodeList, CodeListDetails} from "../entity/CodeList";
-import {SdmxResult} from "../entity/SdmxResult";
-import {useHistory} from "react-router-dom";
-import {useSnackbar} from "notistack";
-import { fetchCodeList, fetchDataStructureDefinition } from "../sdmxService";
+import { CodeList, CodeListDetails } from "../entity/CodeList";
+import { DataStructure } from "../entity/DataStructure";
+import { BaseStruct, DataStructureDefinition, StructureType } from "../entity/DataStructureDefinition";
+import { SdmxRegistry } from "../entity/SdmxRegistry";
+import { buildSdmxRequest } from "../entity/SdmxRequest";
+import { SdmxResult } from "../entity/SdmxResult";
+import { fetchCodelists, fetchDataStructureDefinition } from "../sdmxService";
 
 type SdmxDownloadScreenPropsNew = {
     registry: SdmxRegistry | null,
@@ -27,37 +29,39 @@ const SdmxDownloadScreen = ({registry, dataStructure, showScreen, setSdmxResult}
     const {enqueueSnackbar} = useSnackbar();
     const progress = Math.round(codeListProgress / codeListTotal * 100) || 0;
 
-
-    const fetchCodeLists = async (structureTypes: StructureType[]) => {
-        const codeListsResponses = await Promise.all(structureTypes.map(structureType =>
-            requestCache.checkIfExistsInMapOrAdd(SDMX_CODELIST(registry!.id, structureType.agencyId!, structureType.id!, structureType.version!), () => fetchCodeList(registry!, structureType)))
-            .map(promise => {
-                promise.then(() => setCodeListProgress(prevState => prevState += 1));
-                return promise;
-            })
-        );
-        return codeListsResponses.filter(response => response);
-    }
+    const loadCodelists = useCallback(async (structureTypes: StructureType[]) => {
+        return Promise.all(structureTypes.map(structureType => {
+            const request = buildSdmxRequest(registry!.id, structureType);
+            return fetchCodelists(request, false)
+                .then(fetched => {
+                    setCodeListProgress(prevState => prevState + 1);
+                    return fetched;
+                })
+                .catch(() => {
+                    enqueueSnackbar(`Failed to load codelist ${request.resourceId}.`, {variant: "error"});
+                    return [] as CodeList[];
+                });
+        })).then((values) => _.flatten(values));
+    }, [registry, enqueueSnackbar]);
 
     const onCodeListsFetch = () => {
         const fetch = async () => {
             setCodeListProgress(0);
-            const dsd = await requestCache.checkIfExistsInMapOrAdd(SDMX_DSD(registry!.id, dataStructure!.agencyId, dataStructure!.id, dataStructure!.version),
-                async () => await fetchDataStructureDefinition(registry!, dataStructure!));
+            const dsd = await requestCache.checkIfExistsInMapOrAdd(SDMX_DSD(registry!.id, dataStructure.agencyId, dataStructure.id, dataStructure.version),
+                async () => await fetchDataStructureDefinition(registry!, dataStructure));
             const structuresFromDSD: BaseStruct[] = getCodeListsFromDSD(dsd);
-            setCodeListTotal(structuresFromDSD.length);
             const disStructureTypes = distinctStructureTypes(structuresFromDSD.map(structure => structure.structureType));
+            setCodeListTotal(disStructureTypes.length);
 
-            const codeLists = await requestCache.checkIfExistsInMapOrAdd(`CODE LISTS: ${SDMX_DSD(registry!.id, dataStructure!.agencyId, dataStructure!.id, dataStructure!.version)}`,
-                () => fetchCodeLists(disStructureTypes));
-            let result = createSdmxResult(dataStructure!, dsd, codeLists);
+            const codelists = await loadCodelists(disStructureTypes);
+            let result = createSdmxResult(dataStructure, dsd, codelists);
             setSdmxResult(result);
-            enqueueSnackbar(`${codeLists.length} ${codeLists.length > 1 ? "unique code lists" : "code list"} downloaded!`, {
+            enqueueSnackbar(`${codelists.length} ${codelists.length !== 1 ? "unique code lists" : "code list"} downloaded!`, {
                 variant: "success"
             });
             setShow(false);
             history.push("/");
-            saveStateToLocaleStorage(registry!, dataStructure!);
+            saveStateToLocaleStorage(registry!, dataStructure);
         }
         if (dataStructure) {
             fetch();
@@ -68,8 +72,7 @@ const SdmxDownloadScreen = ({registry, dataStructure, showScreen, setSdmxResult}
         if (registry && dataStructure) {
             onCodeListsFetch();
         }
-    }, [showScreen])
-
+    }, [showScreen, dataStructure, registry])
 
     const getTextFromAttributes = (dsd: DataStructureDefinition): BaseStruct[] => {
         return getTypeFromBaseStruct(dsd.attributes, "text");
@@ -102,7 +105,7 @@ const SdmxDownloadScreen = ({registry, dataStructure, showScreen, setSdmxResult}
 
     const mapICodeDetails = (structures: BaseStruct[], codeLists: CodeList[]): CodeListDetails[] => {
         const codeListsMap = codeLists.reduce((map: { [key: string]: CodeList }, obj) => {
-            map[obj.id!] = obj;
+            map[obj.id] = obj;
             return map;
         }, {});
 
@@ -113,8 +116,8 @@ const SdmxDownloadScreen = ({registry, dataStructure, showScreen, setSdmxResult}
             }, codeListsMap[structure.structureType.id!]
         ));
     }
-    const saveStateToLocaleStorage = (registry: SdmxRegistry, ds: DataStructure) => {
-        setSdmxStorageValue({registryId: registry.id, dataStructure: ds});
+    const saveStateToLocaleStorage = (sdmxRegistry: SdmxRegistry, ds: DataStructure) => {
+        setSdmxStorageValue({registryId: sdmxRegistry.id, dataStructure: ds});
     }
 
     const distinctStructureTypes = (list: StructureType[]): StructureType[] => {

@@ -11,6 +11,7 @@ import DataStructureDetailPanel from "./data-structure-details/DataStructureDeta
 import { Agency } from "./entity/Agency";
 import { DataStructure, FinalStructureEnum } from "./entity/DataStructure";
 import { SdmxRegistry } from "./entity/SdmxRegistry";
+import { SdmxRequest } from "./entity/SdmxRequest";
 import { SdmxResult } from "./entity/SdmxResult";
 import SdmxDownloadScreen from "./loading-screen/SdmxDownloadScreen";
 import { fetchDataStructures } from "./sdmxService";
@@ -42,7 +43,8 @@ const DataStructureTable = forwardRef(({
 
     const loadDataStructures = useCallback(async (registryId: string, refresh: boolean) => {
         setDataStructuresLoading(true);
-        return fetchDataStructures(registryId, refresh)
+        const request: SdmxRequest = {registryId: registryId, detail: "allstubs"};
+        return fetchDataStructures(request, refresh)
             .then((fetched) => {
                 setDataStructuresLoading(false);
                 return fetched;
@@ -224,7 +226,7 @@ const DataStructureTable = forwardRef(({
                 </Row>
             </Container>
             {codeListLoading ?
-                <SdmxDownloadScreen registry={registry} dataStructure={dataStructure!} setSdmxResult={setSdmxResult}
+                <SdmxDownloadScreen registry={registry} dataStructure={dataStructure} setSdmxResult={setSdmxResult}
                                     showScreen={codeListLoading}/> : null}
         </>
     )

@@ -114,7 +114,7 @@
 		<xsl:choose>
 			<xsl:when test="$position = 'right'">
 					<fo:block padding-left="1em">
-						<fo:external-graphic src="../images/ESTAT.png" content-height="0.8cm"
+						<fo:external-graphic src="images/ESTAT.png" content-height="0.8cm"
 						content-width="scale-to-fit" position="absolute" />
 					</fo:block>
 			</xsl:when>

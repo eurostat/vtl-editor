@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="./docbook.css" type="text/css"?>
+<book xml:id="administrator-guide" xml:lang="en" version="5.0"
+      xmlns="http://docbook.org/ns/docbook"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      xsi:schemaLocation="http://docbook.org/ns/docbook http://docbook.org/xml/5.0/xsd/docbook.xsd">
+    <info>
+        <title>Administrator Guide</title>
+        <subtitle>Administrator Guide for the Validation Rule Manager</subtitle>
+        <releaseinfo>version <?eval ${project.version}?></releaseinfo>
+        <date>2020-07-07</date>
+        <copyright>
+            <year>2020</year>
+            <holder>European Commission</holder>
+            <holder>EUROSTAT</holder>
+        </copyright>
+        <mediaobject>
+            <imageobject>
+                <imagedata align="center" fileref="images/title_page_logo.png" scalefit="1" width="100%"/>
+            </imageobject>
+        </mediaobject>
+        <authorgroup>
+            <author>
+                <personname>Commission Européenne, 2920 Luxembourg, LUXEMBOURG - Tel. +352 43011</personname>
+            </author>
+        </authorgroup>
+    </info>
+
+    <chapter xml:id="vrm_getting_started">
+        <title>Getting started</title>
+        <para>These instructions were created to guide in the process of application build and deployment actions.</para>
+    </chapter>
+
+
+    <chapter xml:id="vrm_steps_required">
+        <title>Steps required</title>
+
+        <section xml:id="vrm_prerequisites">
+            <title>Prerequisites</title>
+            <para>Before starting any build process, we must first make sure that all the required software for the web application build to be successful or event start at all
+                is installed in the system.
+            </para>
+            <para>Please make sure that following software is present and working in your system:</para>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        <link xlink:href="https://www.java.com/pl/download">Java</link>
+                        - version 1.8 at least,
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <link xlink:href="https://maven.apache.org">Maven</link>
+                        - latest version,
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <link xlink:href="https://nodejs.org/en">Node.js</link>
+                        - latest version,
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <link xlink:href="https://www.npmjs.com">NPM package manager</link>
+                        - latest version.
+                    </para>
+                </listitem>
+            </itemizedlist>
+        </section>
+    </chapter>
+
+    <chapter xml:id="vrm_build_configuration">
+        <title>Build configuration</title>
+
+        <section xml:id="vrm_properties">
+            <title>Properties</title>
+            <para>This section provides a step by step description of configuration entries and properties, which is required to understand the whole concept and how build overall
+                works.
+            </para>
+            <para>We'll go step by step through <computeroutput>pom.xml</computeroutput> ( <emphasis role="bold">Maven</emphasis> build configuration) file explaining the whole
+                internal composition of configuration and its effect on the build process.
+            </para>
+            <para>Let's look at the properties section first:
+            </para>
+
+            <programlisting>
+                <![CDATA[
+<properties>
+    ...
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+
+    <npm.output.directory>build</npm.output.directory>
+    ...
+</properties>
+                 ]]>
+            </programlisting>
+
+            <para>These properties contain basic configuration for the application.</para>
+            <para>Java version is set to <computeroutput>1.8</computeroutput> – as required for <emphasis role="bold">Maven</emphasis> to work.
+            </para>
+            <para>
+                Then there is one important property — <computeroutput>npm.output.directory</computeroutput>
+                — that defines where the compiled / transpiled project code will land after the build.
+            </para>
+        </section>
+
+        <section xml:id="vrm_plugins">
+            <title>Plugins</title>
+            <para>Following build (plugins) configuration:</para>
+
+            <programlisting>
+                <![CDATA[
+<build>
+  <finalName>${project.artifactId}-${project.version}</finalName>
+  <plugins>
+    ...
+    <plugin>
+      <groupId>org.codehaus.mojo</groupId>
+      <artifactId>exec-maven-plugin</artifactId>
+      <version>${maven.exec.plugin.version}</version>
+      <executions>
+        <execution>
+          <id>npm run build</id>
+          <goals>
+            <goal>exec</goal>
+          </goals>
+          <phase>compile</phase>
+          <configuration>
+            <executable>npm</executable>
+            <arguments>
+              <argument>run</argument>
+              <argument>build</argument>
+            </arguments>
+          </configuration>
+        </execution>
+      </executions>
+      <configuration>
+        <environmentVariables>
+          <PUBLIC_URL>${deploy.host}:${deploy.port}/${deploy.path}</PUBLIC_URL>
+          <REACT_APP_ROUTER_BASE>/${deploy.path}</REACT_APP_ROUTER_BASE>
+          <GENERATE_SOURCEMAP>${deploy.sourcemap}</GENERATE_SOURCEMAP>
+        </environmentVariables>
+      </configuration>
+    </plugin>
+
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-war-plugin</artifactId>
+      <version>${maven.war.plugin.version}</version>
+      <configuration>
+        <nonFilteredFileExtensions>
+          <nonFilteredFileExtension>pdf</nonFilteredFileExtension>
+        </nonFilteredFileExtensions>
+        <webResources>
+          <resource>
+            <directory>${npm.output.directory}</directory>
+          </resource>
+        </webResources>
+        <webXml>${basedir}/web.xml</webXml>
+      </configuration>
+    </plugin>
+    ...
+  </plugins>
+</build>
+  ]]>
+            </programlisting>
+
+            <para>Contains four important parts, as listed below:</para>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        <emphasis role="bold">finalName</emphasis>
+                    </para>
+                    <para>
+                        This property allows us to set the outcome filename, which is by default created from artifact id (vrm-frontend) and current version number.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <emphasis role="bold">exec-maven-plugin configuration</emphasis>
+                    </para>
+                    <para>
+                        Exec plugin is configured to run the right npm build configuration – in this case <programlisting>npm run build</programlisting> which builds a production
+                        ready application.
+                    </para>
+                    <para>
+                        Three <emphasis role="bold">environment variables</emphasis> are set in the plugin configuration:
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    <emphasis role="bold">PUBLIC_URL</emphasis>
+                                    – sets the public access URL. This way React application knows its full address.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    <emphasis role="bold">REACT_APP_ROUTER_BASE</emphasis>
+                                    – property used for routing purposes (application context) if necessary.
+                                </para>
+                            </listitem>
+                            <listitem xml:id="generate_sourcemap">
+                                <para>
+                                    <emphasis role="bold">GENERATE_SOURCEMAP</emphasis>
+                                    – with this property prevent inclusion of Javascript source maps in the application package by Webpack.
+                                    The source maps are files that contain mapping between source files and compressed versions.
+                                    They allow to debug the code and track errors, but in production environment shouldn't be deployed
+                                    to the web server nor available to normal users. You can read more about source map modes in
+                                    <link xlink:href="https://webpack.js.org/configuration/devtool/">Webpack documentation</link>.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <emphasis role="bold">maven-war-plugin configuration</emphasis>
+                    </para>
+                    <para>
+                        Maven <computeroutput>WAR</computeroutput> plugin is configured to copy web.xml descriptor, found in project root folder, to the WEB-INF folder in the
+                        build directory.
+                    </para>
+                </listitem>
+            </itemizedlist>
+
+        </section>
+
+
+        <section xml:id="vrm_profiles">
+            <title>Profiles</title>
+            <para>The last part of configuration contains probably the most important deployment-wise configuration.</para>
+
+            <programlisting>
+                <![CDATA[
+  <profiles>
+    <profile>
+      <id>dev-tomcat</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <deploy.host>http://127.0.0.1</deploy.host>
+        <deploy.port>8080</deploy.port>
+        <deploy.path>vrm</deploy.path>
+        <deploy.sourcemap>true</deploy.sourcemap>
+      </properties>
+    </profile>
+
+    <profile>
+      <id>dev-weblogic</id>
+      <properties>
+        <deploy.host>http://127.0.0.1</deploy.host>
+        <deploy.port>7001</deploy.port>
+        <deploy.path>vrm</deploy.path>
+        <deploy.sourcemap>true</deploy.sourcemap>
+      </properties>
+    </profile>
+
+    <profile>
+      <id>prod-tomcat</id>
+      <properties>
+        <deploy.host>http://ec.europa.eu</deploy.host>
+        <deploy.port>8080</deploy.port>
+        <deploy.path>vrm</deploy.path>
+        <deploy.sourcemap>false</deploy.sourcemap>
+      </properties>
+    </profile>
+
+    <profile>
+      <id>prod-weblogic</id>
+      <properties>
+        <deploy.host>http://ec.europa.eu</deploy.host>
+        <deploy.port>7001</deploy.port>
+        <deploy.path>vrm</deploy.path>
+        <deploy.sourcemap>false</deploy.sourcemap>
+      </properties>
+    </profile>
+  </profiles>
+                 ]]>
+            </programlisting>
+            <para>There are four profiles configured for the <computeroutput>WAR</computeroutput> file build: <emphasis role="bold">dev-weblogic</emphasis>,
+                <emphasis role="bold">dev-tomcat</emphasis>, <emphasis role="bold">prod-tomcat</emphasis>, and <emphasis role="bold">prod-weblogic</emphasis>.
+                Two are for development builds and two for production builds, taking into account each type of target application server (Weblogic and Tomcat).
+                The main difference between them are properties defining host and port of application server host, and context path where VRM frontend application
+                should be deployed. The properties in each profile are:
+            </para>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        <computeroutput>deploy.host</computeroutput>
+                        – the web address of the application host. In <emphasis>dev</emphasis> environment default value is localhost
+                        <computeroutput>http://127.0.0.1</computeroutput>, while in <emphasis>prod</emphasis> environment it's Eurostat server
+                        <computeroutput>http://ec.europa.eu</computeroutput>. The property – of course – has to be set to the value
+                        used in the actual environment.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <computeroutput>deploy.port</computeroutput>
+                        – the port that deployed application will run at. For <emphasis>Weblogic</emphasis> default value is <computeroutput>7001</computeroutput>,
+                        while for <emphasis>Tomcat</emphasis> it's <computeroutput>8080</computeroutput>.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <computeroutput>deploy.path</computeroutput>
+                        – the base path that is the trailing part of the deployed application address. The default value is <computeroutput>vrm</computeroutput>.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <computeroutput>deploy.sourcemap</computeroutput>
+                        – indicates if application package should contain Javascript source maps. For more information about source maps see
+                        <link linkend="generate_sourcemap">description of GENERATE_SOURCEMAP</link> environment variable in <xref linkend="vrm_plugins"/>.
+                        The default value is <computeroutput>true</computeroutput> for <emphasis>dev</emphasis> environment (source maps are generated) and
+                        <computeroutput>false</computeroutput> for <emphasis>prod</emphasis> environment (no source maps resulting in smaller package).
+                    </para>
+                </listitem>
+            </itemizedlist>
+            <para>
+                If the values in your target environment are different than defaults mentioned above, replace them before starting the build process.
+            </para>
+            <para>
+                These values are also used in the environment variables <emphasis role="bold">PUBLIC_URL</emphasis> and <emphasis role="bold">REACT_APP_ROUTER_BASE</emphasis>
+                described in <xref linkend="vrm_plugins"/>. They need to be consistent with real web address that VRM frontend application is deployed at,
+                otherwise React router won't work properly.
+            </para>
+        </section>
+
+        <section xml:id="build_process">
+            <title>Build process</title>
+            <para>
+                The build process is carried by <link xlink:href="http://maven.apache.org/">Maven</link>,
+                which requires Java to be installed in the system (preferred 1.8 minimum).
+            </para>
+            <para>
+                To build the application the right profile must be chosen, see <xref linkend="vrm_profiles"/>.
+            </para>
+            <para>Run following command to execute build process:</para>
+
+            <programlisting>
+                <![CDATA[
+mvn clean install –P[profile_name]
+                 ]]>
+            </programlisting>
+
+            <para>Whereas <computeroutput>[profile_name]</computeroutput> refers to the chosen profile name.
+            </para>
+            <para>The <computeroutput>WAR</computeroutput> file should be ready for deployment.
+            </para>
+        </section>
+
+        <section xml:id="deployment_process">
+            <title>Deployment process</title>
+            <para>The deployment process may vary depending on the platform.</para>
+            <para>The general idea is that by default the application deploys <computeroutput>WAR</computeroutput> file under the context specified as the project name / war file
+                name.
+            </para>
+            <para>It is possible to change that behavior for the most of existing application servers that comply with the JEE standards, however in case of Tomcat – simple servlet
+                container – it is not possible to do on the application side.
+            </para>
+            <para>For simplicity reasons we have assumed that it is better to deploy application using context as it is – its name, and if the it must change – take required steps
+                later or just change the deployment archive name.
+            </para>
+            <para>Because the official documentation is enriched enough with descriptions, popular issues solutions, and updated on frequent base – in <emphasis role="bold">
+                Tomcat's</emphasis>, as well as in <emphasis role="bold">WebLogic's</emphasis> case - we have decided to redirect to these sources.
+            </para>
+            <para>For more information about <emphasis role="bold">WebLogic</emphasis> web application server-side deployment go
+                <link xlink:href="https://www.oracle.com/webfolder/technetwork/tutorials/obe/fmw/wls/12c/03-DeployApps/deployapps.html">here</link>
+                and for Tomcat
+                <link xlink:href="http://tomcat.apache.org/tomcat-8.0-doc/deployer-howto.html">here</link>.
+            </para>
+        </section>
+    </chapter>
+
+    <chapter xml:id="revision_history">
+        <title>Revision History</title>
+        <revhistory>
+            <revision>
+                <revnumber>1.0</revnumber>
+                <date>2020-05-28</date>
+                <authorinitials>Adrian Fijalkowski</authorinitials>
+                <revdescription>
+                    <formalpara>
+                        <title>Released</title>
+                        <para>First version of the document</para>
+                    </formalpara>
+                </revdescription>
+            </revision>
+            <revision>
+                <revnumber>1.1</revnumber>
+                <date>2020-07-07</date>
+                <authorinitials>Pawel Sobocinski</authorinitials>
+                <revdescription>
+                    <formalpara>
+                        <title>Updated</title>
+                        <para>Document updated to reflect the changes in the Maven configuration in pom.xml</para>
+                    </formalpara>
+                </revdescription>
+            </revision>
+        </revhistory>
+    </chapter>
+
+</book>

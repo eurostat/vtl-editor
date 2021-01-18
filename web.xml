@@ -3,7 +3,7 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-  <display-name>VRM frontend app</display-name>
+  <display-name>Validation Rule Manager</display-name>
 
   <error-page>
     <error-code>404</error-code>

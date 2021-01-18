@@ -9,15 +9,15 @@ routing has to be maintained.
 See:
 ```xml
 <configuration>
-  <environmentVariables>
-    <PUBLIC_URL>${app.address}:${app.port}/${project.artifactId}</PUBLIC_URL>
-    <REACT_APP_ROUTER_BASE>/${project.artifactId}</REACT_APP_ROUTER_BASE>
-  </environmentVariables>
+    <environmentVariables>
+        <PUBLIC_URL>${deploy.host}:${deploy.port}/${deploy.path}</PUBLIC_URL>
+        <REACT_APP_ROUTER_BASE>/${deploy.path}</REACT_APP_ROUTER_BASE>
+    </environmentVariables>
 </configuration>
 ```
 
 This configuration specified the address of web application, incl. the context address which is
-project's artifact id.
+project property indicating deploy path.
 Specific Maven profiles have to be run, to make the application work on specific environment,
 see *profiles* section in *pom.xml*.
 
@@ -30,19 +30,40 @@ Whereas *REACT_APP_ROUTER_BASE* is specified as context path in *pom.xml*.
 **Build options are for deployment (production) tests only!**
 For regular development use webpack dev server as usual.
 
+## Synchronizing version number between pom.xml and package.json
+
+VRM uses `sync-pom-version-to-package` to keep version number synchronized between `pom.xml` and `package.json` configurations.
+Synchronization script is run at post-install stage of the npm lifecycle:
+
+```
+"scripts": {
+  ...
+  "postinstall": "sync-pom-version",
+  ...
+}
+```
+
+To run it explicitly use this command:
+```
+npm run postinstall
+```
+
+> **Warning**: `sync-pom-version-to-package` is incompatible with versioning scheme of XX.YY.ZZ. If this is required synchronization has to be done manually. 
+
 ## Available Maven build configurations
+The host 
 
-### mvn clean install -P local-tomcat
-Build for local Tomcat testing, address: http://127.0.0.1:8080/vrm-frontend
+### mvn clean install -Pdev-tomcat
+Build for local Tomcat testing, address: http://127.0.0.1:8080/vrm
 
-### mvn clean install -P local-weblogic
-Build for local WebLogic testing, address: http://127.0.0.1:7001/vrm-frontend
+### mvn clean install -Pdev-weblogic
+Build for local WebLogic testing, address: http://127.0.0.1:7001/vrm
 
-### mvn clean install -P prod-tomcat
-Build for local Tomcat testing, address: ${eurostat.address}:8080/vrm-frontend
+### mvn clean install -Pprod-tomcat
+Build for local Tomcat testing, address: http://ec.europa.eu:8080/vrm
 
-### mvn clean install -P prod-weblogic
-Build for local WebLogic testing, address: ${eurostat.address}:7001/vrm-frontend
+### mvn clean install -Pprod-weblogic
+Build for local WebLogic testing, address: http://ec.europa.eu:7001/vrm
 
 ## Available Scripts
 

@@ -11,7 +11,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 ReactDOM.render(
-    <Router>
+    <Router basename={process.env.REACT_APP_ROUTER_BASE || ''}>
         <Switch>
             <Route exact path="/documentation" component={Documentation}/>
             <Route exact path="/" component={App}/>

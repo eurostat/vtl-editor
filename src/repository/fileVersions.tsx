@@ -7,12 +7,13 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { buildFile } from "../editor/editorFile";
-import { muiTheme } from "../utility/detailTable";
+import { storeLoaded } from "../editor/editorSlice";
+import { convertEntityDates } from "../web-api/apiUtility";
+import { detailTableTheme } from "./detailTableTheme";
 import { FileVersionTransfer } from "./entity/fileVersionTransfer";
 import { StoredItemTransfer } from "./entity/storedItemTransfer";
 import { getFile, getFileVersions, getVersionContent, restoreFileVersion } from "./repositoryService";
 import { compareVersions, updateNode, versionedFile } from "./repositorySlice";
-import { storeLoaded } from "../editor/editorSlice";
 
 const FileVersions = () => {
     const fileId = useSelector(versionedFile);
@@ -23,12 +24,6 @@ const FileVersions = () => {
     const dispatch = useDispatch();
     const {enqueueSnackbar} = useSnackbar();
     const history = useHistory();
-
-    const convertItem = (item: FileVersionTransfer) => {
-        const converted = Object.assign({} as any, item);
-        converted.updateDate = new Date(item.updateDate).toLocaleString();
-        return converted;
-    }
 
     const fetchFile = useCallback(() => {
         if (fileId) {
@@ -49,15 +44,17 @@ const FileVersions = () => {
 
     const fetchVersions = useCallback(() => {
         if (file) {
-            getFileVersions(file.id).then((response) => {
-                if (response && response.data) {
-                    const received: any[] = [];
-                    received.push(...response.data.map((item: FileVersionTransfer) => convertItem(item)));
-                    received.sort((a, b) => b.version - a.version);
-                    setVersions(received);
-                }
-            }).catch(() => {
-            });
+            getFileVersions(file.id)
+                .then((response) => {
+                    if (response && response.data) {
+                        const received: any[] = [];
+                        received.push(...response.data.map((item: FileVersionTransfer) => convertEntityDates(item)));
+                        received.sort((a, b) => b.version - a.version);
+                        setVersions(received);
+                    }
+                })
+                .catch(() => {
+                });
         }
     }, [file]);
 
@@ -114,7 +111,7 @@ const FileVersions = () => {
     }
 
     return (
-        <MuiThemeProvider theme={muiTheme}>
+        <MuiThemeProvider theme={detailTableTheme}>
             <MaterialTable tableRef={tableRef}
                            title={`Version history: ${file?.name || "—"}`}
                            data={versions}
@@ -129,6 +126,7 @@ const FileVersions = () => {
                                selection: true,
                                showSelectAllCheckbox: false,
                                showTextRowsSelected: false,
+                               toolbarButtonAlignment: "left"
                            }}
                            onSelectionChange={onSelectionChange}
                            actions={[

@@ -29,7 +29,7 @@ export const createItemDialog = (type: StoredItemType, input?: string) => {
         const result = await inputDialog({
             title: "Create New",
             text: `Enter new ${descriptor} name.`,
-            value: input || "",
+            defaultValue: input || "",
             acceptButton: {value: "create", color: "primary"}
         });
         return result !== "cancel"
@@ -63,7 +63,7 @@ export const renameItemDialog = (type: StoredItemType, name: string) => {
         const result = await inputDialog({
             title: "Rename",
             text: `Renaming ${descriptor} "${name}". Enter new name.`,
-            value: name,
+            defaultValue: name,
             acceptButton: {value: "rename", color: "primary"}
         });
         return result !== "cancel"

@@ -9,7 +9,7 @@ type DecisionModalInputProps = {
     close: any,
     title: string,
     text: string,
-    value?: string,
+    defaultValue?: string,
     acceptButton?: DecisionModalButton,
     cancelButton?: DecisionModalButton,
 }
@@ -20,7 +20,7 @@ type DecisionModalButton = {
     className?: string
 }
 
-const InputDialog = ({open, close, text, value, title, acceptButton, cancelButton}: DecisionModalInputProps) => {
+const InputDialog = ({open, close, text, defaultValue, title, acceptButton, cancelButton}: DecisionModalInputProps) => {
     const {enqueueSnackbar} = useSnackbar();
     const onAcceptButton = () => {
         const inputEl = document.getElementById("inputVal") as HTMLInputElement;
@@ -46,7 +46,7 @@ const InputDialog = ({open, close, text, value, title, acceptButton, cancelButto
             <ModalBody>
                 <div>
                     <input type="text" className="form-control" id="inputVal" aria-describedby="inputVal"
-                           placeholder="Enter value" defaultValue={value}/>
+                           placeholder="Enter value" defaultValue={defaultValue}/>
                 </div>
             </ModalBody>
             <ModalFooter>
@@ -61,7 +61,7 @@ const InputDialog = ({open, close, text, value, title, acceptButton, cancelButto
             </ModalFooter>
         </Modal>
     );
-};
+}
 
 InputDialog.defaultProps = {
     acceptButton: {value: "accept", color: "primary"} as DecisionModalButton,

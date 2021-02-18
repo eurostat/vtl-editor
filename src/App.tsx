@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
 import './App.scss';
+import ManagementView from "./control/managementView";
 import EditorView from "./editor/editorView";
 import { decisionDialog } from "./main-view/decision-dialog/decisionDialog";
 import Header from "./main-view/header/header";
@@ -36,11 +37,11 @@ function App() {
     const sidePaneMode = useSelector(sidePaneView);
 
     useEffect(() => {
-        const decision = async (dataStructure: DataStructure) => {
+        const decision = async (dst: DataStructure) => {
             const res = await decisionDialog({
                 title: "Warning",
                 text:
-                    `In your previous session you imported ${dataStructure.name} content. Do you want to import the data again?`,
+                    `In your previous session you imported ${dst.name} content. Do you want to import the data again?`,
                 buttons: [
                     {key: "yes", text: "Yes", color: "primary"},
                     {key: "no", text: "No", color: "secondary"},
@@ -62,8 +63,8 @@ function App() {
         if (sdmxStoredValues) {
             if (sdmxStoredValues.dataStructure && sdmxStoredValues.registryId) {
                 setDataStructure({...sdmxStoredValues.dataStructure});
-                setRegistry({id: sdmxStoredValues.registryId!, name: "", url: ""});
-                decision(sdmxStoredValues.dataStructure);
+                setRegistry({id: sdmxStoredValues.registryId, name: "", url: ""});
+                decision(sdmxStoredValues.dataStructure).then();
             }
         }
     }, []);
@@ -130,6 +131,9 @@ function App() {
                         </Route>
                         <Route exact path="/folder">
                             <DirectoryPreview/>
+                        </Route>
+                        <Route exact path="/manage">
+                            <ManagementView/>
                         </Route>
                         <Route exact path="/">
                             <EditorView {...editorViewProps}/>

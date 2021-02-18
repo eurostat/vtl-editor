@@ -115,9 +115,7 @@ const DataStructureTable = forwardRef(({
         if (dataStructure) {
             setCodeListLoading(true)
         } else {
-            enqueueSnackbar(`Choose data structure from the list!`, {
-                variant: "error"
-            });
+            enqueueSnackbar(`Choose data structure from the list.`, {variant: "error"});
         }
     }
 

@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { useSnackbar } from "notistack";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { decorators, TreeNode, TreeTheme } from 'react-treebeard';
@@ -66,35 +66,41 @@ const TreeExplorer = () => {
         return initial;
     })());
 
-    const fetchFolderContents = async (folderId?: number) => {
-        let contents = await getFolderContents(folderId).catch(() => {
-            enqueueSnackbar(`Failed to load folder contents.`, {variant: "error"});
-        });
-        if (contents && contents.data) {
-            const folders: TreeNode[] = contents.data.folders.map((folder: StoredItemTransfer) => buildFolderNode(folder));
-            const files: TreeNode[] = contents.data.files.map((file: StoredItemTransfer) =>
-                buildFileNode(file));
-            return {folders: folders, files: files};
-        }
-        return {folders: [] as TreeNode[], files: [] as TreeNode[]};
-    };
+    const fetchFolderContents = useCallback((folderId?: number) => {
+        let folders: TreeNode[] = [];
+        let files: TreeNode[] = [];
+        return getFolderContents(folderId)
+            .then((contents) => {
+                if (contents && contents.data) {
+                    folders = contents.data.folders.map(
+                        (folder: StoredItemTransfer) => buildFolderNode(folder));
+                    files = contents.data.files.map(
+                        (file: StoredItemTransfer) => buildFileNode(file));
+                }
+                return {folders: folders, files: files};
+            })
+            .catch(() => {
+                enqueueSnackbar(`Failed to load folder contents.`, {variant: "error"});
+                return {folders: folders, files: files};
+            });
+    }, [enqueueSnackbar]);
 
     useEffect(() => {
-        fetchFolderContents().then((response) =>
-            dispatch(replaceTree(response)));
-    }, []);
+        fetchFolderContents()
+            .then((contents) => dispatch(replaceTree(contents)));
+    }, [fetchFolderContents, dispatch]);
 
     const onToggle = (node: TreeNode, toggled: boolean) => {
         if (node.children) {
-            const nodeUpdate: any = {id: node.id, toggled: toggled};
+            const baseUpdate: any = {id: node.id, toggled: toggled};
             if (node.loading) {
                 fetchFolderContents(node.entity.id).then((response) => {
-                    const nodeUpdate: any = {id: node.id, loading: false};
-                    dispatch(updateNode(nodeUpdate));
+                    const fetchUpdate: any = {id: node.id, loading: false};
+                    dispatch(updateNode(fetchUpdate));
                     dispatch(addToTree(response));
                 });
             }
-            dispatch(updateNode(nodeUpdate));
+            dispatch(updateNode(baseUpdate));
         }
     }
 
@@ -254,13 +260,13 @@ const TreeExplorer = () => {
 
     return (
         <>
-            <div ref={explorerPanelRef!} id="file-explorer" className="file-explorer-container">
+            <div ref={explorerPanelRef} id="file-explorer" className="file-explorer-container">
                 <TreeBeard style={style} data={treeItems} onToggle={onToggle} onSelect={onSelect}
                            decorators={{...decorators, Toggle: Toggle, Header: ItemHeader, Container: ItemContainer}}
                            animations={defaultAnimations} onMenuEvent={onMenuEvent}/>
             </div>
             <ContextMenu menu={<TreeExplorerMenu onMenuEvent={onMenuEvent}/>}
-                         domElementRef={explorerPanelRef!}/>
+                         domElementRef={explorerPanelRef}/>
         </>
     )
 }

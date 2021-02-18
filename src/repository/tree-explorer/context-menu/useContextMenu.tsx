@@ -1,4 +1,4 @@
-import React, { MutableRefObject, useCallback, useEffect, useState } from "react";
+import { MutableRefObject, useCallback, useEffect, useState } from "react";
 
 type useContextMenuProps = {
     domElementRef: MutableRefObject<any>

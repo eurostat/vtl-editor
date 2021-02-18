@@ -11,23 +11,24 @@
     margin-top: 40px;
   }
 
-  > button {
+  button {
     width: 100%;
     margin: 10px auto;
+    height: 38px;
 
-    svg {
-      font-size: 28px;
-      color: #858585;
-      cursor: pointer;
+    &.mat-icon {
+      svg {
+        font-size: 36px;
+      }
     }
-  }
 
-  & > a > button {
-    width: 100%;
-    margin: 10px auto;
+    &.fa-icon {
+      svg {
+        font-size: 28px;
+      }
+    }
 
     svg {
-      font-size: 28px;
       color: #858585;
       cursor: pointer;
     }

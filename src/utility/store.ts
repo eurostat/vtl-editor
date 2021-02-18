@@ -1,12 +1,14 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import controlReducer from "../control/controlSlice";
 import editorReducer from "../editor/editorSlice";
 import viewReducer from "../main-view/viewSlice";
 import repositoryReducer from "../repository/repositorySlice";
 
 const rootReducer = combineReducers({
+    control: controlReducer,
     editor: editorReducer,
-    repository: repositoryReducer,
-    view: viewReducer
+    view: viewReducer,
+    repository: repositoryReducer
 })
 
 const store = configureStore({

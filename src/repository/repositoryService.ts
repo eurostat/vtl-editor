@@ -104,7 +104,7 @@ export async function deleteItem(payload: StoredItemPayload, type: StoredItemTyp
 }
 
 export async function buildFormData(payload: EditorFile) {
-        const formData = new FormData();
+    const formData = new FormData();
     const content = new Blob([payload.content], {type: "text/plain", endings: "native"});
     const arrayContent = await new Promise<ArrayBuffer>((resolve, reject) => {
         let result: ArrayBuffer = new ArrayBuffer(1);

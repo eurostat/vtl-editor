@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Container } from "react-bootstrap";
 import { MonacoDiffEditor } from "react-monaco-editor";
 import { useSelector } from "react-redux";
-import PageHeader from "../../main-view/page-header/PageHeader";
+import PageHeader from "../../main-view/page-header/pageHeader";
 import { FileVersionTransfer } from "../entity/fileVersionTransfer";
 import { StoredItemTransfer } from "../entity/storedItemTransfer";
 import { getVersionContent } from "../repositoryService";
@@ -50,7 +50,7 @@ const DiffEditor = () => {
     const title = filename ? `Compare "${filename}" versions ${leftVersion} and ${rightVersion}` : `Compare versions`;
     return (
         <div className="diff-editor-container">
-            <PageHeader name={title}/>
+            <PageHeader title={title}/>
             <Container className="diff-editor-box">
                 <MonacoDiffEditor ref={monacoRef} height="100%" editorDidMount={editorDidMount}/>
             </Container>

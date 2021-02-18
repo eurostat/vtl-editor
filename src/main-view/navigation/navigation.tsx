@@ -2,7 +2,7 @@ import { faEdit, faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
 import { faCog } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tooltip } from "@material-ui/core";
-import { AccountTreeOutlined, OpenInBrowserOutlined } from "@material-ui/icons";
+import { AccountTreeOutlined, OpenInBrowserOutlined, SupervisorAccount } from "@material-ui/icons";
 import React, { useMemo, useState } from "react";
 import ModalFactory from "react-modal-promise";
 import { useDispatch } from "react-redux";
@@ -36,39 +36,48 @@ const Navigation = () => {
     }
 
     const menuItems: Record<string, ToolItemSettings> = {
-        "vtl-editor": {title: "Editor", clazz: "vtl-editor", faIcon: faEdit, link: "/",},
+        "vtl-editor": {
+            title: "Editor", key: "vtl-editor", link: "/",
+            className: "fa-icon", faIcon: faEdit
+        },
         "file-explorer": {
-            title: "File Explorer", clazz: "menu-file-explorer",
-            matIcon: <AccountTreeOutlined style={{fontSize: "36px"}}/>, onClick: toggleFileExplorer
+            title: "File Explorer", key: "file-explorer",
+            className: "menu-file-explorer mat-icon",
+            matIcon: <AccountTreeOutlined/>, onClick: toggleFileExplorer
         },
         "import-dsd": {
-            title: "Import DSD", clazz: "menu-sdmx",
-            matIcon: <OpenInBrowserOutlined style={{fontSize: "36px"}}/>, link: "/sdmx"
+            title: "Import DSD", key: "import-dsd", link: "/sdmx",
+            className: "mat-icon", matIcon: <OpenInBrowserOutlined/>
+        },
+        "manage-domains": {
+            title: "Manage Domains", key: "manage-domains", link: "/manage",
+            className: "mat-icon", matIcon: <SupervisorAccount/>
         }
     }
 
     const menuContentMap: MenuContentMap = {
-        "/": [menuItems["import-dsd"], menuItems["file-explorer"]],
+        "/": [menuItems["import-dsd"], menuItems["file-explorer"], menuItems["manage-domains"]],
         "/manual": [],
-        "/sdmx": [menuItems["vtl-editor"], menuItems["file-explorer"]],
-        "/folder": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["file-explorer"]],
-        "/diff": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["file-explorer"]],
-        "/versions": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["file-explorer"]]
+        "/sdmx": [menuItems["vtl-editor"], menuItems["file-explorer"], menuItems["manage-domains"]],
+        "/folder": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["file-explorer"], menuItems["manage-domains"]],
+        "/diff": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["file-explorer"], menuItems["manage-domains"]],
+        "/versions": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["file-explorer"], menuItems["manage-domains"]],
+        "/manage": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["file-explorer"]]
     };
 
     return (
         <>
             <div className="nav flex-column nav-pills left-nav" aria-orientation="vertical">
-                {menuContentMap[location.pathname]?.map(option => <ToolItem key={option.clazz}
+                {menuContentMap[location.pathname]?.map(option => <ToolItem key={option.key}
                                                                             itemSettings={option}/>) || []}
                 <Tooltip title="Settings" placement="right" arrow>
-                    <button className="menu-settings" id="setting-icon" onClick={settingsMenuClick}>
+                    <button className="fa-icon" id="setting-icon" onClick={settingsMenuClick}>
                         <FontAwesomeIcon icon={faCog}/>
                     </button>
                 </Tooltip>
                 <Tooltip title="Help (Ctrl+F1)" placement="right" arrow>
                     <Link to="/manual" target="_blank" rel="noopener noreferrer">
-                        <button className="menu-help">
+                        <button className="fa-icon">
                             <FontAwesomeIcon icon={faQuestionCircle}/>
                         </button>
                     </Link>

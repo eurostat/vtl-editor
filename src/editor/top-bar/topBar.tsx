@@ -41,13 +41,13 @@ const TopBar = () => {
             let key = event.key;
             if (key === 's') {
                 event.preventDefault();
-                saveFile();
+                saveFile().then();
             } else if (key === 'o') {
                 event.preventDefault();
-                openFile();
+                openFile().then();
             } else if (key === 'e') {
                 event.preventDefault();
-                makeNewFile();
+                makeNewFile().then();
             } else if (key === "F1") {
                 window.open(`${window.location.origin}/documentation`);
             }
@@ -117,8 +117,8 @@ const TopBar = () => {
         else createNewFile();
     };
 
-    const loadFile = (newFiles: string[], fileName: string) => {
-        const loadedFile = buildFile(fileName, newFiles[0], false);
+    const loadFile = (newFiles: string[], filename: string) => {
+        const loadedFile = buildFile(filename, newFiles[0], false);
         dispatch(storeLoaded(loadedFile));
     };
 
@@ -134,7 +134,7 @@ const TopBar = () => {
                 text: `File will be uploaded to ${path === "/" ? "root folder" : "folder " + path}.\n` +
                     "To change this location, select target folder in the File Explorer.\n" +
                     "You can change file name below.",
-                value: filename || "",
+                defaultValue: filename || "",
                 acceptButton: {value: "upload", color: "primary"}
             });
             return result !== "cancel"
@@ -169,8 +169,8 @@ const TopBar = () => {
             const parentId = readState(selectedFolder);
             const path = readState(selectedFolderPath);
             await uploadFileDialog(path, file.name)
-                .then((name: string) => {
-                    const payload: StoredItemPayload = {name: name, parentFolderId: parentId};
+                .then((filename: string) => {
+                    const payload: StoredItemPayload = {name: filename, parentFolderId: parentId};
                     createFile(payload).then((response) => {
                         if (response && response.data) {
                             const saved: StoredItemTransfer = response.data;
@@ -191,20 +191,20 @@ const TopBar = () => {
 
     const toolbarItems: ToolItemSettings[] = [
         {
-            title: "New File (Ctrl+E)", clazz: "menu-new separated", faIcon: faFile, onClick: makeNewFile,
-            tooltip: {placement: "bottom"}
+            title: "New File (Ctrl+E)", key: "new-file", onClick: makeNewFile,
+            className: "menu-new separated", faIcon: faFile, tooltip: {placement: "bottom"}
         },
         {
-            title: "Open file (Ctrl+O)", clazz: "menu-open", faIcon: faFolderOpen, onClick: openFile,
-            tooltip: {placement: "bottom"}
+            title: "Open file (Ctrl+O)", key: "open-file", onClick: openFile,
+            className: "menu-open", faIcon: faFolderOpen, tooltip: {placement: "bottom"}
         },
         {
-            title: "Save file (Ctrl+S)", clazz: "menu-save separated", faIcon: faSave, onClick: saveFile,
-            tooltip: {placement: "bottom"}
+            title: "Save file (Ctrl+S)", key: "save-file", onClick: saveFile,
+            className: "menu-save separated", faIcon: faSave, tooltip: {placement: "bottom"}
         },
         {
-            title: "Upload File", clazz: "menu-upload separated", faIcon: faCloudUploadAlt, onClick: uploadFile,
-            tooltip: {placement: "bottom"}
+            title: "Upload File", key: "upload-file", onClick: uploadFile,
+            className: "menu-upload separated", faIcon: faCloudUploadAlt, tooltip: {placement: "bottom"}
         },
     ];
 
@@ -213,7 +213,7 @@ const TopBar = () => {
             <div id="top-bar" className="top-bar" aria-orientation="horizontal">
                 <div className="toolbar">
                     {toolbarItems.map(option =>
-                        <ToolItem key={option.clazz} itemSettings={option}/>) || []}
+                        <ToolItem key={option.key} itemSettings={option}/>) || []}
                 </div>
                 <div className="titlebar">
                     <span>{name}&nbsp;{changed ? "*" : ""}</span>

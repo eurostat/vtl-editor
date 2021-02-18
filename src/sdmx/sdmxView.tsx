@@ -8,7 +8,7 @@ import { Autocomplete } from "@material-ui/lab";
 import { useSnackbar } from "notistack";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import PageHeader from "../main-view/page-header/PageHeader";
+import PageHeader from "../main-view/page-header/pageHeader";
 import DataStructureTable from "./dataStructureTable";
 import { Agency } from "./entity/Agency";
 import { FinalStructureEnum } from "./entity/DataStructure";
@@ -166,7 +166,7 @@ const SdmxView = ({
 
     return (
         <div className="sdmx-container">
-            <PageHeader name={"Import Data Structure Definition"}/>
+            <PageHeader title={"Import Data Structure Definition"}/>
             <Container>
                 <Row className="justify-content-md-left">
                     <Col xs={2} className="sdmx-option">

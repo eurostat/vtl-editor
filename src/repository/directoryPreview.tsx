@@ -3,7 +3,8 @@ import { Cached } from "@material-ui/icons";
 import MaterialTable from "material-table";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { muiTheme } from "../utility/detailTable";
+import { convertEntityDates } from "../web-api/apiUtility";
+import { detailTableTheme } from "./detailTableTheme";
 import { StoredItemTransfer } from "./entity/storedItemTransfer";
 import { getFolder, getFolderContents } from "./repositoryService";
 import { detailedFolder, detailedFolderPath, updateNode } from "./repositorySlice";
@@ -14,35 +15,32 @@ const DirectoryPreview = () => {
     const path: string = useSelector(detailedFolderPath);
     const dispatch = useDispatch();
 
-    const convertItem = (item: StoredItemTransfer) => {
-        const converted = Object.assign({} as any, item);
-        converted.createDate = new Date(item.createDate).toLocaleString();
-        converted.updateDate = new Date(item.updateDate).toLocaleString();
-        return converted;
-    }
-
     const fetchFolder = useCallback(() => {
         if (folderId) {
-            getFolder(folderId).then((received) => {
-                const nodeUpdate: any = {id: folderId, entity: received};
-                dispatch(updateNode(nodeUpdate));
-            }).catch(() => {
-            });
+            getFolder(folderId)
+                .then((received) => {
+                    const nodeUpdate: any = {id: folderId, entity: received};
+                    dispatch(updateNode(nodeUpdate));
+                })
+                .catch(() => {
+                });
         }
     }, [folderId, dispatch]);
 
     const fetchContents = useCallback(() => {
-        getFolderContents(folderId).then((response) => {
-            if (response && response.data) {
-                const contents: any[] = [];
-                contents.push(
-                    ...response.data.folders.map((item: StoredItemTransfer) => convertItem(item)),
-                    ...response.data.files.map((item: StoredItemTransfer) => convertItem(item))
-                );
-                setContents(contents);
-            }
-        }).catch(() => {
-        });
+        getFolderContents(folderId)
+            .then((response) => {
+                if (response && response.data) {
+                    const received: any[] = [];
+                    received.push(
+                        ...response.data.folders.map((item: StoredItemTransfer) => convertEntityDates(item)),
+                        ...response.data.files.map((item: StoredItemTransfer) => convertEntityDates(item))
+                    );
+                    setContents(received);
+                }
+            })
+            .catch(() => {
+            });
     }, [folderId]);
 
     useEffect(() => {
@@ -51,7 +49,7 @@ const DirectoryPreview = () => {
     }, [folderId, fetchFolder, fetchContents]);
 
     return (
-        <MuiThemeProvider theme={muiTheme}>
+        <MuiThemeProvider theme={detailTableTheme}>
             <MaterialTable title={`Folder path: ${path || "—"}`}
                            data={contents}
                            columns={[
@@ -62,7 +60,10 @@ const DirectoryPreview = () => {
                                {title: "Created by", field: "createdBy"},
                                {title: "Modified by", field: "updatedBy"},
                            ]}
-                           options={{showTitle: true}}
+                           options={{
+                               showTitle: true,
+                               toolbarButtonAlignment: "left"
+                           }}
                            actions={[
                                {
                                    icon: () => <Cached/>,

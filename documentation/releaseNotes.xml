@@ -29,8 +29,8 @@
     </info>
 
     <chapter xml:id="VRM-0.7.0" xreflabel="VRM-0.7.0">
-        <title>Version 0.7.0.201016-a</title>
-        <para>Date: 2020-10-16</para>
+        <title>Version 0.7.0.201026-a</title>
+        <para>Date: 2020-10-26</para>
         <section>
             <title>New Features</title>
             <itemizedlist>
@@ -151,6 +151,15 @@
                         Version 3.0 of the VTL grammar has number changed to 2.1 as per official numbering.
                     </simpara>
                 </listitem>
+                <listitem>
+                    <simpara>
+                        When application was deployed in WebLogic Server 12c, weblogic.servlet.utils.fileupload.Multipart implementation didn't recognize
+                        multipart/form-data requests correctly, throwing an exception. The requests were used to upload VTL script file contents
+                        from VRM frontend to backend application to save them in the repository. The error didn't appear when application was deployed in Tomcat server.
+                        To solve this problem multipart/form-data requests are replaced with requests containing Base64 strings to transfer script contents.
+                        <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-288">[VRM-288]</link>
+                    </simpara>
+                </listitem>
             </itemizedlist>
         </section>
         <section>
@@ -158,16 +167,23 @@
             <itemizedlist>
                 <listitem>
                     <simpara>
-                        When application is deployed in WebLogic Server 12c, weblogic.servlet.utils.fileupload.Multipart implementation doesn't recognize
-                        multipart/form-data request correctly, throwing an exception. The multipart/form-data requests are used to upload VTL script file contents
-                        from VRM frontend to backend application. The issue prevents the VRM backend application from saving VTL script file contents
-                        in the repository. The error doesn't appear when application is deployed in Tomcat server.
-                        <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-288">[VRM-288]</link>
+                        Euro SDMX Registry configured in the VRM is currently unavailable from outside of the Eurostat, because it requires VPN access.
+                        <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-301">[VRM-301]</link>
                     </simpara>
                 </listitem>
                 <listitem>
                     <simpara>
-                        Euro SDMX Registry configured in the VRM is currently unavailable, because it requires authentication.
+                        Trying to browse agencies and data structure definitions in the Euro SDMX Registry results in SdmxSyntaxException and internal server error (500).
+                        The server responds with 404 status and HTML message "Not found". The same functionality works properly with Global SDMX Registry.
+                        <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-292">[VRM-292]</link>
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        Trying to browse data structure definitions in the Euro SDMX Registry results in SchemaValidationException and internal server error (500).
+                        The reason is data value that is not compliant with XML schema in some stored DSDs. The VRM application fetches the whole DSDs (including the invalid value)
+                        for browsing instead of only stubs with general information.
+                        <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-294">[VRM-294]</link>
                     </simpara>
                 </listitem>
             </itemizedlist>

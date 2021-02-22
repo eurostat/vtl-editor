@@ -1,3 +1,23 @@
+## Version 0.7.1.210222-a
+Date: 2021-02-22
+
+### Fixes
+- Trying to browse agencies and data structure definitions in the Euro SDMX Registry resulted in SdmxSyntaxException and internal server error (500).
+  The registry server responded with 404 status and HTML message "Not found". The reason was incorrect case in the resource name in the SDMX REST API path -
+  uppercase instead of lowercase. The path is built using Universal Resource Name class, which is capitalized. The issue was fixed by lowercasing the URN class
+  before appending it to API path. [VRM-292]
+- Trying to browse data structure definitions in the Euro SDMX Registry resulted in SchemaValidationException and internal server error (500).
+  The reason was data value that is not compliant with XML schema in some stored DSDs. The VRM application fetched the whole DSDs (including the invalid value)
+  for browsing instead of only stubs with general information. The issue was fixed by fetching only stubs of available DSDs for browsing,
+  effectively omitting invalid data. The issue remains if offending DSD is selected for import into the VRM application. [VRM-294]
+- Fixed issue when using keyboard shortcut (Ctrl+F1) to open User Manual page resulted in 404 Error or redirect to main application view.
+  The reason was incorrect URL path ("/documentation" instead of "/manual") assigned to the shortcut. [VRM-299]
+
+### Known Issues
+- Euro SDMX Registry configured in the VRM is currently unavailable, because it requires authentication. [VRM-301]
+- Some data structure definitions in the Euro SDMX Registry contain values that are not compliant with SDMX XML schema. Trying to import these DSDs into the VRM application
+  results in SchemaValidationException and internal server error (500). [VRM-294]
+
 ## Version 0.7.0.201026-a
 Date: 2020-10-26
 

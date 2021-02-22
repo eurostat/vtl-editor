@@ -41,15 +41,15 @@ const TopBar = () => {
             let key = event.key;
             if (key === 's') {
                 event.preventDefault();
-                saveFile();
+                saveFile().then();
             } else if (key === 'o') {
                 event.preventDefault();
-                openFile();
+                openFile().then();
             } else if (key === 'e') {
                 event.preventDefault();
-                makeNewFile();
+                makeNewFile().then();
             } else if (key === "F1") {
-                window.open(`${window.location.origin}/documentation`);
+                window.open(`${window.location.origin}/manual`);
             }
         }
     };
@@ -117,8 +117,8 @@ const TopBar = () => {
         else createNewFile();
     };
 
-    const loadFile = (newFiles: string[], fileName: string) => {
-        const loadedFile = buildFile(fileName, newFiles[0], false);
+    const loadFile = (newFiles: string[], filename: string) => {
+        const loadedFile = buildFile(filename, newFiles[0], false);
         dispatch(storeLoaded(loadedFile));
     };
 
@@ -169,8 +169,8 @@ const TopBar = () => {
             const parentId = readState(selectedFolder);
             const path = readState(selectedFolderPath);
             await uploadFileDialog(path, file.name)
-                .then((name: string) => {
-                    const payload: StoredItemPayload = {name: name, parentFolderId: parentId};
+                .then((filename: string) => {
+                    const payload: StoredItemPayload = {name: filename, parentFolderId: parentId};
                     createFile(payload).then((response) => {
                         if (response && response.data) {
                             const saved: StoredItemTransfer = response.data;

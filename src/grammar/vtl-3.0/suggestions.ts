@@ -208,7 +208,7 @@ export const getSuggestions = (range: IRange) => {
         {
             label: "keys",
             kind: KEYWORD,
-            insertText: "KEYS",
+            insertText: "keys",
             range: range,
         },
         {
@@ -269,7 +269,7 @@ export const getSuggestions = (range: IRange) => {
         {
             label: "errorlevel",
             kind: KEYWORD,
-            insertText: "errorlvel",
+            insertText: "errorlevel",
             range: range,
         },
         {
@@ -1158,9 +1158,9 @@ export const getSuggestions = (range: IRange) => {
             range: range,
         },
         {
-            label: "value",
+            label: "Value",
             kind: KEYWORD,
-            insertText: "value",
+            insertText: "Value",
             range: range,
         },
         {

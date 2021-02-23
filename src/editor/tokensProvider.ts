@@ -1,5 +1,6 @@
 import monarchDefinition from '../grammar/vtl-2.0/monarchDefinition.json';
 import { VtlLexer } from '../grammar/vtl-2.0/VtlLexer';
+import { SdmxResult } from "../sdmx/entity/SdmxResult";
 import { keywordRgx } from './vocabularyPack';
 
 export class TokensProvider {
@@ -44,6 +45,18 @@ export class TokensProvider {
 
     public monarchLanguage(version: string): any {
         return this.definition;
+    }
+
+    public addDsdContent(dsdContent: SdmxResult | undefined): any {
+        if (dsdContent) {
+            dsdContent.attribute.codeLists.forEach(codeList => this.definition.attributes.push(codeList.structureId))
+            dsdContent.attribute.texts.forEach(text => this.definition.attributes.push(text.id));
+            dsdContent.dimension.codeLists.forEach(codeList => this.definition.dimensions.push(codeList.structureId))
+            dsdContent.dimension.texts.forEach(text => this.definition.dimensions.push(text.id));
+            this.definition.dimensions.push(dsdContent.timeDimension);
+            this.definition.primaryMeasures.push(dsdContent.primaryMeasure);
+        }
+        return this;
     }
 
     public addVariables() {

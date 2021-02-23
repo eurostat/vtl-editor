@@ -1,5 +1,4 @@
 @import "variables";
-
 body {
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
@@ -109,6 +108,12 @@ body {
   padding: 0 10px;
 }
 
+.outline-button{
+  background-color: transparent;
+  border: #004494 solid 2px;
+  color: #004494;
+}
+
 
 .title {
   float: left;
@@ -157,13 +162,14 @@ button {
   width: calc(#{$centerWidth} - #{$settingsNavWidth});
   height: calc(100vh - #{$navbarHeight} - #{$barHeight});
   position: relative;
+  overflow: auto;
 }
 
-.middle-container.vtl, .middle-container.default {
+.vtl-box.vtl, .vtl-box.default {
   background-color: white;
 }
 
-.middle-container.vs-dark, .middle-container.hc-black {
+.vtl-box.vs-dark, .vtl-box.hc-black {
   background-color: #1e1e1e;
 
   .error-hr {
@@ -171,30 +177,8 @@ button {
   }
 }
 
-.middle-container.hc-black {
+.vtl-box.hc-black {
   background-color: black;
-}
-
-.top-bar {
-  height: 30px;
-  width: 100%;
-  background: #484848;
-  margin-bottom: 10px;
-  color: white;
-  font-size: 14px;
-  font-weight: 500;
-
-  span {
-    line-height: 2;
-    vertical-align: middle;
-
-  }
-
-  & > span {
-    position: absolute;
-    left: 0;
-    right: 0;
-  }
 }
 
 .version-container {
@@ -250,4 +234,53 @@ button {
   width: 100vw;
   background-color: rgba(0, 0, 0, 0.58);
   z-index: 99;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.left-padding-none {
+  padding-left: 0;
+}
+
+.cursor-pointer{
+  cursor: pointer;
+}
+
+.justify-content-end{
+  justify-content: flex-end!important;
+  display: flex;
+}
+
+button {
+  &.gray-background{
+    background-color: #c4c4c4;
+    border-color: #afafaf;
+  }
+}
+
+
+.position-right{
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding-right: 20px;
+}
+
+.view-name-container {
+  text-align: left;
+  height: 50px;
+  background-color: $gray-background-color;
+  border-bottom: $gray-border-color 1px solid;
+
+  h3 {
+    padding-top: 10px;
+    padding-left: 20px;
+    font-size: 18px;
+  }
 }

@@ -1,0 +1,197 @@
+@import "src/variables";
+
+$errorColor: #e04f5f;
+
+#resize {
+  cursor: n-resize;
+}
+
+.error-hr {
+  width: $centerWidth;
+  display: inline-block;
+  border-top: 2px solid rgba(0, 0, 0, .1);
+  margin: 0;
+}
+
+.error-container {
+  position: absolute;
+  z-index: 999;
+  background-color: transparent;
+  height: $errorBoxHeight;
+  width: 100%;
+}
+
+.error-bar {
+  background-color: #007acc;
+  height: $errorBarHeight;
+  width: 100%;
+  color: white;
+  //position: relative;
+  font-size: 0.75em;
+  position: absolute;
+  bottom: 0;
+
+  svg {
+    font-size: 1.3em;
+  }
+
+  .position-left {
+    & > div {
+      padding-top: 3px;
+    }
+  }
+}
+
+
+.position-left {
+  div {
+    display: inline-block;
+    vertical-align: middle;
+    padding-left: 10px;
+
+  }
+
+  & > div {
+    line-height: 20px;
+  }
+
+  .error-box-item-container {
+    padding-left: 7px;
+
+    & > div:first-of-type {
+      padding-top: 2px;
+    }
+
+    & > div:last-of-type {
+      padding-left: 7px;
+    }
+  }
+
+  text-align: left;
+}
+
+.error-top .position-right {
+  div {
+    &:first-of-type {
+      padding-right: 5px;
+    }
+
+    padding-right: 10px;
+  }
+}
+
+.position-right div.error-count {
+  color: $errorColor;
+  padding-right: 20px;
+}
+
+.position-right {
+  div {
+    line-height: 25px;
+    display: inline-block;
+    vertical-align: middle;
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+
+  span {
+    padding-left: 20px;
+  }
+
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding-right: 20px;
+}
+
+.error-top {
+  height: $errorBarHeight;
+  background-color: #f3f3f3;
+  border-bottom: 2px #d4d4d4 solid;
+  position: relative;
+  font-size: 0.75em;
+  color: #7e7e7e;
+
+  .position-left {
+    div {
+      padding-left: 37px;
+      line-height: 25px;
+    }
+  }
+}
+
+.info-container {
+  height: calc(100% - 25px);
+  background-color: white;
+  //max-height: calc(#{$errorBoxHeight} - #{$errorBarHeight} - 5px);
+  //max-height: 80%;
+  overflow: auto;
+  text-align: left;
+  font-size: .8em;
+  margin: 0 auto;
+
+  svg {
+    font-size: .8em;
+  }
+}
+
+.error-list {
+  span {
+    padding-left: 10px;
+    color: #d82323;
+  }
+
+  color: $errorColor;
+
+  div {
+    cursor: pointer;
+    margin-bottom: 2.8px;
+
+    &:hover {
+      background-color: #d0d0d0;
+    }
+  }
+}
+
+
+.position-right .close-button {
+  border-left: 2px #d5d5d5 solid;
+  height: 15px;
+  line-height: 15px;
+  font-size: 1.0em;
+
+  & > svg {
+    margin-left: 12px;
+  }
+}
+
+.hand-cursor {
+  cursor: pointer;
+}
+
+.vtl-box.vs-dark, .vtl-box.hc-black {
+  .error-top {
+    background-color: #383838;
+    color: white;
+  }
+
+  .info-container {
+    div {
+      &:hover {
+        //background-color: #323232;
+      }
+    }
+  }
+}
+
+.vtl-box.vs-dark {
+  .info-container {
+    background-color: #1e1e1e;
+  }
+}
+
+.vtl-box.hc-black {
+  .info-container {
+    background-color: black;
+  }
+}

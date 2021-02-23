@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="./docbook.css" type="text/css"?>
+<chapter xml:id="repository" xml:lang="en" version="5.0"
+         xmlns="http://docbook.org/ns/docbook"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://docbook.org/ns/docbook http://docbook.org/xml/5.0/xsd/docbook.xsd">
+
+    <title>Personal Repository</title>
+    <para>
+        Personal repository functionality of the VRM allows you to save script files and other items in the
+        personal storage provided by the VRM. Saved items can be then opened or executed (if applicable).
+        You can also organize them using folders in tree-like hierarchy resembling the one that you create on personal
+        computer disk.
+    </para>
+    <para>
+        The VRM preserves version history of saved scripts, so any introduced changes can be reviewed and reversed
+        if necessary.
+    </para>
+    <section xml:id="repo_explorer">
+        <title>File Explorer</title>
+        <para>
+            File Explorer is the main component of the repository. It allows to view and manage folder structure,
+            and script files.
+        </para>
+
+        <section xml:id="repo_explorer_open">
+            <title>Opening File Explorer</title>
+            <para>
+                To open File Explorer, click <emphasis role="bold">File Explorer</emphasis> icon on the
+                <emphasis role="bold">Navigation</emphasis>
+                sidebar. The File Explorer displays in the left part of the screen,
+                showing root folder contents. To hide it, click the icon again.
+            </para>
+            <figure>
+                <title>File Explorer icon on the Navigation sidebar</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="./images/repo_explorer_icon.png" align="center" width="90%" scalefit="1"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+        </section>
+        <section xml:id="repo_explorer_browse">
+            <title>Browsing Repository Tree</title>
+            <para>
+                To see the contents of the nested folders in the repository tree, click the triangle icon next to their
+                name. This will expand the folder and display its child items below with an indent.
+                Clicking the triangle again collapses the folder and hides its contents.
+            </para>
+            <figure>
+                <title>The repository tree in the File Explorer</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="./images/repo_explorer_tree.png" align="center" contentwidth="100%"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+        </section>
+    </section>
+    <section xml:id="repo_manage">
+        <title>Managing Repository Items</title>
+        <para>
+            To manage files and folders, right-click desired item in the File Explorer.
+            A menu with list of possible actions will be displayed. Menu options depend on item type.
+        </para>
+
+        <section xml:id="repo_manage_new_folder">
+            <title>Creating New Folder</title>
+            <para>
+                To create new folder in the personal repository, follow the procedure below.
+            </para>
+            <orderedlist>
+                <listitem>
+                    <para>
+                        Open the File Explorer if it's closed. See&#xa0;<xref linkend="repo_explorer_open"/>.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Browse the tree to the folder that will be a parent of the new one.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Right-click parent folder name and select <emphasis role="bold">New > Folder</emphasis> options
+                        from the context menu. You can also right-click any child inside the parent folder that is not a
+                        folder itself.
+                    </para>
+                    <figure>
+                        <title>New folder option in the File Explorer context menu</title>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata fileref="./images/repo_new_folder_option.png" align="center" width="90%"
+                                           scalefit="1"/>
+                            </imageobject>
+                        </mediaobject>
+                    </figure>
+                </listitem>
+                <listitem>
+                    <para>
+                        Type the folder name in the text field and click <emphasis role="bold">Create</emphasis> button
+                        to confirm. Created folder will appear in the tree.
+                    </para>
+                    <figure>
+                        <title>New folder name dialog window</title>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata fileref="./images/repo_new_folder_dialog.png" align="center"
+                                           contentwidth="80%"/>
+                            </imageobject>
+                        </mediaobject>
+                    </figure>
+                </listitem>
+            </orderedlist>
+        </section>
+        <section xml:id="repo_manage_new_file">
+            <title>Creating New File</title>
+            <para>
+                To create new file in the personal repository, follow the procedure below.
+            </para>
+            <orderedlist>
+                <listitem>
+                    <para>
+                        Open the File Explorer if it's closed. See&#xa0;<xref linkend="repo_explorer_open"/>.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Browse the tree to the folder where you want to place the new file.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Right-click parent folder name and select <emphasis role="bold">New > File</emphasis> options
+                        from the context menu. You can also right-click any child inside that folder that is not a
+                        folder itself.
+                    </para>
+                    <figure>
+                        <title>New file option in the File Explorer context menu</title>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata fileref="./images/repo_new_file_option.png" align="center" width="90%"
+                                           scalefit="1"/>
+                            </imageobject>
+                        </mediaobject>
+                    </figure>
+                </listitem>
+                <listitem>
+                    <para>
+                        Type the file name in the text field and click <emphasis role="bold">Create</emphasis> button to
+                        confirm. Created file will appear in the tree.
+                    </para>
+                    <figure>
+                        <title>New file name dialog window</title>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata fileref="./images/repo_new_file_dialog.png" align="center"
+                                           contentwidth="80%"/>
+                            </imageobject>
+                        </mediaobject>
+                    </figure>
+                </listitem>
+            </orderedlist>
+            <para>
+                A new document is created, but not open automatically. To open the file, see&#xa0;<xref
+                    linkend="repo_editor_open"/>.
+            </para>
+        </section>
+        <section xml:id="repo_manage_rename">
+            <title>Renaming Item</title>
+            <para>
+                To rename an item in the personal repository, such as folder or file, follow the procedure below.
+            </para>
+            <orderedlist>
+                <listitem>
+                    <para>
+                        Open the File Explorer if it's closed. See&#xa0;<xref linkend="repo_explorer_open"/>.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Browse the tree to the item that you want to rename.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Right-click the item name and select <emphasis role="bold">Rename</emphasis> option
+                        from the context menu.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Type new name in the text field and click <emphasis role="bold">Rename</emphasis> button to
+                        confirm. Item name will be updated in the tree.
+                    </para>
+                </listitem>
+            </orderedlist>
+        </section>
+        <section xml:id="repo_manage_delete">
+            <title>Deleting Item</title>
+            <para>
+                To delete an item in the personal repository, such as folder or file, follow the procedure below.
+            </para>
+            <orderedlist>
+                <listitem>
+                    <para>
+                        Open the File Explorer if it's closed. See&#xa0;<xref linkend="repo_explorer_open"/>.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Browse the tree to the item that you want to delete.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Right-click the item name and select <emphasis role="bold">Delete</emphasis> option
+                        from the context menu.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Warning dialog window is displayed, prompting for confirmation. Click <emphasis role="bold">
+                        Yes
+                    </emphasis> button to confirm deletion.
+                    </para>
+                </listitem>
+            </orderedlist>
+        </section>
+        <section xml:id="repo_manage_details">
+            <title>Displaying Folder Details</title>
+            <para>
+                You can view more detailed information about items from any folder stored in the repository. To see
+                folder details, follow the procedure below.
+            </para>
+            <orderedlist>
+                <listitem>
+                    <para>
+                        Open the File Explorer if it's closed. See&#xa0;<xref linkend="repo_explorer_open"/>.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Browse the tree to the folder that contains items you want to see detailed information about.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Right-click the folder name and select <emphasis role="bold">Detailed List</emphasis> option
+                        from the context menu.
+                    </para>
+                    <figure>
+                        <title>Detailed List option in the File Explorer context menu</title>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata fileref="./images/repo_details_option.png" align="center" width="90%"
+                                           scalefit="1"/>
+                            </imageobject>
+                        </mediaobject>
+                    </figure>
+                </listitem>
+                <listitem>
+                    <para>
+                        The table with detailed information about contents of the selected folder is displayed
+                        in the main area of the VRM.
+                    </para>
+                    <figure>
+                        <title>Folder details view</title>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata fileref="./images/repo_details_view.png" align="center" width="90%"
+                                           scalefit="1"/>
+                            </imageobject>
+                        </mediaobject>
+                    </figure>
+                </listitem>
+            </orderedlist>
+            <para>
+                The details include item name, version (in case of versioned items), creation date, name of the user who
+                created the item, last modification date, and name of the user who most recently modified the item.
+            </para>
+        </section>
+        <section xml:id="repo_manage_versions">
+            <title>Displaying Item Versions</title>
+            <para>
+                Some types of items are versioned in the repository. Every save operation creates new version and all
+                previous versions are preserved. For each such item you can view version history, open any version,
+                restore it as most recent, and compare two selected versions.
+                To display item versions, follow the procedure below.
+            </para>
+            <orderedlist>
+                <listitem>
+                    <para>
+                        Open the File Explorer if it's closed. See&#xa0;<xref linkend="repo_explorer_open"/>.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Browse the tree to the item that you want to see version history for.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Right-click the item name and select <emphasis role="bold">Versions</emphasis> option
+                        from the context menu.
+                    </para>
+                    <figure>
+                        <title>Versions option in the File Explorer context menu</title>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata fileref="./images/repo_versions_option.png" align="center" width="90%"
+                                           scalefit="1"/>
+                            </imageobject>
+                        </mediaobject>
+                    </figure>
+                </listitem>
+                <listitem>
+                    <para>
+                        The table with versions of the selected item is displayed in the main area of the VRM.
+                    </para>
+                    <figure>
+                        <title>Version history view</title>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata fileref="./images/repo_versions_view.png" align="center" width="90%"
+                                           scalefit="1"/>
+                            </imageobject>
+                        </mediaobject>
+                    </figure>
+                </listitem>
+            </orderedlist>
+            <para>
+                The versions table allows you to perform several actions related to versions:
+                <itemizedlist>
+                    <listitem>
+                        <para>
+                            To open any version, click <emphasis role="bold">Open</emphasis> icon in that version row.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            To restore version as most recent, click <emphasis role="bold">Restore</emphasis> icon in
+                            that version row.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            To compare two versions, select their checkboxes and click <emphasis role="bold">Compare
+                        </emphasis> icon in the top right corner of the view.
+                        </para>
+                        <figure>
+                            <title>Compare icon in the version history view</title>
+                            <mediaobject>
+                                <imageobject>
+                                    <imagedata fileref="./images/repo_versions_compare_icon.png" align="center"
+                                               width="90%"
+                                               scalefit="1"/>
+                                </imageobject>
+                            </mediaobject>
+                        </figure>
+                    </listitem>
+                </itemizedlist>
+                The additional <emphasis role="bold">Refresh</emphasis> icon allows to refresh the version table with
+                current data from the repository.
+            </para>
+            <para>
+                When you compare versions, the difference view is displayed in the main area of the VRM. All differences
+                between the versions are highlighted.
+                <figure>
+                    <title>Version comparison with differences highlighted</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="./images/repo_versions_compare.png" align="center" width="90%"
+                                       scalefit="1"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+            </para>
+        </section>
+    </section>
+
+    <section xml:id="repo_editor">
+        <title>VTL Editor Integration</title>
+        <section xml:id="repo_editor_open">
+            <title>Opening File</title>
+            <para>
+                Files stored in the repository can be opened in the VTL Editor. To open the file, follow the procedure
+                below.
+            </para>
+            <orderedlist>
+                <listitem>
+                    <para>
+                        Open the File Explorer if it's closed. See&#xa0;<xref linkend="repo_explorer_open"/>.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Browse the tree to the file you want to open.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Right-click the file and select <emphasis role="bold">Open</emphasis> option
+                        from the context menu.
+                    </para>
+                    <figure>
+                        <title>Open option in the File Explorer context menu</title>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata fileref="./images/repo_editor_open_option.png" align="center" width="90%"
+                                           scalefit="1"/>
+                            </imageobject>
+                        </mediaobject>
+                    </figure>
+                </listitem>
+                <listitem>
+                    <para>
+                        Selected file is open in the VTL Editor. Its name is displayed on the top bar.
+                    </para>
+                    <figure>
+                        <title>Opened file name on the top bar of the VTL Editor</title>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata fileref="./images/repo_editor_open_file.png" align="center" width="90%"
+                                           scalefit="1"/>
+                            </imageobject>
+                        </mediaobject>
+                    </figure>
+                </listitem>
+            </orderedlist>
+        </section>
+        <section xml:id="repo_editor_save">
+            <title>Saving File</title>
+            <para>
+                File changed in the VTL Editor can be saved to the personal repository. To save edited file that was
+                open from the repository, simply click <emphasis role="bold">Upload</emphasis> icon on the top bar of
+                the editor. New version of the file will be created in the repository.
+            </para>
+            <figure>
+                <title>Upload icon on the top bar of the VTL Editor</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="./images/repo_editor_upload_icon.png" align="center" width="90%"
+                                   scalefit="1"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+            <para>
+                To save the file that is new or opened from disk, follow the procedure below.
+            </para>
+            <orderedlist>
+                <listitem>
+                    <para>
+                        Open the File Explorer if it's closed. See&#xa0;<xref linkend="repo_explorer_open"/>.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Browse the tree to the folder where you want to save the file. Click the folder name to
+                        highlight it.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Click <emphasis role="bold">Upload</emphasis> icon on the top bar of the editor.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Confirmation dialog is displayed with selected repository path and file name text field.
+                        Optionally type new name in the input field. Click <emphasis role="bold">Upload</emphasis> button
+                        to
+                        confirm save. File will be uploaded to the repository and appear in the tree.
+                    </para>
+                    <figure>
+                        <title>Upload file dialog window</title>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata fileref="./images/repo_editor_upload_dialog.png" align="center" width="90%"
+                                           scalefit="1"/>
+                            </imageobject>
+                        </mediaobject>
+                    </figure>
+                </listitem>
+            </orderedlist>
+        </section>
+        <section xml:id="repo_editor_version">
+            <title>File Version</title>
+            <para>
+                VTL files stored in the repository are versioned. Every save operation creates new numbered version.
+                All previous versions are preserved. You can see the version number of currently opened file on the blue
+                bottom bar.
+            </para>
+            <figure>
+                <title>File version on the bottom bar of the VTL Editor</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="./images/repo_editor_file_version.png" align="center" width="90%"
+                                   scalefit="1"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+        </section>
+    </section>
+</chapter>

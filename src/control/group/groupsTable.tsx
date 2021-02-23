@@ -26,13 +26,15 @@ export default function GroupsTable() {
     }, [dispatch, enqueueSnackbar]);
 
     useEffect(() => {
-        loadGroups().then().catch();
+        loadGroups().then().catch(() => {
+        });
     }, [loadGroups]);
 
     const refreshGroups = () => {
         loadGroups()
             .then(() => enqueueSnackbar(`Groups refreshed successfully.`, {variant: "success"}))
-            .catch();
+            .catch(() => {
+            });
     }
 
     const createGroup = () => {

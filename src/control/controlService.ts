@@ -1,5 +1,4 @@
 import { sendGetRequest } from "../web-api/apiService";
-import { convertEntityDates } from "../web-api/apiUtility";
 import { defaultRoles } from "./role";
 
 export const CTRL_URL = process.env.REACT_APP_API_URL + "/ctrl";
@@ -19,7 +18,7 @@ export function buildUrl(path: string, queryParams?: any): string {
 export async function fetchEntities(url: string, dataField: string) {
     const response = await sendGetRequest(url);
     if (response && response.data) {
-        return response.data[dataField].map((item: any) => convertEntityDates(item)) ?? [];
+        return response.data[dataField] ?? [];
     }
     return Promise.reject();
 }

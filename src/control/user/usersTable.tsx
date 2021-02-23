@@ -26,13 +26,15 @@ export default function UsersTable() {
     }, [dispatch, enqueueSnackbar]);
 
     useEffect(() => {
-        loadUsers().then().catch();
+        loadUsers().then().catch(() => {
+        });
     }, [loadUsers]);
 
     const refreshUsers = () => {
         loadUsers()
             .then(() => enqueueSnackbar(`Users refreshed successfully.`, {variant: "success"}))
-            .catch();
+            .catch(() => {
+            });
     }
 
     const createUser = () => {

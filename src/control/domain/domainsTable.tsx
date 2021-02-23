@@ -26,13 +26,15 @@ export default function DomainsTable() {
     }, [dispatch, enqueueSnackbar]);
 
     useEffect(() => {
-        loadDomains().then().catch();
+        loadDomains().then().catch(() => {
+        });
     }, [loadDomains]);
 
     const refreshDomains = () => {
         loadDomains()
             .then(() => enqueueSnackbar(`Domains refreshed successfully.`, {variant: "success"}))
-            .catch();
+            .catch(() => {
+            });
     }
 
     const createDomain = () => {

@@ -49,7 +49,7 @@ const TopBar = () => {
                 event.preventDefault();
                 makeNewFile().then();
             } else if (key === "F1") {
-                window.open(`${window.location.origin}/documentation`);
+                window.open(`${window.location.origin}/manual`);
             }
         }
     };

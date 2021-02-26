@@ -1,5 +1,25 @@
-## Version 0.7.0.201016-a
-Date: 2020-10-16
+## Version 0.7.1.210222-a
+Date: 2021-02-22
+
+### Fixes
+- Trying to browse agencies and data structure definitions in the Euro SDMX Registry resulted in SdmxSyntaxException and internal server error (500).
+  The registry server responded with 404 status and HTML message "Not found". The reason was incorrect case in the resource name in the SDMX REST API path -
+  uppercase instead of lowercase. The path is built using Universal Resource Name class, which is capitalized. The issue was fixed by lowercasing the URN class
+  before appending it to API path. [VRM-292]
+- Trying to browse data structure definitions in the Euro SDMX Registry resulted in SchemaValidationException and internal server error (500).
+  The reason was data value that is not compliant with XML schema in some stored DSDs. The VRM application fetched the whole DSDs (including the invalid value)
+  for browsing instead of only stubs with general information. The issue was fixed by fetching only stubs of available DSDs for browsing,
+  effectively omitting invalid data. The issue remains if offending DSD is selected for import into the VRM application. [VRM-294]
+- Fixed issue when using keyboard shortcut (Ctrl+F1) to open User Manual page resulted in 404 Error or redirect to main application view.
+  The reason was incorrect URL path ("/documentation" instead of "/manual") assigned to the shortcut. [VRM-299]
+
+### Known Issues
+- Euro SDMX Registry configured in the VRM is currently unavailable, because it requires authentication. [VRM-301]
+- Some data structure definitions in the Euro SDMX Registry contain values that are not compliant with SDMX XML schema. Trying to import these DSDs into the VRM application
+  results in SchemaValidationException and internal server error (500). [VRM-294]
+
+## Version 0.7.0.201026-a
+Date: 2020-10-26
 
 ### New Features
 - Import SDMX feature allows user to import Data Structure Definition from a SDMX registry and use elements from the definition in edited VTL script.
@@ -37,13 +57,18 @@ Date: 2020-10-16
 - After user changes VTL grammar version in Settings, editor contents are parsed and syntax errors are listed immediately
   instead of only after the first change in the edited VTL script. [VRM-270]
 - Version 3.0 of the VTL grammar has number changed to 2.1 as per official numbering.
+- When application was deployed in WebLogic Server 12c, weblogic.servlet.utils.fileupload.Multipart implementation didn't recognize multipart/form-data requests correctly,
+  throwing an exception. The requests were used to upload VTL script file contents from VRM frontend to backend application to save them in the repository.
+  The error didn't appear when application was deployed in Tomcat server. To solve this problem multipart/form-data requests are replaced with requests containing Base64 strings
+  to transfer script contents. [VRM-288]
 
 ### Known Issues
-- When application is deployed in WebLogic Server 12c, weblogic.servlet.utils.fileupload.Multipart implementation doesn't recognize
-  multipart/form-data request correctly, throwing an exception. The multipart/form-data requests are used to upload VTL script file contents
-  from VRM frontend to backend application. The issue prevents the VRM backend application from saving VTL script file contents
-  in the repository. The error doesn't appear when application is deployed in Tomcat server. [VRM-288]
-- Euro SDMX Registry configured in the VRM is currently unavailable, because it requires authentication.
+- Euro SDMX Registry configured in the VRM is currently unavailable, because it requires authentication. [VRM-301]
+- Trying to browse agencies and data structure definitions in the Euro SDMX Registry results in SdmxSyntaxException and internal server error (500).
+  The server responds with 404 status and HTML message "Not found". The same functionality works properly with Global SDMX Registry. [VRM-292]
+- Trying to browse data structure definitions in the Euro SDMX Registry results in SchemaValidationException and internal server error (500).
+  The reason is data value that is not compliant with XML schema in some stored DSDs. The VRM application fetches the whole DSDs (including the invalid value)
+  for browsing instead of only stubs with general information. [VRM-294]
 
 ## Version 0.6.0.200710-a
 Date: 2020-07-10

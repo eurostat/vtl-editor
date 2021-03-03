@@ -1,4 +1,6 @@
 import { Log } from "../utility/log";
+import { accessToken } from "../utility/oidcSlice";
+import { readState } from "../utility/store";
 import { ApiError, ApiResponse } from './apiResponse';
 
 export enum RequestMethod {
@@ -13,18 +15,24 @@ export enum RequestMethod {
 }
 
 export async function sendGetRequest(url: string, accept?: string) {
-    const headers = accept ? {'Accept': accept} : undefined;
+    const headers = new Headers();
+    headers.append("Authorization", `Bearer ${readState(accessToken)}`);
+    if (accept) headers.append("Accept", accept);
     return sendRequest(url, RequestMethod.GET, headers);
 }
 
 export async function sendPostRequest(url: string, payload: object | FormData, contentType?: string) {
-    const headers = contentType === "application/json" ? {'Content-Type': 'application/json'} : undefined;
+    const headers = new Headers();
+    headers.append("Authorization", `Bearer ${readState(accessToken)}`);
+    if (contentType === "application/json") headers.append("Content-Type", "application/json");
     const body = contentType === "application/json" ? JSON.stringify(payload) : payload;
     return sendRequest(url, RequestMethod.POST, headers, body);
 }
 
 export async function sendPutRequest(url: string, payload: object | FormData, contentType?: string) {
-    const headers = contentType === "application/json" ? {'Content-Type': 'application/json'} : undefined;
+    const headers = new Headers();
+    headers.append("Authorization", `Bearer ${readState(accessToken)}`);
+    if (contentType === "application/json") headers.append("Content-Type", "application/json");
     const body = contentType === "application/json" ? JSON.stringify(payload) : payload;
     return sendRequest(url, RequestMethod.PUT, headers, body);
 }
@@ -33,7 +41,7 @@ export async function sendDeleteRequest(url: string) {
     return sendRequest(url, RequestMethod.DELETE);
 }
 
-async function sendRequest(url: string, method?: RequestMethod, headers?: Record<string, string>,
+async function sendRequest(url: string, method?: RequestMethod, headers?: Headers | Record<string, string>,
                            body?: string | object): Promise<ApiResponse<any>> {
     Log.info((method ? method : "GET") + " request to URL " + url, "ApiService");
     const init = {

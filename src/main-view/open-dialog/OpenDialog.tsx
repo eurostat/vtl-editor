@@ -32,11 +32,11 @@ const OpenDialog = ({onClose, onLoad}: any) => {
                 variant: "warning"
             });
         }
-    }, []);
+    }, [enqueueSnackbar]);
 
     const {getRootProps, getInputProps} = useDropzone({onDrop, accept: ".vtl"});
 
-    const file = files.map((file: File) => (
+    const fileList = files.map((file: File) => (
         <li key={file.name}>
             {file.name}
         </li>
@@ -94,7 +94,7 @@ const OpenDialog = ({onClose, onLoad}: any) => {
                                 </div>
                                 <aside>
                                     <span>Selected file:</span>
-                                    <ul>{file}</ul>
+                                    <ul>{fileList}</ul>
                                 </aside>
                             </section>
                         </div>

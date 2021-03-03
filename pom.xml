@@ -268,6 +268,7 @@
                                 <PUBLIC_URL>${deploy.host}${deploy.port}${deploy.path}</PUBLIC_URL>
                                 <REACT_APP_ROUTER_BASE>${deploy.path}</REACT_APP_ROUTER_BASE>
                                 <REACT_APP_API_URL>${deploy.api.url}</REACT_APP_API_URL>
+                                <REACT_APP_AUTHORITY_URL>${deploy.authority.url}</REACT_APP_AUTHORITY_URL>
                                 <GENERATE_SOURCEMAP>${deploy.sourcemap}</GENERATE_SOURCEMAP>
                             </environmentVariables>
                         </configuration>
@@ -311,6 +312,7 @@
                 <deploy.path>/vrm</deploy.path>
                 <deploy.sourcemap>false</deploy.sourcemap>
                 <deploy.api.url>http://192.168.1.2:8080/vrm-backend/api</deploy.api.url>
+                <deploy.authority.url>http://</deploy.authority.url>
             </properties>
         </profile>
 
@@ -322,6 +324,7 @@
                 <deploy.path>/vrm</deploy.path>
                 <deploy.sourcemap>false</deploy.sourcemap>
                 <deploy.api.url>http://localhost:7001/vrm-backend/api</deploy.api.url>
+                <deploy.authority.url>http://</deploy.authority.url>
             </properties>
         </profile>
 
@@ -333,6 +336,7 @@
                 <deploy.path>/vrm</deploy.path>
                 <deploy.sourcemap>false</deploy.sourcemap>
                 <deploy.api.url>https://intragate.test.ec.europa.eu/vrm-backend/api</deploy.api.url>
+                <deploy.authority.url>https://</deploy.authority.url>
             </properties>
         </profile>
 
@@ -344,6 +348,7 @@
                 <deploy.path>/vrm</deploy.path>
                 <deploy.sourcemap>false</deploy.sourcemap>
                 <deploy.api.url>https://intragate.test.ec.europa.eu/vrm-backend/api</deploy.api.url>
+                <deploy.authority.url>https://</deploy.authority.url>
             </properties>
         </profile>
 

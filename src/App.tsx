@@ -21,8 +21,9 @@ import SdmxDownloadScreen from "./sdmx/loading-screen/SdmxDownloadScreen";
 import { SdmxStorage } from "./sdmx/SdmxStorage";
 import SdmxView from "./sdmx/sdmxView";
 import BrowserStorage, { getSdmxStoredValues, setSdmxStorageValue } from "./utility/browserStorage";
+import { loggedIn } from "./utility/oidcSlice";
 
-function App() {
+export default function App() {
     /*SDMX STATES */
     const [registry, setRegistry] = useState<SdmxRegistry | null>(null);
     const [agencies, setAgencies] = useState<Agency[]>([]);
@@ -35,6 +36,7 @@ function App() {
     const detailPane = useSelector(detailPaneVisible);
     const sidePane = useSelector(sidePaneVisible);
     const sidePaneMode = useSelector(sidePaneView);
+    const authenticated = useSelector(loggedIn);
 
     useEffect(() => {
         const decision = async (dst: DataStructure) => {
@@ -117,38 +119,41 @@ function App() {
                           anchorOrigin={{vertical: "top", horizontal: "right"}} dense={true}>
             <div className={getStyles()}>
                 <Header/>
-                <Navigation/>
-                <div id="middle-container" className={`middle-container`}>
-                    <Switch>
-                        <Route exact path="/sdmx">
-                            <SdmxView {...SDMXViewProps}/>
-                        </Route>
-                        <Route exact path="/diff">
-                            <DiffEditor/>
-                        </Route>
-                        <Route exact path="/versions">
-                            <FileVersions/>
-                        </Route>
-                        <Route exact path="/folder">
-                            <DirectoryPreview/>
-                        </Route>
-                        <Route exact path="/manage">
-                            <ManagementView/>
-                        </Route>
-                        <Route exact path="/">
-                            <EditorView {...editorViewProps}/>
-                        </Route>
-                        <Redirect to="/"/>
-                    </Switch>
-                </div>
-                {/*{showOverlay ? <GuideOverlay/> : null}*/}
-                {importDSD ?
-                    <SdmxDownloadScreen registry={registry} dataStructure={dataStructure!} showScreen={importDSD}
-                                        setSdmxResult={setSdmxResult}/> : null}
+                {authenticated
+                    ? <>
+                        <Navigation/>
+                        <div id="middle-container" className={`middle-container`}>
+                            <Switch>
+                                <Route exact path="/sdmx">
+                                    <SdmxView {...SDMXViewProps}/>
+                                </Route>
+                                <Route exact path="/diff">
+                                    <DiffEditor/>
+                                </Route>
+                                <Route exact path="/versions">
+                                    <FileVersions/>
+                                </Route>
+                                <Route exact path="/folder">
+                                    <DirectoryPreview/>
+                                </Route>
+                                <Route exact path="/manage">
+                                    <ManagementView/>
+                                </Route>
+                                <Route exact path="/">
+                                    <EditorView {...editorViewProps}/>
+                                </Route>
+                                <Redirect to="/"/>
+                            </Switch>
+                        </div>
+                        {/*{showOverlay ? <GuideOverlay/> : null}*/}
+                        {importDSD ?
+                            <SdmxDownloadScreen registry={registry} dataStructure={dataStructure!}
+                                                showScreen={importDSD}
+                                                setSdmxResult={setSdmxResult}/> : null}
+                    </>
+                    : null}
             </div>
             <BrowserStorage/>
         </SnackbarProvider>
     );
 }
-
-export default App;

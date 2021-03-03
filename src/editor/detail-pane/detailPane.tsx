@@ -49,7 +49,7 @@ const DetailPane = ({dataStructureInfo, registry, dataStructure}: DetailPaneProp
         const vtlContainer = document.getElementById("vtl-container");
         let elementBottom = 0;
         let height = 0;
-        let mouseDownListener = (e: MouseEvent) => {
+        let mouseDownListener = () => {
             elementBottom = elementToResize!.getBoundingClientRect().bottom;
 
             window.addEventListener("mousemove", resize);
@@ -82,7 +82,7 @@ const DetailPane = ({dataStructureInfo, registry, dataStructure}: DetailPaneProp
 
     const getElementHeight = (element: any) => {
         const style = getComputedStyle(element);
-        parseFloat(getComputedStyle(element!, null).getPropertyValue('height').replace('px', ''));
+        parseFloat(getComputedStyle(element, null).getPropertyValue('height').replace('px', ''));
         return parseFloat(style.height) + parseFloat(style.marginTop) + parseFloat(style.marginBottom);
     };
 
@@ -189,19 +189,5 @@ const DetailPane = ({dataStructureInfo, registry, dataStructure}: DetailPaneProp
         </>
     )
 };
-
-type TabsProps = {
-    activeTab: string,
-    children: any[];
-}
-
-const Tabs = ({activeTab, children}: TabsProps) => {
-    return (<div>
-        {children.map(child => {
-            if (child.props.title !== activeTab) return undefined;
-            return child.props.children;
-        })}
-    </div>)
-}
 
 export default DetailPane;

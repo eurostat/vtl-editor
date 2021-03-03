@@ -36,7 +36,7 @@ const BrowserStorage = () => {
             if (storedValues.theme) dispatch(changeTheme(storedValues.theme));
             setStorageLoaded(true);
         }
-    }, [storageLoaded]);
+    }, [storageLoaded, dispatch]);
 
     useEffect(() => {
         if (storageLoaded) {
@@ -51,7 +51,7 @@ const BrowserStorage = () => {
                 theme: theme
             });
         }
-    }, [editedFile, vtlVersion, detailPane, theme])
+    }, [storageLoaded, editedFile, vtlVersion, detailPane, theme])
 
     return (
         <></>

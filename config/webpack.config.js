@@ -137,25 +137,28 @@ module.exports = function (webpackEnv) {
             : isEnvDevelopment && 'cheap-module-source-map',
         // These are the "entry points" to our application.
         // This means they will be the "root" imports that are included in JS bundle.
-        entry: [
-            // Include an alternative client for WebpackDevServer. A client's job is to
-            // connect to WebpackDevServer by a socket and get notified about changes.
-            // When you save a file, the client will either apply hot updates (in case
-            // of CSS changes), or refresh the page (in case of JS changes). When you
-            // make a syntax error, this client will display a syntax error overlay.
-            // Note: instead of the default WebpackDevServer client, we use a custom one
-            // to bring better experience for Create React App users. You can replace
-            // the line below with these two lines if you prefer the stock client:
-            // require.resolve('webpack-dev-server/client') + '?/',
-            // require.resolve('webpack/hot/dev-server'),
-            isEnvDevelopment &&
-            require.resolve('react-dev-utils/webpackHotDevClient'),
-            // Finally, this is your app's code:
-            paths.appIndexJs,
-            // We include the app code last so that if there is a runtime error during
-            // initialization, it doesn't blow up the WebpackDevServer client, and
-            // changing JS code would still trigger a refresh.
-        ].filter(Boolean),
+        entry: {
+            main: [
+                // Include an alternative client for WebpackDevServer. A client's job is to
+                // connect to WebpackDevServer by a socket and get notified about changes.
+                // When you save a file, the client will either apply hot updates (in case
+                // of CSS changes), or refresh the page (in case of JS changes). When you
+                // make a syntax error, this client will display a syntax error overlay.
+                // Note: instead of the default WebpackDevServer client, we use a custom one
+                // to bring better experience for Create React App users. You can replace
+                // the line below with these two lines if you prefer the stock client:
+                // require.resolve('webpack-dev-server/client') + '?/',
+                // require.resolve('webpack/hot/dev-server'),
+                isEnvDevelopment &&
+                require.resolve('react-dev-utils/webpackHotDevClient'),
+                // Finally, this is your app's code:
+                paths.appIndexJs,
+                // We include the app code last so that if there is a runtime error during
+                // initialization, it doesn't blow up the WebpackDevServer client, and
+                // changing JS code would still trigger a refresh.
+            ].filter(Boolean),
+            renew: paths.renewIndexJs,
+        },
         output: {
             // The build folder.
             path: isEnvProduction ? paths.appBuild : undefined,
@@ -540,6 +543,11 @@ module.exports = function (webpackEnv) {
                         : undefined
                 )
             ),
+            new HtmlWebpackPlugin({
+                template: paths.renewHtml,
+                chunks: ["renew"],
+                filename: "silentRenew.html"
+            }),
             // Inlines the webpack runtime script. This script is too small to warrant
             // a network request.
             // https://github.com/facebook/create-react-app/issues/5358
@@ -598,79 +606,79 @@ module.exports = function (webpackEnv) {
                         fileName => !fileName.endsWith('.map')
                     );
 
-          return {
-            files: manifestFiles,
-            entrypoints: entrypointFiles,
-          };
+                    return {
+                        files: manifestFiles,
+                        entrypoints: entrypointFiles,
+                    };
+                },
+            }),
+            // Moment.js is an extremely popular library that bundles large locale files
+            // by default due to how webpack interprets its code. This is a practical
+            // solution that requires the user to opt into importing specific locales.
+            // https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
+            // You can remove this if you don't use Moment.js:
+            new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+            // Generate a service worker script that will precache, and keep up to date,
+            // the HTML & assets that are part of the webpack build.
+            isEnvProduction &&
+            new WorkboxWebpackPlugin.GenerateSW({
+                clientsClaim: true,
+                exclude: [/\.map$/, /asset-manifest\.json$/],
+                importWorkboxFrom: 'cdn',
+                navigateFallback: paths.publicUrlOrPath + 'index.html',
+                navigateFallbackBlacklist: [
+                    // Exclude URLs starting with /_, as they're likely an API call
+                    new RegExp('^/_'),
+                    // Exclude any URLs whose last part seems to be a file extension
+                    // as they're likely a resource and not a SPA route.
+                    // URLs containing a "?" character won't be blacklisted as they're likely
+                    // a route with query params (e.g. auth callbacks).
+                    new RegExp('/[^/?]+\\.[^/]+$'),
+                ],
+            }),
+            // TypeScript type checking
+            useTypeScript &&
+            new ForkTsCheckerWebpackPlugin({
+                typescript: resolve.sync('typescript', {
+                    basedir: paths.appNodeModules,
+                }),
+                async: isEnvDevelopment,
+                useTypescriptIncrementalApi: true,
+                checkSyntacticErrors: true,
+                resolveModuleNameModule: process.versions.pnp
+                    ? `${__dirname}/pnpTs.js`
+                    : undefined,
+                resolveTypeReferenceDirectiveModule: process.versions.pnp
+                    ? `${__dirname}/pnpTs.js`
+                    : undefined,
+                tsconfig: paths.appTsConfig,
+                reportFiles: [
+                    '**',
+                    '!**/__tests__/**',
+                    '!**/?(*.)(spec|test).*',
+                    '!**/src/setupProxy.*',
+                    '!**/src/setupTests.*',
+                ],
+                silent: true,
+                // The formatter is invoked directly in WebpackDevServerUtils during development
+                formatter: isEnvProduction ? typescriptFormatter : undefined,
+            }),
+            new MonacoWebpackPlugin({features: ['!gotoSymbol'], languages: []}),
+        ].filter(Boolean),
+        // Some libraries import Node modules but don't use them in the browser.
+        // Tell webpack to provide empty mocks for them so importing them works.
+        node: {
+            module: 'empty',
+            dgram: 'empty',
+            dns: 'mock',
+            fs: 'empty',
+            http2: 'empty',
+            net: 'empty',
+            tls: 'empty',
+            child_process: 'empty',
         },
-      }),
-      // Moment.js is an extremely popular library that bundles large locale files
-      // by default due to how webpack interprets its code. This is a practical
-      // solution that requires the user to opt into importing specific locales.
-      // https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
-      // You can remove this if you don't use Moment.js:
-      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-      // Generate a service worker script that will precache, and keep up to date,
-      // the HTML & assets that are part of the webpack build.
-      isEnvProduction &&
-      new WorkboxWebpackPlugin.GenerateSW({
-        clientsClaim: true,
-        exclude: [/\.map$/, /asset-manifest\.json$/],
-        importWorkboxFrom: 'cdn',
-        navigateFallback: paths.publicUrlOrPath + 'index.html',
-        navigateFallbackBlacklist: [
-          // Exclude URLs starting with /_, as they're likely an API call
-          new RegExp('^/_'),
-          // Exclude any URLs whose last part seems to be a file extension
-          // as they're likely a resource and not a SPA route.
-          // URLs containing a "?" character won't be blacklisted as they're likely
-          // a route with query params (e.g. auth callbacks).
-          new RegExp('/[^/?]+\\.[^/]+$'),
-        ],
-      }),
-      // TypeScript type checking
-      useTypeScript &&
-      new ForkTsCheckerWebpackPlugin({
-        typescript: resolve.sync('typescript', {
-          basedir: paths.appNodeModules,
-        }),
-        async: isEnvDevelopment,
-        useTypescriptIncrementalApi: true,
-        checkSyntacticErrors: true,
-        resolveModuleNameModule: process.versions.pnp
-          ? `${__dirname}/pnpTs.js`
-          : undefined,
-        resolveTypeReferenceDirectiveModule: process.versions.pnp
-          ? `${__dirname}/pnpTs.js`
-          : undefined,
-        tsconfig: paths.appTsConfig,
-        reportFiles: [
-          '**',
-          '!**/__tests__/**',
-          '!**/?(*.)(spec|test).*',
-          '!**/src/setupProxy.*',
-          '!**/src/setupTests.*',
-        ],
-        silent: true,
-        // The formatter is invoked directly in WebpackDevServerUtils during development
-        formatter: isEnvProduction ? typescriptFormatter : undefined,
-      }),
-      new MonacoWebpackPlugin({ features: ['!gotoSymbol'], languages: [] }),
-    ].filter(Boolean),
-    // Some libraries import Node modules but don't use them in the browser.
-    // Tell webpack to provide empty mocks for them so importing them works.
-    node: {
-      module: 'empty',
-      dgram: 'empty',
-      dns: 'mock',
-      fs: 'empty',
-      http2: 'empty',
-      net: 'empty',
-      tls: 'empty',
-      child_process: 'empty',
-    },
-    // Turn off performance processing because we utilize
-    // our own hints via the FileSizeReporter
-    performance: false,
-  };
+        // Turn off performance processing because we utilize
+        // our own hints via the FileSizeReporter
+        performance: false,
+    };
 };

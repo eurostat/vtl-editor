@@ -310,7 +310,7 @@
                 <deploy.host>http://192.168.1.2</deploy.host>
                 <deploy.port>:8080</deploy.port>
                 <deploy.path>/vrm</deploy.path>
-                <deploy.sourcemap>false</deploy.sourcemap>
+                <deploy.sourcemap>true</deploy.sourcemap>
                 <deploy.api.url>http://192.168.1.2:8080/vrm-backend/api</deploy.api.url>
                 <deploy.authority.url>http://</deploy.authority.url>
             </properties>
@@ -322,7 +322,7 @@
                 <deploy.host>http://localhost</deploy.host>
                 <deploy.port>:7001</deploy.port>
                 <deploy.path>/vrm</deploy.path>
-                <deploy.sourcemap>false</deploy.sourcemap>
+                <deploy.sourcemsap>true</deploy.sourcemsap>
                 <deploy.api.url>http://localhost:7001/vrm-backend/api</deploy.api.url>
                 <deploy.authority.url>http://</deploy.authority.url>
             </properties>

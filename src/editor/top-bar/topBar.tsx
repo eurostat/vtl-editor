@@ -3,10 +3,11 @@ import { faCloudUploadAlt } from "@fortawesome/free-solid-svg-icons";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useUserRole } from "../../control/authorized";
 import { decisionDialog } from "../../main-view/decision-dialog/decisionDialog";
 import { inputDialog } from "../../main-view/decision-dialog/inputDialog";
 import OpenDialog from "../../main-view/open-dialog/OpenDialog";
-import ToolItem, { ToolItemSettings } from "../../main-view/toolbar/toolItem";
+import ToolItem, { AuthorizedToolItemSettings } from "../../main-view/toolbar/toolItem";
 import { StoredItemPayload } from "../../repository/entity/storedItemPayload";
 import { StoredItemTransfer } from "../../repository/entity/storedItemTransfer";
 import { createFile, updateFileContent } from "../../repository/repositoryService";
@@ -17,7 +18,8 @@ import { buildFile, DEFAULT_FILENAME, EditorFile } from "../editorFile";
 import {
     editorFile,
     fileChanged,
-    fileName, fileRemoteId,
+    fileName,
+    fileRemoteId,
     markUnchanged,
     storeLoaded,
     updateFileMeta,
@@ -25,12 +27,13 @@ import {
 } from "../editorSlice";
 import "./topBar.scss";
 
-const TopBar = () => {
+export default function TopBar() {
     const [showDialog, setShowDialog] = useState(false);
     const dispatch = useDispatch();
     const name = useSelector(fileName);
     const changed = useSelector(fileChanged);
     const {enqueueSnackbar} = useSnackbar();
+    const forUser = useUserRole();
 
     useEffect(() => {
         window.onkeydown = (event: KeyboardEvent) => checkKeyEvent(event);
@@ -185,26 +188,27 @@ const TopBar = () => {
                         }
                     }).catch(() => enqueueSnackbar(`Failed to save file "${file.name}".`, {variant: "error"}));
                 }).catch(() => {
-            });
+                });
         }
     };
 
-    const toolbarItems: ToolItemSettings[] = [
+    const toolbarItems: AuthorizedToolItemSettings[] = [
         {
             title: "New File (Ctrl+E)", key: "new-file", onClick: makeNewFile,
-            className: "menu-new separated", faIcon: faFile, tooltip: {placement: "bottom"}
+            className: "menu-new separated", faIcon: faFile, tooltip: {placement: "bottom"},
         },
         {
             title: "Open file (Ctrl+O)", key: "open-file", onClick: openFile,
-            className: "menu-open", faIcon: faFolderOpen, tooltip: {placement: "bottom"}
+            className: "menu-open", faIcon: faFolderOpen, tooltip: {placement: "bottom"},
         },
         {
             title: "Save file (Ctrl+S)", key: "save-file", onClick: saveFile,
-            className: "menu-save separated", faIcon: faSave, tooltip: {placement: "bottom"}
+            className: "menu-save separated", faIcon: faSave, tooltip: {placement: "bottom"},
         },
         {
             title: "Upload File", key: "upload-file", onClick: uploadFile,
-            className: "menu-upload separated", faIcon: faCloudUploadAlt, tooltip: {placement: "bottom"}
+            className: "menu-upload separated", faIcon: faCloudUploadAlt, tooltip: {placement: "bottom"},
+            authCheck: forUser,
         },
     ];
 
@@ -212,8 +216,14 @@ const TopBar = () => {
         <>
             <div id="top-bar" className="top-bar" aria-orientation="horizontal">
                 <div className="toolbar">
-                    {toolbarItems.map(option =>
-                        <ToolItem key={option.key} itemSettings={option}/>) || []}
+                    {toolbarItems.map((option) => {
+                            const component = <ToolItem key={option.key} itemSettings={option}/>;
+                            return option.authCheck
+                                ? option.authCheck(component)
+                                : component;
+                        }
+                    )
+                    || []}
                 </div>
                 <div className="titlebar">
                     <span>{name}&nbsp;{changed ? "*" : ""}</span>
@@ -225,5 +235,3 @@ const TopBar = () => {
         </>
     )
 }
-
-export default TopBar;

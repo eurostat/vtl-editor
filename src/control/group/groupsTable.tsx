@@ -5,6 +5,7 @@ import MaterialTable, { MaterialTableProps } from "material-table";
 import { useSnackbar } from "notistack";
 import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useAdminRole } from "../authorized";
 import { expelGroup, groupList, replaceGroups, startGroupEdit } from "../controlSlice";
 import { controlTableAction, controlTableTheme, controlTableTitle, deleteEntityDialog } from "../managementView";
 import { GroupTransfer } from "./group";
@@ -16,8 +17,10 @@ export default function GroupsTable() {
     const dispatch = useDispatch();
     const {enqueueSnackbar} = useSnackbar();
 
-    const loadGroups = useCallback(async () => {
-        fetchGroups().then((received: GroupTransfer[]) => {
+    const forAdmin = useAdminRole();
+
+    const loadGroups = useCallback(() => {
+        return fetchGroups().then((received: GroupTransfer[]) => {
             dispatch(replaceGroups(received));
         }).catch(() => {
             enqueueSnackbar(`Failed to load groups.`, {variant: "error"});
@@ -82,13 +85,13 @@ export default function GroupsTable() {
             return (<GroupView groupId={group.id}/>)
         },
         actions: [
-            controlTableAction(<AddCircleOutline/>, "toolbar", createGroup, "New Group"),
-            controlTableAction(<AddCircleOutline/>, "toolbarOnSelect", createGroup, "New Group"),
+            forAdmin(controlTableAction(<AddCircleOutline/>, "toolbar", createGroup, "New Group")),
+            forAdmin(controlTableAction(<AddCircleOutline/>, "toolbarOnSelect", createGroup, "New Group")),
             controlTableAction(<Cached/>, "toolbar", refreshGroups, "Refresh"),
             controlTableAction(<Cached/>, "toolbarOnSelect", refreshGroups, "Refresh"),
             controlTableAction(<Edit/>, "row", editGroup, "Edit Group"),
-            controlTableAction(<Clear/>, "row", removeGroup, "Delete Group"),
-        ],
+            forAdmin(controlTableAction(<Clear/>, "row", removeGroup, "Delete Group")),
+        ].filter((action) => action !== null),
     } as MaterialTableProps<any>;
 
     return (

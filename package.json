@@ -88,7 +88,7 @@
     "shallowequal": "^1.1.0",
     "sonarqube-scanner": "^2.7.0",
     "style-loader": "0.23.1",
-    "sync-pom-version-to-package": "^1.5.0",
+    "sync-pom-version-to-package": "^1.6.1",
     "typescript": "^3.9.7",
     "url-loader": "2.3.0",
     "webpack-manifest-plugin": "2.2.0",

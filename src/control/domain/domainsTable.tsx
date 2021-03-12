@@ -5,6 +5,7 @@ import MaterialTable, { MaterialTableProps } from "material-table";
 import { useSnackbar } from "notistack";
 import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useAdminRole } from "../authorized";
 import { domainList, expelDomain, replaceDomains, startDomainEdit } from "../controlSlice";
 import { controlTableAction, controlTableTheme, controlTableTitle, deleteEntityDialog } from "../managementView";
 import { DomainTransfer } from "./domain";
@@ -15,6 +16,8 @@ export default function DomainsTable() {
     const domains = _.cloneDeep(useSelector(domainList));
     const dispatch = useDispatch();
     const {enqueueSnackbar} = useSnackbar();
+
+    const forAdmin = useAdminRole();
 
     const loadDomains = useCallback(() => {
         return fetchDomains().then((received: DomainTransfer[]) => {
@@ -82,13 +85,13 @@ export default function DomainsTable() {
             return (<DomainView domainId={domain.id}/>)
         },
         actions: [
-            controlTableAction(<AddCircleOutline/>, "toolbar", createDomain, "New Domain"),
-            controlTableAction(<AddCircleOutline/>, "toolbarOnSelect", createDomain, "New Domain"),
+            forAdmin(controlTableAction(<AddCircleOutline/>, "toolbar", createDomain, "New Domain")),
+            forAdmin(controlTableAction(<AddCircleOutline/>, "toolbarOnSelect", createDomain, "New Domain")),
             controlTableAction(<Cached/>, "toolbar", refreshDomains, "Refresh"),
             controlTableAction(<Cached/>, "toolbarOnSelect", refreshDomains, "Refresh"),
             controlTableAction(<Edit/>, "row", editDomain, "Edit Domain"),
-            controlTableAction(<Clear/>, "row", removeDomain, "Delete Domain"),
-        ],
+            forAdmin(controlTableAction(<Clear/>, "row", removeDomain, "Delete Domain")),
+        ].filter((action) => action !== null),
     } as MaterialTableProps<any>;
 
     return (

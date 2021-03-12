@@ -1,3 +1,5 @@
+import { ROLE_ADMIN, ROLE_MANAGER, ROLE_USER } from "./authorized";
+
 export interface RoleEntity {
     id: string,
     name: string,
@@ -18,17 +20,17 @@ export function rolesDefaultSort(roles: RoleEntity[]): RoleEntity[] {
 
 export const defaultRoles = [
     {
-        id: "administrator",
+        id: ROLE_ADMIN,
         name: "Administrator",
         ord: 0
     },
     {
-        id: "domain_manager",
+        id: ROLE_MANAGER,
         name: "Domain Manager",
         ord: 1
     },
     {
-        id: "domain_user",
+        id: ROLE_USER,
         name: "Domain User",
         ord: 2
     },

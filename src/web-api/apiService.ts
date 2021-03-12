@@ -1,5 +1,5 @@
 import { Log } from "../utility/log";
-import { accessToken } from "../utility/oidcSlice";
+import { accessToken } from "../utility/authSlice";
 import { readState } from "../utility/store";
 import { ApiError, ApiResponse } from './apiResponse';
 
@@ -38,7 +38,9 @@ export async function sendPutRequest(url: string, payload: object | FormData, co
 }
 
 export async function sendDeleteRequest(url: string) {
-    return sendRequest(url, RequestMethod.DELETE);
+    const headers = new Headers();
+    headers.append("Authorization", `Bearer ${readState(accessToken)}`);
+    return sendRequest(url, RequestMethod.DELETE, headers);
 }
 
 async function sendRequest(url: string, method?: RequestMethod, headers?: Headers | Record<string, string>,

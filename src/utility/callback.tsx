@@ -16,6 +16,7 @@ export default function Callback() {
         console.error(error);
         dispatch(push("/"));
     };
+
     return (
         <CallbackComponent
             userManager={userManager}

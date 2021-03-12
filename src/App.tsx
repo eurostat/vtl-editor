@@ -1,10 +1,13 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { SnackbarProvider } from "notistack";
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
 import './App.scss';
+import Authorized, { useManagerRole, useUserRole } from "./control/authorized";
+import { fetchRoles } from "./control/controlService";
 import ManagementView from "./control/managementView";
+import Profile from "./control/profile/profile";
 import EditorView from "./editor/editorView";
 import { decisionDialog } from "./main-view/decision-dialog/decisionDialog";
 import Header from "./main-view/header/header";
@@ -20,8 +23,8 @@ import { SdmxResult } from "./sdmx/entity/SdmxResult";
 import SdmxDownloadScreen from "./sdmx/loading-screen/SdmxDownloadScreen";
 import { SdmxStorage } from "./sdmx/SdmxStorage";
 import SdmxView from "./sdmx/sdmxView";
+import { loggedIn, provideRoles } from "./utility/authSlice";
 import BrowserStorage, { getSdmxStoredValues, setSdmxStorageValue } from "./utility/browserStorage";
-import { loggedIn } from "./utility/oidcSlice";
 
 export default function App() {
     /*SDMX STATES */
@@ -37,6 +40,21 @@ export default function App() {
     const sidePane = useSelector(sidePaneVisible);
     const sidePaneMode = useSelector(sidePaneView);
     const authenticated = useSelector(loggedIn);
+    const dispatch = useDispatch();
+
+    const forManager = useManagerRole();
+    const forUser = useUserRole();
+
+    const loadRoles = useCallback(async () => {
+        try {
+            dispatch(provideRoles(await fetchRoles()));
+        } catch {
+        }
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (authenticated) loadRoles().then();
+    }, [authenticated, loadRoles]);
 
     useEffect(() => {
         const decision = async (dst: DataStructure) => {
@@ -116,42 +134,32 @@ export default function App() {
 
     return (
         <SnackbarProvider maxSnack={2} transitionDuration={500} autoHideDuration={4000}
-                          anchorOrigin={{vertical: "top", horizontal: "right"}} dense={true}>
+                          anchorOrigin={{vertical: "top", horizontal: "center"}} dense={true}>
             <div className={getStyles()}>
                 <Header/>
-                {authenticated
-                    ? <>
-                        <Navigation/>
-                        <div id="middle-container" className={`middle-container`}>
-                            <Switch>
-                                <Route exact path="/sdmx">
-                                    <SdmxView {...SDMXViewProps}/>
-                                </Route>
-                                <Route exact path="/diff">
-                                    <DiffEditor/>
-                                </Route>
-                                <Route exact path="/versions">
-                                    <FileVersions/>
-                                </Route>
-                                <Route exact path="/folder">
-                                    <DirectoryPreview/>
-                                </Route>
-                                <Route exact path="/manage">
-                                    <ManagementView/>
-                                </Route>
-                                <Route exact path="/">
-                                    <EditorView {...editorViewProps}/>
-                                </Route>
-                                <Redirect to="/"/>
-                            </Switch>
-                        </div>
-                        {/*{showOverlay ? <GuideOverlay/> : null}*/}
-                        {importDSD ?
+                <Authorized>
+                    <Navigation/>
+                    <div id="middle-container" className={`middle-container`}>
+                        <Switch>
+                            <Route exact path="/"><EditorView {...editorViewProps}/></Route>
+                            {forUser(<Route exact path="/sdmx"><SdmxView {...SDMXViewProps}/></Route>)}
+                            {forUser(<Route exact path="/folder"><DirectoryPreview/></Route>)}
+                            {forUser(<Route exact path="/versions"><FileVersions/></Route>)}
+                            {forUser(<Route exact path="/diff"><DiffEditor/></Route>)}
+                            {forManager(<Route exact path="/manage"><ManagementView/></Route>)}
+                            <Route exact path="/profile"><Profile/></Route>
+                            <Redirect to="/"/>
+                        </Switch>
+                    </div>
+                    {/*{showOverlay ? <GuideOverlay/> : null}*/}
+                    {
+                        importDSD ?
                             <SdmxDownloadScreen registry={registry} dataStructure={dataStructure!}
                                                 showScreen={importDSD}
-                                                setSdmxResult={setSdmxResult}/> : null}
-                    </>
-                    : null}
+                                                setSdmxResult={setSdmxResult}/>
+                            : null
+                    }
+                </Authorized>
             </div>
             <BrowserStorage/>
         </SnackbarProvider>

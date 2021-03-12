@@ -3,7 +3,7 @@ import { Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { appliedVtlVersion, changeVtlVersion } from "../editor/editorSlice";
 import { languageVersions, themes } from "../editor/settings";
-import { appliedTheme, changeTheme } from "../main-view/viewSlice";
+import { appliedTheme, changeTheme } from "./viewSlice";
 
 const SettingsPane = () => {
     const dispatch = useDispatch();

@@ -4,7 +4,7 @@ import { useSnackbar } from "notistack";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PageHeader from "../../main-view/page-header/pageHeader";
-import { fetchRoles } from "../controlService";
+import { fetchAllRoles } from "../controlService";
 import { addUser, editedUser, finishUserEdit } from "../controlSlice";
 import { DomainTransfer } from "../domain/domain";
 import { fetchDomains } from "../domain/domainService";
@@ -102,7 +102,7 @@ export default function UserEdit() {
     };
 
     const loadRoles = async () => {
-        return fetchRoles().catch(() => {
+        return fetchAllRoles().catch(() => {
             enqueueSnackbar(`Failed to load roles.`, {variant: "error"});
             return [] as string[];
         });

@@ -7,14 +7,17 @@ import controlReducer from "../control/controlSlice";
 import editorReducer from "../editor/editorSlice";
 import viewReducer from "../main-view/viewSlice";
 import repositoryReducer from "../repository/repositorySlice";
-import { declassifyUser } from "./oidcSlice";
+import authReducer, { declassifyUser } from "./authSlice";
 import userManager from "./userManager";
 
-export const browserHistory = createBrowserHistory({
+const historyOptions = {
     basename: process.env.REACT_APP_ROUTER_BASE || ''
-});
+};
+
+export const browserHistory = createBrowserHistory(historyOptions);
 
 const rootReducer = combineReducers({
+    auth: authReducer,
     control: controlReducer,
     editor: editorReducer,
     view: viewReducer,

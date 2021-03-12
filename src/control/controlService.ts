@@ -1,4 +1,5 @@
 import { sendGetRequest } from "../web-api/apiService";
+import { processUserProfileTransfer } from "./profile/userProfile";
 import { defaultRoles } from "./role";
 
 export const CTRL_URL = process.env.REACT_APP_API_URL + "/ctrl";
@@ -23,6 +24,18 @@ export async function fetchEntities(url: string, dataField: string) {
     return Promise.reject();
 }
 
-export async function fetchRoles() {
+export async function fetchAllRoles() {
     return defaultRoles;
+}
+
+export async function fetchProfile() {
+    const response = await sendGetRequest(buildUrl(`${CTRL_URL}/profile`));
+    if (response && response.data) return processUserProfileTransfer(response.data);
+    return Promise.reject();
+}
+
+export async function fetchRoles() {
+    const response = await sendGetRequest(buildUrl(`${CTRL_URL}/roles`));
+    if (response && response.data) return response.data;
+    return Promise.reject();
 }

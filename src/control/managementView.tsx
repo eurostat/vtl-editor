@@ -4,25 +4,22 @@ import { Action } from "material-table";
 import React from "react";
 import { Tab, Tabs } from "react-bootstrap";
 import { decisionDialog } from "../main-view/decision-dialog/decisionDialog";
+import { useAdminRole, useManagerRole } from "./authorized";
 import DomainsTab from "./domain/domainsTab";
 import GroupsTab from "./group/groupsTab";
 import "./managementView.scss";
 import UsersTab from "./user/usersTab";
 
 export default function ManagementView() {
+    const forAdmin = useAdminRole();
+    const forManager = useManagerRole();
 
     return (
         <div className="management-view">
             <Tabs defaultActiveKey="domains" transition={false} id="management-tabs">
-                <Tab className="management-panel" eventKey="domains" title="Domains">
-                    <DomainsTab/>
-                </Tab>
-                <Tab className="management-panel" eventKey="groups" title="Groups">
-                    <GroupsTab/>
-                </Tab>
-                <Tab className="management-panel" eventKey="users" title="Users">
-                    <UsersTab/>
-                </Tab>
+                {forManager(<Tab className="management-panel" eventKey="domains" title="Domains"><DomainsTab/></Tab>)}
+                {forManager(<Tab className="management-panel" eventKey="groups" title="Groups"><GroupsTab/></Tab>)}
+                {forAdmin(<Tab className="management-panel" eventKey="users" title="Users"><UsersTab/></Tab>)}
             </Tabs>
         </div>
     );
@@ -80,7 +77,7 @@ export function controlTableTitle(singularTitle: string, pluralTitle: string, co
     return (
         <div className="table-title">
             <h6>{count}</h6>
-            <h6>{count === 1 ? singularTitle : pluralTitle }</h6>
+            <h6>{count === 1 ? singularTitle : pluralTitle}</h6>
         </div>
     );
 }

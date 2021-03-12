@@ -45,16 +45,7 @@ body {
 }
 
 
-.logo {
-  max-height: 46px;
-  float: left;
-}
 
-.header-container {
-  padding-left: 20px;
-  max-height: 50px;
-  width: 100%;
-}
 
 .navbar {
   height: 50px;
@@ -63,14 +54,6 @@ body {
 .navbar-brand {
   float: left;
   margin-right: 0;
-}
-
-.nav-button {
-  float: right;
-  padding-right: 30px;
-  min-width: 70px;
-  margin-top: 10px;
-  margin-bottom: 10px;
 }
 
 .btn {
@@ -124,14 +107,6 @@ body {
   font-family: eui-light, "Helvetica Neue", Helvetica, sans-serif;
   font-style: normal;
   font-weight: 200;
-}
-
-.bar {
-  width: 100%;
-  margin-top: 0;
-  margin-bottom: 0;
-  height: 4px;
-  background-color: $base-color;
 }
 
 button {

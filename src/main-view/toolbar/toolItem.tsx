@@ -20,6 +20,12 @@ export type TooltipSettings = {
     arrow?: boolean
 }
 
+export type AuthorizedItem = {
+    authCheck?: (item: any) => any;
+}
+
+export type AuthorizedToolItemSettings = ToolItemSettings & AuthorizedItem;
+
 type ToolItemProps = {
     itemSettings: ToolItemSettings
 }

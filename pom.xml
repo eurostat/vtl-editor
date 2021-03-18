@@ -269,6 +269,7 @@
                                 <REACT_APP_ROUTER_BASE>${deploy.path}</REACT_APP_ROUTER_BASE>
                                 <REACT_APP_API_URL>${deploy.api.url}</REACT_APP_API_URL>
                                 <REACT_APP_AUTHORITY_URL>${deploy.authority.url}</REACT_APP_AUTHORITY_URL>
+                                <REACT_APP_AUTHORITY_CLIENT_ID>${deploy.authority.clientId}</REACT_APP_AUTHORITY_CLIENT_ID>
                                 <GENERATE_SOURCEMAP>${deploy.sourcemap}</GENERATE_SOURCEMAP>
                             </environmentVariables>
                         </configuration>
@@ -313,6 +314,7 @@
                 <deploy.sourcemap>true</deploy.sourcemap>
                 <deploy.api.url>http://192.168.1.2:8080/vrm-backend/api</deploy.api.url>
                 <deploy.authority.url>http://</deploy.authority.url>
+                <deploy.authority.clientId></deploy.authority.clientId>
             </properties>
         </profile>
 
@@ -325,6 +327,7 @@
                 <deploy.sourcemsap>true</deploy.sourcemsap>
                 <deploy.api.url>http://localhost:7001/vrm-backend/api</deploy.api.url>
                 <deploy.authority.url>http://</deploy.authority.url>
+                <deploy.authority.clientId></deploy.authority.clientId>
             </properties>
         </profile>
 
@@ -337,6 +340,7 @@
                 <deploy.sourcemap>false</deploy.sourcemap>
                 <deploy.api.url>https://intragate.test.ec.europa.eu/vrm-backend/api</deploy.api.url>
                 <deploy.authority.url>https://</deploy.authority.url>
+                <deploy.authority.clientId></deploy.authority.clientId>
             </properties>
         </profile>
 
@@ -349,6 +353,7 @@
                 <deploy.sourcemap>false</deploy.sourcemap>
                 <deploy.api.url>https://intragate.test.ec.europa.eu/vrm-backend/api</deploy.api.url>
                 <deploy.authority.url>https://</deploy.authority.url>
+                <deploy.authority.clientId></deploy.authority.clientId>
             </properties>
         </profile>
 

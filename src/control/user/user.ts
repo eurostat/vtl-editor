@@ -1,8 +1,8 @@
 import _ from "lodash";
 import { convertEntityDates } from "../../web-api/apiUtility";
-import { domainsDefaultSort, DomainTransfer } from "../domain/domain";
-import { groupsDefaultSort, GroupTransfer } from "../group/group";
-import { RoleEntity, rolesDefaultSort, rolesPayload, rolesTransfer } from "../role";
+import { domainsDefaultSort, DomainTransfer, processDomainTransfer } from "../domain/domain";
+import { groupsDefaultSort, GroupTransfer, processGroupTransfer } from "../group/group";
+import { RoleEntity, rolesDefaultSort, toRolesPayload, processRolesTransfer } from "../role";
 import TrackedEntity from "../trackedEntity";
 
 export interface UserTransfer extends TrackedEntity {
@@ -17,7 +17,8 @@ export interface UserTransfer extends TrackedEntity {
     completeRoles?: RoleEntity[],
     domains?: DomainTransfer[],
     groups?: GroupTransfer[],
-    version: number,
+    hasAllDomains: boolean,
+    optLock: number,
 }
 
 export interface UserPayload extends TrackedEntity {
@@ -32,7 +33,8 @@ export interface UserPayload extends TrackedEntity {
     completeRoles?: RoleEntity[],
     domains?: DomainTransfer[],
     groups?: GroupTransfer[],
-    version?: number,
+    hasAllDomains: boolean,
+    optLock?: number,
 }
 
 export function emptyUser(): UserPayload {
@@ -47,10 +49,15 @@ export function emptyUser(): UserPayload {
         completeRoles: [],
         domains: [],
         groups: [],
+        hasAllDomains: false,
     };
 }
 
+export const nameEmailCaption = (user: UserTransfer) => `${user.name}${!!user.email ? ` (${user.email})` : ""}`;
+
 export function processUserTransfer(user: UserTransfer): UserTransfer {
+    if (user.domains) user.domains = user.domains.map((domain) => processDomainTransfer(domain));
+    if (user.groups) user.groups = user.groups.map((group) => processGroupTransfer(group));
     return _.flow(convertEntityDates, mergeName, completeRoles, sortCollections)(user);
 }
 
@@ -70,8 +77,9 @@ export function simpleUserPayload(user: UserPayload): UserPayload {
         lastName: user.lastName,
         email: user.email,
         allDomains: user.allDomains,
-        roles: user.completeRoles ? rolesPayload(user.completeRoles) : undefined,
-        version: user.version,
+        roles: user.completeRoles ? toRolesPayload(user.completeRoles) : undefined,
+        hasAllDomains: user.hasAllDomains,
+        optLock: user.optLock,
     };
 }
 
@@ -86,7 +94,7 @@ function mergeName(user: UserTransfer): UserTransfer {
 }
 
 function completeRoles(user: UserTransfer): UserTransfer {
-    user.completeRoles = rolesTransfer(user.roles);
+    user.completeRoles = processRolesTransfer(user.roles);
     return user;
 }
 

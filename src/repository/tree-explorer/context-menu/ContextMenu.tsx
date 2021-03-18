@@ -24,7 +24,7 @@ const ContextMenu = ({menu, domElementRef}: ContextMenuProps) => {
                 setMenuYPos(yPos)
             }
         }
-    })
+    }, [yPos])
 
     return (
         <Motion

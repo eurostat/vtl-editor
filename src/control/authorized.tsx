@@ -73,6 +73,11 @@ export function useAuthority() {
     return curriedAuthority(authenticated, roles);
 }
 
+export function useVisitorRole() {
+    const authority = useAuthority()
+    return authority([], []);
+}
+
 export function useAdminRole() {
     const authority = useAuthority()
     return authority([ROLE_ADMIN], []);

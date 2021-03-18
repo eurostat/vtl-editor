@@ -1,11 +1,10 @@
-import { Grid, TextField } from "@material-ui/core";
-import _ from "lodash";
+import { Checkbox, FormControlLabel, Grid, TextField } from "@material-ui/core";
 import { useSnackbar } from "notistack";
 import React, { useCallback, useEffect, useState } from "react";
 import ItemList from "../itemList";
-import { useGridStyles } from "../managementView";
+import { useCheckboxStyles, useGridStyles } from "../managementView";
 import { UserTransfer } from "./user";
-import { fetchUser, fetchUserDomains, fetchUserGroups } from "./userService";
+import { fetchUser } from "./userService";
 
 type UserViewProps = {
     userId: number
@@ -15,15 +14,11 @@ export default function UserView({userId}: UserViewProps) {
     const [user, setUser] = useState<UserTransfer>();
     const {enqueueSnackbar} = useSnackbar();
     const styles = useGridStyles();
+    const checkboxStyles = useCheckboxStyles();
 
     const loadUser = useCallback(async (identifier: number) => {
         try {
-            const received = await Promise.all([
-                fetchUser(identifier),
-                fetchUserDomains(identifier),
-                fetchUserGroups(identifier),
-            ]);
-            setUser(_.mergeWith(received[0], {domains: received[1]}, {groups: received[2]}));
+            setUser(await fetchUser(identifier));
         } catch {
             enqueueSnackbar(`Failed to load user.`, {variant: "error"});
         }
@@ -78,19 +73,27 @@ export default function UserView({userId}: UserViewProps) {
                                        disabled type="text" helperText="Modified By" value={user?.updatedBy || ""}/>
                         </Grid>
                     </Grid>
+                    <Grid container item className={styles.root} spacing={2} xs={10}>
+                        <FormControlLabel className={checkboxStyles.disabled} label="All Domains" labelPlacement="start"
+                                          disabled control={
+                                              <Checkbox className={checkboxStyles.disabled} disableRipple
+                                                        checked={!!user?.hasAllDomains} name="all-domains"/>
+                                          }
+                        />
+                    </Grid>
                     <Grid container item className={styles.rootMargin} spacing={2} xs={10} direction="row"
                           justify="flex-start" alignItems="flex-start">
                         <Grid container item xs={4}>
-                            <ItemList singularTitle="Role" pluralTitle="Roles" data={user?.completeRoles}
-                                      captionField={"name"} identifierField={"id"} dense={true}/>
+                            <ItemList dense={true} singularTitle="Role" pluralTitle="Roles"
+                                      data={user?.completeRoles} captionField={"name"}/>
                         </Grid>
                         <Grid container item xs={4}>
-                            <ItemList singularTitle="Domain" pluralTitle="Domains" data={user?.domains}
-                                      captionField={"name"} identifierField={"id"} dense={true}/>
+                            <ItemList dense={true} singularTitle="Domain" pluralTitle="Domains"
+                                      data={user?.domains} captionField={"name"}/>
                         </Grid>
                         <Grid container item xs={4}>
-                            <ItemList singularTitle="Group" pluralTitle="Groups" data={user?.groups}
-                                      captionField={"name"} identifierField={"id"} dense={true}/>
+                            <ItemList dense={true} singularTitle="Group" pluralTitle="Groups"
+                                      data={user?.groups} captionField={"name"}/>
                         </Grid>
                     </Grid>
                 </div>

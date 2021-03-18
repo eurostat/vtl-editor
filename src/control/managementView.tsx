@@ -59,6 +59,23 @@ export const useGridStyles = makeStyles((theme: Theme) =>
     }),
 );
 
+export const useCheckboxStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        disabled: {
+            ".MuiFormControlLabel-label&": {
+                color: "#004494",
+            },
+            ".MuiCheckbox-colorSecondary&": {
+                color: "rgba(0, 0, 0, 0.87)",
+                marginLeft: "60px",
+            },
+            ".MuiFormControlLabel-root&": {
+                marginLeft: "8px",
+            }
+        },
+    }), {name: 'Mui'}
+);
+
 export const controlTableTheme = createMuiTheme({
     overrides: {
         MuiToolbar: {
@@ -68,6 +85,16 @@ export const controlTableTheme = createMuiTheme({
             },
             gutters: {
                 paddingLeft: '8px !important',
+            },
+        },
+        MuiTableCell: {
+            root: {
+                padding: "10px",
+            },
+        },
+        MuiIconButton: {
+            root: {
+                padding: "10px",
             },
         },
     },

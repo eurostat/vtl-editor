@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
 import './App.scss';
 import Authorized, { useManagerRole, useUserRole } from "./control/authorized";
-import { fetchRoles } from "./control/controlService";
+import { fetchProfileRoles } from "./control/controlService";
 import ManagementView from "./control/managementView";
 import Profile from "./control/profile/profile";
 import EditorView from "./editor/editorView";
@@ -47,7 +47,7 @@ export default function App() {
 
     const loadRoles = useCallback(async () => {
         try {
-            dispatch(provideRoles(await fetchRoles()));
+            dispatch(provideRoles(await fetchProfileRoles()));
         } catch {
         }
     }, [dispatch]);
@@ -80,14 +80,14 @@ export default function App() {
             }
         }
         const sdmxStoredValues: SdmxStorage = getSdmxStoredValues();
-        if (sdmxStoredValues) {
+        if (authenticated && sdmxStoredValues) {
             if (sdmxStoredValues.dataStructure && sdmxStoredValues.registryId) {
                 setDataStructure({...sdmxStoredValues.dataStructure});
                 setRegistry({id: sdmxStoredValues.registryId, name: "", url: ""});
                 decision(sdmxStoredValues.dataStructure).then();
             }
         }
-    }, []);
+    }, [authenticated]);
 
     useEffect(() => {
         if (sdmxResult?.dataStructure)
@@ -142,7 +142,7 @@ export default function App() {
                     <div id="middle-container" className={`middle-container`}>
                         <Switch>
                             <Route exact path="/"><EditorView {...editorViewProps}/></Route>
-                            {forUser(<Route exact path="/sdmx"><SdmxView {...SDMXViewProps}/></Route>)}
+                            <Route exact path="/sdmx"><SdmxView {...SDMXViewProps}/></Route>
                             {forUser(<Route exact path="/folder"><DirectoryPreview/></Route>)}
                             {forUser(<Route exact path="/versions"><FileVersions/></Route>)}
                             {forUser(<Route exact path="/diff"><DiffEditor/></Route>)}

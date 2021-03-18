@@ -35,7 +35,7 @@ const DataStructureDetailPanel = ({registry, dataStructure, showCodeListPreview}
             setLoadingDataStructureDefinition(true);
             const dsd: DataStructureDefinition = await requestCache.checkIfExistsInMapOrAdd(
                 SDMX_DSD(registry.id, dataStructure.agencyId, dataStructure.id, dataStructure.version),
-                async () => await fetchDataStructureDefinition(registry!, dataStructure));
+                async () => await fetchDataStructureDefinition(registry, dataStructure));
 
             const mapDimensions = (): DataStructureTableRow[] => {
                 return mapToDataStructureTableRow(dsd.attributes || [], "attribute");
@@ -74,34 +74,39 @@ const DataStructureDetailPanel = ({registry, dataStructure, showCodeListPreview}
         fetch();
     }, [registry, dataStructure])
 
-    const conditionalRenderCodeListPreview = (showCodeListPreview: boolean) => {
-        return showCodeListPreview ?
+    const conditionalRenderCodeListPreview = (showPreview: boolean) => {
+        return showPreview ?
             {
                 "detailPanel": [(rowData: DataStructureTableRow) => {
                     return {
                         disabled: rowData.structureType.type !== "codelist",
                         icon: rowData.structureType.type === "codelist" ? "chevron_right" : "  ",
-                        render: (rowData: DataStructureTableRow) => <CodeListDetailPanel registry={registry!}
-                                                                                         baseStruct={rowData}/>
+                        render: (renderRowData: DataStructureTableRow) => <CodeListDetailPanel registry={registry}
+                                                                                         baseStruct={renderRowData}/>
                     } as DetailPanel<DataStructureTableRow>
                 }]
             }
             : {}
     }
 
-    const muiTheme = createMuiTheme({
+    const muiTableTheme = createMuiTheme({
         overrides: {
             MuiTableCell: {
                 root: {
-                    padding: '8px'
+                    padding: "8px",
                 },
-            }
+            },
+            MuiIconButton: {
+                root: {
+                    padding: "8px",
+                },
+            },
         }
     });
 
     return (
         <div className="dsd-detail-panel">
-            <MuiThemeProvider theme={muiTheme}>
+            <MuiThemeProvider theme={muiTableTheme}>
                 <MaterialTable
                     isLoading={loadingDataStructureDefinition}
                     columns={dataPanelColumns}

@@ -1,11 +1,11 @@
 import { Grid, TextField } from "@material-ui/core";
-import _ from "lodash";
 import { useSnackbar } from "notistack";
 import React, { useCallback, useEffect, useState } from "react";
 import ItemList from "../itemList";
 import { useGridStyles } from "../managementView";
+import { nameEmailCaption } from "../user/user";
 import { GroupTransfer } from "./group";
-import { fetchGroup, fetchGroupDomains, fetchGroupUsers } from "./groupService";
+import { fetchGroup } from "./groupService";
 
 type GroupViewProps = {
     groupId: number,
@@ -18,12 +18,7 @@ export default function GroupView({groupId}: GroupViewProps) {
 
     const loadGroup = useCallback(async (identifier: number) => {
         try {
-            const received = await Promise.all([
-                fetchGroup(identifier),
-                fetchGroupUsers(identifier),
-                fetchGroupDomains(identifier),
-            ]);
-            setGroup(_.mergeWith(received[0], {users: received[1]}, {domains: received[2]}));
+            setGroup(await fetchGroup(identifier));
         } catch {
             enqueueSnackbar(`Failed to load group.`, {variant: "error"});
         }
@@ -72,16 +67,16 @@ export default function GroupView({groupId}: GroupViewProps) {
                           justify="flex-start"
                           alignItems="flex-start">
                         <Grid container item xs={4}>
-                            <ItemList singularTitle="Role" pluralTitle="Roles" data={group?.completeRoles}
-                                      captionField={"name"} identifierField={"id"} dense={true}/>
+                            <ItemList dense={true} singularTitle="Role" pluralTitle="Roles"
+                                      data={group?.completeRoles} captionField={"name"}/>
                         </Grid>
                         <Grid container item xs={4}>
-                            <ItemList singularTitle="User" pluralTitle="Users" data={group?.users}
-                                      captionField={"name"} identifierField={"id"} dense={true}/>
+                            <ItemList dense={true} singularTitle="User" pluralTitle="Users"
+                                      data={group?.users} captionGet={nameEmailCaption}/>
                         </Grid>
                         <Grid container item xs={4}>
-                            <ItemList singularTitle="Domain" pluralTitle="Domains" data={group?.domains}
-                                      captionField={"name"} identifierField={"id"} dense={true}/>
+                            <ItemList dense={true} singularTitle="Domain" pluralTitle="Domains"
+                                      data={group?.domains} captionField={"name"}/>
                         </Grid>
                     </Grid>
                 </div>

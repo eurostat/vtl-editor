@@ -4,7 +4,8 @@ import { useSnackbar } from "notistack";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PageHeader from "../../main-view/page-header/pageHeader";
-import { fetchAllRoles } from "../controlService";
+import { useAdminRole } from "../authorized";
+import { fetchAllRoles, FORMAT_SIMPLE } from "../controlService";
 import { addGroup, editedGroup, finishGroupEdit } from "../controlSlice";
 import { DomainTransfer } from "../domain/domain";
 import { fetchDomains } from "../domain/domainService";
@@ -12,18 +13,10 @@ import ItemList from "../itemList";
 import { useGridStyles } from "../managementView";
 import { RoleEntity } from "../role";
 import { transferDialog } from "../transferDialog";
-import { UserTransfer } from "../user/user";
+import { nameEmailCaption, UserTransfer } from "../user/user";
 import { fetchUsers } from "../user/userService";
 import { emptyGroup, GroupPayload, toGroupPayload } from "./group";
-import {
-    createGroup,
-    fetchGroup,
-    fetchGroupDomains,
-    fetchGroupUsers,
-    updateGroup,
-    updateGroupDomains,
-    updateGroupUsers
-} from "./groupService";
+import { createGroup, fetchGroup, updateGroup, updateGroupDomains, updateGroupUsers } from "./groupService";
 
 GroupEdit.defaultProps = {
     edit: false,
@@ -38,15 +31,11 @@ export default function GroupEdit() {
     const title = groupId ? "Edit Group" : "New Group";
     const styles = useGridStyles();
 
+    const forAdmin = useAdminRole();
+
     const loadGroup = useCallback(async (identifier: number) => {
         try {
-            const received = await Promise.all([
-                fetchGroup(identifier),
-                fetchGroupUsers(identifier),
-                fetchGroupDomains(identifier),
-            ]);
-            setGroup(toGroupPayload(
-                _.mergeWith(received[0], {users: received[1]}, {domains: received[2]})));
+            setGroup(toGroupPayload(await fetchGroup(identifier)));
             setLoaded(true);
         } catch {
             enqueueSnackbar(`Failed to load group.`, {variant: "error"});
@@ -61,7 +50,12 @@ export default function GroupEdit() {
     const confirmGroup = async () => {
         try {
             if (group) {
-                const call = (groupId ? () => updateGroup(group) : () => createGroup(group));
+                const groupPayload = _.merge(_.cloneDeep(group),
+                    {
+                        roles: _.cloneDeep(forAdmin(group.roles)),
+                        completeRoles: _.cloneDeep(forAdmin(group.completeRoles)),
+                    });
+                const call = (groupId ? () => updateGroup(groupPayload) : () => createGroup(groupPayload));
                 const response = await call();
                 await Promise.all([
                     updateGroupUsers(response.id, group.users),
@@ -69,7 +63,7 @@ export default function GroupEdit() {
                 ]);
                 dispatch(addGroup(response));
                 setGroup(undefined);
-                enqueueSnackbar(`Domain "${response.name}" ${groupId ? "updated" : "created"} successfully.`,
+                enqueueSnackbar(`Group "${response.name}" ${groupId ? "updated" : "created"} successfully.`,
                     {variant: "success"});
             } else {
                 enqueueSnackbar("Save of empty group skipped.", {variant: "warning"});
@@ -112,13 +106,12 @@ export default function GroupEdit() {
             selected: group?.completeRoles || [],
             fetchAvailable: loadRoles,
             captionField: "name",
-            identifierField: "id",
         });
         if (result) updateRoles(result);
     }
 
     const loadUsers = async () => {
-        return fetchUsers().catch(() => {
+        return fetchUsers(FORMAT_SIMPLE).catch(() => {
             enqueueSnackbar(`Failed to load users.`, {variant: "error"});
             return [] as UserTransfer[];
         });
@@ -135,14 +128,13 @@ export default function GroupEdit() {
             pluralItem: "Users",
             selected: group?.users || [],
             fetchAvailable: loadUsers,
-            captionField: "name",
-            identifierField: "id",
+            captionGet: nameEmailCaption,
         });
         if (result) updateUsers(result);
     }
 
     const loadDomains = async () => {
-        return fetchDomains().catch(() => {
+        return fetchDomains(FORMAT_SIMPLE).catch(() => {
             enqueueSnackbar(`Failed to load domains.`, {variant: "error"});
             return [] as DomainTransfer[];
         });
@@ -160,7 +152,6 @@ export default function GroupEdit() {
             selected: group?.domains || [],
             fetchAvailable: loadDomains,
             captionField: "name",
-            identifierField: "id",
         });
         if (result) updateDomains(result);
     }
@@ -189,18 +180,16 @@ export default function GroupEdit() {
                       alignItems="flex-start">
                     <Grid item xs={4}>
                         <ItemList singularTitle="Role" pluralTitle="Roles" data={group?.completeRoles || []}
-                                  setData={updateRoles} editData={editRoles}
-                                  captionField={"name"} identifierField={"id"}/>
+                                  setData={forAdmin(updateRoles)} editData={forAdmin(editRoles)} captionField={"name"}/>
                     </Grid>
                     <Grid item xs={4}>
                         <ItemList singularTitle="User" pluralTitle="Users" data={group?.users || []}
                                   setData={updateUsers} editData={editUsers}
-                                  captionField={"name"} identifierField={"id"}/>
+                                  captionGet={nameEmailCaption}/>
                     </Grid>
                     <Grid item xs={4}>
                         <ItemList singularTitle="Domain" pluralTitle="Domains" data={group?.domains || []}
-                                  setData={updateDomains} editData={editDomains}
-                                  captionField={"name"} identifierField={"id"}/>
+                                  setData={updateDomains} editData={editDomains} captionField={"name"}/>
                     </Grid>
                 </Grid>
                 <Grid container item className={styles.rootMargin} spacing={2} xs={10} justify="center"

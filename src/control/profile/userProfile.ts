@@ -2,7 +2,7 @@ import _ from "lodash";
 import { convertEntityDates } from "../../web-api/apiUtility";
 import { domainsDefaultSort, DomainTransfer } from "../domain/domain";
 import { groupsDefaultSort, GroupTransfer } from "../group/group";
-import { RoleEntity, rolesDefaultSort, rolesTransfer } from "../role";
+import { RoleEntity, rolesDefaultSort, processRolesTransfer } from "../role";
 
 export interface UserProfileTransfer {
     login: string,
@@ -11,13 +11,17 @@ export interface UserProfileTransfer {
     lastName: string,
     email: string,
     roles: string[],
+    inheritedRoles: string[],
     completeRoles?: RoleEntity[],
-    domains?: DomainTransfer[],
-    groups?: GroupTransfer[]
+    domains: DomainTransfer[],
+    inheritedDomains: DomainTransfer[],
+    groups: GroupTransfer[],
+    hasAllDomains: boolean,
 }
 
 export function processUserProfileTransfer(user: UserProfileTransfer): UserProfileTransfer {
-    return _.flow(convertEntityDates, mergeName, completeRoles, sortCollections)(user);
+    return _.flow(convertEntityDates, mergeName,
+        completeRoles, completeDomains, sortCollections)(user);
 }
 
 function mergeName(user: UserProfileTransfer): UserProfileTransfer {
@@ -26,7 +30,17 @@ function mergeName(user: UserProfileTransfer): UserProfileTransfer {
 }
 
 function completeRoles(user: UserProfileTransfer): UserProfileTransfer {
-    user.completeRoles = rolesTransfer(user.roles);
+    user.completeRoles = processRolesTransfer(user.roles);
+    const inheritedRoles = processRolesTransfer(user.inheritedRoles)
+        .map((role) => _.merge(_.cloneDeep(role), {inherited: true}));
+    user.completeRoles.push(...inheritedRoles);
+    return user;
+}
+
+function completeDomains(user: UserProfileTransfer): UserProfileTransfer {
+    const inheritedDomains = user.inheritedDomains
+        .map((domain) => _.merge(_.cloneDeep(domain), {inherited: true}));
+    user.domains.push(...inheritedDomains);
     return user;
 }
 

@@ -9,6 +9,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import _ from "lodash";
 import React, { useEffect } from 'react';
+import { IdentifiedItem } from "./itemList";
 import "./managementView.scss";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -31,25 +32,25 @@ function intersection(a: any[], b: any[]) {
     return a.filter((value) => b.indexOf(value) !== -1);
 }
 
-type TransferListProps = {
+type TransferListProps<T extends IdentifiedItem> = {
     singularItem: string,
     pluralItem: string,
-    selected: any[],
-    commitSelected: (list: any[]) => void,
-    available: any[],
+    selected: T[],
+    commitSelected: (list: T[]) => void,
+    available: T[],
     captionField?: string,
-    identifierField?: string,
+    captionGet?: (item: T) => string,
 }
 
-export default function TransferList({
-                                         singularItem,
-                                         pluralItem,
-                                         selected,
-                                         commitSelected,
-                                         available,
-                                         captionField,
-                                         identifierField
-                                     }: TransferListProps) {
+export default function TransferList<T extends IdentifiedItem>({
+                                                                         singularItem,
+                                                                         pluralItem,
+                                                                         selected,
+                                                                         commitSelected,
+                                                                         available,
+                                                                         captionField,
+                                                                         captionGet,
+                                                                     }: TransferListProps<T>) {
     const styles = useStyles();
     const [checked, setChecked] = React.useState<any[]>([]);
     const [left, setLeft] = React.useState<any[]>([]);
@@ -113,10 +114,16 @@ export default function TransferList({
         );
     }
 
-    const listItem = (item: any) => {
-        const labelId = `transfer-list-label-${identifierField ? item[identifierField] : item}`;
+    const renderCaption = (item: T) => {
+        if (!!captionField) return item[captionField as keyof T];
+        if (!!captionGet) return captionGet(item);
+        return item;
+    }
+
+    const listItem = (item: T) => {
+        const labelId = `transfer-list-label-${item.id}`;
         return (
-            <ListItem key={identifierField ? item[identifierField] : item} role="listitem" button
+            <ListItem key={item.id} role="listitem" button
                       onClick={handleToggle(item)}>
                 <ListItemIcon>
                     <Checkbox
@@ -126,14 +133,14 @@ export default function TransferList({
                         inputProps={{'aria-labelledby': labelId}}
                     />
                 </ListItemIcon>
-                <ListItemText id={labelId} primary={captionField ? item[captionField] : item}/>
+                <ListItemText id={labelId} primary={renderCaption(item)}/>
             </ListItem>
         );
     }
 
     const customList = (items: any[], type: string) => (
         <List className="transfer-list" dense component="div" role="list" subheader={header(items, type)}>
-            {items.map((item: any) => listItem(item))}
+            {items.map((item: T) => listItem(item))}
         </List>
     );
 

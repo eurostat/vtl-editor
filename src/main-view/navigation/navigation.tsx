@@ -18,7 +18,7 @@ import "./navigation.scss"
 
 type MenuContentMap = Record<string, AuthorizedToolItemSettings[]>;
 
-const Navigation = () => {
+export default function Navigation() {
     const [currentMenuElement, setCurrentMenuElement] = useState<MenuOption>(MenuOption.NONE);
     const location = useLocation();
     const memoFileExplorer = useMemo(() => {
@@ -53,7 +53,6 @@ const Navigation = () => {
         "import-dsd": {
             title: "Import DSD", key: "import-dsd", link: "/sdmx",
             className: "mat-icon", matIcon: <OpenInBrowserOutlined/>,
-            authCheck: forUser,
         },
         "manage-domains": {
             title: "Manage Domains", key: "manage-domains", link: "/manage",
@@ -112,6 +111,4 @@ const Navigation = () => {
             </div>
         </>
     )
-};
-
-export default Navigation;
+}

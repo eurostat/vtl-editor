@@ -8,14 +8,18 @@ import { Backspace, Edit } from "@material-ui/icons";
 import React from 'react';
 import "./managementView.scss"
 
-export interface ItemListProps {
+export interface IdentifiedItem {
+    id: number | string,
+}
+
+export interface ItemListProps<T extends IdentifiedItem> {
     singularTitle: string,
     pluralTitle: string,
-    data?: any[],
-    setData?: (data: any[]) => void,
+    data?: T[],
+    setData?: (data: T[]) => void,
     editData?: () => void,
     captionField?: string,
-    identifierField?: string,
+    captionGet?: (item: T) => string,
     dense?: boolean,
 }
 
@@ -25,18 +29,18 @@ ItemList.defaultProps = {
     dense: false,
 }
 
-export default function ItemList({
-                                     singularTitle,
-                                     pluralTitle,
-                                     data,
-                                     setData,
-                                     editData,
-                                     captionField,
-                                     identifierField,
-                                     dense
-                                 }: ItemListProps) {
+export default function ItemList<T extends IdentifiedItem>({
+                                                                     singularTitle,
+                                                                     pluralTitle,
+                                                                     data,
+                                                                     setData,
+                                                                     editData,
+                                                                     captionField,
+                                                                     captionGet,
+                                                                     dense
+                                                                 }: ItemListProps<T>) {
 
-    const removeItem = (item: any) => {
+    const removeItem = (item: T) => {
         if (data && setData) {
             const index = data.indexOf(item);
 
@@ -52,11 +56,18 @@ export default function ItemList({
         if (editData) editData();
     }
 
-    const listItem = (item: any) => {
+    const renderCaption = (item: T) => {
+        if (!!captionField) return item[captionField as keyof T];
+        if (!!captionGet) return captionGet(item);
+        return item;
+    }
+
+    const listItem = (item: T) => {
         return (
-            <ListItem className="list-item" key={identifierField ? item[identifierField] : item} role={undefined} dense button>
-                <ListItemText id={`item-list-label-${identifierField ? item[identifierField] : item}`}
-                              primary={captionField ? item[captionField] : item}/>
+            <ListItem className="list-item" key={item.id} role={undefined} dense
+                      button>
+                <ListItemText id={`item-list-label-${item.id}`}
+                              primary={renderCaption(item)}/>
                 {setData
                     ? <ListItemSecondaryAction>
                         <Tooltip title="Remove" placement="bottom" arrow>

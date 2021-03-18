@@ -54,7 +54,7 @@ const EditorView = ({sdmxResult, errorBoxProps}: EditorViewProps) => {
         return () => {
             dispatch(updateEdited(readState(fileContent)));
         }
-    }, []);
+    }, [loaded, dispatch]);
 
     const onCursorChange = (position: CursorPosition) => {
         dispatch(updateCursor(position));

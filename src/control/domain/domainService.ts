@@ -1,5 +1,5 @@
 import { sendDeleteRequest, sendGetRequest, sendPostRequest, sendPutRequest } from "../../web-api/apiService";
-import { buildUrl, CTRL_URL, fetchEntities } from "../controlService";
+import { buildUrl, CTRL_URL, fetchEntities, FORMAT_EXTENDED } from "../controlService";
 import { GroupPayload, GroupTransfer, processGroupTransfers } from "../group/group";
 import { processUserTransfers, UserPayload, UserTransfer } from "../user/user";
 import {
@@ -12,13 +12,14 @@ import {
 
 const DOMAIN_URL = CTRL_URL + "/domains";
 
-export async function fetchDomains() {
-    return fetchEntities(`${DOMAIN_URL}`, "domains")
+export async function fetchDomains(format: string = FORMAT_EXTENDED) {
+    return fetchEntities(buildUrl(`${DOMAIN_URL}`, {format: format}), "domains")
         .then((received: DomainTransfer[]) => processDomainTransfers(received));
 }
 
-export async function fetchDomain(domainId: number) {
-    const response = await sendGetRequest(buildUrl(`${DOMAIN_URL}/${domainId}`));
+export async function fetchDomain(domainId: number, format: string = FORMAT_EXTENDED, references: boolean = true) {
+    const response = await sendGetRequest(
+        buildUrl(`${DOMAIN_URL}/${domainId}`, {format: format, references: references}));
     if (response && response.data) return processDomainTransfer(response.data);
     return Promise.reject();
 }

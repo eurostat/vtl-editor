@@ -1,8 +1,8 @@
 import _ from "lodash";
 import { convertEntityDates } from "../../web-api/apiUtility";
-import { groupsDefaultSort, GroupTransfer } from "../group/group";
+import { groupsDefaultSort, GroupTransfer, processGroupTransfer } from "../group/group";
 import TrackedEntity from "../trackedEntity";
-import { usersDefaultSort, UserTransfer } from "../user/user";
+import { processUserTransfer, usersDefaultSort, UserTransfer } from "../user/user";
 
 export interface DomainTransfer extends TrackedEntity {
     id: number,
@@ -10,7 +10,8 @@ export interface DomainTransfer extends TrackedEntity {
     description: string,
     users?: UserTransfer[],
     groups?: GroupTransfer[],
-    version: number,
+    inherited?: boolean,
+    optLock: number,
 }
 
 export interface DomainPayload extends TrackedEntity {
@@ -19,7 +20,7 @@ export interface DomainPayload extends TrackedEntity {
     description: string,
     users?: UserTransfer[],
     groups?: GroupTransfer[],
-    version?: number,
+    optLock?: number,
 }
 
 export function emptyDomain(): DomainPayload {
@@ -31,7 +32,11 @@ export function emptyDomain(): DomainPayload {
     };
 }
 
+export const domainInheritedCaption = (domain: DomainTransfer) => `${domain.name}${domain.inherited ? " *" : ""}`;
+
 export function processDomainTransfer(domain: DomainTransfer): DomainTransfer {
+    if (domain.users) domain.users = domain.users.map((user) => processUserTransfer(user));
+    if (domain.groups) domain.groups = domain.groups.map((group) => processGroupTransfer(group));
     return _.flow(convertEntityDates, sortCollections)(domain);
 }
 
@@ -48,7 +53,7 @@ export function simpleDomainPayload(domain: DomainPayload): DomainPayload {
         id: domain.id,
         name: domain.name,
         description: domain.description,
-        version: domain.version,
+        optLock: domain.optLock,
     };
 }
 

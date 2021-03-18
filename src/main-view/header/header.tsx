@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import logo from "../../assets/european-logo.png";
 import { idToken, loggedIn, userName } from "../../utility/authSlice";
 import { routerPath } from "../../utility/routerSlice";
-import userManager, { baseUrl } from "../../utility/userManager";
+import userManager from "../../utility/userManager";
 import ToolItem, { ToolItemSettings } from "../toolbar/toolItem";
 import "./header.scss";
 
@@ -25,7 +25,10 @@ const Header = () => {
     const logout = async (event: any) => {
         try {
             event.preventDefault();
-            await userManager.signoutRedirect({"id_token_hint": token, "post_logout_redirect_uri": baseUrl + path});
+            await userManager.signoutRedirect({
+                "id_token_hint": token,
+                "post_logout_redirect_uri": userManager.settings.post_logout_redirect_uri
+            });
             await userManager.removeUser();
         } catch {
         }

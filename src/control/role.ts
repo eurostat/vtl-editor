@@ -4,13 +4,16 @@ export interface RoleEntity {
     id: string,
     name: string,
     ord: number,
+    inherited: boolean,
 }
 
-export function rolesTransfer(roles: string[] | undefined): RoleEntity[] {
+export const roleInheritedCaption = (role: RoleEntity) => `${role.name}${role.inherited ? " *" : ""}`;
+
+export function processRolesTransfer(roles: string[] | undefined): RoleEntity[] {
     return defaultRoles.filter((role) => roles?.includes(role.id));
 }
 
-export function rolesPayload(roles: RoleEntity[]): string[] {
+export function toRolesPayload(roles: RoleEntity[]): string[] {
     return roles.map((role) => role.id);
 }
 
@@ -22,16 +25,19 @@ export const defaultRoles = [
     {
         id: ROLE_ADMIN,
         name: "Administrator",
-        ord: 0
+        ord: 0,
+        inherited: false,
     },
     {
         id: ROLE_MANAGER,
         name: "Domain Manager",
-        ord: 1
+        ord: 1,
+        inherited: false,
     },
     {
         id: ROLE_USER,
         name: "Domain User",
-        ord: 2
+        ord: 2,
+        inherited: false,
     },
 ] as RoleEntity[];

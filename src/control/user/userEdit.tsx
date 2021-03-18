@@ -1,30 +1,21 @@
-import { Grid, TextField, Tooltip } from "@material-ui/core";
-import _ from "lodash";
+import { Checkbox, FormControlLabel, Grid, TextField, Tooltip } from "@material-ui/core";
 import { useSnackbar } from "notistack";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PageHeader from "../../main-view/page-header/pageHeader";
-import { fetchAllRoles } from "../controlService";
+import { fetchAllRoles, FORMAT_SIMPLE } from "../controlService";
 import { addUser, editedUser, finishUserEdit } from "../controlSlice";
 import { DomainTransfer } from "../domain/domain";
 import { fetchDomains } from "../domain/domainService";
 import { GroupTransfer } from "../group/group";
 import { fetchGroups } from "../group/groupService";
 import ItemList from "../itemList";
-import { useGridStyles } from "../managementView";
+import { useCheckboxStyles, useGridStyles } from "../managementView";
 import "../managementView.scss"
 import { RoleEntity } from "../role";
 import { transferDialog } from "../transferDialog";
 import { toUserPayload, UserPayload } from "./user";
-import {
-    createUser,
-    fetchUser,
-    fetchUserDomains,
-    fetchUserGroups,
-    updateUser,
-    updateUserDomains,
-    updateUserGroups
-} from "./userService";
+import { createUser, fetchUser, updateUser, updateUserDomains, updateUserGroups } from "./userService";
 
 UserEdit.defaultProps = {
     edit: false,
@@ -38,16 +29,11 @@ export default function UserEdit() {
     const {enqueueSnackbar} = useSnackbar();
     const title = userId ? "Edit User" : "New User";
     const styles = useGridStyles();
+    const checkboxStyles = useCheckboxStyles();
 
     const loadUser = useCallback(async (identifier: number) => {
         try {
-            const received = await Promise.all([
-                fetchUser(identifier),
-                fetchUserDomains(identifier),
-                fetchUserGroups(identifier),
-            ]);
-            setUser(toUserPayload(
-                _.mergeWith(received[0], {domains: received[1]}, {groups: received[2]})));
+            setUser(toUserPayload(await fetchUser(identifier)));
             setLoaded(true);
         } catch {
             enqueueSnackbar(`Failed to load user.`, {variant: "error"});
@@ -120,13 +106,12 @@ export default function UserEdit() {
             selected: user?.completeRoles || [],
             fetchAvailable: loadRoles,
             captionField: "name",
-            identifierField: "id",
         });
         if (result) updateRoles(result);
     }
 
     const loadDomains = async () => {
-        return fetchDomains().catch(() => {
+        return fetchDomains(FORMAT_SIMPLE).catch(() => {
             enqueueSnackbar(`Failed to load domains.`, {variant: "error"});
             return [] as DomainTransfer[];
         });
@@ -144,13 +129,12 @@ export default function UserEdit() {
             selected: user?.domains || [],
             fetchAvailable: loadDomains,
             captionField: "name",
-            identifierField: "id",
         });
         if (result) updateDomains(result);
     }
 
     const loadGroups = async () => {
-        return fetchGroups().catch(() => {
+        return fetchGroups(FORMAT_SIMPLE).catch(() => {
             enqueueSnackbar(`Failed to load groups.`, {variant: "error"});
             return [] as GroupTransfer[];
         });
@@ -158,6 +142,10 @@ export default function UserEdit() {
 
     const updateGroups = (groups: GroupTransfer[]) => {
         setUser(Object.assign({}, user, {groups: groups}));
+    }
+
+    const updateAllDomains = () => {
+        setUser(Object.assign({}, user, {hasAllDomains: !user?.hasAllDomains}));
     }
 
     const editGroups = async () => {
@@ -168,7 +156,6 @@ export default function UserEdit() {
             selected: user?.groups || [],
             fetchAvailable: loadGroups,
             captionField: "name",
-            identifierField: "id",
         });
         if (result) updateGroups(result);
     }
@@ -205,23 +192,29 @@ export default function UserEdit() {
                                    value={user?.email || ""} onChange={updateEmail}/>
                     </Grid>
                 </Grid>
+                <Grid container item className={styles.root} spacing={2} xs={10}>
+                    <FormControlLabel className={checkboxStyles.disabled} label="All Domains" labelPlacement="start"
+                                      control={
+                                          <Checkbox className={checkboxStyles.disabled} disableRipple
+                                                    checked={!!user?.hasAllDomains} onChange={updateAllDomains}
+                                                    name="all-domains"/>
+                                      }
+                    />
+                </Grid>
                 <Grid container item className={styles.rootMargin} spacing={2} xs={10} direction="row"
                       justify="space-between"
                       alignItems="flex-start">
                     <Grid item xs={4}>
                         <ItemList singularTitle="Role" pluralTitle="Roles" data={user?.completeRoles || []}
-                                  setData={updateRoles} editData={editRoles}
-                                  captionField={"name"} identifierField={"id"}/>
+                                  setData={updateRoles} editData={editRoles} captionField={"name"}/>
                     </Grid>
                     <Grid item xs={4}>
                         <ItemList singularTitle="Domain" pluralTitle="Domains" data={user?.domains || []}
-                                  setData={updateDomains} editData={editDomains}
-                                  captionField={"name"} identifierField={"id"}/>
+                                  setData={updateDomains} editData={editDomains} captionField={"name"}/>
                     </Grid>
                     <Grid item xs={4}>
                         <ItemList singularTitle="Group" pluralTitle="Groups" data={user?.groups || []}
-                                  setData={updateGroups} editData={editGroups}
-                                  captionField={"name"} identifierField={"id"}/>
+                                  setData={updateGroups} editData={editGroups} captionField={"name"}/>
                     </Grid>
                 </Grid>
                 <Grid container item className={styles.rootMargin} spacing={2} xs={10} justify="center"

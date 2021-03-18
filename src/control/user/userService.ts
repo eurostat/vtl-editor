@@ -1,18 +1,19 @@
 import { sendDeleteRequest, sendGetRequest, sendPostRequest, sendPutRequest } from "../../web-api/apiService";
-import { buildUrl, CTRL_URL, fetchEntities } from "../controlService";
+import { buildUrl, CTRL_URL, fetchEntities, FORMAT_EXTENDED } from "../controlService";
 import { DomainTransfer, processDomainTransfers } from "../domain/domain";
 import { GroupTransfer, processGroupTransfers } from "../group/group";
 import { processUserTransfer, processUserTransfers, simpleUserPayload, UserPayload, UserTransfer } from "./user";
 
 const USER_URL = CTRL_URL + "/users";
 
-export async function fetchUsers() {
-    return fetchEntities(`${USER_URL}`, "users")
+export async function fetchUsers(format: string = FORMAT_EXTENDED) {
+    return fetchEntities(buildUrl(`${USER_URL}`, {format: format}), "users")
         .then((received: UserTransfer[]) => processUserTransfers(received));
 }
 
-export async function fetchUser(userId: number) {
-    const response = await sendGetRequest(buildUrl(`${USER_URL}/${userId}`, {format: "extended"}));
+export async function fetchUser(userId: number, format: string = FORMAT_EXTENDED, references: boolean = true) {
+    const response = await sendGetRequest(
+        buildUrl(`${USER_URL}/${userId}`, {format: format, references: references}));
     if (response && response.data) return processUserTransfer(response.data);
     return Promise.reject();
 }

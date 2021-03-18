@@ -7,10 +7,10 @@ export const baseUrl = `${window.location.protocol}//${window.location.hostname}
 
 const userManagerConfig: UserManagerSettings = {
     authority: process.env.REACT_APP_AUTHORITY_URL,
-    client_id: "vrm-frontend",
+    client_id: process.env.REACT_APP_AUTHORITY_CLIENT_ID,
     redirect_uri: `${baseUrl}/callback`,
     response_type: "code",
-    scope: "openid profile",
+    scope: "openid profile email",
     silent_redirect_uri: `${baseUrl}/silentRenew.html`,
     post_logout_redirect_uri: `${baseUrl}`,
     automaticSilentRenew: true,

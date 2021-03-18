@@ -3,6 +3,10 @@ import { processUserProfileTransfer } from "./profile/userProfile";
 import { defaultRoles } from "./role";
 
 export const CTRL_URL = process.env.REACT_APP_API_URL + "/ctrl";
+export const PROFILE_URL = CTRL_URL + "/profile";
+
+export const FORMAT_SIMPLE = "simple";
+export const FORMAT_EXTENDED = "extended";
 
 export function buildUrl(path: string, queryParams?: any): string {
     if (!queryParams) return path;
@@ -29,13 +33,19 @@ export async function fetchAllRoles() {
 }
 
 export async function fetchProfile() {
-    const response = await sendGetRequest(buildUrl(`${CTRL_URL}/profile`));
+    const response = await sendGetRequest(buildUrl(`${PROFILE_URL}`));
     if (response && response.data) return processUserProfileTransfer(response.data);
     return Promise.reject();
 }
 
-export async function fetchRoles() {
-    const response = await sendGetRequest(buildUrl(`${CTRL_URL}/roles`));
+export async function fetchProfileRoles() {
+    const response = await sendGetRequest(buildUrl(`${PROFILE_URL}/roles`));
+    if (response && response.data) return response.data;
+    return Promise.reject();
+}
+
+export async function fetchProfileDomains() {
+    const response = await sendGetRequest(buildUrl(`${PROFILE_URL}/domains`));
     if (response && response.data) return response.data;
     return Promise.reject();
 }

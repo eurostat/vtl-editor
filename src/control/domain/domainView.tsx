@@ -1,12 +1,12 @@
 import { Grid, TextField } from "@material-ui/core";
-import _ from "lodash";
 import { useSnackbar } from "notistack";
 import React, { useCallback, useEffect, useState } from "react";
 import ItemList from "../itemList";
 import { useGridStyles } from "../managementView";
 import "../managementView.scss"
+import { nameEmailCaption } from "../user/user";
 import { DomainTransfer } from "./domain";
-import { fetchDomain, fetchDomainGroups, fetchDomainUsers } from "./domainService";
+import { fetchDomain } from "./domainService";
 
 type DomainViewProps = {
     domainId: number,
@@ -19,12 +19,7 @@ export default function DomainView({domainId}: DomainViewProps) {
 
     const loadDomain = useCallback(async (identifier: number) => {
         try {
-            const received = await Promise.all([
-                fetchDomain(identifier),
-                fetchDomainUsers(identifier),
-                fetchDomainGroups(identifier),
-            ]);
-            setDomain(_.mergeWith(received[0], {users: received[1]}, {groups: received[2]}));
+            setDomain(await fetchDomain(identifier));
         } catch {
             enqueueSnackbar(`Failed to load domain.`, {variant: "error"});
         }
@@ -74,12 +69,12 @@ export default function DomainView({domainId}: DomainViewProps) {
                           justify="flex-start"
                           alignItems="flex-start">
                         <Grid container item xs={4}>
-                            <ItemList singularTitle="User" pluralTitle="Users" data={domain?.users}
-                                      captionField={"name"} identifierField={"id"} dense={true}/>
+                            <ItemList dense={true} singularTitle="User" pluralTitle="Users"
+                                      data={domain?.users} captionGet={nameEmailCaption}/>
                         </Grid>
                         <Grid container item xs={4}>
-                            <ItemList singularTitle="Group" pluralTitle="Groups" data={domain?.groups}
-                                      captionField={"name"} identifierField={"id"} dense={true}/>
+                            <ItemList dense={true} singularTitle="Group" pluralTitle="Groups"
+                                      data={domain?.groups} captionField={"name"}/>
                         </Grid>
                     </Grid>
                 </div>

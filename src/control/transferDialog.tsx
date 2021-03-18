@@ -3,55 +3,56 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Button, Modal, ModalBody, ModalFooter } from "react-bootstrap";
 import ModalHeader from "react-bootstrap/ModalHeader";
 import { createModal } from "react-modal-promise";
+import { IdentifiedItem } from "./itemList";
 import "./managementView.scss";
 import TransferList from "./transferList";
 
-type TransferDialogProps = {
+export interface TransferDialogProps<T extends IdentifiedItem> {
     open: any,
     close: any,
     title: string,
     singularItem: string,
     pluralItem: string,
-    selected: any[],
-    fetchAvailable: () => Promise<any[]>,
+    selected: T[],
+    fetchAvailable: () => Promise<T[]>,
     captionField?: string,
-    identifierField?: string,
+    captionGet?: (item: T) => string,
 }
 
-const TransferDialog = ({
-                            open,
-                            close,
-                            title,
-                            singularItem,
-                            pluralItem,
-                            selected,
-                            fetchAvailable,
-                            captionField,
-                            identifierField
-                        }: TransferDialogProps) => {
+function TransferDialog<T extends IdentifiedItem>({
+                                                                     open,
+                                                                     close,
+                                                                     title,
+                                                                     singularItem,
+                                                                     pluralItem,
+                                                                     selected,
+                                                                     fetchAvailable,
+                                                                     captionField,
+                                                                     captionGet,
+                                                                 }: TransferDialogProps<T>) {
     const [available, setAvailable] = useState<any[]>([]);
-    const [comitted, setComitted] = useState<any[] | undefined>(undefined);
+    const [committed, setCommitted] = useState<any[] | undefined>(undefined);
 
     const loadAvailable = useCallback(async () => {
         try {
             const received = await fetchAvailable();
-            const selectedIds = selected.map((item) => identifierField ? item[identifierField] : item);
-            const unique = received.filter((item) => !selectedIds.includes(identifierField ? item[identifierField] : item));
+            const selectedIds = selected.map((item) => item.id);
+            const unique = received.filter((item) => !selectedIds.includes(item.id));
             setAvailable(unique);
         } catch {
         }
-    }, [fetchAvailable, selected, identifierField])
+    }, [fetchAvailable, selected])
 
     useEffect(() => {
         loadAvailable().then();
     }, [loadAvailable])
 
     useEffect(() => {
-        if (comitted === undefined) setComitted(selected);
-    }, [comitted, selected])
+        if (committed === undefined) setCommitted(selected);
+    }, [committed, selected])
 
     const confirmEdit = () => {
-        close(comitted);
+        close(committed);
     }
 
     const cancelEdit = () => close();
@@ -61,8 +62,8 @@ const TransferDialog = ({
             <ModalHeader className="transfer-dialog-title">{title}</ModalHeader>
             <ModalBody>
                 <TransferList singularItem={singularItem} pluralItem={pluralItem}
-                              selected={selected} commitSelected={setComitted} available={available}
-                              captionField={captionField} identifierField={identifierField}/>
+                              selected={selected} commitSelected={setCommitted} available={available}
+                              captionField={captionField} captionGet={captionGet}/>
             </ModalBody>
             <ModalFooter>
                 <Tooltip title="Confirm changes" placement="top" arrow>
@@ -80,4 +81,4 @@ const TransferDialog = ({
     );
 }
 
-export const transferDialog = createModal(TransferDialog);
+export const transferDialog = createModal<TransferDialogProps<any>, any>(TransferDialog);

@@ -1,18 +1,19 @@
 import { sendDeleteRequest, sendGetRequest, sendPostRequest, sendPutRequest } from "../../web-api/apiService";
-import { CTRL_URL, fetchEntities } from "../controlService";
+import { buildUrl, CTRL_URL, fetchEntities, FORMAT_EXTENDED } from "../controlService";
 import { DomainPayload, DomainTransfer, processDomainTransfers } from "../domain/domain";
 import { processUserTransfers, UserPayload, UserTransfer } from "../user/user";
 import { GroupPayload, GroupTransfer, processGroupTransfer, processGroupTransfers, simpleGroupPayload } from "./group";
 
 const GROUP_URL = CTRL_URL + "/groups";
 
-export async function fetchGroups() {
-    return fetchEntities(`${GROUP_URL}`, "groups")
+export async function fetchGroups(format: string = FORMAT_EXTENDED) {
+    return fetchEntities(buildUrl(`${GROUP_URL}`, {format: format}), "groups")
         .then((received: GroupTransfer[]) => processGroupTransfers(received));
 }
 
-export async function fetchGroup(groupId: number) {
-    const response = await sendGetRequest(`${GROUP_URL}/${groupId}`);
+export async function fetchGroup(groupId: number, format: string = FORMAT_EXTENDED, references: boolean = true) {
+    const response = await sendGetRequest(
+        buildUrl(`${GROUP_URL}/${groupId}`, {format: format, references: references}));
     if (response && response.data) return processGroupTransfer(response.data);
     return Promise.reject();
 }

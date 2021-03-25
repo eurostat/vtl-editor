@@ -34,7 +34,7 @@ const ItemMenu = ({node, onMenuEvent}: ItemMenuProps) => {
                     return node.entity.id;
                 }
                 case StoredItemType.FILE: {
-                    return node.entity.parentFolderId;
+                    return node.entity.parentId;
                 }
             }
         }

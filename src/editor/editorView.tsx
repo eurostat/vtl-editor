@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { appliedTheme, triggerResize } from "../main-view/viewSlice";
 import { SdmxResult } from "../sdmx/entity/SdmxResult";
 import { readState } from "../utility/store";
+import { useEffectOnce } from "../utility/useEffectOnce";
 import DetailPane from "./detail-pane/detailPane";
 import {
     appliedVtlVersion,
@@ -49,12 +50,12 @@ const EditorView = ({sdmxResult, errorBoxProps}: EditorViewProps) => {
         }
     }, [loaded, dispatch]);
 
-    useEffect(() => {
+    useEffectOnce(() => {
         if (!loaded) setFile({content: readState(editedContent)});
         return () => {
             dispatch(updateEdited(readState(fileContent)));
         }
-    }, [loaded, dispatch]);
+    });
 
     const onCursorChange = (position: CursorPosition) => {
         dispatch(updateCursor(position));

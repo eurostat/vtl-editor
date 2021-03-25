@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../utility/store";
-import { DEFAULT_FILENAME, EditorFile } from "./editorFile";
+import { DEFAULT_FILENAME, DEFAULT_VERSION, EditorFile } from "./editorFile";
 import { defaultVtlVersion, VtlVersion } from "./settings";
 import { CursorPosition, VtlError } from "./vtl-editor";
 
@@ -11,7 +11,7 @@ const initialState = {
         changed: false,
         remoteId: 0,
         optLock: 0,
-        version: 0
+        version: DEFAULT_VERSION
     },
     cursor: {
         line: 1,

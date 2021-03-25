@@ -151,7 +151,8 @@ export default function TopBar() {
         await updateFileContent(file).then((response) => {
             if (response && response.data) {
                 enqueueSnackbar(`File "${file.name}" saved successfully.`, {variant: "success"});
-                file = Object.assign({}, file, {changed: false, version: response.data.version});
+                file = Object.assign({}, file,
+                    {changed: false, version: response.data.version, optLock: response.data.optLock});
                 dispatch(updateFileMeta(file));
                 dispatch(updateSaved(file.content));
                 dispatch(markUnchanged());
@@ -173,7 +174,7 @@ export default function TopBar() {
             const path = readState(selectedFolderPath);
             await uploadFileDialog(path, file.name)
                 .then((filename: string) => {
-                    const payload: StoredItemPayload = {name: filename, parentFolderId: parentId};
+                    const payload: StoredItemPayload = {name: filename, parentId: parentId};
                     createFile(payload).then((response) => {
                         if (response && response.data) {
                             const saved: StoredItemTransfer = response.data;

@@ -1,7 +1,7 @@
-import React, { MutableRefObject, useEffect, useRef, useState } from "react";
-import useContextMenu from "./useContextMenu";
+import React, { MutableRefObject, useEffect, useRef } from "react";
 import { Motion, spring } from "react-motion";
 import "./contextMenu.scss";
+import useContextMenu from "./useContextMenu";
 
 type ContextMenuProps = {
     menu: any,
@@ -10,21 +10,19 @@ type ContextMenuProps = {
 
 const ContextMenu = ({menu, domElementRef}: ContextMenuProps) => {
     const {xPos, yPos, showMenu} = useContextMenu({domElementRef});
-    const [menuYPos, setMenuYPos] = useState(yPos)
     const menuRef = useRef(null);
+    const menuYPos = useRef<number>(0);
 
     useEffect(() => {
         if (menuRef.current) {
             // @ts-ignore
             const menuHeight = menuRef?.current?.scrollHeight;
             const documentHeight = document.body.getBoundingClientRect().height;
-            if (yPos + menuHeight > documentHeight) {
-                setMenuYPos(documentHeight - menuHeight);
-            } else {
-                setMenuYPos(yPos)
-            }
+            menuYPos.current = (yPos + menuHeight > documentHeight)
+                ? documentHeight - menuHeight
+                : yPos;
         }
-    }, [yPos])
+    })
 
     return (
         <Motion
@@ -35,7 +33,11 @@ const ContextMenu = ({menu, domElementRef}: ContextMenuProps) => {
                 <>
                     {showMenu
                         ? (<div ref={menuRef} className="menu-container"
-                                style={{top: `${menuYPos}px`, left: `${xPos}px`, opacity: interpolatedStyle.opacity}}>
+                                style={{
+                                    top: `${menuYPos.current}px`,
+                                    left: `${xPos}px`,
+                                    opacity: interpolatedStyle.opacity
+                                }}>
                             {menu}
                         </div>)
                         : (<></>)}

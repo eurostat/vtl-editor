@@ -49,7 +49,7 @@ export async function getFileContent(fileId: number) {
 
 export async function updateFileContent(file: EditorFile) {
     const payload = {
-        version: file.version,
+        optLock: file.optLock,
         content: btoa(file.content)
     } as ScriptContentPayload;
     return sendPutRequest(`${REPO_URL}/files/${file.remoteId}/content`, payload, "application/json");
@@ -59,7 +59,7 @@ export async function getFileVersions(fileId: number) {
     return sendGetRequest(`${REPO_URL}/files/${fileId}/versions`);
 }
 
-export async function getVersionContent(fileId: number, versionId: number) {
+export async function getVersionContent(fileId: number, versionId: string) {
     const response = await sendGetRequest(`${REPO_URL}/files/${fileId}/versions/${versionId}`);
     if (response && response.data) {
         const content = atob(response.data.content);
@@ -68,7 +68,7 @@ export async function getVersionContent(fileId: number, versionId: number) {
     return Promise.reject();
 }
 
-export async function restoreFileVersion(fileId: number, versionId: number, payload: { version: number }) {
+export async function restoreFileVersion(fileId: number, versionId: string, payload: { version: string }) {
     const response = await sendPutRequest(`${REPO_URL}/files/${fileId}/versions/${versionId}/restore`,
         payload, "application/json");
     if (response && response.data) return response.data;
@@ -95,7 +95,9 @@ export async function deleteItem(payload: StoredItemPayload, type: StoredItemTyp
             return sendDeleteRequest(`${REPO_URL}/folders/${payload.id}`);
         }
         case StoredItemType.FILE: {
-            return sendDeleteRequest(`${REPO_URL}/files/${payload.id}`);
+            return sendDeleteRequest(`${REPO_URL}/files/${payload.id}`,
+                {optLock: payload.optLock},
+                "application/json");
         }
         default: {
             return Promise.reject();

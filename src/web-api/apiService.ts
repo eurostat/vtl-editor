@@ -37,10 +37,12 @@ export async function sendPutRequest(url: string, payload: object | FormData, co
     return sendRequest(url, RequestMethod.PUT, headers, body);
 }
 
-export async function sendDeleteRequest(url: string) {
+export async function sendDeleteRequest(url: string, payload?: object | FormData, contentType?: string) {
     const headers = new Headers();
     headers.append("Authorization", `Bearer ${readState(accessToken)}`);
-    return sendRequest(url, RequestMethod.DELETE, headers);
+    if (contentType === "application/json") headers.append("Content-Type", "application/json");
+    const body = contentType === "application/json" ? JSON.stringify(payload) : payload;
+    return sendRequest(url, RequestMethod.DELETE, headers, body);
 }
 
 async function sendRequest(url: string, method?: RequestMethod, headers?: Headers | Record<string, string>,

@@ -1,6 +1,7 @@
 export interface FileVersionTransfer {
-    version: number
+    version: string
     updateDate: Date
     updatedBy: string
     restoredFrom: number
+    optLock: number
 }

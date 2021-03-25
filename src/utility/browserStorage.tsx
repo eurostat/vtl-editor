@@ -1,10 +1,9 @@
-import { memo, useEffect, useState } from "react";
+import React, { memo, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { buildFile } from "../editor/editorFile";
-import { changeVtlVersion, appliedVtlVersion, editorFile, storeLoaded } from "../editor/editorSlice";
+import { appliedVtlVersion, changeVtlVersion, editorFile, storeLoaded } from "../editor/editorSlice";
 import { appliedTheme, changeTheme, detailPaneVisible, showDetailPane } from "../main-view/viewSlice";
 import { SdmxStorage } from "../sdmx/SdmxStorage";
-import React from "react";
 import { Log } from "./log";
 
 export enum StorageKey {
@@ -14,7 +13,7 @@ export enum StorageKey {
 }
 
 const BrowserStorage = () => {
-    const [storageLoaded, setStorageLoaded] = useState(false);
+    const storageLoaded = useRef<boolean>(false);
     const dispatch = useDispatch();
     const editedFile = useSelector(editorFile);
     const vtlVersion = useSelector(appliedVtlVersion);
@@ -22,7 +21,7 @@ const BrowserStorage = () => {
     const theme = useSelector(appliedTheme);
 
     useEffect(() => {
-        if (!storageLoaded) {
+        if (!storageLoaded.current) {
             Log.info("Loading state from browser local storage.", "BrowserStorage");
             let storedValues = fromLocalStorage(StorageKey.EDITOR);
             if (storedValues.file) {
@@ -34,12 +33,12 @@ const BrowserStorage = () => {
             storedValues = fromLocalStorage(StorageKey.VIEW);
             if (storedValues.detailPaneVisible) dispatch(showDetailPane(storedValues.detailPaneVisible));
             if (storedValues.theme) dispatch(changeTheme(storedValues.theme));
-            setStorageLoaded(true);
+            storageLoaded.current = true;
         }
-    }, [storageLoaded, dispatch]);
+    }, [dispatch]);
 
     useEffect(() => {
-        if (storageLoaded) {
+        if (storageLoaded.current) {
             toLocalStorage(StorageKey.EDITOR, {
                 ...fromLocalStorage(StorageKey.EDITOR),
                 file: editedFile,
@@ -51,7 +50,7 @@ const BrowserStorage = () => {
                 theme: theme
             });
         }
-    }, [storageLoaded, editedFile, vtlVersion, detailPane, theme])
+    }, [editedFile, vtlVersion, detailPane, theme])
 
     return (
         <></>

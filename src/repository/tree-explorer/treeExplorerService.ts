@@ -77,7 +77,7 @@ export const buildFolderNode = (folder: StoredItemTransfer) => {
     return {
         name: folder.name,
         id: "F" + folder.id,
-        parentId: folder.parentFolderId ? "F" + folder.parentFolderId : undefined,
+        parentId: folder.parentId ? "F" + folder.parentId : undefined,
         toggled: false,
         children: [],
         entity: folder,
@@ -89,7 +89,7 @@ export const buildFileNode = (file: StoredItemTransfer) => {
     return {
         name: file.name,
         id: "f" + file.id,
-        parentId: file.parentFolderId ? "F" + file.parentFolderId : undefined,
+        parentId: file.parentId ? "F" + file.parentId : undefined,
         toggled: false,
         entity: file
     } as TreeNode;

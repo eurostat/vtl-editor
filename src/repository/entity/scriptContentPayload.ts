@@ -1,4 +1,4 @@
 export interface ScriptContentPayload {
-    version: number,
+    optLock: number
     content: string
 }

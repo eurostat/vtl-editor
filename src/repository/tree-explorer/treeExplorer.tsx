@@ -114,7 +114,7 @@ const TreeExplorer = () => {
                         break;
                     }
                     case StoredItemType.FILE: {
-                        dispatch(selectFolder(node.entity.parentFolderId));
+                        dispatch(selectFolder(node.entity.parentId));
                         break;
                     }
                     default: {
@@ -131,7 +131,7 @@ const TreeExplorer = () => {
     const createNewFolder = (parentId?: number) => {
         createItemDialog(StoredItemType.FOLDER)
             .then(async (name: string) => {
-                const response = await createFolder({name: name, parentFolderId: parentId} as StoredItemPayload)
+                const response = await createFolder({name: name, parentId: parentId} as StoredItemPayload)
                     .catch(() => {
                         enqueueSnackbar(`Failed to create folder "${name}".`, {variant: "error"});
                     });
@@ -147,7 +147,7 @@ const TreeExplorer = () => {
     const createNewFile = (parentId?: number) => {
         createItemDialog(StoredItemType.FILE)
             .then(async (name: string) => {
-                const response = await createFile({name: name, parentFolderId: parentId} as StoredItemPayload)
+                const response = await createFile({name: name, parentId: parentId} as StoredItemPayload)
                     .catch(() => {
                         enqueueSnackbar(`Failed to create file "${name}".`, {variant: "error"});
                     });

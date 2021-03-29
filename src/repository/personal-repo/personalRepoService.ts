@@ -1,9 +1,9 @@
-import { EditorFile } from "../editor/editorFile";
-import { sendDeleteRequest, sendGetRequest, sendPostRequest, sendPutRequest } from '../web-api/apiService';
-import { ScriptContentPayload } from "./entity/scriptContentPayload";
-import { StoredItemPayload } from "./entity/storedItemPayload";
-import { StoredItemTransfer } from "./entity/storedItemTransfer";
-import { StoredItemType } from "./entity/storedItemType";
+import { EditorFile } from "../../editor/editorFile";
+import { sendDeleteRequest, sendGetRequest, sendPostRequest, sendPutRequest } from '../../web-api/apiService';
+import { ScriptContentPayload } from "../entity/scriptContentPayload";
+import { StoredItemPayload } from "../entity/storedItemPayload";
+import { StoredItemTransfer } from "../entity/storedItemTransfer";
+import { StoredItemType } from "../entity/storedItemType";
 
 const BASE_URL = process.env.REACT_APP_API_URL;
 const REPO_URL = BASE_URL + "/repo";
@@ -52,7 +52,7 @@ export async function updateFileContent(file: EditorFile) {
         optLock: file.optLock,
         content: btoa(file.content)
     } as ScriptContentPayload;
-    return sendPutRequest(`${REPO_URL}/files/${file.remoteId}/content`, payload, "application/json");
+    return sendPutRequest(`${REPO_URL}/files/${file.id}/content`, payload, "application/json");
 }
 
 export async function getFileVersions(fileId: number) {

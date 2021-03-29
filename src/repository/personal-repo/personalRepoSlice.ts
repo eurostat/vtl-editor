@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { TreeNode } from "react-treebeard";
-import { RootState } from "../utility/store";
+import { RootState } from "../../utility/store";
 
 const initialState = {
     explorerTree: {
@@ -16,8 +16,8 @@ const initialState = {
     }
 } as RepositoryState;
 
-export const repositorySlice = createSlice({
-    name: "repository",
+export const personalRepoSlice = createSlice({
+    name: "personalRepo",
     initialState: initialState,
     reducers: {
         replaceTree(state, action: PayloadAction<ExplorerTreeState>) {
@@ -107,18 +107,18 @@ export interface ExplorerTreeState {
 export const {
     replaceTree, addToTree, replaceNode, deleteNode, updateNode,
     addFolderToTree, addFileToTree, selectFolder, detailFolder, versionFile, compareVersions
-} = repositorySlice.actions;
+} = personalRepoSlice.actions;
 
 export const explorerTree = (state: RootState) => {
-    const stateFolders = state.repository.explorerTree.folders.map((folder) => Object.assign({}, folder, {children: []}));
-    const stateFiles = state.repository.explorerTree.files.map((file) => Object.assign({}, file));
+    const stateFolders = state.personalRepo.explorerTree.folders.map((folder) => Object.assign({}, folder, {children: []}));
+    const stateFiles = state.personalRepo.explorerTree.files.map((file) => Object.assign({}, file));
 
     const addChildren = (parent: TreeNode) => {
         if (parent.children) {
-            const treeFolders = stateFolders.filter((folder) => folder.parentId === parent.id);
-            const treeFiles = stateFiles.filter((file) => file.parentId === parent.id);
-            parent.children.push(...treeFolders, ...treeFiles);
-            treeFolders.forEach((folder) => addChildren(folder));
+            const childFolders = stateFolders.filter((folder) => folder.parentId === parent.id);
+            const childFiles = stateFiles.filter((file) => file.parentId === parent.id);
+            parent.children.push(...childFolders, ...childFiles);
+            childFolders.forEach((folder) => addChildren(folder));
         }
     }
 
@@ -130,17 +130,17 @@ export const explorerTree = (state: RootState) => {
 
 const folderPath = (state: RootState, folderId: number | undefined) => {
     const parentPath = (parentId: string | undefined) => {
-        let path: string = "";
+        let prevPath: string = "";
         if (parentId !== undefined) {
-            const branch = state.repository.explorerTree.folders.find(folder => folder.id === parentId);
-            if (branch) path = parentPath(branch.parentId) + branch.name + "/";
+            const branch = state.personalRepo.explorerTree.folders.find(folder => folder.id === parentId);
+            if (branch) prevPath = parentPath(branch.parentId) + branch.name + "/";
         }
-        return path;
+        return prevPath;
     }
 
     let path: string = "/";
     if (folderId) {
-        const leaf = state.repository.explorerTree.folders.find(folder => folder.entity?.id === folderId);
+        const leaf = state.personalRepo.explorerTree.folders.find(folder => folder.entity?.id === folderId);
         if (leaf) {
             path = path + parentPath(leaf.parentId) + leaf.name + "/";
         }
@@ -148,11 +148,11 @@ const folderPath = (state: RootState, folderId: number | undefined) => {
     return path;
 }
 
-export const detailedFolderPath = (state: RootState) =>  folderPath(state, state.repository.detailedFolder);
-export const selectedFolderPath = (state: RootState) =>  folderPath(state, state.repository.selectedFolder);
-export const selectedFolder = (state: RootState) => state.repository.selectedFolder;
-export const detailedFolder = (state: RootState) => state.repository.detailedFolder;
-export const versionedFile = (state: RootState) => state.repository.versionedFile;
-export const comparedVersions = (state: RootState) => state.repository.comparedVersions;
+export const detailedFolderPath = (state: RootState) =>  folderPath(state, state.personalRepo.detailedFolder);
+export const selectedFolderPath = (state: RootState) =>  folderPath(state, state.personalRepo.selectedFolder);
+export const selectedFolder = (state: RootState) => state.personalRepo.selectedFolder;
+export const detailedFolder = (state: RootState) => state.personalRepo.detailedFolder;
+export const versionedFile = (state: RootState) => state.personalRepo.versionedFile;
+export const comparedVersions = (state: RootState) => state.personalRepo.comparedVersions;
 
-export default repositorySlice.reducer;
+export default personalRepoSlice.reducer;

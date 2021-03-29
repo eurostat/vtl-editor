@@ -8,7 +8,7 @@ import ModalFactory from "react-modal-promise";
 import { useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { useManagerRole, useUserRole } from "../../control/authorized";
-import TreeExplorer from "../../repository/tree-explorer/treeExplorer";
+import PersonalExplorer from "../../repository/personal-repo/personalExplorer";
 import { MenuOption } from "../MenuOption";
 import SettingsPane from "../settingsPane";
 import SidePane from "../side-pane/sidePane";
@@ -22,7 +22,7 @@ export default function Navigation() {
     const [currentMenuElement, setCurrentMenuElement] = useState<MenuOption>(MenuOption.NONE);
     const location = useLocation();
     const memoFileExplorer = useMemo(() => {
-        return (<TreeExplorer/>)
+        return (<PersonalExplorer/>)
     }, [])
     const dispatch = useDispatch();
 

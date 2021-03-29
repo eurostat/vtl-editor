@@ -25,9 +25,9 @@ const BrowserStorage = () => {
             Log.info("Loading state from browser local storage.", "BrowserStorage");
             let storedValues = fromLocalStorage(StorageKey.EDITOR);
             if (storedValues.file) {
-                const {name, content, changed, remoteId, optLock, version} = storedValues.file;
+                const {name, content, changed, repo, id, optLock, version} = storedValues.file;
                 dispatch(storeLoaded(buildFile(name, content, changed,
-                    remoteId, optLock, version)));
+                    repo, id, optLock, version)));
             }
             if (storedValues.vtlVersion) dispatch(changeVtlVersion(storedValues.vtlVersion));
             storedValues = fromLocalStorage(StorageKey.VIEW);

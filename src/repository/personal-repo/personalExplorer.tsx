@@ -1,14 +1,14 @@
 import _ from "lodash";
-import { useSnackbar } from "notistack";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { decorators, TreeNode, TreeTheme } from 'react-treebeard';
-import { buildFile } from "../../editor/editorFile";
-import { storeLoaded } from "../../editor/editorSlice";
-import { StoredItemPayload } from "../entity/storedItemPayload";
-import { StoredItemTransfer } from "../entity/storedItemTransfer";
-import { StoredItemType } from "../entity/storedItemType";
+import {useSnackbar} from "notistack";
+import React, {useCallback, useEffect, useRef, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {useHistory} from "react-router-dom";
+import {decorators, TreeNode, TreeTheme} from 'react-treebeard';
+import {buildFile} from "../../editor/editorFile";
+import {storeLoaded} from "../../editor/editorSlice";
+import {StoredItemPayload} from "../entity/storedItemPayload";
+import {StoredItemTransfer} from "../entity/storedItemTransfer";
+import {StoredItemType} from "../entity/storedItemType";
 import {
     createFile,
     createFolder,
@@ -17,7 +17,7 @@ import {
     getFileContent,
     getFolderContents,
     updateItem
-} from "../repositoryService";
+} from "./personalRepoService";
 import {
     addFileToTree,
     addFolderToTree,
@@ -30,28 +30,28 @@ import {
     selectFolder,
     updateNode,
     versionFile
-} from "../repositorySlice";
-import ContextMenu from "./context-menu/ContextMenu";
-import ItemContainer from "./itemContainer";
-import ItemHeader from "./itemHeader";
-import Toggle from "./tree-beard/components/Decorators/Toggle";
-import TreeBeard from "./tree-beard/components/treeBeard";
-import defaultAnimations from "./tree-beard/themes/animations";
-import defaultTheme from "./tree-beard/themes/defaultTheme";
-import "./treeExplorer.scss";
-import TreeExplorerMenu from "./treeExplorerMenu";
+} from "./personalRepoSlice";
+import ContextMenu from "../tree-explorer/contextMenu";
+import ItemContainer from "../tree-explorer/itemContainer";
+import ItemHeader from "../tree-explorer/itemHeader";
+import Toggle from "../tree-explorer/tree-beard/components/Decorators/Toggle";
+import TreeBeard from "../tree-explorer/tree-beard/components/treeBeard";
+import defaultAnimations from "../tree-explorer/tree-beard/themes/animations";
+import defaultTheme from "../tree-explorer/tree-beard/themes/defaultTheme";
+import "../tree-explorer/treeExplorer.scss";
+import PersonalExplorerMenu from "./personalExplorerMenu";
 import {
     buildFileNode,
     buildFolderNode,
     buildNode,
-    ContextMenuEvent,
-    ContextMenuEventType,
     createItemDialog,
     deleteItemDialog,
     renameItemDialog
-} from "./treeExplorerService";
+} from "./personalExplorerService";
+import {RepositoryType} from "../entity/repositoryType";
+import {ContextMenuEvent, ContextMenuEventType} from "../tree-explorer/contextMenuEvent";
 
-const TreeExplorer = () => {
+const PersonalExplorer = () => {
     const explorerPanelRef = useRef(null);
     const {enqueueSnackbar} = useSnackbar();
     const dispatch = useDispatch();
@@ -166,7 +166,8 @@ const TreeExplorer = () => {
             getFile(entity.id).then((file) => {
                 const nodeUpdate: any = {id: node.id, entity: file};
                 dispatch(updateNode(nodeUpdate));
-                const loadedFile = buildFile(file.name, content, false, file.id, file.optLock, file.version);
+                const loadedFile = buildFile(file.name, content, false,
+                    RepositoryType.Personal, file.id, file.optLock, file.version);
                 dispatch(storeLoaded(loadedFile));
                 enqueueSnackbar(`File "${file.name}" opened successfully.`, {variant: "success"});
                 history.push("/");
@@ -265,10 +266,10 @@ const TreeExplorer = () => {
                            decorators={{...decorators, Toggle: Toggle, Header: ItemHeader, Container: ItemContainer}}
                            animations={defaultAnimations} onMenuEvent={onMenuEvent}/>
             </div>
-            <ContextMenu menu={<TreeExplorerMenu onMenuEvent={onMenuEvent}/>}
+            <ContextMenu menu={<PersonalExplorerMenu onMenuEvent={onMenuEvent}/>}
                          domElementRef={explorerPanelRef}/>
         </>
     )
 }
 
-export default TreeExplorer;
+export default PersonalExplorer;

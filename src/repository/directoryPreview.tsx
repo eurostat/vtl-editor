@@ -6,8 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { convertEntityDates } from "../web-api/apiUtility";
 import { detailTableTheme } from "./detailTableTheme";
 import { StoredItemTransfer } from "./entity/storedItemTransfer";
-import { getFolder, getFolderContents } from "./repositoryService";
-import { detailedFolder, detailedFolderPath, updateNode } from "./repositorySlice";
+import { getFolder, getFolderContents } from "./personal-repo/personalRepoService";
+import { detailedFolder, detailedFolderPath, updateNode } from "./personal-repo/personalRepoSlice";
 
 const DirectoryPreview = () => {
     const folderId = useSelector(detailedFolder);

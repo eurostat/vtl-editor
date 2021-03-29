@@ -15,7 +15,7 @@ import Navigation from "./main-view/navigation/navigation";
 import { detailPaneVisible, sidePaneView, sidePaneVisible } from "./main-view/viewSlice";
 import DirectoryPreview from "./repository/directoryPreview";
 import FileVersions from "./repository/fileVersions";
-import DiffEditor from "./repository/version-compare/diffEditor";
+import DiffEditor from "./repository/diffEditor";
 import { Agency } from "./sdmx/entity/Agency";
 import { DataStructure, FinalStructureEnum } from "./sdmx/entity/DataStructure";
 import { SdmxRegistry } from "./sdmx/entity/SdmxRegistry";

@@ -10,16 +10,16 @@ import OpenDialog from "../../main-view/open-dialog/OpenDialog";
 import ToolItem, { AuthorizedToolItemSettings } from "../../main-view/toolbar/toolItem";
 import { StoredItemPayload } from "../../repository/entity/storedItemPayload";
 import { StoredItemTransfer } from "../../repository/entity/storedItemTransfer";
-import { createFile, updateFileContent } from "../../repository/repositoryService";
-import { addFileToTree, selectedFolder, selectedFolderPath } from "../../repository/repositorySlice";
-import { buildFileNode } from "../../repository/tree-explorer/treeExplorerService";
+import { createFile, updateFileContent } from "../../repository/personal-repo/personalRepoService";
+import { addFileToTree, selectedFolder, selectedFolderPath } from "../../repository/personal-repo/personalRepoSlice";
+import { buildFileNode } from "../../repository/personal-repo/personalExplorerService";
 import { readState } from "../../utility/store";
 import { buildFile, DEFAULT_FILENAME, EditorFile } from "../editorFile";
 import {
     editorFile,
     fileChanged,
     fileName,
-    fileRemoteId,
+    fileId,
     markUnchanged,
     storeLoaded,
     updateFileMeta,
@@ -71,8 +71,8 @@ export default function TopBar() {
         warningText = "Do you want to proceed? " +
             "If save process was canceled, current contents will be lost."
         if (res === "yes") {
-            const remoteId = readState(fileRemoteId);
-            if (remoteId > 0) {
+            const id = readState(fileId);
+            if (id > 0) {
                 await uploadFile();
                 action();
             } else if (await saveFile(warningText)) {
@@ -162,7 +162,7 @@ export default function TopBar() {
 
     const uploadFile = async () => {
         let file = readState(editorFile);
-        if (file.remoteId > 0) {
+        if (file.id > 0) {
             if (!file.changed) {
                 enqueueSnackbar(`File "${file.name}" has not been changed. Skipping save.`,
                     {variant: "info"});
@@ -181,7 +181,7 @@ export default function TopBar() {
                             dispatch(addFileToTree(buildFileNode(saved)));
                             file = Object.assign({}, file,
                                 {
-                                    name: saved.name, remoteId: saved.id,
+                                    name: saved.name, id: saved.id,
                                     optLock: saved.optLock, version: saved.version
                                 });
                             dispatch(updateFileMeta(file));

@@ -4,25 +4,6 @@ import { inputDialog } from "../../main-view/decision-dialog/inputDialog";
 import { StoredItemTransfer } from "../entity/storedItemTransfer";
 import { StoredItemType } from "../entity/storedItemType";
 
-export enum ContextMenuEventType {
-    Refresh,
-    NewFile,
-    NewFolder,
-    OpenFile,
-    SaveFile,
-    RenameItem,
-    DeleteItem,
-    FolderDetails,
-    FileVersions
-}
-
-export interface ContextMenuEvent {
-    type: ContextMenuEventType,
-    node?: TreeNode,
-    parent?: TreeNode,
-    payload?: any
-}
-
 export const createItemDialog = (type: StoredItemType, input?: string) => {
     const decision = async () => {
         const descriptor = type.toLocaleLowerCase();

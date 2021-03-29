@@ -1,13 +1,13 @@
 import { faCaretRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
-import { ContextMenuEvent, ContextMenuEventType } from "./treeExplorerService";
+import {ContextMenuEvent, ContextMenuEventType} from "../tree-explorer/contextMenuEvent";
 
 type TreeExplorerMenuProps = {
     onMenuEvent?: (event: ContextMenuEvent) => any
 }
 
-const TreeExplorerMenu = ({onMenuEvent}: TreeExplorerMenuProps) => {
+const PersonalExplorerMenu = ({onMenuEvent}: TreeExplorerMenuProps) => {
     const [showNewMenu, setShowNewMenu] = useState(false);
 
     const subMenuOperation = (event: any) => {
@@ -43,4 +43,4 @@ const TreeExplorerMenu = ({onMenuEvent}: TreeExplorerMenuProps) => {
     );
 }
 
-export default TreeExplorerMenu;
+export default PersonalExplorerMenu;

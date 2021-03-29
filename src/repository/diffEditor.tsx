@@ -3,11 +3,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { Container } from "react-bootstrap";
 import { MonacoDiffEditor } from "react-monaco-editor";
 import { useSelector } from "react-redux";
-import PageHeader from "../../main-view/page-header/pageHeader";
-import { FileVersionTransfer } from "../entity/fileVersionTransfer";
-import { StoredItemTransfer } from "../entity/storedItemTransfer";
-import { getVersionContent } from "../repositoryService";
-import { comparedVersions } from "../repositorySlice";
+import PageHeader from "../main-view/page-header/pageHeader";
+import { FileVersionTransfer } from "./entity/fileVersionTransfer";
+import { StoredItemTransfer } from "./entity/storedItemTransfer";
+import { getVersionContent } from "./personal-repo/personalRepoService";
+import { comparedVersions } from "./personal-repo/personalRepoSlice";
 import "./diffEditor.scss";
 
 const DiffEditor = () => {

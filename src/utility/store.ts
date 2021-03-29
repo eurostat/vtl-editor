@@ -6,7 +6,7 @@ import { loadUser, reducer as oidcReducer } from "redux-oidc";
 import controlReducer from "../control/controlSlice";
 import editorReducer from "../editor/editorSlice";
 import viewReducer from "../main-view/viewSlice";
-import repositoryReducer from "../repository/repositorySlice";
+import personalRepoReducer from "../repository/personal-repo/personalRepoSlice";
 import authReducer, { declassifyUser } from "./authSlice";
 import userManager from "./userManager";
 
@@ -21,7 +21,7 @@ const rootReducer = combineReducers({
     control: controlReducer,
     editor: editorReducer,
     view: viewReducer,
-    repository: repositoryReducer,
+    personalRepo: personalRepoReducer,
     oidc: oidcReducer,
     router: connectRouter(browserHistory),
 });

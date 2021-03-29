@@ -1,19 +1,20 @@
-import { MuiThemeProvider } from "@material-ui/core/styles";
-import { Cached, CloudDownloadOutlined, RestorePageOutlined } from "@material-ui/icons";
+import {MuiThemeProvider} from "@material-ui/core/styles";
+import {Cached, CloudDownloadOutlined, RestorePageOutlined} from "@material-ui/icons";
 import _ from "lodash";
 import MaterialTable from "material-table";
-import { useSnackbar } from "notistack";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { buildFile } from "../editor/editorFile";
-import { storeLoaded } from "../editor/editorSlice";
-import { convertEntityDates } from "../web-api/apiUtility";
-import { detailTableTheme } from "./detailTableTheme";
-import { FileVersionTransfer } from "./entity/fileVersionTransfer";
-import { StoredItemTransfer } from "./entity/storedItemTransfer";
-import { getFile, getFileVersions, getVersionContent, restoreFileVersion } from "./repositoryService";
-import { compareVersions, updateNode, versionedFile } from "./repositorySlice";
+import {useSnackbar} from "notistack";
+import React, {useCallback, useEffect, useRef, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {useHistory} from "react-router-dom";
+import {buildFile} from "../editor/editorFile";
+import {storeLoaded} from "../editor/editorSlice";
+import {convertEntityDates} from "../web-api/apiUtility";
+import {detailTableTheme} from "./detailTableTheme";
+import {FileVersionTransfer} from "./entity/fileVersionTransfer";
+import {StoredItemTransfer} from "./entity/storedItemTransfer";
+import {getFile, getFileVersions, getVersionContent, restoreFileVersion} from "./personal-repo/personalRepoService";
+import {compareVersions, updateNode, versionedFile} from "./personal-repo/personalRepoSlice";
+import {RepositoryType} from "./entity/repositoryType";
 
 const FileVersions = () => {
     const fileId = useSelector(versionedFile);
@@ -93,7 +94,8 @@ const FileVersions = () => {
     const onOpenVersion = (event: any, row: any) => {
         if (file) {
             getVersionContent(file.id, row.version).then((content) => {
-                const loadedFile = buildFile(file.name, content, false, file.id, file.optLock, file.version);
+                const loadedFile = buildFile(file.name, content, false,
+                    RepositoryType.Personal, file.id, file.optLock, file.version);
                 dispatch(storeLoaded(loadedFile));
                 enqueueSnackbar(`Version "${row.version}" opened successfully.`, {variant: "success"});
                 history.push("/");

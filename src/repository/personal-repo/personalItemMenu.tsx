@@ -2,14 +2,14 @@ import { faCaretRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { StoredItemType } from "../entity/storedItemType";
-import { ContextMenuEvent, ContextMenuEventType } from "./treeExplorerService";
+import {ContextMenuEvent, ContextMenuEventType} from "../tree-explorer/contextMenuEvent";
 
 type ItemMenuProps = {
     node: any,
     onMenuEvent?: (event: ContextMenuEvent) => any
 }
 
-const ItemMenu = ({node, onMenuEvent}: ItemMenuProps) => {
+const PersonalItemMenu = ({node, onMenuEvent}: ItemMenuProps) => {
     // const [showSortMenu, setShowSortMenu] = useState(false);
     const [showNewMenu, setShowNewMenu] = useState(false);
 
@@ -114,4 +114,4 @@ const ItemMenu = ({node, onMenuEvent}: ItemMenuProps) => {
     );
 }
 
-export default ItemMenu;
+export default PersonalItemMenu;

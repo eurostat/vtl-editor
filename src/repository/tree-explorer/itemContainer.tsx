@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
 import { VelocityComponent } from "velocity-react";
-import ContextMenu from "./context-menu/ContextMenu";
-import ItemMenu from "./itemMenu";
-import { ContextMenuEvent } from "./treeExplorerService";
+import ContextMenu from "./contextMenu";
+import PersonalItemMenu from "../personal-repo/personalItemMenu";
+import {ContextMenuEvent} from "./contextMenuEvent";
 
 type ItemContainerProps = {
     customStyles: any,
@@ -41,12 +41,12 @@ const ItemContainer = ({
 
     return (
         <>
-            <div ref={divRef!} style={node.active ? {...style.container} : {...style.link}} onClick={onSelect}>
+            <div ref={divRef} style={node.active ? {...style.container} : {...style.link}} onClick={onSelect}>
                 {!terminal ? renderToggle() : null}
                 <decorators.Header node={node} style={style.header} customStyles={customStyles}/>
             </div>
-            <ContextMenu menu={<ItemMenu node={node} onMenuEvent={onMenuEvent}/>}
-                         domElementRef={divRef!}/>
+            <ContextMenu menu={<PersonalItemMenu node={node} onMenuEvent={onMenuEvent}/>}
+                         domElementRef={divRef}/>
         </>
     );
 

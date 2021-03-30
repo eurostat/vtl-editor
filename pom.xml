@@ -131,6 +131,7 @@
                         <configuration>
                             <sourceDirectory>${project.build.directory}/documentation</sourceDirectory>
                             <includes>userManual.xml</includes>
+                            <htmlCustomization>documentation/html.xsl</htmlCustomization>
                             <targetDirectory>${project.basedir}/src/documentation/contents</targetDirectory>
                             <chunkSectionDepth>2</chunkSectionDepth>
                         </configuration>

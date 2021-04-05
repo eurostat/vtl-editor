@@ -2,36 +2,41 @@ import { faEdit, faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
 import { faCog } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tooltip } from "@material-ui/core";
-import { AccountTreeOutlined, OpenInBrowserOutlined, SupervisorAccount } from "@material-ui/icons";
+import {AccountTreeOutlined, Domain, OpenInBrowserOutlined, SupervisorAccount} from "@material-ui/icons";
 import React, { useMemo, useState } from "react";
 import ModalFactory from "react-modal-promise";
 import { useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { useManagerRole, useUserRole } from "../../control/authorized";
 import PersonalExplorer from "../../repository/personal-repo/personalExplorer";
-import { MenuOption } from "../MenuOption";
+import { MenuOption } from "../menuOption";
 import SettingsPane from "../settingsPane";
 import SidePane from "../side-pane/sidePane";
 import ToolItem, { AuthorizedToolItemSettings } from "../toolbar/toolItem";
 import { switchSidePane } from "../viewSlice";
 import "./navigation.scss"
+import DomainExplorer from "../../repository/domain-repo/domainExplorer";
 
 type MenuContentMap = Record<string, AuthorizedToolItemSettings[]>;
 
 export default function Navigation() {
     const [currentMenuElement, setCurrentMenuElement] = useState<MenuOption>(MenuOption.NONE);
     const location = useLocation();
-    const memoFileExplorer = useMemo(() => {
-        return (<PersonalExplorer/>)
-    }, [])
+    const memoDomainExplorer = useMemo(() => <DomainExplorer/>, []);
+    const memoPersonalExplorer = useMemo(() => <PersonalExplorer/>, []);
     const dispatch = useDispatch();
 
     const forManager = useManagerRole();
     const forUser = useUserRole();
 
-    const toggleFileExplorer = () => {
-        dispatch(switchSidePane(MenuOption.FILE_EXPLORER));
-        setCurrentMenuElement(MenuOption.FILE_EXPLORER);
+    const toggleDomainRepo = () => {
+        dispatch(switchSidePane(MenuOption.DOMAIN_REPO));
+        setCurrentMenuElement(MenuOption.DOMAIN_REPO);
+    }
+
+    const togglePersonalRepo = () => {
+        dispatch(switchSidePane(MenuOption.PERSONAL_REPO));
+        setCurrentMenuElement(MenuOption.PERSONAL_REPO);
     }
 
     const settingsMenuClick = () => {
@@ -44,10 +49,15 @@ export default function Navigation() {
             title: "Editor", key: "vtl-editor", link: "/",
             className: "fa-icon", faIcon: faEdit,
         },
-        "file-explorer": {
-            title: "File Explorer", key: "file-explorer",
-            className: "menu-file-explorer mat-icon",
-            matIcon: <AccountTreeOutlined/>, onClick: toggleFileExplorer,
+        "domain-repo": {
+            title: "Domain Repository", key: "domain-repo",
+            className: "domain-repo-pane mat-icon",
+            matIcon: <Domain/>, onClick: toggleDomainRepo,
+        },
+        "personal-repo": {
+            title: "Personal Repository", key: "personal-repo",
+            className: "personal-repo-pane mat-icon",
+            matIcon: <AccountTreeOutlined/>, onClick: togglePersonalRepo,
             authCheck: forUser,
         },
         "import-dsd": {
@@ -62,14 +72,14 @@ export default function Navigation() {
     }
 
     const menuContentMap: MenuContentMap = {
-        "/": [menuItems["import-dsd"], menuItems["file-explorer"], menuItems["manage-domains"]],
+        "/": [menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["manage-domains"]],
         "/manual": [],
-        "/sdmx": [menuItems["vtl-editor"], menuItems["file-explorer"], menuItems["manage-domains"]],
-        "/folder": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["file-explorer"], menuItems["manage-domains"]],
-        "/diff": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["file-explorer"], menuItems["manage-domains"]],
-        "/versions": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["file-explorer"], menuItems["manage-domains"]],
-        "/manage": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["file-explorer"]],
-        "/profile": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["file-explorer"], menuItems["manage-domains"]]
+        "/sdmx": [menuItems["vtl-editor"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["manage-domains"]],
+        "/folder": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["manage-domains"]],
+        "/diff": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["manage-domains"]],
+        "/versions": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["manage-domains"]],
+        "/manage": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"]],
+        "/profile": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["manage-domains"]]
     };
 
     return (
@@ -102,8 +112,11 @@ export default function Navigation() {
                 <div title={MenuOption.SETTINGS}>
                     <SettingsPane/>
                 </div>
-                <div title={MenuOption.FILE_EXPLORER}>
-                    {memoFileExplorer}
+                <div title={MenuOption.DOMAIN_REPO}>
+                    {memoDomainExplorer}
+                </div>
+                <div title={MenuOption.PERSONAL_REPO}>
+                    {memoPersonalExplorer}
                 </div>
             </SidePane>
             <div style={{display: "inline-block"}}>

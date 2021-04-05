@@ -1,10 +1,10 @@
 import _ from "lodash";
 import {useSnackbar} from "notistack";
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import React, {useCallback, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
 import {decorators, TreeNode, TreeTheme} from 'react-treebeard';
-import {buildFile} from "../../editor/editorFile";
+import {buildTransferFile} from "../../editor/editorFile";
 import {storeLoaded} from "../../editor/editorSlice";
 import {StoredItemPayload} from "../entity/storedItemPayload";
 import {StoredItemTransfer} from "../entity/storedItemTransfer";
@@ -16,6 +16,7 @@ import {
     getFile,
     getFileContent,
     getFolderContents,
+    publishFile,
     updateItem
 } from "./personalRepoService";
 import {
@@ -24,7 +25,8 @@ import {
     addToTree,
     deleteNode,
     detailFolder,
-    explorerTree,
+    personalRepoLoaded,
+    personalRepoTree,
     replaceNode,
     replaceTree,
     selectFolder,
@@ -32,7 +34,7 @@ import {
     versionFile
 } from "./personalRepoSlice";
 import ContextMenu from "../tree-explorer/contextMenu";
-import ItemContainer from "../tree-explorer/itemContainer";
+import PersonalItemContainer from "./personalItemContainer";
 import ItemHeader from "../tree-explorer/itemHeader";
 import Toggle from "../tree-explorer/tree-beard/components/Decorators/Toggle";
 import TreeBeard from "../tree-explorer/tree-beard/components/treeBeard";
@@ -40,22 +42,24 @@ import defaultAnimations from "../tree-explorer/tree-beard/themes/animations";
 import defaultTheme from "../tree-explorer/tree-beard/themes/defaultTheme";
 import "../tree-explorer/treeExplorer.scss";
 import PersonalExplorerMenu from "./personalExplorerMenu";
-import {
-    buildFileNode,
-    buildFolderNode,
-    buildNode,
-    createItemDialog,
-    deleteItemDialog,
-    renameItemDialog
-} from "./personalExplorerService";
+import {buildFileNode, buildFolderNode, buildNode,} from "./personalExplorerService";
 import {RepositoryType} from "../entity/repositoryType";
 import {ContextMenuEvent, ContextMenuEventType} from "../tree-explorer/contextMenuEvent";
+import {
+    createItemDialog,
+    deleteItemDialog,
+    publishItemDialog,
+    renameItemDialog
+} from "../tree-explorer/treeExplorerService";
+import {PublishDialogResult} from "../publishDialog";
+import {useEffectOnce} from "../../utility/useEffectOnce";
 
 const PersonalExplorer = () => {
     const explorerPanelRef = useRef(null);
     const {enqueueSnackbar} = useSnackbar();
     const dispatch = useDispatch();
-    const treeItems = useSelector(explorerTree);
+    const treeItems = useSelector(personalRepoTree);
+    const treeLoaded = useSelector(personalRepoLoaded);
     const history = useHistory();
     const [style] = useState<TreeTheme>((() => {
         const initial: TreeTheme = _.cloneDeep(defaultTheme as TreeTheme);
@@ -85,10 +89,10 @@ const PersonalExplorer = () => {
             });
     }, [enqueueSnackbar]);
 
-    useEffect(() => {
-        fetchFolderContents()
+    useEffectOnce(() => {
+        if (!treeLoaded) fetchFolderContents()
             .then((contents) => dispatch(replaceTree(contents)));
-    }, [fetchFolderContents, dispatch]);
+    });
 
     const onToggle = (node: TreeNode, toggled: boolean) => {
         if (node.children) {
@@ -166,8 +170,7 @@ const PersonalExplorer = () => {
             getFile(entity.id).then((file) => {
                 const nodeUpdate: any = {id: node.id, entity: file};
                 dispatch(updateNode(nodeUpdate));
-                const loadedFile = buildFile(file.name, content, false,
-                    RepositoryType.Personal, file.id, file.optLock, file.version);
+                const loadedFile = buildTransferFile(file, content, RepositoryType.PERSONAL);
                 dispatch(storeLoaded(loadedFile));
                 enqueueSnackbar(`File "${file.name}" opened successfully.`, {variant: "success"});
                 history.push("/");
@@ -193,18 +196,42 @@ const PersonalExplorer = () => {
             });
     }
 
+    const publishItem = (node: TreeNode) => {
+        const item = node.entity;
+        publishItemDialog(item.type, item.name)
+            .then(async (target: PublishDialogResult) => {
+                const descriptor = item.type[0] + item.type.slice(1).toLocaleLowerCase();
+                const payload: StoredItemPayload = Object.assign({}, {
+                    id: item.id,
+                    name: target.name,
+                    parentId: target.domainId
+                });
+                const response = await publishFile(payload, item.type)
+                    .catch(() => {
+                        enqueueSnackbar(`Failed to publish ${item.type.toLocaleLowerCase()} "${target.name}".`, {variant: "error"});
+                    });
+                if (response && response.data) {
+                    // dispatch(replaceNode(buildNode(response.data)));
+                    enqueueSnackbar(`${descriptor} "${item.name}" published successfully.`, {variant: "success"});
+                }
+            })
+            .catch(() => {
+            });
+    }
+
     const removeItem = (node: TreeNode) => {
         const item = node.entity;
         deleteItemDialog(item.type)
             .then(async () => {
+                const descriptor = item.type[0] + item.type.slice(1).toLocaleLowerCase();
                 const payload: StoredItemPayload = Object.assign({}, item);
                 const response = await deleteItem(payload, item.type)
                     .catch(() => {
-                        enqueueSnackbar(`Failed to delete file "${item.name}".`, {variant: "error"});
+                        enqueueSnackbar(`Failed to delete ${item.type.toLocaleLowerCase()} "${item.name}".`, {variant: "error"});
                     });
                 if (response && response.success) {
                     dispatch(deleteNode(node));
-                    enqueueSnackbar(`File "${item.name}" deleted successfully.`, {variant: "success"});
+                    enqueueSnackbar(`${descriptor} "${item.name}" deleted successfully.`, {variant: "success"});
                 }
             })
             .catch(() => {
@@ -214,8 +241,10 @@ const PersonalExplorer = () => {
     const onMenuEvent = (event: ContextMenuEvent): any => {
         switch (event.type) {
             case ContextMenuEventType.Refresh: {
-                fetchFolderContents().then((response) =>
-                    dispatch(replaceTree(response)));
+                fetchFolderContents().then((response) => {
+                    dispatch(replaceTree(response));
+                    enqueueSnackbar(`Contents refreshed successfully.`, {variant: "success"});
+                });
                 break;
             }
             case ContextMenuEventType.NewFolder: {
@@ -232,11 +261,15 @@ const PersonalExplorer = () => {
                 if (event.payload) return renameItem(event.payload);
                 break;
             }
+            case ContextMenuEventType.PublishItem: {
+                if (event.payload) return publishItem(event.payload);
+                break;
+            }
             case ContextMenuEventType.DeleteItem: {
                 if (event.payload) return removeItem(event.payload);
                 break;
             }
-            case ContextMenuEventType.FolderDetails: {
+            case ContextMenuEventType.ContainerDetails: {
                 (async () => {
                     setTimeout(() => {
                         dispatch(detailFolder(event.payload?.id));
@@ -263,7 +296,12 @@ const PersonalExplorer = () => {
         <>
             <div ref={explorerPanelRef} id="file-explorer" className="file-explorer-container">
                 <TreeBeard style={style} data={treeItems} onToggle={onToggle} onSelect={onSelect}
-                           decorators={{...decorators, Toggle: Toggle, Header: ItemHeader, Container: ItemContainer}}
+                           decorators={{
+                               ...decorators,
+                               Toggle: Toggle,
+                               Header: ItemHeader,
+                               Container: PersonalItemContainer
+                           }}
                            animations={defaultAnimations} onMenuEvent={onMenuEvent}/>
             </div>
             <ContextMenu menu={<PersonalExplorerMenu onMenuEvent={onMenuEvent}/>}

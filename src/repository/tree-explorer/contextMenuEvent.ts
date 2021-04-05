@@ -8,8 +8,9 @@ export enum ContextMenuEventType {
     SaveFile,
     RenameItem,
     DeleteItem,
-    FolderDetails,
-    FileVersions
+    ContainerDetails,
+    FileVersions,
+    PublishItem
 }
 
 export interface ContextMenuEvent {
@@ -17,4 +18,8 @@ export interface ContextMenuEvent {
     node?: TreeNode,
     parent?: TreeNode,
     payload?: any
+}
+
+export type TreeExplorerMenuProps = {
+    onMenuEvent?: (event: ContextMenuEvent) => any
 }

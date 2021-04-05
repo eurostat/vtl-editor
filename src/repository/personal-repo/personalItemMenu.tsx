@@ -1,7 +1,7 @@
-import { faCaretRight } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
-import { StoredItemType } from "../entity/storedItemType";
+import {faCaretRight} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import React, {useState} from "react";
+import {StoredItemType} from "../entity/storedItemType";
 import {ContextMenuEvent, ContextMenuEventType} from "../tree-explorer/contextMenuEvent";
 
 type ItemMenuProps = {
@@ -61,6 +61,12 @@ const PersonalItemMenu = ({node, onMenuEvent}: ItemMenuProps) => {
         }
     }
 
+    const onPublishItem = () => {
+        if (node && node.entity) {
+            dispatchMenuEvent({type: ContextMenuEventType.PublishItem, payload: node});
+        }
+    }
+
     const onDeleteItem = () => {
         if (node && node.entity) {
             dispatchMenuEvent({type: ContextMenuEventType.DeleteItem, payload: node});
@@ -69,7 +75,7 @@ const PersonalItemMenu = ({node, onMenuEvent}: ItemMenuProps) => {
 
     const onFolderDetails = () => {
         if (node && node.entity) {
-            dispatchMenuEvent({type: ContextMenuEventType.FolderDetails, payload: node.entity});
+            dispatchMenuEvent({type: ContextMenuEventType.ContainerDetails, payload: node.entity});
         }
     }
 
@@ -91,7 +97,12 @@ const PersonalItemMenu = ({node, onMenuEvent}: ItemMenuProps) => {
                     <li onClick={onNewFile}>File</li>
                 </ul>
             </li>
-            {!node.children ? <li onClick={onOpenFile}>Open</li> : null}
+            {!node.children
+                ? <>
+                    <li onClick={onOpenFile}>Open</li>
+                    <li onClick={onPublishItem}>Publish</li>
+                </>
+                : null}
             <li onClick={onRenameItem}>Rename</li>
             <hr/>
             {node.children

@@ -1,5 +1,5 @@
 export enum RepositoryType {
-    None,
-    Personal,
-    Domain,
+    NONE,
+    PERSONAL,
+    DOMAIN,
 }

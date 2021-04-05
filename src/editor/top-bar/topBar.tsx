@@ -1,31 +1,33 @@
-import { faFile, faFolderOpen, faSave } from "@fortawesome/free-regular-svg-icons";
-import { faCloudUploadAlt } from "@fortawesome/free-solid-svg-icons";
-import { useSnackbar } from "notistack";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useUserRole } from "../../control/authorized";
-import { decisionDialog } from "../../main-view/decision-dialog/decisionDialog";
-import { inputDialog } from "../../main-view/decision-dialog/inputDialog";
-import OpenDialog from "../../main-view/open-dialog/OpenDialog";
-import ToolItem, { AuthorizedToolItemSettings } from "../../main-view/toolbar/toolItem";
-import { StoredItemPayload } from "../../repository/entity/storedItemPayload";
-import { StoredItemTransfer } from "../../repository/entity/storedItemTransfer";
-import { createFile, updateFileContent } from "../../repository/personal-repo/personalRepoService";
-import { addFileToTree, selectedFolder, selectedFolderPath } from "../../repository/personal-repo/personalRepoSlice";
-import { buildFileNode } from "../../repository/personal-repo/personalExplorerService";
-import { readState } from "../../utility/store";
-import { buildFile, DEFAULT_FILENAME, EditorFile } from "../editorFile";
+import {faFile, faFolderOpen, faSave} from "@fortawesome/free-regular-svg-icons";
+import {faCloudUploadAlt} from "@fortawesome/free-solid-svg-icons";
+import {useSnackbar} from "notistack";
+import React, {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {useUserRole} from "../../control/authorized";
+import {decisionDialog} from "../../main-view/decision-dialog/decisionDialog";
+import {inputDialog} from "../../main-view/decision-dialog/inputDialog";
+import OpenDialog from "../../main-view/open-dialog/openDialog";
+import ToolItem, {AuthorizedToolItemSettings} from "../../main-view/toolbar/toolItem";
+import {StoredItemPayload} from "../../repository/entity/storedItemPayload";
+import {StoredItemTransfer} from "../../repository/entity/storedItemTransfer";
+import {createFile, updateFileContent} from "../../repository/personal-repo/personalRepoService";
+import {addFileToTree, selectedFolder, selectedFolderPath} from "../../repository/personal-repo/personalRepoSlice";
+import {buildFileNode} from "../../repository/personal-repo/personalExplorerService";
+import {readState} from "../../utility/store";
+import {buildEmptyFile, buildFile, DEFAULT_FILENAME, EditorFile} from "../editorFile";
 import {
     editorFile,
     fileChanged,
-    fileName,
     fileId,
+    fileName,
     markUnchanged,
     storeLoaded,
     updateFileMeta,
     updateSaved
 } from "../editorSlice";
 import "./topBar.scss";
+import {RepositoryType} from "../../repository/entity/repositoryType";
+import {updateScriptContent} from "../../repository/domain-repo/domainRepoService";
 
 export default function TopBar() {
     const [showDialog, setShowDialog] = useState(false);
@@ -111,7 +113,7 @@ export default function TopBar() {
     };
 
     const createNewFile = () => {
-        const loadedFile = buildFile();
+        const loadedFile = buildEmptyFile();
         dispatch(storeLoaded(loadedFile));
     };
 
@@ -135,7 +137,7 @@ export default function TopBar() {
             const result = await inputDialog({
                 title: "Upload As",
                 text: `File will be uploaded to ${path === "/" ? "root folder" : "folder " + path}.\n` +
-                    "To change this location, select target folder in the File Explorer.\n" +
+                    "To change this location, select target folder in the Personal Repository.\n" +
                     "You can change file name below.",
                 defaultValue: filename || "",
                 acceptButton: {value: "upload", color: "primary"}
@@ -148,7 +150,8 @@ export default function TopBar() {
     }
 
     const updateContent = async (file: EditorFile) => {
-        await updateFileContent(file).then((response) => {
+        const call = file.repository === RepositoryType.DOMAIN ? updateScriptContent : updateFileContent;
+        await call(file).then((response) => {
             if (response && response.data) {
                 enqueueSnackbar(`File "${file.name}" saved successfully.`, {variant: "success"});
                 file = Object.assign({}, file,

@@ -1,9 +1,8 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {RootState} from "../utility/store";
-import {DEFAULT_FILENAME, DEFAULT_VERSION, EditorFile} from "./editorFile";
+import {buildEmptyFile, EditorFile} from "./editorFile";
 import {defaultVtlVersion, VtlVersion} from "./settings";
 import {CursorPosition, VtlError} from "./vtl-editor";
-import {RepositoryType} from "../repository/entity/repositoryType";
 
 export interface EditorState {
     file: EditorFile,
@@ -17,15 +16,7 @@ export interface EditorState {
 }
 
 const initialState = {
-    file: {
-        name: DEFAULT_FILENAME,
-        content: "",
-        changed: false,
-        repo: RepositoryType.None,
-        id: 0,
-        optLock: 0,
-        version: DEFAULT_VERSION
-    },
+    file: buildEmptyFile(),
     cursor: {
         line: 1,
         column: 1
@@ -102,7 +93,7 @@ export const editorFile = (state: RootState) => state.editor.file;
 export const fileName = (state: RootState) => state.editor.file.name;
 export const fileContent = (state: RootState) => state.editor.file.content;
 export const fileChanged = (state: RootState) => state.editor.file.changed;
-export const fileRepo = (state: RootState) => state.editor.file.repo;
+export const fileRepo = (state: RootState) => state.editor.file.repository;
 export const fileId = (state: RootState) => state.editor.file.id;
 export const fileVersion = (state: RootState) => state.editor.file.version;
 export const movedCursor = (state: RootState) => state.editor.movedCursor;

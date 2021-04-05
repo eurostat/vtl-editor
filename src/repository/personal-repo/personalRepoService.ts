@@ -1,9 +1,9 @@
-import { EditorFile } from "../../editor/editorFile";
-import { sendDeleteRequest, sendGetRequest, sendPostRequest, sendPutRequest } from '../../web-api/apiService';
-import { ScriptContentPayload } from "../entity/scriptContentPayload";
-import { StoredItemPayload } from "../entity/storedItemPayload";
-import { StoredItemTransfer } from "../entity/storedItemTransfer";
-import { StoredItemType } from "../entity/storedItemType";
+import {EditorFile} from "../../editor/editorFile";
+import {sendDeleteRequest, sendGetRequest, sendPostRequest, sendPutRequest} from '../../web-api/apiService';
+import {ScriptContentPayload} from "../entity/scriptContentPayload";
+import {StoredItemPayload} from "../entity/storedItemPayload";
+import {StoredItemTransfer} from "../entity/storedItemTransfer";
+import {StoredItemType} from "../entity/storedItemType";
 
 const BASE_URL = process.env.REACT_APP_API_URL;
 const REPO_URL = BASE_URL + "/repo";
@@ -89,6 +89,13 @@ export async function updateItem(payload: StoredItemPayload, type: StoredItemTyp
     }
 }
 
+export async function publishFile(payload: StoredItemPayload, type: StoredItemType) {
+    return type === StoredItemType.FILE
+        ? sendPostRequest(`${REPO_URL}/files/${payload.id}/publish/${payload.parentId}`,
+            {name: payload.name}, "application/json")
+        : Promise.reject();
+}
+
 export async function deleteItem(payload: StoredItemPayload, type: StoredItemType) {
     switch (type) {
         case StoredItemType.FOLDER: {
@@ -103,40 +110,4 @@ export async function deleteItem(payload: StoredItemPayload, type: StoredItemTyp
             return Promise.reject();
         }
     }
-}
-
-export async function buildFormData(payload: EditorFile) {
-    const formData = new FormData();
-    const content = new Blob([payload.content], {type: "text/plain", endings: "native"});
-    const arrayContent = await new Promise<ArrayBuffer>((resolve, reject) => {
-        let result: ArrayBuffer = new ArrayBuffer(1);
-        const reader = new FileReader();
-        reader.onloadend = function(event) {
-            if (event != null && event.target != null) {
-                result = event.target.result as ArrayBuffer;
-            }
-            resolve(result);
-        };
-        reader.onerror = function(event) {
-            reject(event);
-        };
-        reader.readAsArrayBuffer(content);
-    })
-    const byteContent = new Blob([arrayContent], {type: "application/octet-stream"});
-    const metadata = new Blob([JSON.stringify({"version": payload.version})], {type: "application/json"});
-    formData.append('file', byteContent, payload.name);
-    formData.append('uploadInfo', metadata);
-    return formData;
-}
-
-export async function readBlob(blob: Blob) {
-    return new Promise<string>((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = (event) => {
-            if (event.target != null && event.target.result != null) resolve(event.target.result.toString());
-            else reject();
-        };
-        reader.onerror = () => reject();
-        reader.readAsText(blob);
-    });
 }

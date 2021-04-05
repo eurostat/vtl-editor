@@ -1,5 +1,6 @@
 export enum MenuOption {
     SETTINGS = "settings",
-    FILE_EXPLORER = "file-explorer",
+    DOMAIN_REPO = "domain-repo",
+    PERSONAL_REPO = "personal-repo",
     NONE = "none"
 }

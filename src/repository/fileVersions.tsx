@@ -6,7 +6,7 @@ import {useSnackbar} from "notistack";
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
-import {buildFile} from "../editor/editorFile";
+import {buildTransferFile} from "../editor/editorFile";
 import {storeLoaded} from "../editor/editorSlice";
 import {convertEntityDates} from "../web-api/apiUtility";
 import {detailTableTheme} from "./detailTableTheme";
@@ -94,8 +94,7 @@ const FileVersions = () => {
     const onOpenVersion = (event: any, row: any) => {
         if (file) {
             getVersionContent(file.id, row.version).then((content) => {
-                const loadedFile = buildFile(file.name, content, false,
-                    RepositoryType.Personal, file.id, file.optLock, file.version);
+                const loadedFile = buildTransferFile(file, content, RepositoryType.PERSONAL);
                 dispatch(storeLoaded(loadedFile));
                 enqueueSnackbar(`Version "${row.version}" opened successfully.`, {variant: "success"});
                 history.push("/");

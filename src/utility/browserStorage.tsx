@@ -1,10 +1,10 @@
-import React, { memo, useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { buildFile } from "../editor/editorFile";
-import { appliedVtlVersion, changeVtlVersion, editorFile, storeLoaded } from "../editor/editorSlice";
-import { appliedTheme, changeTheme, detailPaneVisible, showDetailPane } from "../main-view/viewSlice";
-import { SdmxStorage } from "../sdmx/SdmxStorage";
-import { Log } from "./log";
+import React, {memo, useEffect, useRef} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {EditorFile} from "../editor/editorFile";
+import {appliedVtlVersion, changeVtlVersion, editorFile, storeLoaded} from "../editor/editorSlice";
+import {appliedTheme, changeTheme, detailPaneVisible, showDetailPane} from "../main-view/viewSlice";
+import {SdmxStorage} from "../sdmx/SdmxStorage";
+import {Log} from "./log";
 
 export enum StorageKey {
     EDITOR = "editor",
@@ -25,9 +25,8 @@ const BrowserStorage = () => {
             Log.info("Loading state from browser local storage.", "BrowserStorage");
             let storedValues = fromLocalStorage(StorageKey.EDITOR);
             if (storedValues.file) {
-                const {name, content, changed, repo, id, optLock, version} = storedValues.file;
-                dispatch(storeLoaded(buildFile(name, content, changed,
-                    repo, id, optLock, version)));
+                const storedFile: EditorFile = storedValues.file;
+                dispatch(storeLoaded(storedFile));
             }
             if (storedValues.vtlVersion) dispatch(changeVtlVersion(storedValues.vtlVersion));
             storedValues = fromLocalStorage(StorageKey.VIEW);

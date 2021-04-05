@@ -1,8 +1,8 @@
-import React, { useRef } from 'react';
-import { VelocityComponent } from "velocity-react";
-import ContextMenu from "./contextMenu";
-import PersonalItemMenu from "../personal-repo/personalItemMenu";
-import {ContextMenuEvent} from "./contextMenuEvent";
+import React, {useRef} from 'react';
+import {VelocityComponent} from "velocity-react";
+import ContextMenu from "../tree-explorer/contextMenu";
+import {ContextMenuEvent} from "../tree-explorer/contextMenuEvent";
+import DomainItemMenu from './domainItemMenu';
 
 type ItemContainerProps = {
     customStyles: any,
@@ -17,10 +17,10 @@ type ItemContainerProps = {
     onMenuEvent?: (event: ContextMenuEvent) => any
 };
 
-const ItemContainer = ({
-                           customStyles, style, decorators, terminal,
-                           onSelect, onClick, animations, node, parent, onMenuEvent
-                       }: ItemContainerProps) => {
+const DomainItemContainer = ({
+                                 customStyles, style, decorators, terminal,
+                                 onSelect, onClick, animations, node, parent, onMenuEvent
+                             }: ItemContainerProps) => {
     const divRef = useRef(null);
 
     const renderToggle = () => {
@@ -45,11 +45,11 @@ const ItemContainer = ({
                 {!terminal ? renderToggle() : null}
                 <decorators.Header node={node} style={style.header} customStyles={customStyles}/>
             </div>
-            <ContextMenu menu={<PersonalItemMenu node={node} onMenuEvent={onMenuEvent}/>}
+            <ContextMenu menu={<DomainItemMenu node={node} onMenuEvent={onMenuEvent}/>}
                          domElementRef={divRef}/>
         </>
     );
 
 }
 
-export default ItemContainer;
+export default DomainItemContainer;

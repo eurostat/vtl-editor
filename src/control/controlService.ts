@@ -1,6 +1,7 @@
 import { sendGetRequest } from "../web-api/apiService";
 import { processUserProfileTransfer } from "./profile/userProfile";
 import { defaultRoles } from "./role";
+import {processDomainTransfers} from "./domain/domain";
 
 export const CTRL_URL = process.env.REACT_APP_API_URL + "/ctrl";
 export const PROFILE_URL = CTRL_URL + "/profile";
@@ -46,6 +47,6 @@ export async function fetchProfileRoles() {
 
 export async function fetchProfileDomains() {
     const response = await sendGetRequest(buildUrl(`${PROFILE_URL}/domains`));
-    if (response && response.data) return response.data;
+    if (response && response.data) return processDomainTransfers(response.data.domains);
     return Promise.reject();
 }

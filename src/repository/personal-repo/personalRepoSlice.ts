@@ -2,11 +2,29 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { TreeNode } from "react-treebeard";
 import { RootState } from "../../utility/store";
 
+export interface ExplorerTreeState {
+    folders: TreeNode[],
+    files: TreeNode[]
+}
+
+export interface RepositoryState {
+    explorerTree: ExplorerTreeState,
+    loaded: boolean
+    selectedFolder: number | undefined
+    detailedFolder: number | undefined
+    versionedFile: number | undefined
+    comparedVersions: {
+        file: any
+        versions: any[]
+    }
+}
+
 const initialState = {
     explorerTree: {
         folders: [],
         files: []
     },
+    loaded: false,
     selectedFolder: undefined,
     detailedFolder: undefined,
     versionedFile: undefined,
@@ -21,7 +39,8 @@ export const personalRepoSlice = createSlice({
     initialState: initialState,
     reducers: {
         replaceTree(state, action: PayloadAction<ExplorerTreeState>) {
-            state.explorerTree = action.payload
+            state.explorerTree = action.payload;
+            state.loaded = true;
         },
         addToTree(state, action: PayloadAction<ExplorerTreeState>) {
             let replacements = action.payload.files.map((item) => item.id);
@@ -88,28 +107,12 @@ export const personalRepoSlice = createSlice({
     }
 })
 
-export interface RepositoryState {
-    explorerTree: ExplorerTreeState
-    selectedFolder: number | undefined
-    detailedFolder: number | undefined
-    versionedFile: number | undefined
-    comparedVersions: {
-        file: any
-        versions: any[]
-    }
-}
-
-export interface ExplorerTreeState {
-    folders: TreeNode[],
-    files: TreeNode[]
-}
-
 export const {
     replaceTree, addToTree, replaceNode, deleteNode, updateNode,
     addFolderToTree, addFileToTree, selectFolder, detailFolder, versionFile, compareVersions
 } = personalRepoSlice.actions;
 
-export const explorerTree = (state: RootState) => {
+export const personalRepoTree = (state: RootState) => {
     const stateFolders = state.personalRepo.explorerTree.folders.map((folder) => Object.assign({}, folder, {children: []}));
     const stateFiles = state.personalRepo.explorerTree.files.map((file) => Object.assign({}, file));
 
@@ -148,6 +151,7 @@ const folderPath = (state: RootState, folderId: number | undefined) => {
     return path;
 }
 
+export const personalRepoLoaded = (state: RootState) => state.personalRepo.loaded;
 export const detailedFolderPath = (state: RootState) =>  folderPath(state, state.personalRepo.detailedFolder);
 export const selectedFolderPath = (state: RootState) =>  folderPath(state, state.personalRepo.selectedFolder);
 export const selectedFolder = (state: RootState) => state.personalRepo.selectedFolder;

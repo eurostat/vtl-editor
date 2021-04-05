@@ -1,11 +1,7 @@
 import { faCaretRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
-import {ContextMenuEvent, ContextMenuEventType} from "../tree-explorer/contextMenuEvent";
-
-type TreeExplorerMenuProps = {
-    onMenuEvent?: (event: ContextMenuEvent) => any
-}
+import {ContextMenuEvent, ContextMenuEventType, TreeExplorerMenuProps} from "../tree-explorer/contextMenuEvent";
 
 const PersonalExplorerMenu = ({onMenuEvent}: TreeExplorerMenuProps) => {
     const [showNewMenu, setShowNewMenu] = useState(false);
@@ -22,7 +18,7 @@ const PersonalExplorerMenu = ({onMenuEvent}: TreeExplorerMenuProps) => {
     const onNewFolder = () => dispatchMenuEvent({type: ContextMenuEventType.NewFolder});
     const onNewFile = () => dispatchMenuEvent({type: ContextMenuEventType.NewFile});
     const onRefresh = () => dispatchMenuEvent({type: ContextMenuEventType.Refresh});
-    const onFolderDetails = () => dispatchMenuEvent({type: ContextMenuEventType.FolderDetails});
+    const onFolderDetails = () => dispatchMenuEvent({type: ContextMenuEventType.ContainerDetails});
 
     return (
         <ul className="menu">

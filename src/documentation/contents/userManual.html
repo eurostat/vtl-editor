@@ -341,7 +341,31 @@
                 VTL files stored in the repository are versioned. Every save operation creates new numbered version.
                 All previous versions are preserved. You can see the version number of currently opened file on the blue
                 bottom bar.
-            </p><div class="docbook.figure"><a name="d0e1072"></a><p class="docbook.title"><b>Figure&nbsp;4.17.&nbsp;File version on the bottom bar of the VTL Editor</b></p><div class="docbook.figure-contents"><div class="docbook.mediaobject" align="center"><img src="./images/repo_editor_file_version.png" align="middle" alt="File version on the bottom bar of the VTL Editor"></div></div></div><br class="docbook.figure-break"></div></div></div><div lang="en" class="docbook.chapter"><div class="docbook.titlepage"><div><div><h1 class="docbook.title"><a name="settings"></a>Chapter&nbsp;5.&nbsp;Settings</h1></div></div></div><p>You can edit your preferences by clicking on <span class="docbook.bold"><strong>Settings</strong></span> in main menu,then will see all the following
+            </p><div class="docbook.figure"><a name="d0e1072"></a><p class="docbook.title"><b>Figure&nbsp;4.17.&nbsp;File version on the bottom bar of the VTL Editor</b></p><div class="docbook.figure-contents"><div class="docbook.mediaobject" align="center"><img src="./images/repo_editor_file_version.png" align="middle" alt="File version on the bottom bar of the VTL Editor"></div></div></div><br class="docbook.figure-break"></div></div></div><div lang="en" class="docbook.chapter"><div class="docbook.titlepage"><div><div><h1 class="docbook.title"><a name="domain_repository"></a>Chapter&nbsp;5.&nbsp;Domain repository</h1></div></div></div><p>
+        Domain repository works identically to personal repository,
+        except that it is a public repository available only to users of a given domain.
+        Just creating a domain doesn't create a repository - it doesn't exists initially.
+        It is only created when first file is published by any user of that domain.
+    </p><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="file_publication"></a>File publication</h2></div></div></div><p>
+            Publication is a tool/feature that is used to <span class="docbook.italic">publish current version of a given file</span>.
+            It means that published file is a perfect copy only until original or published file version change after publication.
+        </p><p>
+            Publication of files in current version of application is made from level of personal repository.
+            Publishing a file creates a <span class="docbook.italic">copy of current version of script file</span>, and then saves file in the repository of selected domain.
+            If this is the <span class="docbook.italic">first file</span> published for this domain &#8211; a repository will be created.
+        </p><p>
+            The version of published file is always "0.1.0". It can be manually updated when needed.
+        </p></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="recycle_bin"></a>Recycle Bin</h2></div></div></div><p>
+            Due to public characteristics of domain repository, it is secured with a two-step deletion of files.
+            Unlike a personal repository, files are not deleted permanently by domain user.
+            They temporarily land in the <span class="docbook.bold"><strong>Recycle Bin</strong></span>.
+            In this state, they are only visible for domain manager and admin through tools made available to them only.
+            Depending on their decision, it can be restored or permanently deleted (no data recovery possible).
+        </p><p>
+            <span class="docbook.bold"><strong>IMPORTANT!</strong></span>
+            Due to fact that after recovery/deletion operation, state of file is not updated - it is required to refresh
+            domain repository by calling context menu on it (right-click) and selecting <span class="docbook.italic">"Refresh"</span> option.
+        </p></div></div><div lang="en" class="docbook.chapter"><div class="docbook.titlepage"><div><div><h1 class="docbook.title"><a name="settings"></a>Chapter&nbsp;6.&nbsp;Settings</h1></div></div></div><p>You can edit your preferences by clicking on <span class="docbook.bold"><strong>Settings</strong></span> in main menu,then will see all the following
         options:
     </p><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: disc; "><li class="docbook.listitem"><p>Change theme color</p></li><li class="docbook.listitem"><p>Switch VTL language version</p></li></ul></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="vrm_language_version"></a>Language Version</h2></div></div></div><p>You have possibility to change the <span class="docbook.bold"><strong>VTL language version</strong></span> in <span class="docbook.bold"><strong>Settings/ VTL Grammar Version</strong></span>. The
             highest (currently 2.0) will be added as a default option.
@@ -360,7 +384,7 @@
                         <span class="docbook.bold"><strong>High Contrast Dark</strong></span>
                         - high contrast
                     </p></li></ul></div><p>
-        </p></div></div><div lang="en" class="docbook.chapter"><div class="docbook.titlepage"><div><div><h1 class="docbook.title"><a name="usr_keyboard_shortcuts"></a>Chapter&nbsp;6.&nbsp;Keyboard Shortcuts</h1></div></div></div><p>The following commands are available when editing a file:</p><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: disc; "><li class="docbook.listitem"><p>
+        </p></div></div><div lang="en" class="docbook.chapter"><div class="docbook.titlepage"><div><div><h1 class="docbook.title"><a name="usr_keyboard_shortcuts"></a>Chapter&nbsp;7.&nbsp;Keyboard Shortcuts</h1></div></div></div><p>The following commands are available when editing a file:</p><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: disc; "><li class="docbook.listitem"><p>
                 <span class="docbook.bold"><strong>F1 or Alt+F1</strong></span>&nbsp; Display the full list of commands
             </p></li><li class="docbook.listitem"><p>
                 <span class="docbook.bold"><strong>Ctrl-C</strong></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Copy the selected text to the
@@ -384,7 +408,7 @@
                 <span class="docbook.bold"><strong>Ctrl-P</strong></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Print active window
             </p></li><li class="docbook.listitem"><p>
                 <span class="docbook.bold"><strong>Ctrl-F</strong></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Find text
-            </p></li></ul></div></div><div lang="en" class="docbook.chapter"><div class="docbook.titlepage"><div><div><h1 class="docbook.title"><a name="accessibility"></a>Chapter&nbsp;7.&nbsp;Accessibility</h1></div></div></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="vrm_accessibility_help"></a>Accessibility Help</h2></div></div></div><p>You can press <span class="docbook.bold"><strong>Alt+F1</strong></span> or <span class="docbook.bold"><strong>Ctrl+F1</strong></span> in Microsoft Edge to trigger the <span class="docbook.bold"><strong>'Show Accessibility
+            </p></li></ul></div></div><div lang="en" class="docbook.chapter"><div class="docbook.titlepage"><div><div><h1 class="docbook.title"><a name="accessibility"></a>Chapter&nbsp;8.&nbsp;Accessibility</h1></div></div></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="vrm_accessibility_help"></a>Accessibility Help</h2></div></div></div><p>You can press <span class="docbook.bold"><strong>Alt+F1</strong></span> or <span class="docbook.bold"><strong>Ctrl+F1</strong></span> in Microsoft Edge to trigger the <span class="docbook.bold"><strong>'Show Accessibility
             Help'
         </strong></span> dialog, while in an
             editor to find out the current position in the editor and to check the state of various accessibility

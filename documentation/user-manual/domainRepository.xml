@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="./docbook.css" type="text/css"?>
+<chapter xml:id="domain_repository" xml:lang="en" version="5.0"
+         xmlns="http://docbook.org/ns/docbook"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://docbook.org/ns/docbook http://docbook.org/xml/5.0/xsd/docbook.xsd">
+
+    <title>Domain Repository</title>
+    <para>
+        Domain repository works identically to personal repository,
+        except that it is a public repository available only to users of a given domain.
+        Just creating a domain doesn't create a repository - it doesn't exists initially.
+        It is only created when first file is published by any user of that domain.
+    </para>
+
+    <section xml:id="file_publication">
+        <title>File publication</title>
+        <para>
+            Publication is a tool/feature that is used to <emphasis role="italic">publish current version of a given file</emphasis>.
+            It means that published file is a perfect copy only until original or published file version change after publication.
+        </para>
+        <para>
+            Publication of files in current version of application is made from level of personal repository.
+            Publishing a file creates a <emphasis role="italic">copy of current version of script file</emphasis>, and then saves file in the repository of selected domain.
+            If this is the <emphasis role="italic">first file</emphasis> published for this domain – a repository will be created.
+        </para>
+        <para>
+            The version of published file is always "0.1.0". It can be manually updated when needed.
+        </para>
+    </section>
+    <section xml:id="recycle_bin">
+        <title>Recycle Bin</title>
+        <para>
+            Due to public characteristics of domain repository, it is secured with a two-step deletion of files.
+            Unlike a personal repository, files are not deleted permanently by domain user.
+            They temporarily land in the <emphasis role="bold">Recycle Bin</emphasis>.
+            In this state, they are only visible for domain manager and admin through tools made available to them only.
+            Depending on their decision, it can be restored or permanently deleted (no data recovery possible).
+        </para>
+        <para>
+            <emphasis role="bold">IMPORTANT!</emphasis>
+            Due to fact that after recovery/deletion operation, state of file is not updated - it is required to refresh
+            domain repository by calling context menu on it (right-click) and selecting <emphasis role="italic">"Refresh"</emphasis> option.
+        </para>
+    </section>
+</chapter>

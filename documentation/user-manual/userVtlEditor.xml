@@ -41,8 +41,9 @@
 
     <section xml:id="create_vtl_file">
         <title>Creating VTL File</title>
-        <para>After opening application, you have the document opened, with empty code field in the editor.
-            You can add new code or upload existing<emphasis role="bold">VTL file</emphasis> from the storage with using in menu option
+        <para>
+            After opening application, you have the document opened, with empty code field in the editor.
+            You can add new code or upload existing <emphasis role="bold">VTL file</emphasis> from the storage with using in editor menu option
             <emphasis role="bold">'Open file'</emphasis>. You can save the file at any time, <emphasis role="bold">VTL Editor</emphasis> also has autosave option, so you can go
             back to adding content even after closing the application.
         </para>
@@ -50,18 +51,17 @@
 
     <section xml:id="save_vtl_file">
         <title>Saving VTL File</title>
-        <para>You can also add changes to the tab with the code. If you click on the <emphasis role="bold">'Save file'</emphasis> option in main menu, you have possibility to
+        <para>You can also add changes to the tab with the code. If you click on the <emphasis role="bold">'Save file'</emphasis> option in editor menu, you have possibility to
             save <emphasis role="bold">VTL file</emphasis> to local storage at any time. Additionally, if you have unsaved changes and application is closed without saving
             file, after reopening editor, it will restore last version of used document. File changes and settings from the last opening are saved automatically and when the
-            application is run, last
-            saved version is automatically loaded.
+            application is run, last saved version is automatically loaded.
         </para>
 
         <para>Procedure of saving <emphasis role="bold">VTL Editor</emphasis> contents to local storage:
         </para>
         <orderedlist>
             <listitem>
-                <para>Choose icon <emphasis role="bold">'Save'</emphasis> in main menu.
+                <para>Choose icon <emphasis role="bold">'Save'</emphasis> in editor menu.
                 </para>
             </listitem>
             <listitem>
@@ -78,46 +78,127 @@
     <section xml:id="load_vtl_file">
         <title>Opening VTL File</title>
         <para>
-            If you click on the ‘<emphasis role="bold">Open file</emphasis>’ option in main menu, you have possibility to load file from an external file into the editor.
-            Aditionally, you have possibility to have opened more than one file. New files will be opened in the new carts, after opening new cart in browser.
+            If you click on the ‘<emphasis role="bold">Open file</emphasis>’ option in editor menu, you have possibility to load external file into the editor.
+            Additionally, you have the option to open more than one file. New additional files will be opened in newly created browser tabs.
         </para>
 
-        <para>Procedure of opening text <emphasis role="bold">VTL file</emphasis> from local storage:
-        </para>
+        <figure>
+            <title>Pop-up window of 'Open file' action</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="./images/editor_open_file.png" align="center" width="90%" scalefit="1"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
+
+        <para>Procedure of opening text <emphasis role="bold">VTL file</emphasis> from local storage:</para>
         <orderedlist>
             <listitem>
-                <para>Go to main menu.</para>
+                <para>Go to editor menu.</para>
             </listitem>
             <listitem>
-                <para>Choose icon
-                    <emphasis role="bold">'Open file'</emphasis>
+                <para>
+                    Choose icon <emphasis role="bold">'Open file'</emphasis>
                 </para>
             </listitem>
             <listitem>
-                <para>You have two options for upload a text <emphasis role="bold">VTL file</emphasis> from local storage:
+                <para>
+                    A pop-up window will appear with the title 'Open File'.
+                    You have two options for upload a text <emphasis role="bold">VTL file</emphasis> from local storage:
                 </para>
                 <itemizedlist mark="circle">
                     <listitem>
-                        <para>choosing button Add file on the pop-up and uploads file from the path to the file on
-                            local storage,
+                        <para>
+                            click on field marked with a dashed line and uploads file from the path to the file on local storage,
                         </para>
                     </listitem>
                     <listitem>
-                        <para>dragging the file and dropping it in the appropriate field, marked with a dashed line,
-                            on the main screen Procedure of opening
-                            <emphasis role="bold">VTL text file.</emphasis>
+                        <para>
+                            dragging the file and dropping it in the appropriate field marked with a dashed line on the main screen.
                         </para>
                     </listitem>
                 </itemizedlist>
+            </listitem>
+            <listitem>
+                <para>
+                    To finalize the opening of the file, press the <emphasis role="bold">'Open file' button</emphasis> on the bottom-right side of the pop-up window.
+                </para>
             </listitem>
         </orderedlist>
     </section>
 
     <section xml:id="search_and_replace">
         <title>Search and Replace</title>
-        <para>You can search for text in a file by pressing <emphasis role="bold">Ctrl + F</emphasis>. This will open up the Find panel on the
-            bottom:
-
+        <para>
+            You can search for text in a file by pressing <emphasis role="bold">Ctrl + F</emphasis>.
+            This will open up the find panel on the top-right side of editor:
+        </para>
+        <figure>
+            <title>Pop-up panel of 'Search' action.</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="./images/editor_search_replace.png" align="center" width="90%" scalefit="1"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
+        <para>In the <emphasis role="bold">find feature</emphasis> you have available all the following functionalities:
+        </para>
+        <itemizedlist>
+            <listitem>
+                <para><emphasis role="bold">(1) Expand/switch mode</emphasis>  – rotates between search and replace mode.</para>
+            </listitem>
+            <listitem>
+                <para><emphasis role="bold">(2) 'Find' input field options from left to right:</emphasis></para>
+                <itemizedlist>
+                    <listitem>
+                        <para><emphasis role="bold">Match Case</emphasis> – switch for case-sensitive search</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Match Whole Word</emphasis> – switch to compare search phrase only to whole words</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Use Regular Expression</emphasis> – treats 'Find' input field value as a regular expression value</para>
+                    </listitem>
+                </itemizedlist>
+            </listitem>
+            <listitem>
+                <para><emphasis role="bold">(3) Search options from left to right:</emphasis></para>
+                <itemizedlist>
+                    <listitem>
+                        <para><emphasis role="bold">Result</emphasis> – shows results of search in the form of "X of Y", where X is the number of current match and Y is overall number of found matches</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Previous match</emphasis> – allows you to reverse the normal direction of search and find the previous match (if any).</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Next match</emphasis> – moves you to next match (if any).</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Find in selection</emphasis> – search will be limited to the selected text/code only</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Close</emphasis> – closes search panel</para>
+                    </listitem>
+                </itemizedlist>
+            </listitem>
+            <listitem>
+                <para><emphasis role="bold">(4) Preserve Case</emphasis> – forces replace to preserve case after replacement.
+                    Applies only to characters that are within length of replaced phrase</para>
+            </listitem>
+            <listitem>
+                <para><emphasis role="bold">(5) Replace options from left to right:</emphasis></para>
+                <itemizedlist>
+                    <listitem>
+                        <para><emphasis role="bold">Replace</emphasis> – replaces actual match only</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Replace All</emphasis> – replaces ALL found matches</para>
+                    </listitem>
+                </itemizedlist>
+            </listitem>
+        </itemizedlist>
+        <para><emphasis role="bold">Description of search usage:</emphasis></para>
+        <para>
             Enter your search term here and press <emphasis role="bold">Enter</emphasis>. You can navigate between matches by
             continuously hitting <emphasis role="bold">Enter</emphasis> (or <emphasis role="bold">Shift + Enter</emphasis> to go backwards). The searched phrase is highlighted
             in the editor and scrollbar.
@@ -155,7 +236,8 @@
 
     <section xml:id="autocomplete">
         <title>Autocomplete</title>
-        <para>The editor supports autocomplete of VTL elements and when you type a letter or hit <emphasis role="bold">Ctrl+Space</emphasis>,
+        <para>
+            The editor supports autocomplete of VTL elements and when you type a letter or hit <emphasis role="bold">Ctrl+Space</emphasis>,
             you will see a list of autocomplete suggestions. After choosing name from the list, by using mouse cursor or
             selecting with keyboard, selected keyword is added to the code.
         </para>
@@ -163,7 +245,8 @@
 
     <section xml:id="display_content_help">
         <title>Context Help</title>
-        <para>Context help regarding <emphasis role="bold">VTL syntax elements and snippet</emphasis> are displayed in the editor, after
+        <para>
+            Context help regarding <emphasis role="bold">VTL syntax elements and snippet</emphasis> are displayed in the editor, after
             moving the cursor over the name and selecting the <emphasis role="bold">'i'</emphasis> icon in the line with the selected name.
             <emphasis role="bold">Context help</emphasis>
             is displayed during typing, as shown in the example:
@@ -172,7 +255,8 @@
 
     <section xml:id="check_grammar">
         <title>VTL Syntax Check</title>
-        <para>For the content of the files, is checked structure. In case of syntax errors, they are underlined in
+        <para>
+            For the content of the files, is checked structure. In case of syntax errors, they are underlined in
             application and details are added on the bottom error panel. Additionally, after moving your
             cursor to the place with error, you will see the error details.
         </para>
@@ -181,9 +265,8 @@
     <section xml:id="display_errors">
         <title>Syntax Errors</title>
         <para>
-            <emphasis role="bold">VTL Editor</emphasis>
-            displays of potential errors and warnings in a dedicated section of the page and on
-            the bottom panel. As default blue panel is collapsed. After press arrow on the left, you will see
+            <emphasis role="bold">VTL Editor</emphasis> displays potential errors and warnings in a dedicated page section
+            and bottom panel. As default blue panel is collapsed. After press arrow on the left, you will see
             the list in the panel with line, column and message of <emphasis role="bold">syntax or grammar error</emphasis>. In the code, the
             position with error has red underline.
         </para>

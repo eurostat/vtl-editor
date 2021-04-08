@@ -1,10 +1,20 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { TreeNode } from "react-treebeard";
-import { RootState } from "../../utility/store";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {TreeNode} from "react-treebeard";
+import {RootState} from "../../utility/store";
+import {RepositoryType} from "../entity/repositoryType";
+import {StoredItemTransfer} from "../entity/storedItemTransfer";
+import {FileVersionTransfer} from "../entity/fileVersionTransfer";
 
 export interface ExplorerTreeState {
     folders: TreeNode[],
     files: TreeNode[]
+}
+
+export interface VersionCompareState {
+    file: StoredItemTransfer | undefined
+    versions: FileVersionTransfer[]
+    repository: RepositoryType
+
 }
 
 export interface RepositoryState {
@@ -13,10 +23,7 @@ export interface RepositoryState {
     selectedFolder: number | undefined
     detailedFolder: number | undefined
     versionedFile: number | undefined
-    comparedVersions: {
-        file: any
-        versions: any[]
-    }
+    comparedVersions: VersionCompareState
 }
 
 const initialState = {
@@ -30,7 +37,8 @@ const initialState = {
     versionedFile: undefined,
     comparedVersions: {
         file: undefined,
-        versions: []
+        versions: [],
+        repository: RepositoryType.NONE
     }
 } as RepositoryState;
 
@@ -99,7 +107,7 @@ export const personalRepoSlice = createSlice({
         versionFile(state, action: PayloadAction<number | undefined>) {
             state.versionedFile = action.payload
         },
-        compareVersions(state, action: PayloadAction<{ file: any, versions: any[] }>) {
+        compareVersions(state, action: PayloadAction<VersionCompareState>) {
             const compare = Object.assign({}, action.payload);
             if (compare.versions.length > 2) compare.versions = compare.versions.slice(0, 3);
             state.comparedVersions = compare;

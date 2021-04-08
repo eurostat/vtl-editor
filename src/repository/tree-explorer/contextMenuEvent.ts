@@ -8,9 +8,12 @@ export enum ContextMenuEventType {
     SaveFile,
     RenameItem,
     DeleteItem,
+    RestoreItem,
     ContainerDetails,
     FileVersions,
-    PublishItem
+    PublishItem,
+    IncrementVersion,
+    FinalizeVersion
 }
 
 export interface ContextMenuEvent {

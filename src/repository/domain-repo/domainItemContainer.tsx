@@ -46,7 +46,7 @@ const DomainItemContainer = ({
                 <decorators.Header node={node} style={style.header} customStyles={customStyles}/>
             </div>
             <ContextMenu menu={<DomainItemMenu node={node} onMenuEvent={onMenuEvent}/>}
-                         domElementRef={divRef}/>
+                         node={node} domElementRef={divRef}/>
         </>
     );
 

@@ -24,3 +24,7 @@ export function isScript(node: TreeNode) {
 export function isBinned(node: TreeNode) {
     return !!node.type && node.type === NodeType.BINNED;
 }
+
+export function hasMenu(node: TreeNode) {
+    return !!node && !!node.type && node.type !== NodeType.DOMAIN;
+}

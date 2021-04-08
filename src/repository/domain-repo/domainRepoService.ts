@@ -6,6 +6,8 @@ import {buildContainerBase} from "../repositoryService";
 import {EditorFile} from "../../editor/editorFile";
 import {ScriptContentPayload} from "../entity/scriptContentPayload";
 import {StoredItemType} from "../entity/storedItemType";
+import {IncrementVersionPayload} from "../entity/incrementVersionPayload";
+import {ROLE_MANAGER} from "../../control/authorized";
 
 const BASE_URL = process.env.REACT_APP_API_URL;
 const REPO_URL = BASE_URL + "/repo/domains";
@@ -13,10 +15,11 @@ const REPO_URL = BASE_URL + "/repo/domains";
 export interface DomainRepoContainer {
     name: string
     childType: NodeType
+    role?: string
 }
 
-export const domainRepoContainers: DomainRepoContainer[] = [{name: "Scripts", childType: NodeType.SCRIPT},
-    {name: "Recycle Bin", childType: NodeType.BINNED}];
+export const domainRepoContainers: DomainRepoContainer[] = [{name: "Scripts", childType: NodeType.SCRIPT,},
+    {name: "Recycle Bin", childType: NodeType.BINNED, role: ROLE_MANAGER}];
 
 export async function fetchDomainRepository() {
     const response = await sendGetRequest(REPO_URL);
@@ -31,7 +34,7 @@ export async function fetchDomainScripts(domain: TreeNode) {
         const response = await sendGetRequest(`${REPO_URL}/${domain.entity.id}/files`);
         if (response && response.data)
             return response.data
-                .map((script: StoredItemTransfer) => buildScriptNode(script, domain.id));
+                .map((script: StoredItemTransfer) => buildScriptNode(script, domain.id)) as TreeNode[];
     }
     return Promise.reject();
 }
@@ -41,29 +44,28 @@ export async function fetchDomainBinned(domain: TreeNode) {
         const response = await sendGetRequest(`${REPO_URL}/${domain.entity.id}/bin/files`);
         if (response && response.data)
             return response.data
-                .map((script: StoredItemTransfer) => buildBinnedNode(script, domain.id));
+                .map((script: StoredItemTransfer) => buildBinnedNode(script, domain.id)) as TreeNode[];
     }
     return Promise.reject();
 }
 
-export async function fetchScriptContent(script: TreeNode) {
-    if (script.entity && script.entity.id && script.entity.parentId) {
+export async function fetchScript(script: StoredItemTransfer) {
+    if (script.id && script.parentId) {
         const response =
-            await sendGetRequest(`${REPO_URL}/${script.entity.parentId}/files/${script.entity.id}/content`);
+            await sendGetRequest(`${REPO_URL}/${script.parentId}/files/${script.id}`);
+        if (response && response.data) return response.data as StoredItemTransfer;
+    }
+    return Promise.reject();
+}
+
+export async function fetchScriptContent(script: StoredItemTransfer) {
+    if (script.id && script.parentId) {
+        const response =
+            await sendGetRequest(`${REPO_URL}/${script.parentId}/files/${script.id}/content`);
         if (response && response.data) {
             const content = atob(response.data.content);
             if (content !== undefined) return content;
         }
-    }
-    return Promise.reject();
-}
-
-export async function fetchScript(node: TreeNode) {
-    if (node.entity && node.entity.id && node.entity.parentId) {
-        const item: StoredItemTransfer = node.entity;
-        const response =
-            await sendGetRequest(`${REPO_URL}/${item.parentId}/files/${item.id}`);
-        if (response && response.data) return response.data as StoredItemTransfer;
     }
     return Promise.reject();
 }
@@ -76,11 +78,63 @@ export async function updateScriptContent(file: EditorFile) {
     return sendPutRequest(`${REPO_URL}/${file.parentId}/files/${file.id}/content`, payload, "application/json");
 }
 
+export async function fetchScriptVersions(script: StoredItemTransfer) {
+    if (script.id && script.parentId) {
+        return sendGetRequest(`${REPO_URL}/${script.parentId}/files/${script.id}/versions`);
+    }
+    return Promise.reject();
+}
+
+export async function fetchScriptVersionContent(script: StoredItemTransfer, versionId: string) {
+    if (script.id && script.parentId) {
+        const response = await sendGetRequest(`${REPO_URL}/${script.parentId}/files/${script.id}/versions/${versionId}`);
+        if (response && response.data) {
+            const content = atob(response.data.content);
+            if (content !== undefined) return content;
+        }
+    }
+    return Promise.reject();
+}
+
+export async function restoreScriptVersion(script: StoredItemTransfer, versionId: string) {
+    const response = await sendPutRequest(`${REPO_URL}/${script.parentId}/files/${script.id}/versions/${versionId}/restore`,
+        {optLock: script.optLock}, "application/json");
+    if (response && response.data) return response.data;
+    return Promise.reject();
+}
+
+export async function incrementScriptVersion(item: StoredItemTransfer, payload: IncrementVersionPayload) {
+    return item.type === StoredItemType.FILE
+        ? sendPutRequest(`${REPO_URL}/${item.parentId}/files/${item.id}/versions/increment`,
+            payload, "application/json")
+        : Promise.reject();
+}
+
 export async function deleteDomainItem(node: TreeNode) {
     if (node.entity && node.entity.id && node.entity.type && node.entity.parentId) {
         const item: StoredItemTransfer = node.entity;
         return item.type === StoredItemType.FILE
             ? sendDeleteRequest(`${REPO_URL}/${item.parentId}/files/${item.id}`,
+                {optLock: item.optLock}, "application/json")
+            : Promise.reject();
+    }
+}
+
+export async function deleteBinnedItem(node: TreeNode) {
+    if (node.type && node.entity && node.entity.id && node.entity.type && node.entity.parentId) {
+        const item: StoredItemTransfer = node.entity;
+        return node.type === NodeType.BINNED
+            ? sendDeleteRequest(`${REPO_URL}/${item.parentId}/bin/files/${item.id}`,
+                {optLock: item.optLock}, "application/json")
+            : Promise.reject();
+    }
+}
+
+export async function restoreBinnedItem(node: TreeNode) {
+    if (node.type && node.entity && node.entity.id && node.entity.type && node.entity.parentId) {
+        const item: StoredItemTransfer = node.entity;
+        return node.type === NodeType.BINNED
+            ? sendPutRequest(`${REPO_URL}/${item.parentId}/bin/files/${item.id}/restore`,
                 {optLock: item.optLock}, "application/json")
             : Promise.reject();
     }

@@ -4,17 +4,18 @@ import { Button, Modal, ModalBody, ModalFooter } from "react-bootstrap";
 import ModalHeader from "react-bootstrap/ModalHeader";
 import { createModal } from "react-modal-promise";
 
-type DecisionModalInputProps = {
+export type DecisionModalInputProps = {
     open: any,
     close: any,
     title: string,
     text: string,
     defaultValue?: string,
+    subject?: any,
     acceptButton?: DecisionModalButton,
     cancelButton?: DecisionModalButton,
 }
 
-type DecisionModalButton = {
+export type DecisionModalButton = {
     value: string,
     color: "primary" | "secondary",
     className?: string
@@ -24,11 +25,9 @@ const InputDialog = ({open, close, text, defaultValue, title, acceptButton, canc
     const {enqueueSnackbar} = useSnackbar();
     const onAcceptButton = () => {
         const inputEl = document.getElementById("inputVal") as HTMLInputElement;
-        const inputValue: string = inputEl.value;
-        if (!inputValue || !inputValue.trim()) {
-            enqueueSnackbar(`Input cannot be empty`, {
-                variant: "warning"
-            });
+        const inputValue = !!inputEl.value ? inputEl.value.trim() : "";
+        if (inputValue === "") {
+            enqueueSnackbar(`Input cannot be empty`, {variant: "warning"});
         } else {
             close(inputValue);
         }

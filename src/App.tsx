@@ -25,6 +25,8 @@ import { SdmxStorage } from "./sdmx/SdmxStorage";
 import SdmxView from "./sdmx/sdmxView";
 import { loggedIn, provideRoles } from "./utility/authSlice";
 import BrowserStorage, { getSdmxStoredValues, setSdmxStorageValue } from "./utility/browserStorage";
+import DomainFolderDetails from "./repository/domain-repo/domainFolderDetails";
+import DomainScriptVersions from "./repository/domain-repo/domainScriptVersions";
 
 export default function App() {
     /*SDMX STATES */
@@ -145,6 +147,8 @@ export default function App() {
                             <Route exact path="/sdmx"><SdmxView {...SDMXViewProps}/></Route>
                             {forUser(<Route exact path="/folder"><DirectoryPreview/></Route>)}
                             {forUser(<Route exact path="/versions"><FileVersions/></Route>)}
+                            <Route exact path="/domainfolder"><DomainFolderDetails/></Route>
+                            <Route exact path="/domainversions"><DomainScriptVersions/></Route>
                             {forUser(<Route exact path="/diff"><DiffEditor/></Route>)}
                             {forManager(<Route exact path="/manage"><ManagementView/></Route>)}
                             <Route exact path="/profile"><Profile/></Route>

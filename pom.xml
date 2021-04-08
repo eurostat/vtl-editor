@@ -270,6 +270,8 @@
                                 <REACT_APP_API_URL>${deploy.api.url}</REACT_APP_API_URL>
                                 <REACT_APP_AUTHORITY_URL>${deploy.authority.url}</REACT_APP_AUTHORITY_URL>
                                 <REACT_APP_AUTHORITY_CLIENT_ID>${deploy.authority.clientId}</REACT_APP_AUTHORITY_CLIENT_ID>
+                                <REACT_APP_AUTHORITY_RESPONSE>${deploy.authority.response}</REACT_APP_AUTHORITY_RESPONSE>
+                                <REACT_APP_AUTHORITY_SCOPE>${deploy.authority.scope}</REACT_APP_AUTHORITY_SCOPE>
                                 <GENERATE_SOURCEMAP>${deploy.sourcemap}</GENERATE_SOURCEMAP>
                             </environmentVariables>
                         </configuration>
@@ -315,6 +317,8 @@
                 <deploy.api.url>http://192.168.1.2:8080/vrm-backend/api</deploy.api.url>
                 <deploy.authority.url>http://</deploy.authority.url>
                 <deploy.authority.clientId></deploy.authority.clientId>
+                <deploy.authority.response>code</deploy.authority.response>
+                <deploy.authority.scope>openid profile email</deploy.authority.scope>
             </properties>
         </profile>
 
@@ -328,6 +332,8 @@
                 <deploy.api.url>http://localhost:7001/vrm-backend/api</deploy.api.url>
                 <deploy.authority.url>http://</deploy.authority.url>
                 <deploy.authority.clientId></deploy.authority.clientId>
+                <deploy.authority.response>code</deploy.authority.response>
+                <deploy.authority.scope>openid profile email</deploy.authority.scope>
             </properties>
         </profile>
 
@@ -341,6 +347,8 @@
                 <deploy.api.url>https://intragate.test.ec.europa.eu/vrm-backend/api</deploy.api.url>
                 <deploy.authority.url>https://</deploy.authority.url>
                 <deploy.authority.clientId></deploy.authority.clientId>
+                <deploy.authority.response>code</deploy.authority.response>
+                <deploy.authority.scope>openid profile email</deploy.authority.scope>
             </properties>
         </profile>
 
@@ -354,6 +362,8 @@
                 <deploy.api.url>https://intragate.test.ec.europa.eu/vrm-backend/api</deploy.api.url>
                 <deploy.authority.url>https://</deploy.authority.url>
                 <deploy.authority.clientId></deploy.authority.clientId>
+                <deploy.authority.response>id_token</deploy.authority.response>
+                <deploy.authority.scope>openid profile email</deploy.authority.scope>
             </properties>
         </profile>
 

@@ -7,22 +7,7 @@ import {CircularProgress, TextField} from "@material-ui/core";
 import {Autocomplete} from "@material-ui/lab";
 import {DomainTransfer} from "../control/domain/domain";
 import {fetchProfileDomains} from "../control/controlService";
-
-type DecisionModalInputProps = {
-    open: any,
-    close: any,
-    title: string,
-    text: string,
-    defaultValue?: string,
-    acceptButton?: DecisionModalButton,
-    cancelButton?: DecisionModalButton,
-}
-
-type DecisionModalButton = {
-    value: string,
-    color: "primary" | "secondary",
-    className?: string
-}
+import {DecisionModalButton, DecisionModalInputProps} from "../main-view/decision-dialog/inputDialog";
 
 export interface PublishDialogResult {
     name: string
@@ -66,11 +51,10 @@ const PublishDialog = ({
             });
     }, [loadDomains]);
 
-
     const onAcceptButton = () => {
-        const nameInnputEl = document.getElementById("nameInput") as HTMLInputElement;
-        const name: string = nameInnputEl.value;
-        if (!name || !name.trim()) {
+        const inputEl = document.getElementById("nameInput") as HTMLInputElement;
+        const name = !!inputEl.value ? inputEl.value.trim() : "";
+        if (name === "") {
             enqueueSnackbar(`Name cannot be empty`, {variant: "warning"});
             return;
         }
@@ -86,7 +70,6 @@ const PublishDialog = ({
     const firstLetterUpperCase = (value: string) => {
         return value.charAt(0).toUpperCase() + value.slice(1);
     }
-
 
     const onDomainChange = (event: any, newDomain: DomainTransfer | null) => {
         setDomain(newDomain);

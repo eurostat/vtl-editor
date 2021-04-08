@@ -65,30 +65,43 @@ const checkAuthority = (authenticated: boolean, roles: string[],
         : null;
 }
 
-const curriedAuthority = _.curry(checkAuthority);
+const curriedCheckAuthority = _.curry(checkAuthority);
 
-export function useAuthority() {
+export function useAuthorityCheck() {
     const authenticated = useSelector(loggedIn);
     const roles = useSelector(grantedRoles);
-    return curriedAuthority(authenticated, roles);
+    return curriedCheckAuthority(authenticated, roles);
 }
 
 export function useVisitorRole() {
-    const authority = useAuthority()
+    const authority = useAuthorityCheck()
     return authority([], []);
 }
 
 export function useAdminRole() {
-    const authority = useAuthority()
+    const authority = useAuthorityCheck()
     return authority([ROLE_ADMIN], []);
 }
 
 export function useManagerRole() {
-    const authority = useAuthority()
+    const authority = useAuthorityCheck()
     return authority([ROLE_ADMIN, ROLE_MANAGER], []);
 }
 
 export function useUserRole() {
-    const authority = useAuthority()
+    const authority = useAuthorityCheck()
     return authority([ROLE_ADMIN, ROLE_MANAGER, ROLE_USER], []);
+}
+
+const confirmAuthority = (authenticated: boolean, roles: string[],
+                        authority: string) => {
+    return (authenticated && hasAllAuthorities(roles, [authority]));
+}
+
+const curriedConfirmAuthority = _.curry(confirmAuthority);
+
+export function useRole() {
+    const authenticated = useSelector(loggedIn);
+    const roles = useSelector(grantedRoles);
+    return curriedConfirmAuthority(authenticated, roles);
 }

@@ -16,6 +16,7 @@ import {
     getFile,
     getFileContent,
     getFolderContents,
+    incrementFileVersion,
     publishFile,
     updateItem
 } from "./personalRepoService";
@@ -48,11 +49,14 @@ import {ContextMenuEvent, ContextMenuEventType} from "../tree-explorer/contextMe
 import {
     createItemDialog,
     deleteItemDialog,
+    incrementVersionDialog,
     publishItemDialog,
     renameItemDialog
 } from "../tree-explorer/treeExplorerService";
 import {PublishDialogResult} from "../publishDialog";
 import {useEffectOnce} from "../../utility/useEffectOnce";
+import {buildIncrementPayload} from "../entity/incrementVersionPayload";
+import {IncrementDialogResult} from "../incrementDialog";
 
 const PersonalExplorer = () => {
     const explorerPanelRef = useRef(null);
@@ -82,27 +86,26 @@ const PersonalExplorer = () => {
                         (file: StoredItemTransfer) => buildFileNode(file));
                 }
                 return {folders: folders, files: files};
-            })
-            .catch(() => {
-                enqueueSnackbar(`Failed to load folder contents.`, {variant: "error"});
-                return {folders: folders, files: files};
             });
-    }, [enqueueSnackbar]);
+    }, []);
 
     useEffectOnce(() => {
         if (!treeLoaded) fetchFolderContents()
-            .then((contents) => dispatch(replaceTree(contents)));
+            .then((contents) => dispatch(replaceTree(contents)))
+            .catch(() => enqueueSnackbar(`Failed to load contents.`, {variant: "error"}));
     });
 
     const onToggle = (node: TreeNode, toggled: boolean) => {
         if (node.children) {
             const baseUpdate: any = {id: node.id, toggled: toggled};
             if (node.loading) {
-                fetchFolderContents(node.entity.id).then((response) => {
-                    const fetchUpdate: any = {id: node.id, loading: false};
-                    dispatch(updateNode(fetchUpdate));
-                    dispatch(addToTree(response));
-                });
+                fetchFolderContents(node.entity.id)
+                    .then((response) => {
+                        const fetchUpdate: any = {id: node.id, loading: false};
+                        dispatch(updateNode(fetchUpdate));
+                        dispatch(addToTree(response));
+                    })
+                    .catch(() => enqueueSnackbar(`Failed to load folder contents.`, {variant: "error"}));
             }
             dispatch(updateNode(baseUpdate));
         }
@@ -185,11 +188,29 @@ const PersonalExplorer = () => {
                 const payload: StoredItemPayload = Object.assign({}, item, {name: name});
                 const response = await updateItem(payload, item.type)
                     .catch(() => {
-                        enqueueSnackbar(`Failed to rename ${item.type.toLocaleLowerCase()} "${name}".`, {variant: "error"});
+                        enqueueSnackbar(`Failed to rename ${item.type.toLocaleLowerCase()} "${item.name}".`, {variant: "error"});
                     });
                 if (response && response.data) {
                     dispatch(replaceNode(buildNode(response.data)));
                     enqueueSnackbar(`${descriptor} "${item.name}" renamed successfully.`, {variant: "success"});
+                }
+            })
+            .catch(() => {
+            });
+    }
+
+    const incrementVersion = (item: StoredItemTransfer) => {
+        incrementVersionDialog(item)
+            .then(async (target: IncrementDialogResult) => {
+                const descriptor = item.type.toLocaleLowerCase();
+                const payload = buildIncrementPayload(target.version, item.optLock, target.squash);
+                try {
+                    const response = await incrementFileVersion(item, payload);
+                    if (response && response.data) {
+                        enqueueSnackbar(`Version of ${descriptor} "${item.name}" incremented successfully.`, {variant: "success"});
+                    }
+                } catch {
+                    enqueueSnackbar(`Failed to increment version of ${descriptor} "${item.name}".`, {variant: "error"});
                 }
             })
             .catch(() => {
@@ -241,10 +262,12 @@ const PersonalExplorer = () => {
     const onMenuEvent = (event: ContextMenuEvent): any => {
         switch (event.type) {
             case ContextMenuEventType.Refresh: {
-                fetchFolderContents().then((response) => {
-                    dispatch(replaceTree(response));
-                    enqueueSnackbar(`Contents refreshed successfully.`, {variant: "success"});
-                });
+                fetchFolderContents()
+                    .then((response) => {
+                        dispatch(replaceTree(response));
+                        enqueueSnackbar(`Contents refreshed successfully.`, {variant: "success"});
+                    })
+                    .catch(() => enqueueSnackbar(`Failed to refresh contents.`, {variant: "error"}));
                 break;
             }
             case ContextMenuEventType.NewFolder: {
@@ -287,6 +310,10 @@ const PersonalExplorer = () => {
                         }, 200);
                     })();
                 }
+                break;
+            }
+            case ContextMenuEventType.IncrementVersion: {
+                if (event.payload) return incrementVersion(event.payload);
                 break;
             }
         }

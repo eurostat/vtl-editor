@@ -1,68 +1,68 @@
 import {MuiThemeProvider} from "@material-ui/core/styles";
 import {Cached, CloudDownloadOutlined, RestorePageOutlined} from "@material-ui/icons";
 import _ from "lodash";
-import MaterialTable from "material-table";
+import MaterialTable, {Action} from "material-table";
 import {useSnackbar} from "notistack";
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
-import {buildTransferFile} from "../editor/editorFile";
-import {storeLoaded} from "../editor/editorSlice";
-import {convertEntityDates} from "../web-api/apiUtility";
-import {detailTableTheme} from "./detailTableTheme";
-import {FileVersionTransfer} from "./entity/fileVersionTransfer";
-import {StoredItemTransfer} from "./entity/storedItemTransfer";
-import {getFile, getFileVersions, getVersionContent, restoreFileVersion} from "./personal-repo/personalRepoService";
-import {compareVersions, updateNode, versionedFile} from "./personal-repo/personalRepoSlice";
-import {RepositoryType} from "./entity/repositoryType";
+import {fetchScript, fetchScriptVersionContent, fetchScriptVersions, restoreScriptVersion} from "./domainRepoService";
+import {domainVersionedScript, updateDomainRepoNode} from "./domainRepoSlice";
+import {StoredItemTransfer} from "../entity/storedItemTransfer";
+import {FileVersionTransfer} from "../entity/fileVersionTransfer";
+import {convertEntityDates} from "../../web-api/apiUtility";
+import {compareVersions} from "../personal-repo/personalRepoSlice";
+import {detailTableTheme} from "../detailTableTheme";
+import {buildTransferFile} from "../../editor/editorFile";
+import {RepositoryType} from "../entity/repositoryType";
+import {storeLoaded} from "../../editor/editorSlice";
+import {useUserRole} from "../../control/authorized";
 
-const FileVersions = () => {
-    const fileId = useSelector(versionedFile);
-    const [file, setFile] = useState<StoredItemTransfer>();
+const DomainScriptVersions = () => {
+    const scriptNode = useSelector(domainVersionedScript);
+    const [script, setScript] = useState<StoredItemTransfer>();
     const [versions, setVersions] = useState<any[]>([]);
     const [selected, setSelected] = useState<any[]>([]);
     const tableRef = useRef<any>();
     const dispatch = useDispatch();
     const {enqueueSnackbar} = useSnackbar();
     const history = useHistory();
+    const forUser = useUserRole();
 
-    const fetchFile = useCallback(() => {
-        if (fileId) {
-            getFile(fileId).then((received) => {
-                const nodeUpdate: any = {id: fileId, entity: received};
-                dispatch(updateNode(nodeUpdate));
-                setFile(received);
-            }).catch(() => {
-            });
-        }
-    }, [fileId, dispatch]);
+    const loadScript = useCallback(() => {
+        if (!scriptNode || !scriptNode.entity) return;
+        fetchScript(scriptNode.entity).then((received) => {
+            const nodeUpdate: any = {id: scriptNode.id, type: scriptNode.type, entity: received};
+            dispatch(updateDomainRepoNode(nodeUpdate));
+            setScript(received);
+        }).catch(() => {
+        });
+    }, [scriptNode, dispatch]);
 
     useEffect(() => {
         setVersions([]);
         setSelected([]);
-        fetchFile();
-    }, [fileId, fetchFile]);
+        loadScript();
+    }, [scriptNode, loadScript]);
 
-    const fetchVersions = useCallback(() => {
-        if (file) {
-            getFileVersions(file.id)
-                .then((response) => {
-                    if (response && response.data) {
-                        const received: any[] = [];
-                        received.push(...response.data.map((item: FileVersionTransfer) => convertEntityDates(item)));
-                        received.sort((a, b) => b.version.localeCompare(a.version));
-                        setVersions(received);
-                    }
-                })
-                .catch(() => {
-                });
-        }
-    }, [file]);
+    const loadVersions = useCallback(() => {
+        if (!script) return;
+        fetchScriptVersions(script)
+            .then((response) => {
+                if (response && response.data) {
+                    const received: any[] = [];
+                    received.push(...response.data.map((item: FileVersionTransfer) => convertEntityDates(item)));
+                    received.sort((a, b) => b.version.localeCompare(a.version, undefined, {numeric: true}));
+                    setVersions(received);
+                }
+            })
+            .catch(() => enqueueSnackbar(`Failed to load versions.`, {variant: "error"}));
+    }, [script, enqueueSnackbar]);
 
     useEffect(() => {
         setSelected([]);
-        fetchVersions();
-    }, [file, fetchVersions]);
+        loadVersions();
+    }, [script, loadVersions]);
 
     const onSelectionChange = (rows: any[], row?: any) => {
         if (row) {
@@ -83,8 +83,8 @@ const FileVersions = () => {
     const onVersionCompare = () => {
         if (selected.length === 2) {
             const compare = [...selected];
-            compare.sort((a, b) => a.version.localeCompare(b.version));
-            dispatch(compareVersions({file: file, versions: compare, repository: RepositoryType.PERSONAL}));
+            compare.sort((a, b) => a.version.localeCompare(b.version, undefined, {numeric: true}));
+            dispatch(compareVersions({file: script, versions: compare, repository: RepositoryType.DOMAIN}));
             history.push("/diff");
         } else {
             enqueueSnackbar(`Select two versions to compare.`, {variant: "warning"});
@@ -92,9 +92,9 @@ const FileVersions = () => {
     }
 
     const onOpenVersion = (event: any, row: any) => {
-        if (file) {
-            getVersionContent(file, row.version).then((content) => {
-                const loadedFile = buildTransferFile(file, content, RepositoryType.PERSONAL);
+        if (script) {
+            fetchScriptVersionContent(script, row.version).then((content) => {
+                const loadedFile = buildTransferFile(script, content, RepositoryType.DOMAIN);
                 dispatch(storeLoaded(loadedFile));
                 enqueueSnackbar(`Version "${row.version}" opened successfully.`, {variant: "success"});
                 history.push("/");
@@ -103,9 +103,9 @@ const FileVersions = () => {
     }
 
     const onRestoreVersion = (event: any, row: any) => {
-        if (file) {
-            restoreFileVersion(file.id, row.version, {optLock: file.optLock}).then(() => {
-                fetchFile();
+        if (script) {
+            restoreScriptVersion(script, row.version).then(() => {
+                loadScript();
                 enqueueSnackbar(`Version "${row.version}" restored successfully.`, {variant: "success"});
             }).catch(() => enqueueSnackbar(`Failed to restore version "${row.version}".`, {variant: "error"}));
         }
@@ -114,7 +114,7 @@ const FileVersions = () => {
     return (
         <MuiThemeProvider theme={detailTableTheme}>
             <MaterialTable tableRef={tableRef}
-                           title={`Version history: ${file?.name || "—"}`}
+                           title={`Version history: ${script?.name || "—"}`}
                            data={versions}
                            columns={[
                                {title: "Version number", field: "version"},
@@ -142,28 +142,28 @@ const FileVersions = () => {
                                    position: 'row',
                                    onClick: onOpenVersion
                                },
-                               {
+                               forUser({
                                    icon: RestorePageOutlined,
                                    tooltip: 'Restore version',
                                    position: 'row',
                                    onClick: onRestoreVersion
-                               },
+                               }),
                                {
                                    icon: Cached,
                                    tooltip: 'Refresh',
                                    position: 'toolbar',
-                                   onClick: fetchFile
+                                   onClick: loadScript
                                },
                                {
                                    icon: Cached,
                                    tooltip: 'Refresh',
                                    position: 'toolbarOnSelect',
-                                   onClick: fetchFile
+                                   onClick: loadScript
                                }
-                           ]}
+                           ].filter((action: any) => action !== null) as Action<any>[]}
             />
         </MuiThemeProvider>
     )
 }
 
-export default FileVersions;
+export default DomainScriptVersions;

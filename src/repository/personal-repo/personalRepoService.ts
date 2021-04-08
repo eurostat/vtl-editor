@@ -4,6 +4,7 @@ import {ScriptContentPayload} from "../entity/scriptContentPayload";
 import {StoredItemPayload} from "../entity/storedItemPayload";
 import {StoredItemTransfer} from "../entity/storedItemTransfer";
 import {StoredItemType} from "../entity/storedItemType";
+import {IncrementVersionPayload} from "../entity/incrementVersionPayload";
 
 const BASE_URL = process.env.REACT_APP_API_URL;
 const REPO_URL = BASE_URL + "/repo";
@@ -59,8 +60,8 @@ export async function getFileVersions(fileId: number) {
     return sendGetRequest(`${REPO_URL}/files/${fileId}/versions`);
 }
 
-export async function getVersionContent(fileId: number, versionId: string) {
-    const response = await sendGetRequest(`${REPO_URL}/files/${fileId}/versions/${versionId}`);
+export async function getVersionContent(file: StoredItemTransfer, versionId: string) {
+    const response = await sendGetRequest(`${REPO_URL}/files/${file.id}/versions/${versionId}`);
     if (response && response.data) {
         const content = atob(response.data.content);
         if (content !== undefined) return content;
@@ -68,7 +69,7 @@ export async function getVersionContent(fileId: number, versionId: string) {
     return Promise.reject();
 }
 
-export async function restoreFileVersion(fileId: number, versionId: string, payload: { version: string }) {
+export async function restoreFileVersion(fileId: number, versionId: string, payload: { optLock: number }) {
     const response = await sendPutRequest(`${REPO_URL}/files/${fileId}/versions/${versionId}/restore`,
         payload, "application/json");
     if (response && response.data) return response.data;
@@ -87,6 +88,13 @@ export async function updateItem(payload: StoredItemPayload, type: StoredItemTyp
             return Promise.reject();
         }
     }
+}
+
+export async function incrementFileVersion(item: StoredItemTransfer, payload: IncrementVersionPayload) {
+    return item.type === StoredItemType.FILE
+        ? sendPutRequest(`${REPO_URL}/files/${item.id}/versions/increment`,
+            payload, "application/json")
+        : Promise.reject();
 }
 
 export async function publishFile(payload: StoredItemPayload, type: StoredItemType) {

@@ -2,6 +2,8 @@ import {StoredItemType} from "../entity/storedItemType";
 import {inputDialog} from "../../main-view/decision-dialog/inputDialog";
 import {decisionDialog} from "../../main-view/decision-dialog/decisionDialog";
 import {publishDialog, PublishDialogResult} from "../publishDialog";
+import {StoredItemTransfer} from "../entity/storedItemTransfer";
+import {incrementDialog} from "../incrementDialog";
 
 
 export const createItemDialog = (type: StoredItemType, input?: string) => {
@@ -38,6 +40,24 @@ export const deleteItemDialog = (type: StoredItemType) => {
     return decision();
 }
 
+export const restoreItemDialog = (type: StoredItemType) => {
+    const decision = async () => {
+        const descriptor = type.toLocaleLowerCase();
+        const result = await decisionDialog({
+            title: "Warning",
+            text: `Do you really want to restore this ${descriptor}?`,
+            buttons: [
+                {key: "yes", text: "Yes", color: "primary"},
+                {key: "no", text: "No", color: "secondary"}
+            ]
+        });
+        return result === "yes"
+            ? Promise.resolve()
+            : Promise.reject();
+    }
+    return decision();
+}
+
 export const renameItemDialog = (type: StoredItemType, name: string) => {
     const decision = async () => {
         const descriptor = type.toLocaleLowerCase();
@@ -48,6 +68,23 @@ export const renameItemDialog = (type: StoredItemType, name: string) => {
             acceptButton: {value: "rename", color: "primary"}
         });
         return result !== "cancel"
+            ? Promise.resolve(result)
+            : Promise.reject();
+    }
+    return decision();
+}
+
+export const incrementVersionDialog = (item: StoredItemTransfer) => {
+    const decision = async () => {
+        const descriptor = item.type.toLocaleLowerCase();
+        const result = await incrementDialog({
+            title: "Increment Version",
+            text: `Increment version of ${descriptor} "${item.name}" from ${item.version} to minor or major. Enter new version.`,
+            subject: item,
+            defaultValue: item.version,
+            acceptButton: {value: "increment", color: "primary"}
+        });
+        return result
             ? Promise.resolve(result)
             : Promise.reject();
     }

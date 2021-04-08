@@ -20,26 +20,34 @@ import {
     addToDomainRepoTree,
     clearDomainRepoTree,
     deleteDomainRepoNode,
+    detailDomainFolder,
     domainRepoLoaded,
     domainRepoTree,
-    updateDomainRepoNode
+    updateDomainRepoNode,
+    versionDomainScript
 } from "./domainRepoSlice";
 import {
     buildContainerNode,
+    deleteBinnedItem,
     deleteDomainItem,
     domainRepoContainers,
     fetchDomainBinned,
     fetchDomainRepository,
     fetchDomainScripts,
     fetchScript,
-    fetchScriptContent
+    fetchScriptContent,
+    incrementScriptVersion,
+    restoreBinnedItem
 } from "./domainRepoService";
 import {isDomain, NodeType} from "../tree-explorer/nodeType";
 import DomainExplorerMenu from "./domainExplorerMenu";
 import DomainItemContainer from "./domainItemContainer";
 import {TreePayload} from "../repositorySlice";
 import {useEffectOnce} from "../../utility/useEffectOnce";
-import {deleteItemDialog} from "../tree-explorer/treeExplorerService";
+import {deleteItemDialog, incrementVersionDialog, restoreItemDialog} from "../tree-explorer/treeExplorerService";
+import {buildIncrementPayload} from "../entity/incrementVersionPayload";
+import {IncrementDialogResult} from "../incrementDialog";
+import {useManagerRole, useRole} from "../../control/authorized";
 
 const DomainExplorer = () => {
     const explorerPanelRef = useRef(null);
@@ -56,6 +64,8 @@ const DomainExplorer = () => {
         initial.tree.node.header.title.position = "relative";
         return initial;
     })());
+    const forManager = useManagerRole();
+    const hasRole = useRole();
 
     const loadRepositoryContents = useCallback(async () => {
         return fetchDomainRepository().then((domains) => {
@@ -64,30 +74,37 @@ const DomainExplorer = () => {
             dispatch(addToDomainRepoTree(domainLoad));
             domains.forEach((domain) => {
                 const containers = domainRepoContainers
+                    .filter((container) => !container.role || hasRole(container.role))
                     .map((container) => buildContainerNode(container.name, domain, container.childType));
                 let containerLoad: TreePayload = {type: NodeType.CONTAINER, nodes: containers}
                 dispatch(addToDomainRepoTree(containerLoad));
             })
         });
-    }, [dispatch]);
+    }, [hasRole, dispatch]);
 
     useEffectOnce(() => {
         if (!treeLoaded) loadRepositoryContents().catch(() =>
             enqueueSnackbar(`Failed to load Domain Repository.`, {variant: "error"}));
     });
 
-    const onToggle = async (node: TreeNode, toggled: boolean) => {
+    const onToggle = (node: TreeNode, toggled: boolean) => {
         if (node.children) {
             const baseUpdate: any = {id: node.id, type: node.type, toggled: toggled};
             if (node.loading) {
                 if (isDomain(node)) {
-                    try {
-                        dispatch(addToDomainRepoTree({type: NodeType.SCRIPT, nodes: await fetchDomainScripts(node)}));
-                        dispatch(addToDomainRepoTree({type: NodeType.BINNED, nodes: await fetchDomainBinned(node)}));
-                        const fetchUpdate: any = {id: node.id, type: node.type, loading: false};
-                        dispatch(updateDomainRepoNode(fetchUpdate));
-                    } catch {
-                        enqueueSnackbar(`Failed to load contents.`, {variant: "error"});
+                    fetchDomainScripts(node)
+                        .then((results) => {
+                            dispatch(addToDomainRepoTree({type: NodeType.SCRIPT, nodes: results}));
+                            const fetchUpdate: any = {id: node.id, type: node.type, loading: false};
+                            dispatch(updateDomainRepoNode(fetchUpdate));
+                        })
+                        .catch(() => enqueueSnackbar(`Failed to load scripts.`, {variant: "error"}));
+                    if (forManager(true)) {
+                        fetchDomainBinned(node)
+                            .then((results) => {
+                                dispatch(addToDomainRepoTree({type: NodeType.BINNED, nodes: results}));
+                            })
+                            .catch(() => enqueueSnackbar(`Failed to load recycle bin.`, {variant: "error"}));
                     }
                 }
             }
@@ -101,31 +118,71 @@ const DomainExplorer = () => {
     }
 
     const loadScriptContents = (node: TreeNode) => {
-        const entity: StoredItemTransfer = node.entity;
-        fetchScriptContent(node).then((content) => {
-            fetchScript(node).then((file) => {
+        if (!node.entity) return;
+        const script: StoredItemTransfer = node.entity;
+        fetchScriptContent(script).then((content) => {
+            fetchScript(script).then((file) => {
                 const nodeUpdate: any = {id: node.id, type: node.type, entity: file};
                 dispatch(updateDomainRepoNode(nodeUpdate));
                 const loadedFile = buildTransferFile(file, content, RepositoryType.DOMAIN);
                 dispatch(storeLoaded(loadedFile));
                 enqueueSnackbar(`Script "${file.name}" opened successfully.`, {variant: "success"});
                 history.push("/");
-            }).catch(() => () => enqueueSnackbar(`Failed to load script "${entity.name}".`, {variant: "error"}))
-        }).catch(() => enqueueSnackbar(`Failed to load script "${entity.name}".`, {variant: "error"}))
+            }).catch(() => () => enqueueSnackbar(`Failed to load script "${script.name}".`, {variant: "error"}))
+        }).catch(() => enqueueSnackbar(`Failed to load script "${script.name}".`, {variant: "error"}))
+    }
+
+    const incrementVersion = (item: StoredItemTransfer) => {
+        incrementVersionDialog(item)
+            .then(async (target: IncrementDialogResult) => {
+                const descriptor = item.type.toLocaleLowerCase();
+                const payload = buildIncrementPayload(target.version, item.optLock, target.squash);
+                try {
+                    const response = await incrementScriptVersion(item, payload);
+                    if (response && response.data) {
+                        enqueueSnackbar(`Version of ${descriptor} "${item.name}" incremented successfully.`, {variant: "success"});
+                    }
+                } catch {
+                    enqueueSnackbar(`Failed to increment version of ${descriptor} "${item.name}".`, {variant: "error"});
+                }
+            })
+            .catch(() => {
+            });
     }
 
     const removeItem = (node: TreeNode) => {
+        if (!node || !node.entity || !node.type || !node.entity.type) return;
         const item = node.entity;
         deleteItemDialog(item.type)
             .then(async () => {
                 const descriptor = item.type[0] + item.type.slice(1).toLocaleLowerCase();
-                const response = await deleteDomainItem(node)
+                const call = node.type === NodeType.BINNED ? deleteBinnedItem : deleteDomainItem;
+                const response = await call(node)
                     .catch(() => {
                         enqueueSnackbar(`Failed to delete ${item.type.toLocaleLowerCase()} "${item.name}".`, {variant: "error"});
                     });
                 if (response && response.success) {
                     dispatch(deleteDomainRepoNode(node));
                     enqueueSnackbar(`${descriptor} "${item.name}" deleted successfully.`, {variant: "success"});
+                }
+            })
+            .catch(() => {
+            });
+    }
+
+    const restoreItem = (node: TreeNode) => {
+        if (!node || !node.entity || !node.type || !node.entity.type) return;
+        const item = node.entity;
+        restoreItemDialog(item.type)
+            .then(async () => {
+                const descriptor = item.type[0] + item.type.slice(1).toLocaleLowerCase();
+                const response = await restoreBinnedItem(node)
+                    .catch(() => {
+                        enqueueSnackbar(`Failed to restore ${item.type.toLocaleLowerCase()} "${item.name}".`, {variant: "error"});
+                    });
+                if (response && response.success) {
+                    dispatch(deleteDomainRepoNode(node));
+                    enqueueSnackbar(`${descriptor} "${item.name}" restored successfully.`, {variant: "success"});
                 }
             })
             .catch(() => {
@@ -154,24 +211,32 @@ const DomainExplorer = () => {
                 if (event.payload) return removeItem(event.payload);
                 break;
             }
+            case ContextMenuEventType.RestoreItem: {
+                if (event.payload) return restoreItem(event.payload);
+                break;
+            }
             case ContextMenuEventType.ContainerDetails: {
-                // (async () => {
-                //     setTimeout(() => {
-                //         dispatch(detailFolder(event.payload?.id));
-                //         history.push("/folder")
-                //     }, 200);
-                // })();
+                (async () => {
+                    setTimeout(() => {
+                        dispatch(detailDomainFolder(event.payload));
+                        history.push("/domainfolder")
+                    }, 200);
+                })();
                 break;
             }
             case ContextMenuEventType.FileVersions: {
-                // if (event.payload) {
-                //     (async () => {
-                //         setTimeout(() => {
-                //             dispatch(versionFile(event.payload.id));
-                //             history.push("/versions");
-                //         }, 200);
-                //     })();
-                // }
+                if (event.payload) {
+                    (async () => {
+                        setTimeout(() => {
+                            dispatch(versionDomainScript(event.payload));
+                            history.push("/domainversions");
+                        }, 200);
+                    })();
+                }
+                break;
+            }
+            case ContextMenuEventType.IncrementVersion: {
+                if (event.payload) return incrementVersion(event.payload);
                 break;
             }
         }

@@ -6,11 +6,13 @@ import { NodeType } from "../tree-explorer/nodeType";
 import {addNode, addNodes, deactivateNodes, deleteNode, replaceNode, TreePayload, updateNode} from "../repositorySlice";
 
 export interface DomainRepoState {
-    domains: TreeNode[],
-    containers: TreeNode[],
-    scripts: TreeNode[],
-    binneds: TreeNode[],
-    loaded: boolean,
+    domains: TreeNode[]
+    containers: TreeNode[]
+    scripts: TreeNode[]
+    binneds: TreeNode[]
+    loaded: boolean
+    detailedFolder: TreeNode | undefined
+    versionedScript: TreeNode | undefined
 }
 
 const initialState = {
@@ -19,6 +21,8 @@ const initialState = {
     scripts: [],
     binneds: [],
     loaded: false,
+    detailedFolder: undefined,
+    versionedScript: undefined
 } as DomainRepoState;
 
 export const domainRepoSlice = createSlice({
@@ -130,6 +134,12 @@ export const domainRepoSlice = createSlice({
                 }
             }
         },
+        detailDomainFolder(state, action: PayloadAction<TreeNode | undefined>) {
+            state.detailedFolder = action.payload
+        },
+        versionDomainScript(state, action: PayloadAction<TreeNode | undefined>) {
+            state.versionedScript = action.payload
+        },
     }
 })
 
@@ -143,7 +153,8 @@ function deactivateAllNodes(state: DomainRepoState): DomainRepoState {
 
 export const {
     clearDomainRepoTree, addToDomainRepoTree,
-    addDomainRepoNode, replaceDomainRepoNode, updateDomainRepoNode, deleteDomainRepoNode
+    addDomainRepoNode, replaceDomainRepoNode, updateDomainRepoNode, deleteDomainRepoNode,
+    detailDomainFolder, versionDomainScript
 } = domainRepoSlice.actions;
 
 export const domainRepoTree = (state: RootState) => {
@@ -166,6 +177,22 @@ export const domainRepoTree = (state: RootState) => {
     });
     return stateDomains;
 }
+
+const folderPath = (state: RootState, folder: TreeNode | undefined) => {
+    let path: string = "/";
+    if (folder && folder.parentId) {
+        const parent = state.domainRepo.domains.find(domain => domain.id === folder.parentId);
+        if (parent) {
+            path = path + parent.name + "/";
+        }
+        path = path + folder.name;
+    }
+    return path;
+}
+
 export const domainRepoLoaded = (state: RootState) => state.domainRepo.loaded;
+export const domainDetailedFolder = (state: RootState) => state.domainRepo.detailedFolder;
+export const domainDetailedFolderPath = (state: RootState) =>  folderPath(state, state.domainRepo.detailedFolder);
+export const domainVersionedScript = (state: RootState) => state.domainRepo.versionedScript;
 
 export default domainRepoSlice.reducer;

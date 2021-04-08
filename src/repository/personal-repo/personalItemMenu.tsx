@@ -85,6 +85,12 @@ const PersonalItemMenu = ({node, onMenuEvent}: ItemMenuProps) => {
         }
     }
 
+    const onIncrementVersion = () => {
+        if (node && node.entity) {
+            dispatchMenuEvent({type: ContextMenuEventType.IncrementVersion, payload: node.entity});
+        }
+    }
+
     return (
         <ul className="menu">
             <li className="with-submenu" onClick={toggleNewMenu}>
@@ -100,6 +106,7 @@ const PersonalItemMenu = ({node, onMenuEvent}: ItemMenuProps) => {
             {!node.children
                 ? <>
                     <li onClick={onOpenFile}>Open</li>
+                    <li onClick={onIncrementVersion}>Increment Version</li>
                     <li onClick={onPublishItem}>Publish</li>
                 </>
                 : null}

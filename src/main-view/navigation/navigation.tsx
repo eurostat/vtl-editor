@@ -76,8 +76,10 @@ export default function Navigation() {
         "/manual": [],
         "/sdmx": [menuItems["vtl-editor"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["manage-domains"]],
         "/folder": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["manage-domains"]],
-        "/diff": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["manage-domains"]],
         "/versions": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["manage-domains"]],
+        "/domainfolder": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["manage-domains"]],
+        "/domainversions": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["manage-domains"]],
+        "/diff": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["manage-domains"]],
         "/manage": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"]],
         "/profile": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["manage-domains"]]
     };

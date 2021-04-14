@@ -110,6 +110,13 @@ export async function incrementScriptVersion(item: StoredItemTransfer, payload: 
         : Promise.reject();
 }
 
+export async function finalizeScriptVersion(item: StoredItemTransfer) {
+    return item.type === StoredItemType.FILE
+        ? sendPutRequest(`${REPO_URL}/${item.parentId}/files/${item.id}/versions/finalize`,
+            {optLock: item.optLock}, "application/json")
+        : Promise.reject();
+}
+
 export async function deleteDomainItem(node: TreeNode) {
     if (node.entity && node.entity.id && node.entity.type && node.entity.parentId) {
         const item: StoredItemTransfer = node.entity;

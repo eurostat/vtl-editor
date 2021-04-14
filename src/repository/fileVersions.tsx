@@ -8,9 +8,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
 import {buildTransferFile} from "../editor/editorFile";
 import {storeLoaded} from "../editor/editorSlice";
-import {convertEntityDates} from "../web-api/apiUtility";
 import {detailTableTheme} from "./detailTableTheme";
-import {FileVersionTransfer} from "./entity/fileVersionTransfer";
+import {FileVersionTransfer, processVersionTransfer} from "./entity/fileVersionTransfer";
 import {StoredItemTransfer} from "./entity/storedItemTransfer";
 import {getFile, getFileVersions, getVersionContent, restoreFileVersion} from "./personal-repo/personalRepoService";
 import {compareVersions, updateNode, versionedFile} from "./personal-repo/personalRepoSlice";
@@ -49,7 +48,7 @@ const FileVersions = () => {
                 .then((response) => {
                     if (response && response.data) {
                         const received: any[] = [];
-                        received.push(...response.data.map((item: FileVersionTransfer) => convertEntityDates(item)));
+                        received.push(...response.data.map((item: FileVersionTransfer) => processVersionTransfer(item)));
                         received.sort((a, b) => b.version.localeCompare(a.version));
                         setVersions(received);
                     }

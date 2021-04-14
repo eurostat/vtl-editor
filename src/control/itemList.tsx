@@ -1,10 +1,10 @@
-import { ListSubheader, Tooltip } from "@material-ui/core";
+import {ListSubheader, Tooltip} from "@material-ui/core";
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import { Backspace, Edit } from "@material-ui/icons";
+import {Backspace, Edit} from "@material-ui/icons";
 import React from 'react';
 import "./managementView.scss"
 
@@ -30,15 +30,15 @@ ItemList.defaultProps = {
 }
 
 export default function ItemList<T extends IdentifiedItem>({
-                                                                     singularTitle,
-                                                                     pluralTitle,
-                                                                     data,
-                                                                     setData,
-                                                                     editData,
-                                                                     captionField,
-                                                                     captionGet,
-                                                                     dense
-                                                                 }: ItemListProps<T>) {
+                                                               singularTitle,
+                                                               pluralTitle,
+                                                               data,
+                                                               setData,
+                                                               editData,
+                                                               captionField,
+                                                               captionGet,
+                                                               dense
+                                                           }: ItemListProps<T>) {
 
     const removeItem = (item: T) => {
         if (data && setData) {
@@ -64,8 +64,7 @@ export default function ItemList<T extends IdentifiedItem>({
 
     const listItem = (item: T) => {
         return (
-            <ListItem className="list-item" key={item.id} role={undefined} dense
-                      button>
+            <ListItem className="list-item" key={item.id} role={undefined} component={"li"} dense button>
                 <ListItemText id={`item-list-label-${item.id}`}
                               primary={renderCaption(item)}/>
                 {setData
@@ -83,7 +82,7 @@ export default function ItemList<T extends IdentifiedItem>({
 
     const emptyListItem = () => {
         return (
-            <ListItem className="list-item list-item-none" key={"empty"} role={undefined} dense button>
+            <ListItem className="list-item list-item-none" key={"empty"} role={undefined} component="li" dense button>
                 <ListItemText id="item-list-label-empty" primary={"None"}/>
             </ListItem>
         );
@@ -91,7 +90,7 @@ export default function ItemList<T extends IdentifiedItem>({
 
     const header = () => {
         return (
-            <ListSubheader className="item-list-header" component="div" id="item-list-header">
+            <ListSubheader className="item-list-header" id="item-list-header">
                 <div className="list-title">
                     <span>{data?.length || "0"}</span>
                     <span>{data?.length === 1 ? singularTitle : pluralTitle}</span>
@@ -109,8 +108,10 @@ export default function ItemList<T extends IdentifiedItem>({
 
     return (
         <List className="item-list" subheader={header()} dense={dense}>
-            {data?.length === 0 ? emptyListItem() : null}
-            {data?.map((item) => listItem(item))}
+            <ul className="sub-list">
+                {data?.length === 0 ? emptyListItem() : null}
+                {data?.map((item) => listItem(item))}
+            </ul>
         </List>
     );
 }

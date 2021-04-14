@@ -1,9 +1,9 @@
 import {StoredItemType} from "../entity/storedItemType";
 import {inputDialog} from "../../main-view/decision-dialog/inputDialog";
 import {decisionDialog} from "../../main-view/decision-dialog/decisionDialog";
-import {publishDialog, PublishDialogResult} from "../publishDialog";
 import {StoredItemTransfer} from "../entity/storedItemTransfer";
 import {incrementDialog} from "../incrementDialog";
+import {publishDialog, PublishDialogResult} from "../publishDialog";
 
 
 export const createItemDialog = (type: StoredItemType, input?: string) => {
@@ -86,6 +86,24 @@ export const incrementVersionDialog = (item: StoredItemTransfer) => {
         });
         return result
             ? Promise.resolve(result)
+            : Promise.reject();
+    }
+    return decision();
+}
+
+export const finalizeVersionDialog = (item: StoredItemTransfer) => {
+    const decision = async () => {
+        const descriptor = item.type.toLocaleLowerCase();
+        const result = await decisionDialog({
+            title: "Warning",
+            text: `Do you want to finalize version ${item.version} of ${descriptor} "${item.name}"?`,
+            buttons: [
+                {key: "yes", text: "Yes", color: "primary"},
+                {key: "no", text: "No", color: "secondary"}
+            ]
+        });
+        return result === "yes"
+            ? Promise.resolve()
             : Promise.reject();
     }
     return decision();

@@ -1,13 +1,12 @@
-import { MuiThemeProvider } from "@material-ui/core/styles";
-import { Cached } from "@material-ui/icons";
+import {MuiThemeProvider} from "@material-ui/core/styles";
+import {Cached} from "@material-ui/icons";
 import MaterialTable from "material-table";
-import React, { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { convertEntityDates } from "../web-api/apiUtility";
-import { detailTableTheme } from "./detailTableTheme";
-import { StoredItemTransfer } from "./entity/storedItemTransfer";
-import { getFolder, getFolderContents } from "./personal-repo/personalRepoService";
-import { detailedFolder, detailedFolderPath, updateNode } from "./personal-repo/personalRepoSlice";
+import React, {useCallback, useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {detailTableTheme} from "./detailTableTheme";
+import {processItemTransfer, StoredItemTransfer} from "./entity/storedItemTransfer";
+import {getFolder, getFolderContents} from "./personal-repo/personalRepoService";
+import {detailedFolder, detailedFolderPath, updateNode} from "./personal-repo/personalRepoSlice";
 
 const DirectoryPreview = () => {
     const folderId = useSelector(detailedFolder);
@@ -33,8 +32,8 @@ const DirectoryPreview = () => {
                 if (response && response.data) {
                     const received: any[] = [];
                     received.push(
-                        ...response.data.folders.map((item: StoredItemTransfer) => convertEntityDates(item)),
-                        ...response.data.files.map((item: StoredItemTransfer) => convertEntityDates(item))
+                        ...response.data.folders.map((item: StoredItemTransfer) => processItemTransfer(item)),
+                        ...response.data.files.map((item: StoredItemTransfer) => processItemTransfer(item))
                     );
                     setContents(received);
                 }

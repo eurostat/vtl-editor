@@ -1,4 +1,4 @@
-import { ListSubheader } from "@material-ui/core";
+import {ListSubheader} from "@material-ui/core";
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import Grid from '@material-ui/core/Grid';
@@ -6,10 +6,10 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import _ from "lodash";
-import React, { useEffect } from 'react';
-import { IdentifiedItem } from "./itemList";
+import React, {useEffect} from 'react';
+import {IdentifiedItem} from "./itemList";
 import "./managementView.scss";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -43,14 +43,14 @@ type TransferListProps<T extends IdentifiedItem> = {
 }
 
 export default function TransferList<T extends IdentifiedItem>({
-                                                                         singularItem,
-                                                                         pluralItem,
-                                                                         selected,
-                                                                         commitSelected,
-                                                                         available,
-                                                                         captionField,
-                                                                         captionGet,
-                                                                     }: TransferListProps<T>) {
+                                                                   singularItem,
+                                                                   pluralItem,
+                                                                   selected,
+                                                                   commitSelected,
+                                                                   available,
+                                                                   captionField,
+                                                                   captionGet,
+                                                               }: TransferListProps<T>) {
     const styles = useStyles();
     const [checked, setChecked] = React.useState<any[]>([]);
     const [left, setLeft] = React.useState<any[]>([]);
@@ -105,7 +105,7 @@ export default function TransferList<T extends IdentifiedItem>({
 
     const header = (items: any[], type: string) => {
         return (
-            <ListSubheader className="item-list-header" component="div" id="item-list-header">
+            <ListSubheader className="item-list-header" id="item-list-header">
                 <div className="list-title">
                     <span>{items?.length || "0"}</span>
                     <span>{`${type} ${items?.length === 1 ? singularItem : pluralItem}`}</span>
@@ -123,8 +123,7 @@ export default function TransferList<T extends IdentifiedItem>({
     const listItem = (item: T) => {
         const labelId = `transfer-list-label-${item.id}`;
         return (
-            <ListItem key={item.id} role="listitem" button
-                      onClick={handleToggle(item)}>
+            <ListItem key={item.id} role="listitem" button component="li" onClick={handleToggle(item)}>
                 <ListItemIcon>
                     <Checkbox
                         checked={checked.indexOf(item) !== -1}
@@ -140,7 +139,9 @@ export default function TransferList<T extends IdentifiedItem>({
 
     const customList = (items: any[], type: string) => (
         <List className="transfer-list" dense component="div" role="list" subheader={header(items, type)}>
-            {items.map((item: T) => listItem(item))}
+            <ul className="sub-list">
+                {items.map((item: T) => listItem(item))}
+            </ul>
         </List>
     );
 

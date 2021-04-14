@@ -9,8 +9,7 @@ import {useHistory} from "react-router-dom";
 import {fetchScript, fetchScriptVersionContent, fetchScriptVersions, restoreScriptVersion} from "./domainRepoService";
 import {domainVersionedScript, updateDomainRepoNode} from "./domainRepoSlice";
 import {StoredItemTransfer} from "../entity/storedItemTransfer";
-import {FileVersionTransfer} from "../entity/fileVersionTransfer";
-import {convertEntityDates} from "../../web-api/apiUtility";
+import {FileVersionTransfer, processVersionTransfer} from "../entity/fileVersionTransfer";
 import {compareVersions} from "../personal-repo/personalRepoSlice";
 import {detailTableTheme} from "../detailTableTheme";
 import {buildTransferFile} from "../../editor/editorFile";
@@ -51,7 +50,7 @@ const DomainScriptVersions = () => {
             .then((response) => {
                 if (response && response.data) {
                     const received: any[] = [];
-                    received.push(...response.data.map((item: FileVersionTransfer) => convertEntityDates(item)));
+                    received.push(...response.data.map((item: FileVersionTransfer) => processVersionTransfer(item)));
                     received.sort((a, b) => b.version.localeCompare(a.version, undefined, {numeric: true}));
                     setVersions(received);
                 }
@@ -118,6 +117,7 @@ const DomainScriptVersions = () => {
                            data={versions}
                            columns={[
                                {title: "Version number", field: "version"},
+                               {title: "Final", field: "finalizedCaption"},
                                {title: "Date", field: "updateDate"},
                                {title: "Author", field: "updatedBy"},
                                {title: "Restored from", field: "restoredFrom"}

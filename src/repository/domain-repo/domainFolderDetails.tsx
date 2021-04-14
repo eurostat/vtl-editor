@@ -8,8 +8,8 @@ import {detailTableTheme} from "../detailTableTheme";
 import {NodeType} from "../tree-explorer/nodeType";
 import {fetchDomainBinned, fetchDomainScripts} from "./domainRepoService";
 import {TreeNode} from "react-treebeard";
-import {convertEntityDates} from "../../web-api/apiUtility";
 import {useSnackbar} from "notistack";
+import {processItemTransfer} from "../entity/storedItemTransfer";
 
 const DomainFolderDetails = () => {
     const folder = useSelector(domainDetailedFolder);
@@ -36,7 +36,7 @@ const DomainFolderDetails = () => {
         call(folder)
             .then((response) => {
                 if (response) {
-                    const received = response.map((node: TreeNode) => convertEntityDates(node.entity));
+                    const received = response.map((node: TreeNode) => processItemTransfer(node.entity));
                     setContents(received);
                 }
             })
@@ -54,6 +54,7 @@ const DomainFolderDetails = () => {
                            columns={[
                                {title: "Name", field: "name"},
                                {title: "Version", field: "version"},
+                               {title: "Final", field: "finalizedCaption"},
                                {title: "Created on", field: "createDate"},
                                {title: "Modified on", field: "updateDate"},
                                {title: "Created by", field: "createdBy"},

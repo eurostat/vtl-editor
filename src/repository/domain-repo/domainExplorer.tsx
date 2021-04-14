@@ -35,7 +35,7 @@ import {
     fetchDomainRepository,
     fetchDomainScripts,
     fetchScript,
-    fetchScriptContent,
+    fetchScriptContent, finalizeScriptVersion,
     incrementScriptVersion,
     restoreBinnedItem
 } from "./domainRepoService";
@@ -44,7 +44,12 @@ import DomainExplorerMenu from "./domainExplorerMenu";
 import DomainItemContainer from "./domainItemContainer";
 import {TreePayload} from "../repositorySlice";
 import {useEffectOnce} from "../../utility/useEffectOnce";
-import {deleteItemDialog, incrementVersionDialog, restoreItemDialog} from "../tree-explorer/treeExplorerService";
+import {
+    deleteItemDialog,
+    finalizeVersionDialog,
+    incrementVersionDialog,
+    restoreItemDialog
+} from "../tree-explorer/treeExplorerService";
 import {buildIncrementPayload} from "../entity/incrementVersionPayload";
 import {IncrementDialogResult} from "../incrementDialog";
 import {useManagerRole, useRole} from "../../control/authorized";
@@ -150,6 +155,25 @@ const DomainExplorer = () => {
             });
     }
 
+    const finalizeVersion = (item: StoredItemTransfer) => {
+        finalizeVersionDialog(item)
+            .then(async () => {
+                const descriptor = item.type.toLocaleLowerCase();
+                try {
+                    const response = await finalizeScriptVersion(item);
+                    if (response && response.data) {
+                        enqueueSnackbar(`Version ${item.version} of ${descriptor} "${item.name}" finalized successfully.`,
+                            {variant: "success"});
+                    }
+                } catch {
+                    enqueueSnackbar(`Failed to finalize version ${item.version} of ${descriptor} "${item.name}".`,
+                        {variant: "error"});
+                }
+            })
+            .catch(() => {
+            });
+    }
+
     const removeItem = (node: TreeNode) => {
         if (!node || !node.entity || !node.type || !node.entity.type) return;
         const item = node.entity;
@@ -237,6 +261,10 @@ const DomainExplorer = () => {
             }
             case ContextMenuEventType.IncrementVersion: {
                 if (event.payload) return incrementVersion(event.payload);
+                break;
+            }
+            case ContextMenuEventType.FinalizeVersion: {
+                if (event.payload) return finalizeVersion(event.payload);
                 break;
             }
         }

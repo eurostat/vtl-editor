@@ -1,0 +1,58 @@
+.top-bar {
+  height: 30px;
+  width: 100%;
+  background: #484848;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: unset;
+
+  span {
+    line-height: 2;
+    vertical-align: middle;
+  }
+
+  & > span {
+    position: absolute;
+    left: 0;
+    right: 0;
+  }
+
+  button {
+    height: 100%;
+    width: 50px;
+    margin: auto;
+
+    &.separated:hover {
+      background-color: transparent;
+      border-color: #333333;
+    }
+
+    > svg {
+      font-size: 24px;
+      color: #858585;
+      cursor: pointer;
+    }
+  }
+}
+
+.toolbar {
+  display: inline-block;
+  float: left;
+  height: 100%;
+}
+
+.titlebar {
+  display: inline-block;
+  height: 100%
+}
+
+.rightbar {
+  height: 100%;
+  display: inline-block;
+  float: right;
+}
+
+.separated {
+  border-right: 1px solid #333333;
+}

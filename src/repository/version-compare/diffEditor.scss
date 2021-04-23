@@ -1,0 +1,12 @@
+@import "src/variables";
+
+.diff-editor-container{
+  height: 100%;
+}
+
+.diff-editor-box {
+  padding-top: 20px;
+  width: 100%;
+  height: calc(100% - #{$topBarHeight} - #{$errorBarHeight} - #{$errorBoxHeight});
+  text-align: left;
+}

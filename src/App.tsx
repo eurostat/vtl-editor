@@ -27,6 +27,7 @@ import { loggedIn, provideRoles } from "./utility/authSlice";
 import BrowserStorage, { getSdmxStoredValues, setSdmxStorageValue } from "./utility/browserStorage";
 import DomainFolderDetails from "./repository/domain-repo/domainFolderDetails";
 import DomainScriptVersions from "./repository/domain-repo/domainScriptVersions";
+import EditClientView from "./edit-client/editClientView";
 
 export default function App() {
     /*SDMX STATES */
@@ -150,6 +151,7 @@ export default function App() {
                             <Route exact path="/domainfolder"><DomainFolderDetails/></Route>
                             <Route exact path="/domainversions"><DomainScriptVersions/></Route>
                             {forUser(<Route exact path="/diff"><DiffEditor/></Route>)}
+                            {forUser(<Route exact path="/editclient"><EditClientView/></Route>)}
                             {forManager(<Route exact path="/manage"><ManagementView/></Route>)}
                             <Route exact path="/profile"><Profile/></Route>
                             <Redirect to="/"/>

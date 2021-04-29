@@ -2,7 +2,7 @@ import { faEdit, faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
 import { faCog } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tooltip } from "@material-ui/core";
-import {AccountTreeOutlined, Domain, OpenInBrowserOutlined, SupervisorAccount} from "@material-ui/icons";
+import {AccountTreeOutlined, Domain, LineStyle, OpenInBrowserOutlined, SupervisorAccount} from "@material-ui/icons";
 import React, { useMemo, useState } from "react";
 import ModalFactory from "react-modal-promise";
 import { useDispatch } from "react-redux";
@@ -68,20 +68,26 @@ export default function Navigation() {
             title: "Manage Domains", key: "manage-domains", link: "/manage",
             className: "mat-icon", matIcon: <SupervisorAccount/>,
             authCheck: forManager,
-        }
+        },
+        "edit-client": {
+            title: "EDIT Service", key: "edit-client", link: "/editclient",
+            className: "mat-icon", matIcon: <LineStyle/>,
+            authCheck: forManager,
+        },
     }
 
     const menuContentMap: MenuContentMap = {
-        "/": [menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["manage-domains"]],
+        "/": [menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["edit-client"], menuItems["manage-domains"]],
         "/manual": [],
-        "/sdmx": [menuItems["vtl-editor"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["manage-domains"]],
-        "/folder": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["manage-domains"]],
-        "/versions": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["manage-domains"]],
-        "/domainfolder": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["manage-domains"]],
-        "/domainversions": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["manage-domains"]],
-        "/diff": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["manage-domains"]],
-        "/manage": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"]],
-        "/profile": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["manage-domains"]]
+        "/sdmx": [menuItems["vtl-editor"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["edit-client"], menuItems["manage-domains"]],
+        "/folder": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["edit-client"], menuItems["manage-domains"]],
+        "/versions": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["edit-client"], menuItems["manage-domains"]],
+        "/domainfolder": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["edit-client"], menuItems["manage-domains"]],
+        "/domainversions": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["edit-client"], menuItems["manage-domains"]],
+        "/diff": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["edit-client"], menuItems["manage-domains"]],
+        "/manage": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["edit-client"]],
+        "/profile": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["edit-client"], menuItems["manage-domains"]],
+        "/editclient": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["manage-domains"]],
     };
 
     return (

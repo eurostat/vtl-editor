@@ -48,7 +48,6 @@ import {RepositoryType} from "../entity/repositoryType";
 import {ContextMenuEvent, ContextMenuEventType} from "../tree-explorer/contextMenuEvent";
 import {
     createItemDialog,
-    deleteItemDialog,
     incrementVersionDialog,
     publishItemDialog,
     renameItemDialog
@@ -57,6 +56,8 @@ import {PublishDialogResult} from "../publishDialog";
 import {useEffectOnce} from "../../utility/useEffectOnce";
 import {buildIncrementPayload} from "../entity/incrementVersionPayload";
 import {IncrementDialogResult} from "../incrementDialog";
+import {deleteEntityDialog} from "../../main-view/decision-dialog/decisionDialog";
+import {uploadPersonalDefinition, uploadPersonalProgram} from "../../edit-client/editClientService";
 
 const PersonalExplorer = () => {
     const explorerPanelRef = useRef(null);
@@ -240,9 +241,37 @@ const PersonalExplorer = () => {
             });
     }
 
+    const sendDefinition = (item: StoredItemTransfer) => {
+        const descriptor = item.type.toLocaleLowerCase();
+        uploadPersonalDefinition(item, item.type)
+            .then((response) => {
+                    if (response) {
+                        enqueueSnackbar(`${descriptor} "${item.name}" uploaded successfully to EDIT as dataset definition.`,
+                            {variant: "success"});
+                    }
+                }
+            )
+            .catch(() => enqueueSnackbar(`Failed to upload ${item.type.toLocaleLowerCase()} "${item.name}".`,
+                {variant: "error"}))
+    }
+
+    const sendProgram = (item: StoredItemTransfer) => {
+        const descriptor = item.type.toLocaleLowerCase();
+        uploadPersonalProgram(item, item.type)
+            .then((response) => {
+                    if (response) {
+                        enqueueSnackbar(`${descriptor} "${item.name}" uploaded successfully to EDIT as program.`,
+                            {variant: "success"});
+                    }
+                }
+            )
+            .catch(() => enqueueSnackbar(`Failed to upload ${item.type.toLocaleLowerCase()} "${item.name}".`,
+                {variant: "error"}))
+    }
+
     const removeItem = (node: TreeNode) => {
         const item = node.entity;
-        deleteItemDialog(item.type)
+        deleteEntityDialog(item.type.toString(), item.name)
             .then(async () => {
                 const descriptor = item.type[0] + item.type.slice(1).toLocaleLowerCase();
                 const payload: StoredItemPayload = Object.assign({}, item);
@@ -314,6 +343,14 @@ const PersonalExplorer = () => {
             }
             case ContextMenuEventType.IncrementVersion: {
                 if (event.payload) return incrementVersion(event.payload);
+                break;
+            }
+            case ContextMenuEventType.SendDefinition: {
+                if (event.payload) return sendDefinition(event.payload);
+                break;
+            }
+            case ContextMenuEventType.SendProgram: {
+                if (event.payload) return sendProgram(event.payload);
                 break;
             }
         }

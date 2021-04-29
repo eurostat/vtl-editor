@@ -35,7 +35,8 @@ import {
     fetchDomainRepository,
     fetchDomainScripts,
     fetchScript,
-    fetchScriptContent, finalizeScriptVersion,
+    fetchScriptContent,
+    finalizeScriptVersion,
     incrementScriptVersion,
     restoreBinnedItem
 } from "./domainRepoService";
@@ -44,15 +45,12 @@ import DomainExplorerMenu from "./domainExplorerMenu";
 import DomainItemContainer from "./domainItemContainer";
 import {TreePayload} from "../repositorySlice";
 import {useEffectOnce} from "../../utility/useEffectOnce";
-import {
-    deleteItemDialog,
-    finalizeVersionDialog,
-    incrementVersionDialog,
-    restoreItemDialog
-} from "../tree-explorer/treeExplorerService";
+import {finalizeVersionDialog, incrementVersionDialog, restoreItemDialog} from "../tree-explorer/treeExplorerService";
 import {buildIncrementPayload} from "../entity/incrementVersionPayload";
 import {IncrementDialogResult} from "../incrementDialog";
 import {useManagerRole, useRole} from "../../control/authorized";
+import {deleteEntityDialog} from "../../main-view/decision-dialog/decisionDialog";
+import {uploadDomainDefinition, uploadDomainProgram} from "../../edit-client/editClientService";
 
 const DomainExplorer = () => {
     const explorerPanelRef = useRef(null);
@@ -174,10 +172,38 @@ const DomainExplorer = () => {
             });
     }
 
+    const sendDefinition = (item: StoredItemTransfer) => {
+        const descriptor = item.type.toLocaleLowerCase();
+        uploadDomainDefinition(item, item.type)
+            .then((response) => {
+                    if (response) {
+                        enqueueSnackbar(`${descriptor} "${item.name}" uploaded successfully to EDIT as dataset definition.`,
+                            {variant: "success"});
+                    }
+                }
+            )
+            .catch(() => enqueueSnackbar(`Failed to upload ${item.type.toLocaleLowerCase()} "${item.name}".`,
+                {variant: "error"}))
+    }
+
+    const sendProgram = (item: StoredItemTransfer) => {
+        const descriptor = item.type.toLocaleLowerCase();
+        uploadDomainProgram(item, item.type)
+            .then((response) => {
+                    if (response) {
+                        enqueueSnackbar(`${descriptor} "${item.name}" uploaded successfully to EDIT as program.`,
+                            {variant: "success"});
+                    }
+                }
+            )
+            .catch(() => enqueueSnackbar(`Failed to upload ${item.type.toLocaleLowerCase()} "${item.name}".`,
+                {variant: "error"}))
+    }
+
     const removeItem = (node: TreeNode) => {
         if (!node || !node.entity || !node.type || !node.entity.type) return;
         const item = node.entity;
-        deleteItemDialog(item.type)
+        deleteEntityDialog(item.type.toString(), item.name)
             .then(async () => {
                 const descriptor = item.type[0] + item.type.slice(1).toLocaleLowerCase();
                 const call = node.type === NodeType.BINNED ? deleteBinnedItem : deleteDomainItem;
@@ -265,6 +291,14 @@ const DomainExplorer = () => {
             }
             case ContextMenuEventType.FinalizeVersion: {
                 if (event.payload) return finalizeVersion(event.payload);
+                break;
+            }
+            case ContextMenuEventType.SendDefinition: {
+                if (event.payload) return sendDefinition(event.payload);
+                break;
+            }
+            case ContextMenuEventType.SendProgram: {
+                if (event.payload) return sendProgram(event.payload);
                 break;
             }
         }

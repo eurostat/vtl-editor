@@ -1,7 +1,9 @@
-import React from "react";
+import React, {useState} from "react";
 import {ContextMenuEvent, ContextMenuEventType} from "../tree-explorer/contextMenuEvent";
 import {NodeType} from "../tree-explorer/nodeType";
 import {useManagerRole} from "../../control/authorized";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faCaretRight} from "@fortawesome/free-solid-svg-icons";
 
 type ItemMenuProps = {
     node: any,
@@ -9,7 +11,13 @@ type ItemMenuProps = {
 }
 
 const DomainItemMenu = ({node, onMenuEvent}: ItemMenuProps) => {
+    const [showEditSendMenu, setShowEditSendMenu] = useState(false);
     const forManager = useManagerRole();
+
+    const toggleEditSendMenu = (event: any) => {
+        if (!showEditSendMenu) event.preventDefault();
+        setShowEditSendMenu(!showEditSendMenu);
+    }
 
     const dispatchMenuEvent = (event: ContextMenuEvent) => {
         if (onMenuEvent) onMenuEvent(event);
@@ -63,10 +71,32 @@ const DomainItemMenu = ({node, onMenuEvent}: ItemMenuProps) => {
         }
     }
 
+    const onSendDefinition = () => {
+        if (node && node.entity) {
+            dispatchMenuEvent({type: ContextMenuEventType.SendDefinition, payload: node.entity});
+        }
+    }
+
+    const onSendProgram = () => {
+        if (node && node.entity) {
+            dispatchMenuEvent({type: ContextMenuEventType.SendProgram, payload: node.entity});
+        }
+    }
+
     function buildScriptMenu() {
         return (
             <ul className="menu">
                 <li onClick={onOpenFile}>Open</li>
+                <li className="with-submenu" onClick={toggleEditSendMenu}>
+                    <span>Upload To EDIT</span>
+                    <div className="position-right">
+                        <FontAwesomeIcon icon={faCaretRight}/>
+                    </div>
+                    <ul className={showEditSendMenu ? "submenu visible-menu" : "submenu hide-menu"}>
+                        <li onClick={onSendDefinition}>As Dataset Definition</li>
+                        <li onClick={onSendProgram}>As Program</li>
+                    </ul>
+                </li>
                 {forManager(<li onClick={onIncrementVersion}>Increment Version</li>)}
                 {forManager(<li onClick={onFinalizeVersion}>Finalize Version</li>)}
                 {/*<li onClick={onRenameItem}>Rename</li>*/}

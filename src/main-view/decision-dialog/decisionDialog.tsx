@@ -1,7 +1,7 @@
 import React from "react";
-import { Button, Modal, ModalBody, ModalFooter } from "react-bootstrap";
+import {Button, Modal, ModalBody, ModalFooter} from "react-bootstrap";
 import ModalHeader from "react-bootstrap/ModalHeader";
-import { createModal } from "react-modal-promise";
+import {createModal} from "react-modal-promise";
 
 type DecisionModalProps = {
     open: any,
@@ -49,3 +49,21 @@ DecisionDialog.defaultProps = {
 }
 
 export const decisionDialog = createModal(DecisionDialog);
+
+export const deleteEntityDialog = (type: string, name: string) => {
+    const decision = async () => {
+        const descriptor = type.toLocaleLowerCase();
+        const result = await decisionDialog({
+            title: "Warning",
+            text: `Do you really want to delete ${descriptor} "${name}"?`,
+            buttons: [
+                {key: "yes", text: "Yes", color: "primary"},
+                {key: "no", text: "No", color: "secondary"}
+            ]
+        });
+        return result === "yes"
+            ? Promise.resolve()
+            : Promise.reject();
+    }
+    return decision();
+}

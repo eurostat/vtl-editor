@@ -8,6 +8,7 @@ import editorReducer from "../editor/editorSlice";
 import viewReducer from "../main-view/viewSlice";
 import personalRepoReducer from "../repository/personal-repo/personalRepoSlice";
 import domainRepoReducer from "../repository/domain-repo/domainRepoSlice";
+import editClientReducer from "../edit-client/editClientSlice";
 import authReducer, { declassifyUser } from "./authSlice";
 import userManager from "./userManager";
 
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
     view: viewReducer,
     personalRepo: personalRepoReducer,
     domainRepo: domainRepoReducer,
+    editClient: editClientReducer,
     oidc: oidcReducer,
     router: connectRouter(browserHistory),
 });

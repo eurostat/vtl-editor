@@ -196,11 +196,11 @@
             File Explorer is the main component of the repository. It allows to view and manage folder structure,
             and script files.
         </p><div class="docbook.section"><div class="docbook.titlepage"><div><div><h3 class="docbook.title"><a name="repo_explorer_open"></a>Opening File Explorer</h3></div></div></div><p>
-                To open File Explorer, click <span class="docbook.bold"><strong>File Explorer</strong></span> icon on the
+                To open File Explorer, click <span class="docbook.bold"><strong>Personal Repository</strong></span> icon on the
                 <span class="docbook.bold"><strong>Navigation</strong></span>
                 sidebar. The File Explorer displays in the left part of the screen,
                 showing root folder contents. To hide it, click the icon again.
-            </p><div class="docbook.figure"><a name="d0e720"></a><p class="docbook.title"><b>Figure&nbsp;4.1.&nbsp;File Explorer icon on the Navigation sidebar</b></p><div class="docbook.figure-contents"><div class="docbook.mediaobject" align="center"><img src="./images/repo_explorer_icon.png" align="middle" alt="File Explorer icon on the Navigation sidebar"></div></div></div><br class="docbook.figure-break"></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h3 class="docbook.title"><a name="repo_explorer_browse"></a>Browsing Repository Tree</h3></div></div></div><p>
+            </p><div class="docbook.figure"><a name="d0e720"></a><p class="docbook.title"><b>Figure&nbsp;4.1.&nbsp;Personal Repository icon on the Navigation sidebar</b></p><div class="docbook.figure-contents"><div class="docbook.mediaobject" align="center"><img src="./images/repo_explorer_icon.png" align="middle" alt="Personal Repository icon on the Navigation sidebar"></div></div></div><br class="docbook.figure-break"></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h3 class="docbook.title"><a name="repo_explorer_browse"></a>Browsing Repository Tree</h3></div></div></div><p>
                 To see the contents of the nested folders in the repository tree, click the triangle icon next to their
                 name. This will expand the folder and display its child items below with an indent.
                 Clicking the triangle again collapses the folder and hides its contents.
@@ -341,12 +341,18 @@
                 VTL files stored in the repository are versioned. Every save operation creates new numbered version.
                 All previous versions are preserved. You can see the version number of currently opened file on the blue
                 bottom bar.
-            </p><div class="docbook.figure"><a name="d0e1072"></a><p class="docbook.title"><b>Figure&nbsp;4.17.&nbsp;File version on the bottom bar of the VTL Editor</b></p><div class="docbook.figure-contents"><div class="docbook.mediaobject" align="center"><img src="./images/repo_editor_file_version.png" align="middle" alt="File version on the bottom bar of the VTL Editor"></div></div></div><br class="docbook.figure-break"></div></div></div><div lang="en" class="docbook.chapter"><div class="docbook.titlepage"><div><div><h1 class="docbook.title"><a name="domain_repository"></a>Chapter&nbsp;5.&nbsp;Domain repository</h1></div></div></div><p>
-        Domain repository works identically to personal repository,
+            </p><div class="docbook.figure"><a name="d0e1072"></a><p class="docbook.title"><b>Figure&nbsp;4.17.&nbsp;File version on the bottom bar of the VTL Editor</b></p><div class="docbook.figure-contents"><div class="docbook.mediaobject" align="center"><img src="./images/repo_editor_file_version.png" align="middle" alt="File version on the bottom bar of the VTL Editor"></div></div></div><br class="docbook.figure-break"></div></div></div><div lang="en" class="docbook.chapter"><div class="docbook.titlepage"><div><div><h1 class="docbook.title"><a name="domain_repository"></a>Chapter&nbsp;5.&nbsp;Domain Repository</h1></div></div></div><p>
+        </p><div class="docbook.figure"><a name="d0e1084"></a><p class="docbook.title"><b>Figure&nbsp;5.1.&nbsp;Access to the Domain Repository is obtained using the icon marked in the graphic.</b></p><div class="docbook.figure-contents"><div class="docbook.mediaobject" align="center"><img src="./images/dr_icon_placement.png" align="middle" alt="Access to the Domain Repository is obtained using the icon marked in the graphic."></div></div></div><p><br class="docbook.figure-break">
+        Domain Repository works identically to personal repository,
         except that it is a public repository available only to users of a given domain.
         Just creating a domain doesn't create a repository - it doesn't exists initially.
         It is only created when first file is published by any user of that domain.
-    </p><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="file_publication"></a>File publication</h2></div></div></div><p>
+    </p><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="dr_tree_view"></a>File Explorer</h2></div></div></div><p><span class="docbook.bold"><strong>IMPORTANT!</strong></span> It is not possible to create folders in this repository in a given iteration of a VRM application.</p><p>
+            </p><div class="docbook.figure"><a name="d0e1100"></a><p class="docbook.title"><b>Figure&nbsp;5.2.&nbsp;Example File Explorer view (2) after accessing Domain Repository (1).</b></p><div class="docbook.figure-contents"><div class="docbook.mediaobject" align="center"><img src="./images/dr_file_explorer.png" align="middle" alt="Example File Explorer view (2) after accessing Domain Repository (1)."></div></div></div><p><br class="docbook.figure-break">
+            File Explorer is the main component of <span class="docbook.bold"><strong>Domain Repository</strong></span>.
+            It allows to view and manage domain files. Please reference <span class="docbook.italic">Personal Repository section</span> for more detailed description of file explorer.
+            Keep in mind that File Explorer's options for Domain Repository may not have the same options as Personal Repository's.
+        </p></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="file_publication"></a>File publication</h2></div></div></div><p>
             Publication is a tool/feature that is used to <span class="docbook.italic">publish current version of a given file</span>.
             It means that published file is a perfect copy only until original or published file version change after publication.
         </p><p>
@@ -365,7 +371,195 @@
             <span class="docbook.bold"><strong>IMPORTANT!</strong></span>
             Due to fact that after recovery/deletion operation, state of file is not updated - it is required to refresh
             domain repository by calling context menu on it (right-click) and selecting <span class="docbook.italic">"Refresh"</span> option.
-        </p></div></div><div lang="en" class="docbook.chapter"><div class="docbook.titlepage"><div><div><h1 class="docbook.title"><a name="settings"></a>Chapter&nbsp;6.&nbsp;Settings</h1></div></div></div><p>You can edit your preferences by clicking on <span class="docbook.bold"><strong>Settings</strong></span> in main menu,then will see all the following
+        </p></div></div><div lang="en" class="docbook.chapter"><div class="docbook.titlepage"><div><div><h1 class="docbook.title"><a name="domain_management"></a>Chapter&nbsp;6.&nbsp;Domain Management</h1></div></div></div><p>
+        </p><div class="docbook.figure"><a name="d0e1153"></a><p class="docbook.title"><b>Figure&nbsp;6.1.&nbsp;Access to the Domain Management is obtained using the icon marked in the graphic.</b></p><div class="docbook.figure-contents"><div class="docbook.mediaobject" align="center"><img src="./images/dm_icon_placement.png" align="middle" alt="Access to the Domain Management is obtained using the icon marked in the graphic."></div></div></div><p><br class="docbook.figure-break">
+        Domain management allows a user with appropriate rights to assign users to domains and domain groups.
+    </p><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="dm_object"></a>Manageable objects</h2></div></div></div><p>
+            All objects that can be managed in Domain Management. They consist of: user, role, group, domain.
+            User can be a member of group and domain. Group can be a member of domain. Both user and group can have roles.
+        </p><p>
+            An important aspect to remember is that user inherit roles and domains from their groups in addition to those they already have.
+            This allows to offload the administration users of assigning roles/domains manually in such situations.
+        </p><div class="docbook.section"><div class="docbook.titlepage"><div><div><h3 class="docbook.title"><a name="dm_relations_edit"></a>Editing object relationships</h3></div></div></div><p>
+                Editing connections between objects is available when creating and editing a user, group or domain.
+                Their editing is available under the pencil/pen icon next to the object table name.
+                This will be visually demonstrated in the later sections on creating and editing individual objects.
+            </p><div class="docbook.figure"><a name="d0e1172"></a><p class="docbook.title"><b>Figure&nbsp;6.2.&nbsp;An exemplary view of an open relationship editing panel.</b></p><div class="docbook.figure-contents"><div class="docbook.mediaobject" align="center"><img src="./images/dm_object_relation_edit.png" align="middle" alt="An exemplary view of an open relationship editing panel."></div></div></div><br class="docbook.figure-break"><p>
+                In the upper right corner of the window there is the type of the edited relation.
+                We now dive into a more detailed analysis of the edit view:
+                </p><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: disc; "><li class="docbook.listitem"><p>
+                            <span class="docbook.bold"><strong>(1) Selected objects</strong></span> &#8211;
+                            list of objects (in this case groups), which are assigned or will be after saving changes.
+                        </p></li><li class="docbook.listitem"><p>
+                            <span class="docbook.bold"><strong>(2) Available objects</strong></span> &#8211;
+                            list of all existing objects (in this case groups) within VRM application.
+                        </p></li><li class="docbook.listitem"><p>
+                            <span class="docbook.bold"><strong>(3) Checked object</strong></span> &#8211;
+                            will be moved to opposite side with &#8222;Move selected&#8221; button.
+                        </p></li><li class="docbook.listitem"><p>
+                            <span class="docbook.bold"><strong>(4) Unchecked object</strong></span> &#8211;
+                            will be not moved to opposite side with &#8222;Move selected&#8221; button.
+                        </p></li><li class="docbook.listitem"><p>
+                            <span class="docbook.bold"><strong>(5) Move to &#8222;Selected objects&#8221;</strong></span>:
+                            </p><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: circle; "><li class="docbook.listitem"><p>
+                                        <span class="docbook.bold"><strong>one-arrow button</strong></span> -
+                                        checked available objects will be moved to &#8222;&#8222;Selected objects&#8221; side.
+                                    </p><p>
+                                        <span class="docbook.bold"><strong>double-arrow button</strong></span> -
+                                        all (checked and unchecked) available objects will be moved to &#8222;&#8222;Selected objects&#8221; side.
+                                    </p></li></ul></div><p>
+                        </p></li><li class="docbook.listitem"><p>
+                            <span class="docbook.bold"><strong>(6) Move to &#8222;Available objects&#8221;</strong></span>:
+                            </p><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: circle; "><li class="docbook.listitem"><p>
+                                        <span class="docbook.bold"><strong>one-arrow button</strong></span> -
+                                        checked selected objects will be moved to &#8222;Available objects&#8221; side.
+                                    </p><p>
+                                        <span class="docbook.bold"><strong>double-arrow button</strong></span> -
+                                        all (checked and unchecked) selected objects will be moved to &#8222;Available objects&#8221; side.
+                                    </p></li></ul></div><p>
+                        </p></li><li class="docbook.listitem"><p>
+                            <span class="docbook.bold"><strong>(7) Edition confirmation buttons</strong></span>:
+                            </p><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: circle; "><li class="docbook.listitem"><p>
+                                        <span class="docbook.bold"><strong>Done</strong></span> - confirm edition changes.
+                                    </p><p>
+                                        <span class="docbook.bold"><strong>Cancels</strong></span> - cancel edition changes.
+                                    </p></li></ul></div><p>
+                        </p></li></ul></div><p>
+            </p></div></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="dm_domain_object"></a>Domain</h2></div></div></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h3 class="docbook.title"><a name="dm_domain_desc"></a>Description</h3></div></div></div><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: disc; "><li class="docbook.listitem"><p>
+                        VRM allows the administrators to create representations of statistical domains.
+                    </p></li><li class="docbook.listitem"><p>
+                        Domains are created manually by administrator and are stored in the VRM database.
+                    </p></li><li class="docbook.listitem"><p>
+                        Domains are searchable and editable by an administrator.
+                    </p></li><li class="docbook.listitem"><p>
+                        User with domain manager role can add domain members and remove them.
+                    </p></li><li class="docbook.listitem"><p>
+                        With special setting user or group can be assigned all existing and future domains.
+                    </p></li><li class="docbook.listitem"><p>
+                        Domains are top-level folders in the Domain Repository.
+                    </p></li><li class="docbook.listitem"><p>
+                        Users with specific domain assigned can edit and execute items in this domain in the Domain Repository.
+                    </p></li></ul></div></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h3 class="docbook.title"><a name="dm_domain_list"></a>Domain list view</h3></div></div></div><p>
+                </p><div class="docbook.figure"><a name="d0e1296"></a><p class="docbook.title"><b>Figure&nbsp;6.3.&nbsp;An exemplary view of domain list view.</b></p><div class="docbook.figure-contents"><div class="docbook.mediaobject" align="center"><img src="./images/dm_domain_list.png" align="middle" alt="An exemplary view of domain list view."></div></div></div><p><br class="docbook.figure-break">
+                The interface elements of this view will be described in detail below:
+                </p><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: disc; "><li class="docbook.listitem"><p>
+                            <span class="docbook.bold"><strong>(1) Manageable objects tab</strong></span> &#8211;
+                            allows you to quickly move between views of objects.
+                        </p></li><li class="docbook.listitem"><p>
+                            <span class="docbook.bold"><strong>(2) Create new object</strong></span> &#8211;
+                            opens a view for creating a new object, in this case a domain object.
+                        </p></li><li class="docbook.listitem"><p>
+                            <span class="docbook.bold"><strong>(3) Refresh</strong></span> &#8211;
+                            refreshes the view of actual list of objects.
+                        </p></li><li class="docbook.listitem"><p>
+                            <span class="docbook.bold"><strong>(4) List search</strong></span> &#8211;
+                            quick search for objects of interest when we know the name.
+                        </p></li><li class="docbook.listitem"><p>
+                            <span class="docbook.bold"><strong>(5) Expand info</strong></span> &#8211;
+                            chevron icon allowing to expand list element(object) to show additional information about it.
+                        </p></li><li class="docbook.listitem"><p>
+                            <span class="docbook.bold"><strong>(6) Edit object</strong></span> &#8211;
+                            opens a view for editing existing element(object) from the list.
+                        </p></li><li class="docbook.listitem"><p>
+                            <span class="docbook.bold"><strong>(7) Delete object</strong></span> &#8211;
+                            button of quick action in the form of deleting a selected item from the database. The user will be asked to confirm the action.
+                        </p></li><li class="docbook.listitem"><p>
+                            <span class="docbook.bold"><strong>(8) Delete object</strong></span> &#8211;
+                            here is a list from which we can choose the number of elements displayed at the same time, as well as page navigation, if there are any - otherwise the navigation will be grayed out.
+                        </p></li></ul></div><p>
+            </p></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h3 class="docbook.title"><a name="dm_domain_create"></a>Create domain view</h3></div></div></div><p>
+                </p><div class="docbook.figure"><a name="d0e1358"></a><p class="docbook.title"><b>Figure&nbsp;6.4.&nbsp;An exemplary view of create new domain view.</b></p><div class="docbook.figure-contents"><div class="docbook.mediaobject" align="center"><img src="./images/dm_domain_create.png" align="middle" alt="An exemplary view of create new domain view."></div></div></div><p><br class="docbook.figure-break">
+                When creating a new domain, only the domain name is required (empty value is not allowed).
+                The description and relationship options are optional.
+                To edit user and group relations, use the buttons marked in the example graphic above.
+            </p></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h3 class="docbook.title"><a name="dm_domain_edit"></a>Edit domain view</h3></div></div></div><p>
+                </p><div class="docbook.figure"><a name="d0e1370"></a><p class="docbook.title"><b>Figure&nbsp;6.5.&nbsp;An exemplary view of domain edition view.</b></p><div class="docbook.figure-contents"><div class="docbook.mediaobject" align="center"><img src="./images/dm_domain_edit.png" align="middle" alt="An exemplary view of domain edition view."></div></div></div><p><br class="docbook.figure-break">
+                The same rules apply for editing as for <a class="docbook.xref" href="#dm_domain_create" title="Create domain view">the section called &#8220;Create domain view&#8221;</a>.
+                The domain relationship is edited using the button(1) on the example of the above graphic.
+                Button(2) of quick action in the form of deleting a selected item from the domain relations.
+                There is no confirmation window for this deletion, because user need to confirm/save changes after edition.
+            </p></div></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="dm_group_object"></a>Group</h2></div></div></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h3 class="docbook.title"><a name="dm_group_desc"></a>Description</h3></div></div></div><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: disc; "><li class="docbook.listitem"><p>
+                        Administrators can create user groups and assign users to them.
+                    </p></li><li class="docbook.listitem"><p>
+                        Like domains, groups are created manually.
+                    </p></li><li class="docbook.listitem"><p>
+                        User with domain manager role can add users to group and remove them.
+                    </p></li><li class="docbook.listitem"><p>
+                        Groups can have roles and be assigned to domains. Users assigned to the group inherit roles and domains from this group.
+                    </p></li><li class="docbook.listitem"><p>
+                        Group with domain assigned has write and execute access to items in this domain in the Domain Repository.
+                    </p></li></ul></div></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h3 class="docbook.title"><a name="dm_group_list"></a>Group list view</h3></div></div></div><p>
+                </p><div class="docbook.figure"><a name="d0e1406"></a><p class="docbook.title"><b>Figure&nbsp;6.6.&nbsp;An exemplary view of group list view.</b></p><div class="docbook.figure-contents"><div class="docbook.mediaobject" align="center"><img src="./images/dm_group_list.png" align="middle" alt="An exemplary view of group list view."></div></div></div><p><br class="docbook.figure-break">
+                Please reference section <a class="docbook.xref" href="#dm_domain_list" title="Domain list view">the section called &#8220;Domain list view&#8221;</a> for a detailed description.
+            </p></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h3 class="docbook.title"><a name="dm_group_create"></a>Create group view</h3></div></div></div><p>
+                </p><div class="docbook.figure"><a name="d0e1420"></a><p class="docbook.title"><b>Figure&nbsp;6.7.&nbsp;An exemplary view of create new group view.</b></p><div class="docbook.figure-contents"><div class="docbook.mediaobject" align="center"><img src="./images/dm_group_create.png" align="middle" alt="An exemplary view of create new group view."></div></div></div><p><br class="docbook.figure-break">
+                When creating a new group, only the group name is required (empty value is not allowed).
+                The description and relationship options are optional.
+                To edit the user, role and domain relations, use the buttons marked in the example graphic above.
+            </p></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h3 class="docbook.title"><a name="dm_group_edit"></a>Edit group view</h3></div></div></div><p>
+                </p><div class="docbook.figure"><a name="d0e1432"></a><p class="docbook.title"><b>Figure&nbsp;6.8.&nbsp;An exemplary view of group edition view.</b></p><div class="docbook.figure-contents"><div class="docbook.mediaobject" align="center"><img src="./images/dm_domain_edit.png" align="middle" alt="An exemplary view of group edition view."></div></div></div><p><br class="docbook.figure-break">
+                The same rules apply for editing as for <a class="docbook.xref" href="#dm_group_create" title="Create group view">the section called &#8220;Create group view&#8221;</a>.
+                The group relationship is edited using the button(1) on the example of the above graphic.
+                Button(2) of quick action in the form of deleting a selected item from the group relations.
+                There is no confirmation window for this deletion, because editor need to confirm/save changes after edition.
+            </p></div></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="dm_user_object"></a>User</h2></div></div></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h3 class="docbook.title"><a name="dm_user_desc"></a>Description</h3></div></div></div><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: disc; "><li class="docbook.listitem"><p>
+                        User details (first and last name, e-mail, organization, etc.) are stored in the User table in the VRM database.
+                    </p></li><li class="docbook.listitem"><p>
+                        Users can have roles and be assigned to domains and groups. User roles are preserved in the VRM database and loaded when user logs in.
+                    </p></li><li class="docbook.listitem"><p>
+                        Administrator can search for user accounts and edit their information.
+                    </p></li><li class="docbook.listitem"><p>
+                        User with domain manager role can add domain members and remove them.
+                    </p></li><li class="docbook.listitem"><p>
+                        In case of internal authentication administrator is responsible for creating user accounts and can change their passwords.
+                    </p></li><li class="docbook.listitem"><p>
+                        Users can see details of their profile in a separate view.
+                    </p></li></ul></div></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h3 class="docbook.title"><a name="dm_user_list"></a>User list view</h3></div></div></div><p>
+                </p><div class="docbook.figure"><a name="d0e1471"></a><p class="docbook.title"><b>Figure&nbsp;6.9.&nbsp;An exemplary view of user list view.</b></p><div class="docbook.figure-contents"><div class="docbook.mediaobject" align="center"><img src="./images/dm_user_list.png" align="middle" alt="An exemplary view of user list view."></div></div></div><p><br class="docbook.figure-break">
+                Please reference section <a class="docbook.xref" href="#dm_domain_list" title="Domain list view">the section called &#8220;Domain list view&#8221;</a> for a detailed description.
+            </p></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h3 class="docbook.title"><a name="dm_user_create"></a>Create user view</h3></div></div></div><p>
+                </p><div class="docbook.figure"><a name="d0e1485"></a><p class="docbook.title"><b>Figure&nbsp;6.10.&nbsp;An exemplary view of create new user view.</b></p><div class="docbook.figure-contents"><div class="docbook.mediaobject" align="center"><img src="./images/dm_user_create.png" align="middle" alt="An exemplary view of create new user view."></div></div></div><p><br class="docbook.figure-break">
+                The minimum requirements to create a user are all of the fields listed below:
+                </p><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: disc; "><li class="docbook.listitem"><p>First Name</p></li><li class="docbook.listitem"><p>Last Name</p></li><li class="docbook.listitem"><p>Login</p></li><li class="docbook.listitem"><p>E-mail</p></li></ul></div><p>
+                Empty values are not allowed! That will generate application error.
+                <span class="docbook.bold"><strong>All Domains</strong></span> is optional and really powerful option -
+                gives the user access to all domains (existing and to be created in the future). Please allocate this option responsibly.
+                To edit the role, group and domain relations, use the buttons marked in the example graphic above.
+            </p></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h3 class="docbook.title"><a name="dm_user_edit"></a>Edit user view</h3></div></div></div><p>
+                </p><div class="docbook.figure"><a name="d0e1514"></a><p class="docbook.title"><b>Figure&nbsp;6.11.&nbsp;An exemplary view of user edition view.</b></p><div class="docbook.figure-contents"><div class="docbook.mediaobject" align="center"><img src="./images/dm_user_edit.png" align="middle" alt="An exemplary view of user edition view."></div></div></div><p><br class="docbook.figure-break">
+                The same rules apply for editing as for <a class="docbook.xref" href="#dm_user_create" title="Create user view">the section called &#8220;Create user view&#8221;</a>.
+                The user relationship is edited using the button(1) on the example of the above graphic.
+                Button(2) of quick action in the form of deleting a selected item from the user relations.
+                There is no confirmation window for this deletion, because editor need to confirm/save changes after edition.
+            </p></div></div></div><div lang="en" class="docbook.chapter"><div class="docbook.titlepage"><div><div><h1 class="docbook.title"><a name="authorization"></a>Chapter&nbsp;7.&nbsp;Authorization</h1></div></div></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="auth_scheme"></a>Role scheme</h2></div></div></div><p>
+            </p><div class="docbook.figure"><a name="d0e1532"></a><p class="docbook.title"><b>Figure&nbsp;7.1.&nbsp;Authorization role scheme</b></p><div class="docbook.figure-contents"><div class="docbook.mediaobject" align="center"><img src="./images/auth_scheme.png" align="middle" alt="Authorization role scheme"></div></div></div><p><br class="docbook.figure-break">
+        </p></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="auth_role_desc"></a>Roles description</h2></div></div></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h3 class="docbook.title"><a name="auth_visitor"></a>Visitor</h3></div></div></div><p>
+                Visitor (user without any roles assigned) permissions:
+                </p><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: disc; "><li class="docbook.listitem"><p>Use VTL Editor, save files on disk, load files from disk.</p></li><li class="docbook.listitem"><p>Use SDMX registries, import Data Structure Definitions.</p></li><li class="docbook.listitem"><p>View all domains and items in the Domain Repository.</p></li></ul></div><p>
+                Visitor doesn&#8217;t have personal storage and can&#8217;t save items in the VRM repository.
+            </p></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h3 class="docbook.title"><a name="auth_user"></a>Domain user</h3></div></div></div><p>
+                Domain user additional permissions:
+                </p><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: disc; "><li class="docbook.listitem"><p>Save/edit/delete items in the personal storage in the VRM repository.</p></li><li class="docbook.listitem"><p>Edit and execute all items in the assigned domains.</p></li></ul></div><p>
+                Domain user can publish items from personal storage to Domain Repository
+                Items edited in the Domain Repository are saved as a patch version indicated by third part in version number.
+                They are considered draft by default &#8212; marked as non-final versions.
+            </p></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h3 class="docbook.title"><a name="auth_manager"></a>Domain manager</h3></div></div></div><p>
+                Domain manager additional permissions:
+                </p><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: disc; "><li class="docbook.listitem"><p>Delete all items in the assigned domains.</p></li><li class="docbook.listitem"><p>View the Recycle Bin for the assigned domains and delete items permanently.</p></li><li class="docbook.listitem"><p>Add and remove users in the assigned domains and groups.</p></li></ul></div><p>
+                Domain manager can&#8217;t create or remove domains and groups, and doesn&#8217;t have right to change group roles.
+            </p></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h3 class="docbook.title"><a name="auth_admin"></a>Administrator</h3></div></div></div><p>
+                <span class="docbook.bold"><strong>IMPORTANT! </strong></span>
+                The first user logged in to the VRM application will automatically be granted administrator rights by system.
+                Please take this into consideration.
+            </p><p>
+                Administrator additional permissions:
+                </p><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: disc; "><li class="docbook.listitem"><p>View the Recycle Bin for the Domain Repository and delete items permanently.</p></li><li class="docbook.listitem"><p>Add, edit and remove users, domains, and groups.</p></li><li class="docbook.listitem"><p>Assign and remove user and group roles.</p></li><li class="docbook.listitem"><p>Add and remove users in all the domains and groups.</p></li></ul></div><p>
+            </p></div></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="auth_user_profile"></a>User profile</h2></div></div></div><p>
+            </p><div class="docbook.figure"><a name="d0e1616"></a><p class="docbook.title"><b>Figure&nbsp;7.2.&nbsp;An exemplary view of actual user profile.</b></p><div class="docbook.figure-contents"><div class="docbook.mediaobject" align="center"><img src="./images/auth_user_profile.png" align="middle" alt="An exemplary view of actual user profile."></div></div></div><p><br class="docbook.figure-break">
+            Access to the user profile is always available in the upper right corner of the application after pressing the button(1).
+            A view(2) will open allowing the user to view all information related to his account.
+            The user cannot edit his data himself, he must ask for it a user with appropriate permissions in the application.
+        </p></div></div><div lang="en" class="docbook.chapter"><div class="docbook.titlepage"><div><div><h1 class="docbook.title"><a name="settings"></a>Chapter&nbsp;8.&nbsp;Settings</h1></div></div></div><p>You can edit your preferences by clicking on <span class="docbook.bold"><strong>Settings</strong></span> in main menu,then will see all the following
         options:
     </p><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: disc; "><li class="docbook.listitem"><p>Change theme color</p></li><li class="docbook.listitem"><p>Switch VTL language version</p></li></ul></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="vrm_language_version"></a>Language Version</h2></div></div></div><p>You have possibility to change the <span class="docbook.bold"><strong>VTL language version</strong></span> in <span class="docbook.bold"><strong>Settings/ VTL Grammar Version</strong></span>. The
             highest (currently 2.0) will be added as a default option.
@@ -384,7 +578,7 @@
                         <span class="docbook.bold"><strong>High Contrast Dark</strong></span>
                         - high contrast
                     </p></li></ul></div><p>
-        </p></div></div><div lang="en" class="docbook.chapter"><div class="docbook.titlepage"><div><div><h1 class="docbook.title"><a name="usr_keyboard_shortcuts"></a>Chapter&nbsp;7.&nbsp;Keyboard Shortcuts</h1></div></div></div><p>The following commands are available when editing a file:</p><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: disc; "><li class="docbook.listitem"><p>
+        </p></div></div><div lang="en" class="docbook.chapter"><div class="docbook.titlepage"><div><div><h1 class="docbook.title"><a name="usr_keyboard_shortcuts"></a>Chapter&nbsp;9.&nbsp;Keyboard Shortcuts</h1></div></div></div><p>The following commands are available when editing a file:</p><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: disc; "><li class="docbook.listitem"><p>
                 <span class="docbook.bold"><strong>F1 or Alt+F1</strong></span>&nbsp; Display the full list of commands
             </p></li><li class="docbook.listitem"><p>
                 <span class="docbook.bold"><strong>Ctrl-C</strong></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Copy the selected text to the
@@ -408,7 +602,7 @@
                 <span class="docbook.bold"><strong>Ctrl-P</strong></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Print active window
             </p></li><li class="docbook.listitem"><p>
                 <span class="docbook.bold"><strong>Ctrl-F</strong></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Find text
-            </p></li></ul></div></div><div lang="en" class="docbook.chapter"><div class="docbook.titlepage"><div><div><h1 class="docbook.title"><a name="accessibility"></a>Chapter&nbsp;8.&nbsp;Accessibility</h1></div></div></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="vrm_accessibility_help"></a>Accessibility Help</h2></div></div></div><p>You can press <span class="docbook.bold"><strong>Alt+F1</strong></span> or <span class="docbook.bold"><strong>Ctrl+F1</strong></span> in Microsoft Edge to trigger the <span class="docbook.bold"><strong>'Show Accessibility
+            </p></li></ul></div></div><div lang="en" class="docbook.chapter"><div class="docbook.titlepage"><div><div><h1 class="docbook.title"><a name="accessibility"></a>Chapter&nbsp;10.&nbsp;Accessibility</h1></div></div></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="vrm_accessibility_help"></a>Accessibility Help</h2></div></div></div><p>You can press <span class="docbook.bold"><strong>Alt+F1</strong></span> or <span class="docbook.bold"><strong>Ctrl+F1</strong></span> in Microsoft Edge to trigger the <span class="docbook.bold"><strong>'Show Accessibility
             Help'
         </strong></span> dialog, while in an
             editor to find out the current position in the editor and to check the state of various accessibility

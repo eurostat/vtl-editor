@@ -7,12 +7,37 @@
 
     <title>Domain Repository</title>
     <para>
-        Domain repository works identically to personal repository,
+        <figure>
+            <title>Access to the Domain Repository is obtained using the icon marked in the graphic.</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="./images/dr_icon_placement.png" align="center" contentwidth="60%"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
+        Domain Repository works identically to personal repository,
         except that it is a public repository available only to users of a given domain.
         Just creating a domain doesn't create a repository - it doesn't exists initially.
         It is only created when first file is published by any user of that domain.
     </para>
 
+    <section xml:id="dr_tree_view">
+        <title>File Explorer</title>
+        <para><emphasis role="bold">IMPORTANT!</emphasis> It is not possible to create folders in this repository in a given iteration of a VRM application.</para>
+        <para>
+            <figure>
+                <title>Example File Explorer view (2) after accessing Domain Repository (1).</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="./images/dr_file_explorer.png" align="center" contentwidth="60%"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+            File Explorer is the main component of <emphasis role="bold">Domain Repository</emphasis>.
+            It allows to view and manage domain files. Please reference <emphasis role="italic">Personal Repository section</emphasis> for more detailed description of file explorer.
+            Keep in mind that File Explorer's options for Domain Repository may not have the same options as Personal Repository's.
+        </para>
+    </section>
     <section xml:id="file_publication">
         <title>File publication</title>
         <para>

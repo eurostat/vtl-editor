@@ -26,13 +26,13 @@
         <section xml:id="repo_explorer_open">
             <title>Opening File Explorer</title>
             <para>
-                To open File Explorer, click <emphasis role="bold">File Explorer</emphasis> icon on the
+                To open File Explorer, click <emphasis role="bold">Personal Repository</emphasis> icon on the
                 <emphasis role="bold">Navigation</emphasis>
                 sidebar. The File Explorer displays in the left part of the screen,
                 showing root folder contents. To hide it, click the icon again.
             </para>
             <figure>
-                <title>File Explorer icon on the Navigation sidebar</title>
+                <title>Personal Repository icon on the Navigation sidebar</title>
                 <mediaobject>
                     <imageobject>
                         <imagedata fileref="./images/repo_explorer_icon.png" align="center" width="90%" scalefit="1"/>

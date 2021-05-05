@@ -7,8 +7,8 @@
 
     <title>Domain Management</title>
     <para>
-        <figure>
-            <title>Access to the Domain Management is obtained using the icon marked in the graphic.</title>
+        <figure xml:id="dm_icon_figure">
+            <title>Domain Management icon</title>
             <mediaobject>
                 <imageobject>
                     <imagedata fileref="./images/dm_icon_placement.png" align="center" contentwidth="60%"/>
@@ -35,7 +35,7 @@
                 This will be visually demonstrated in the later sections on creating and editing individual objects.
             </para>
             <figure>
-                <title>An exemplary view of an open relationship editing panel.</title>
+                <title>Relationship editing panel</title>
                 <mediaobject>
                     <imageobject>
                         <imagedata fileref="./images/dm_object_relation_edit.png" align="center" width="90%" scalefit="1"/>
@@ -169,7 +169,7 @@
             <title>Domain list view</title>
             <para>
                 <figure>
-                    <title>An exemplary view of domain list view.</title>
+                    <title>Domain list view</title>
                     <mediaobject>
                         <imageobject>
                             <imagedata fileref="./images/dm_domain_list.png" align="center" width="100%" scalefit="1"/>
@@ -185,7 +185,7 @@
                         </para>
                     </listitem>
                     <listitem>
-                        <para>
+                        <para xml:id="dm_object_list_create">
                             <emphasis role="bold">(2) Create new object</emphasis> –
                             opens a view for creating a new object, in this case a domain object.
                         </para>
@@ -208,13 +208,13 @@
                             chevron icon allowing to expand list element(object) to show additional information about it.
                         </para>
                     </listitem>
-                    <listitem>
+                    <listitem xml:id="dm_object_list_edit">
                         <para>
                             <emphasis role="bold">(6) Edit object</emphasis> –
                             opens a view for editing existing element(object) from the list.
                         </para>
                     </listitem>
-                    <listitem>
+                    <listitem xml:id="dm_object_list_delete">
                         <para>
                             <emphasis role="bold">(7) Delete object</emphasis> –
                             button of quick action in the form of deleting a selected item from the database. The user will be asked to confirm the action.
@@ -230,36 +230,129 @@
             </para>
         </section>
         <section xml:id="dm_domain_create">
-            <title>Create domain view</title>
+            <title>Creating domain</title>
             <para>
-                <figure>
-                    <title>An exemplary view of create new domain view.</title>
+                <figure xml:id="dm_domain_create_view">
+                    <title>Create new domain view</title>
                     <mediaobject>
                         <imageobject>
                             <imagedata fileref="./images/dm_domain_create.png" align="center" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
-                When creating a new domain, only the domain name is required (empty value is not allowed).
-                The description and relationship options are optional.
-                To edit user and group relations, use the buttons marked in the example graphic above.
+                The following steps are required to create a new domain:
+                <orderedlist>
+                    <listitem>
+                        <para>
+                            Open the Domain Management if it's closed. See <link linkend="dm_icon_figure">figure</link> for icon placement.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Move to <emphasis role="bold">Domains</emphasis> tab.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Click <link linkend="dm_object_list_create"><emphasis role="bold">New Domain</emphasis></link> button.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Enter the name(empty value is not allowed) of the new domain. Optionally complete description and relations.
+                            To edit user and group relations, use the buttons marked in <link linkend="dm_domain_create_view">view</link>.
+                            Please reference this <link linkend="dm_relations_edit">section</link> for detailed description of the relationship view.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Confirm domain creation by clicking button <emphasis role="bold">Save</emphasis>.
+                        </para>
+                    </listitem>
+                </orderedlist>
             </para>
         </section>
         <section xml:id="dm_domain_edit">
-            <title>Edit domain view</title>
+            <title>Editing domain</title>
             <para>
-                <figure>
-                    <title>An exemplary view of domain edition view.</title>
+                <figure xml:id="dm_domain_edit_view">
+                    <title>Edit domain view</title>
                     <mediaobject>
                         <imageobject>
                             <imagedata fileref="./images/dm_domain_edit.png" align="center" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
-                The same rules apply for editing as for <xref  linkend="dm_domain_create"/>.
-                The domain relationship is edited using the button(1) on the example of the above graphic.
-                Button(2) of quick action in the form of deleting a selected item from the domain relations.
-                There is no confirmation window for this deletion, because user need to confirm/save changes after edition.
+                The following steps are required to edit existing domain:
+                <orderedlist>
+                    <listitem>
+                        <para>
+                            Open the Domain Management if it's closed. See <link linkend="dm_icon_figure">figure</link> for icon placement.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Move to <emphasis role="bold">Domains</emphasis> tab.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Click <link linkend="dm_object_list_edit"><emphasis role="bold">Edit Domain</emphasis></link> button on target domain from the list.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Fields that are required to save edition: name. Description is optional.
+                            If the name is taken, the application will notify you with an appropriate error.
+                        </para>
+                        <para>
+                            To edit user and group relations, use the buttons <emphasis role="bold">(1)</emphasis> marked in <link linkend="dm_domain_edit_view">view</link>.
+                            Please reference this <link linkend="dm_relations_edit">section</link> for detailed description of the relationship view.
+                        </para>
+                        <para>
+                            Button <emphasis role="bold">(2)</emphasis> of quick action in the form of deleting a selected item from the domain relations.
+                            There is no confirmation window for this deletion, because user need to confirm/save changes after edition.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Confirm domain edition by clicking button <emphasis role="bold">Save</emphasis>.
+                        </para>
+                    </listitem>
+                </orderedlist>
+            </para>
+        </section>
+        <section xml:id="dm_domain_delete">
+            <title>Deleting domain</title>
+            <para>
+                <emphasis>IMPORTANT!</emphasis>
+                Deleting a domain also deletes the domain repository if it is empty. If this condition is not met, the domain deletion will fail.
+            </para>
+            <para>
+                The following steps are required to delete existing domain:
+                <orderedlist>
+                    <listitem>
+                        <para>
+                            Open the Domain Management if it's closed. See <link linkend="dm_icon_figure">figure</link> for icon placement.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Move to <emphasis role="bold">Domains</emphasis> tab.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Click <link linkend="dm_object_list_delete"><emphasis role="bold">Delete Domain</emphasis></link> button on target domain from the list.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Warning dialog window is displayed, prompting for confirmation. Click
+                            <emphasis role="bold">Yes</emphasis> button to confirm deletion.
+                        </para>
+                    </listitem>
+                </orderedlist>
             </para>
         </section>
     </section>
@@ -299,7 +392,7 @@
             <title>Group list view</title>
             <para>
                 <figure>
-                    <title>An exemplary view of group list view.</title>
+                    <title>Group list view</title>
                     <mediaobject>
                         <imageobject>
                             <imagedata fileref="./images/dm_group_list.png" align="center" width="100%" scalefit="1"/>
@@ -310,36 +403,125 @@
             </para>
         </section>
         <section xml:id="dm_group_create">
-            <title>Create group view</title>
+            <title>Creating group </title>
             <para>
-                <figure>
-                    <title>An exemplary view of create new group view.</title>
+                <figure xml:id="dm_group_create_view">
+                    <title>Create group view</title>
                     <mediaobject>
                         <imageobject>
                             <imagedata fileref="./images/dm_group_create.png" align="center" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
-                When creating a new group, only the group name is required (empty value is not allowed).
-                The description and relationship options are optional.
-                To edit the user, role and domain relations, use the buttons marked in the example graphic above.
+                The following steps are required to create a new domain:
+                <orderedlist>
+                    <listitem>
+                        <para>
+                            Open the Domain Management if it's closed. See <link linkend="dm_icon_figure">figure</link> for icon placement.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Move to <emphasis role="bold">Groups</emphasis> tab.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Click <link linkend="dm_object_list_create"><emphasis role="bold">New Group</emphasis></link> button.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Enter the name(empty value is not allowed) of the new group. Optionally complete description and relations.
+                            To edit roles, user and domain relations, use the buttons marked in <link linkend="dm_group_create_view">view</link>.
+                            Please reference this <link linkend="dm_relations_edit">section</link> for detailed description of the relationship view.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Confirm group creation by clicking button <emphasis role="bold">Save</emphasis>.
+                        </para>
+                    </listitem>
+                </orderedlist>
             </para>
         </section>
         <section xml:id="dm_group_edit">
-            <title>Edit group view</title>
+            <title>Editing group</title>
             <para>
-                <figure>
-                    <title>An exemplary view of group edition view.</title>
+                <figure xml:id="dm_group_edit_view">
+                    <title>Edit group view</title>
                     <mediaobject>
                         <imageobject>
                             <imagedata fileref="./images/dm_domain_edit.png" align="center" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
-                The same rules apply for editing as for <xref  linkend="dm_group_create"/>.
-                The group relationship is edited using the button(1) on the example of the above graphic.
-                Button(2) of quick action in the form of deleting a selected item from the group relations.
-                There is no confirmation window for this deletion, because editor need to confirm/save changes after edition.
+                The following steps are required to edit existing group:
+                <orderedlist>
+                    <listitem>
+                        <para>
+                            Open the Domain Management if it's closed. See <link linkend="dm_icon_figure">figure</link> for icon placement.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Move to <emphasis role="bold">Groups</emphasis> tab.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Click <link linkend="dm_object_list_edit"><emphasis role="bold">Edit Group</emphasis></link> button on target group from the list.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Fields that are required to save edition: name. Description is optional.
+                            If the name is taken, the application will notify you with an appropriate error.
+                        </para>
+                        <para>
+                            To edit role, user and domain relations, use the buttons <emphasis role="bold">(1)</emphasis> marked in <link linkend="dm_group_edit_view">view</link>.
+                            Please reference this <link linkend="dm_relations_edit">section</link> for detailed description of the relationship view.
+                        </para>
+                        <para>
+                            Button <emphasis role="bold">(2)</emphasis> of quick action in the form of deleting a selected item from the group relations.
+                            There is no confirmation window for this deletion, because user need to confirm/save changes after edition.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Confirm group edition by clicking button <emphasis role="bold">Save</emphasis>.
+                        </para>
+                    </listitem>
+                </orderedlist>
+            </para>
+        </section>
+        <section xml:id="dm_group_delete">
+            <title>Deleting group</title>
+            <para>
+                The following steps are required to delete existing group:
+                <orderedlist>
+                    <listitem>
+                        <para>
+                            Open the Domain Management if it's closed. See <link linkend="dm_icon_figure">figure</link> for icon placement.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Move to <emphasis role="bold">Groups</emphasis> tab.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Click <link linkend="dm_object_list_delete"><emphasis role="bold">Delete Group</emphasis></link> button on target group from the list.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Warning dialog window is displayed, prompting for confirmation. Click
+                            <emphasis role="bold">Yes</emphasis> button to confirm deletion.
+                        </para>
+                    </listitem>
+                </orderedlist>
             </para>
         </section>
     </section>
@@ -384,7 +566,7 @@
             <title>User list view</title>
             <para>
                 <figure>
-                    <title>An exemplary view of user list view.</title>
+                    <title>User list view</title>
                     <mediaobject>
                         <imageobject>
                             <imagedata fileref="./images/dm_user_list.png" align="center" width="100%" scalefit="1"/>
@@ -397,50 +579,128 @@
         <section xml:id="dm_user_create">
             <title>Create user view</title>
             <para>
-                <figure>
-                    <title>An exemplary view of create new user view.</title>
+                <figure xml:id="dm_user_create_view">
+                    <title>Create user view</title>
                     <mediaobject>
                         <imageobject>
                             <imagedata fileref="./images/dm_user_create.png" align="center" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
-                The minimum requirements to create a user are all of the fields listed below:
-                <itemizedlist>
+                The following steps are required to create a new user:
+                <orderedlist>
                     <listitem>
-                        <para>First Name</para>
+                        <para>
+                            Open the Domain Management if it's closed. See <link linkend="dm_icon_figure">figure</link> for icon placement.
+                        </para>
                     </listitem>
                     <listitem>
-                        <para>Last Name</para>
+                        <para>
+                            Move to <emphasis role="bold">Users</emphasis> tab.
+                        </para>
                     </listitem>
                     <listitem>
-                        <para>Login</para>
+                        <para>
+                            Click <link linkend="dm_object_list_create"><emphasis role="bold">New User</emphasis></link> button.
+                        </para>
                     </listitem>
                     <listitem>
-                        <para>E-mail</para>
+                        <para>
+                            Fill all required fields: First Name, Last Name, Login, E-mail. Optionally edit relations.
+                            To edit roles, group and domain relations, use the buttons marked in <link linkend="dm_user_create_view">view</link>.
+                            Please reference this <link linkend="dm_relations_edit">section</link> for detailed description of the relationship view.
+                        </para>
+                        <para>
+                            <emphasis role="bold">All Domains</emphasis> is optional and really powerful option -
+                            gives the user access to all domains (existing and to be created in the future). Please allocate this option responsibly.
+                        </para>
                     </listitem>
-                </itemizedlist>
-                Empty values are not allowed! That will generate application error.
-                <emphasis role="bold">All Domains</emphasis> is optional and really powerful option -
-                gives the user access to all domains (existing and to be created in the future). Please allocate this option responsibly.
-                To edit the role, group and domain relations, use the buttons marked in the example graphic above.
+                    <listitem>
+                        <para>
+                            Confirm user creation by clicking button <emphasis role="bold">Save</emphasis>.
+                        </para>
+                    </listitem>
+                </orderedlist>
             </para>
         </section>
         <section xml:id="dm_user_edit">
-            <title>Edit user view</title>
+            <title>Editing user</title>
             <para>
-                <figure>
-                    <title>An exemplary view of user edition view.</title>
+                <figure xml:id="dm_user_edit_view">
+                    <title>Edit user view</title>
                     <mediaobject>
                         <imageobject>
                             <imagedata fileref="./images/dm_user_edit.png" align="center" width="100%" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
-                The same rules apply for editing as for <xref  linkend="dm_user_create"/>.
-                The user relationship is edited using the button(1) on the example of the above graphic.
-                Button(2) of quick action in the form of deleting a selected item from the user relations.
-                There is no confirmation window for this deletion, because editor need to confirm/save changes after edition.
+                The following steps are required to edit existing user:
+                <orderedlist>
+                    <listitem>
+                        <para>
+                            Open the Domain Management if it's closed. See <link linkend="dm_icon_figure">figure</link> for icon placement.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Move to <emphasis role="bold">Users</emphasis> tab.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Click <link linkend="dm_object_list_edit"><emphasis role="bold">Edit User</emphasis></link> button on target user from the list.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Fields that are required to save edition: First Name, Last Name, Login, E-mail. Optionally edit relations.
+                            To edit roles, group and domain relations, use the buttons <emphasis role="bold">(1)</emphasis> marked in <link linkend="dm_user_edit_view">view</link>.
+                            Please reference this <link linkend="dm_relations_edit">section</link> for detailed description of the relationship view.
+                        </para>
+                        <para>
+                            Button <emphasis role="bold">(2)</emphasis> of quick action in the form of deleting a selected item from the user relations.
+                            There is no confirmation window for this deletion, because user need to confirm/save changes after edition.
+                        </para>
+                        <para>
+                            <emphasis role="bold">All Domains</emphasis> is optional and really powerful option -
+                            gives the user access to all domains (existing and to be created in the future). Please allocate this option responsibly.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Confirm user edition by clicking button <emphasis role="bold">Save</emphasis>.
+                        </para>
+                    </listitem>
+                </orderedlist>
+            </para>
+        </section>
+        <section xml:id="dm_user_delete">
+            <title>Deleting user</title>
+            <para>
+                The following steps are required to delete existing user:
+                <orderedlist>
+                    <listitem>
+                        <para>
+                            Open the Domain Management if it's closed. See <link linkend="dm_icon_figure">figure</link> for icon placement.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Move to <emphasis role="bold">Users</emphasis> tab.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Click <link linkend="dm_object_list_delete"><emphasis role="bold">Delete User</emphasis></link> button on target user from the list.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Warning dialog window is displayed, prompting for confirmation. Click
+                            <emphasis role="bold">Yes</emphasis> button to confirm deletion.
+                        </para>
+                    </listitem>
+                </orderedlist>
             </para>
         </section>
     </section>

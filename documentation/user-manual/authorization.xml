@@ -10,7 +10,7 @@
         <title>Role scheme</title>
         <para>
             <figure>
-                <title>Authorization role scheme</title>
+                <title>Role scheme</title>
                 <mediaobject>
                     <imageobject>
                         <imagedata fileref="./images/auth_scheme.png" align="center" width="90%" scalefit="1"/>
@@ -104,7 +104,7 @@
         <title>User profile</title>
         <para>
             <figure>
-                <title>An exemplary view of actual user profile.</title>
+                <title>User profile view</title>
                 <mediaobject>
                     <imageobject>
                         <imagedata fileref="./images/auth_user_profile.png" align="center" width="90%" scalefit="1"/>

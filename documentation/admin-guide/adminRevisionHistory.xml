@@ -41,5 +41,17 @@
                 </formalpara>
             </revdescription>
         </revision>
+        <revision>
+            <revnumber>1.3</revnumber>
+            <date>2021-05-04</date>
+            <authorinitials>Pawel Sobocinski</authorinitials>
+            <revdescription>
+                <formalpara>
+                    <title>Updated</title>
+                    <para>Added <emphasis>Security Configuration</emphasis> chapter.
+                    </para>
+                </formalpara>
+            </revdescription>
+        </revision>
     </revhistory>
 </chapter>

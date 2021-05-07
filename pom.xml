@@ -269,10 +269,11 @@
                                 <PUBLIC_URL>${deploy.host}${deploy.port}${deploy.path}</PUBLIC_URL>
                                 <REACT_APP_ROUTER_BASE>${deploy.path}</REACT_APP_ROUTER_BASE>
                                 <REACT_APP_API_URL>${deploy.api.url}</REACT_APP_API_URL>
-                                <REACT_APP_AUTHORITY_URL>${deploy.authority.url}</REACT_APP_AUTHORITY_URL>
-                                <REACT_APP_AUTHORITY_CLIENT_ID>${deploy.authority.clientId}</REACT_APP_AUTHORITY_CLIENT_ID>
-                                <REACT_APP_AUTHORITY_RESPONSE>${deploy.authority.response}</REACT_APP_AUTHORITY_RESPONSE>
-                                <REACT_APP_AUTHORITY_SCOPE>${deploy.authority.scope}</REACT_APP_AUTHORITY_SCOPE>
+                                <REACT_APP_AUTH_URL>${deploy.authority.url}</REACT_APP_AUTH_URL>
+                                <REACT_APP_AUTH_CLIENT_ID>${deploy.authority.clientId}</REACT_APP_AUTH_CLIENT_ID>
+                                <REACT_APP_AUTH_RESPONSE>${deploy.authority.response}</REACT_APP_AUTH_RESPONSE>
+                                <REACT_APP_AUTH_SCOPE>${deploy.authority.scope}</REACT_APP_AUTH_SCOPE>
+                                <REACT_APP_AUTH_AUDIENCE>${deploy.authority.audience}</REACT_APP_AUTH_AUDIENCE>
                                 <GENERATE_SOURCEMAP>${deploy.sourcemap}</GENERATE_SOURCEMAP>
                             </environmentVariables>
                         </configuration>
@@ -320,6 +321,7 @@
                 <deploy.authority.clientId></deploy.authority.clientId>
                 <deploy.authority.response>code</deploy.authority.response>
                 <deploy.authority.scope>openid profile email</deploy.authority.scope>
+                <deploy.authority.audience></deploy.authority.audience>
             </properties>
         </profile>
 
@@ -331,10 +333,11 @@
                 <deploy.path>/vrm</deploy.path>
                 <deploy.sourcemsap>true</deploy.sourcemsap>
                 <deploy.api.url>http://localhost:7001/vrm-backend/api</deploy.api.url>
-                <deploy.authority.url>http://</deploy.authority.url>
+                <deploy.authority.url>https://</deploy.authority.url>
                 <deploy.authority.clientId></deploy.authority.clientId>
                 <deploy.authority.response>code</deploy.authority.response>
                 <deploy.authority.scope>openid profile email</deploy.authority.scope>
+                <deploy.authority.audience></deploy.authority.audience>
             </properties>
         </profile>
 
@@ -350,6 +353,7 @@
                 <deploy.authority.clientId></deploy.authority.clientId>
                 <deploy.authority.response>code</deploy.authority.response>
                 <deploy.authority.scope>openid profile email</deploy.authority.scope>
+                <deploy.authority.audience></deploy.authority.audience>
             </properties>
         </profile>
 
@@ -365,6 +369,7 @@
                 <deploy.authority.clientId></deploy.authority.clientId>
                 <deploy.authority.response>id_token</deploy.authority.response>
                 <deploy.authority.scope>openid profile email</deploy.authority.scope>
+                <deploy.authority.audience></deploy.authority.audience>
             </properties>
         </profile>
 

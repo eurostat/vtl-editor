@@ -72,5 +72,18 @@ const toLocalStorage = (key: string, value: any) => {
     window.localStorage.setItem(key, JSON.stringify(value));
 }
 
+export function fromSessionStorage(key: string): any {
+    const result = sessionStorage.getItem(key);
+    return result ? JSON.parse(result) : undefined;
+}
+
+export function toSessionStorage(key: string, value: any) {
+    sessionStorage.setItem(key, JSON.stringify(value));
+}
+
+export function clearSessionStorage(key: string) {
+    sessionStorage.removeItem(key);
+}
+
 export default memo(BrowserStorage);
 

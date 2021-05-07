@@ -75,7 +75,8 @@ export async function updateScriptContent(file: EditorFile) {
         optLock: file.optLock,
         content: btoa(file.content)
     } as ScriptContentPayload;
-    return sendPutRequest(`${REPO_URL}/${file.parentId}/files/${file.id}/content`, payload, "application/json");
+    return sendPutRequest(`${REPO_URL}/${file.parentId}/files/${file.id}/content`, payload,
+        undefined, {"Content-Type": "application/json"});
 }
 
 export async function fetchScriptVersions(script: StoredItemTransfer) {
@@ -98,7 +99,7 @@ export async function fetchScriptVersionContent(script: StoredItemTransfer, vers
 
 export async function restoreScriptVersion(script: StoredItemTransfer, versionId: string) {
     const response = await sendPutRequest(`${REPO_URL}/${script.parentId}/files/${script.id}/versions/${versionId}/restore`,
-        {optLock: script.optLock}, "application/json");
+        {optLock: script.optLock}, undefined, {"Content-Type": "application/json"});
     if (response && response.data) return response.data;
     return Promise.reject();
 }
@@ -106,14 +107,14 @@ export async function restoreScriptVersion(script: StoredItemTransfer, versionId
 export async function incrementScriptVersion(item: StoredItemTransfer, payload: IncrementVersionPayload) {
     return item.type === StoredItemType.FILE
         ? sendPutRequest(`${REPO_URL}/${item.parentId}/files/${item.id}/versions/increment`,
-            payload, "application/json")
+            payload, undefined, {"Content-Type": "application/json"})
         : Promise.reject();
 }
 
 export async function finalizeScriptVersion(item: StoredItemTransfer) {
     return item.type === StoredItemType.FILE
         ? sendPutRequest(`${REPO_URL}/${item.parentId}/files/${item.id}/versions/finalize`,
-            {optLock: item.optLock}, "application/json")
+            {optLock: item.optLock}, undefined, {"Content-Type": "application/json"})
         : Promise.reject();
 }
 
@@ -122,7 +123,8 @@ export async function deleteDomainItem(node: TreeNode) {
         const item: StoredItemTransfer = node.entity;
         return item.type === StoredItemType.FILE
             ? sendDeleteRequest(`${REPO_URL}/${item.parentId}/files/${item.id}`,
-                {optLock: item.optLock}, "application/json")
+                {optLock: item.optLock}, undefined,
+                {"Content-Type": "application/json"})
             : Promise.reject();
     }
 }
@@ -132,7 +134,8 @@ export async function deleteBinnedItem(node: TreeNode) {
         const item: StoredItemTransfer = node.entity;
         return node.type === NodeType.BINNED
             ? sendDeleteRequest(`${REPO_URL}/${item.parentId}/bin/files/${item.id}`,
-                {optLock: item.optLock}, "application/json")
+                {optLock: item.optLock}, undefined,
+                {"Content-Type": "application/json"})
             : Promise.reject();
     }
 }
@@ -142,7 +145,7 @@ export async function restoreBinnedItem(node: TreeNode) {
         const item: StoredItemTransfer = node.entity;
         return node.type === NodeType.BINNED
             ? sendPutRequest(`${REPO_URL}/${item.parentId}/bin/files/${item.id}/restore`,
-                {optLock: item.optLock}, "application/json")
+                {optLock: item.optLock}, undefined, {"Content-Type": "application/json"})
             : Promise.reject();
     }
 }

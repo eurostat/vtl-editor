@@ -1,7 +1,8 @@
-import { Log } from "../utility/log";
-import { accessToken } from "../utility/authSlice";
-import { readState } from "../utility/store";
-import { ApiError, ApiResponse } from './apiResponse';
+import {Log} from "../utility/log";
+import {accessToken} from "../utility/authSlice";
+import {readState} from "../utility/store";
+import {ApiError, ApiResponse} from './apiResponse';
+import {fetchAccessToken} from "../utility/authService";
 
 export enum RequestMethod {
     DELETE = "DELETE",
@@ -14,45 +15,81 @@ export enum RequestMethod {
     TRACE = "TRACE"
 }
 
-export async function sendGetRequest(url: string, accept?: string) {
-    const headers = new Headers();
-    headers.append("Authorization", `Bearer ${readState(accessToken)}`);
-    if (accept) headers.append("Accept", accept);
-    return sendRequest(url, RequestMethod.GET, headers);
+function buildUrl(path: string, queryParams?: any): string {
+    if (!queryParams) return path;
+    const url = new URL(path);
+    const params = new URLSearchParams();
+    const values: { [key: string]: any } = queryParams;
+    Object.keys(values).forEach((key) => {
+        if (values[key] !== undefined) params.append(key, values[key]);
+    })
+    url.search = params.toString();
+    return url.toString();
 }
 
-export async function sendPostRequest(url: string, payload: object | FormData, contentType?: string) {
+function buildHeaders(headerParams?: any) {
     const headers = new Headers();
-    headers.append("Authorization", `Bearer ${readState(accessToken)}`);
-    if (contentType === "application/json") headers.append("Content-Type", "application/json");
-    const body = contentType === "application/json" ? JSON.stringify(payload) : payload;
-    return sendRequest(url, RequestMethod.POST, headers, body);
+    if (headerParams) {
+        const values: { [key: string]: any } = headerParams;
+        Object.keys(values).forEach((key) => {
+            if (values[key] !== undefined) headers.append(key, values[key]);
+        })
+    }
+    return headers;
 }
 
-export async function sendPutRequest(url: string, payload: object | FormData, contentType?: string) {
-    const headers = new Headers();
-    headers.append("Authorization", `Bearer ${readState(accessToken)}`);
-    if (contentType === "application/json") headers.append("Content-Type", "application/json");
-    const body = contentType === "application/json" ? JSON.stringify(payload) : payload;
-    return sendRequest(url, RequestMethod.PUT, headers, body);
+async function authHeader(headers: Headers) {
+    if (process.env.REACT_APP_AUTH_RESPONSE === "id_token") {
+        headers.set("Authorization", `Bearer ${await fetchAccessToken()}`);
+    } else {
+        headers.set("Authorization", `Bearer ${readState(accessToken)}`);
+    }
+    return headers;
 }
 
-export async function sendDeleteRequest(url: string, payload?: object | FormData, contentType?: string) {
-    const headers = new Headers();
-    headers.append("Authorization", `Bearer ${readState(accessToken)}`);
-    if (contentType === "application/json") headers.append("Content-Type", "application/json");
-    const body = contentType === "application/json" ? JSON.stringify(payload) : payload;
-    return sendRequest(url, RequestMethod.DELETE, headers, body);
+export async function sendGetRequest(url: string, queryParams?: any, headers?: any) {
+    const requestUrl = buildUrl(url, queryParams);
+    const requestHeaders = await authHeader(buildHeaders(headers));
+    return sendRequest(RequestMethod.GET, requestUrl, requestHeaders);
 }
 
-async function sendRequest(url: string, method?: RequestMethod, headers?: Headers | Record<string, string>,
-                           body?: string | object): Promise<ApiResponse<any>> {
-    Log.info((method ? method : "GET") + " request to URL " + url, "ApiService");
+export async function sendPostRequest(url: string, payload: object | FormData, queryParams?: any, headers?: any) {
+    const requestUrl = buildUrl(url, queryParams);
+    const requestHeaders = await authHeader(buildHeaders(headers));
+    const body = requestHeaders.get("Content-Type") === "application/json" ? JSON.stringify(payload) : payload;
+    return sendRequest(RequestMethod.POST, requestUrl, requestHeaders, body);
+}
+
+export async function sendPutRequest(url: string, payload: object | FormData, queryParams?: any, headers?: any) {
+    const requestUrl = buildUrl(url, queryParams);
+    const requestHeaders = await authHeader(buildHeaders(headers));
+    const body = requestHeaders.get("Content-Type") === "application/json" ? JSON.stringify(payload) : payload;
+    return sendRequest(RequestMethod.PUT, requestUrl, requestHeaders, body);
+}
+
+export async function sendDeleteRequest(url: string, payload?: object | FormData, queryParams?: any, headers?: any) {
+    const requestUrl = buildUrl(url, queryParams);
+    const requestHeaders = await authHeader(buildHeaders(headers));
+    const body = requestHeaders.get("Content-Type") === "application/json" ? JSON.stringify(payload) : payload;
+    return sendRequest(RequestMethod.DELETE, requestUrl, requestHeaders, body);
+}
+
+export async function sendDirectRequest(method: RequestMethod, url: string, queryParams?: any, headers?: any,
+                                        body?: object | FormData, credentials?: RequestCredentials) {
+    const requestUrl = buildUrl(url, queryParams);
+    const requestHeaders = buildHeaders(headers);
+    return sendRequest(method, requestUrl, requestHeaders, body, credentials);
+}
+
+async function sendRequest(method: RequestMethod, url: string, headers?: Headers | Record<string, string>,
+                           body?: string | object, credentials?: RequestCredentials): Promise<ApiResponse<any>> {
+    Log.info(method + " request to URL " + url, "ApiService");
     const init = {
-        method: method ? method : RequestMethod.GET,
+        method: method,
         body: body,
         mode: "cors",
-        headers: headers ? headers : undefined
+        headers: headers ? headers : undefined,
+        credentials: credentials ? credentials : undefined
     } as RequestInit;
     try {
         const response: Response = await fetch(url, init);

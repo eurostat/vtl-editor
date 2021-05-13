@@ -141,7 +141,9 @@ spring.security.oauth2.client.provider:
 spring.security.oauth2.resourceserver.opaque-token:
     introspection-uri:
 
-vrm.security.registration-id:
+vrm.security:
+    registration-id:
+    has-userinfo:
 ]]>
             </programlisting>
             <para>
@@ -156,10 +158,16 @@ vrm.security.registration-id:
                 </listitem>
                 <listitem>
                     <para>
-                        <computeroutput>vrm.security.registration-id</computeroutput>
+                        <computeroutput>registration-id</computeroutput>
                         — The identifier of currently used OAuth2/OIDC provider used in
                         <computeroutput>registrations</computeroutput>
                         and <computeroutput>provider</computeroutput> sections above (eg. ecas or keycloak).
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <computeroutput>has-userinfo</computeroutput>
+                        — Indicates that authorization provider has userinfo endpoint that can be queried.
                     </para>
                 </listitem>
             </itemizedlist>
@@ -179,8 +187,10 @@ vrm.security.registration-id:
         <title>VRM Frontend</title>
         <para>
             The VRM frontend application uses
-            <link xlink:href="https://www.npmjs.com/package/oidc-client">oidc-client</link> library (wrapped in
-            <link xlink:href="https://www.npmjs.com/package/redux-oidc">redux-oidc</link> package),
+            <link xlink:href="https://www.npmjs.com/package/oidc-client">oidc-client</link>
+            library (wrapped in
+            <link xlink:href="https://www.npmjs.com/package/redux-oidc">redux-oidc</link>
+            package),
             which provides OAuth2
             and OpenID Connect (OIDC) protocol support for client-side, browser-based JavaScript client applications.
             Defined configuration parameters are applied in the <emphasis>userManager.ts</emphasis> file in the <emphasis>
@@ -211,6 +221,7 @@ vrm.security.registration-id:
 <deploy.authority.clientId></deploy.authority.clientId>
 <deploy.authority.response>code</deploy.authority.response>
 <deploy.authority.scope>openid profile email</deploy.authority.scope>
+<deploy.authority.audience></deploy.authority.audience>
 ]]>
             </programlisting>
             <itemizedlist>
@@ -246,6 +257,16 @@ vrm.security.registration-id:
                         is "<computeroutput>openid profile email</computeroutput>".
                     </para>
                 </listitem>
+                <listitem>
+                    <para>
+                        <computeroutput>deploy.authority.audience</computeroutput>
+                        — Client identifier of VRM backend as registered with the OAuth2/OIDC provider. Used when
+                        <computeroutput>deploy.authority.response</computeroutput>
+                        is set to Implicit Flow with
+                        Proof-of-Possession Tokens to obtain one-time access token for specific audience with every
+                        VRM backend API call.
+                    </para>
+                </listitem>
             </itemizedlist>
             <para>
                 The conversion to environment variables is performed by <emphasis>exec-maven-plugin</emphasis> configured
@@ -255,16 +276,19 @@ vrm.security.registration-id:
             </para>
             <itemizedlist>
                 <listitem>
-                    <computeroutput>REACT_APP_AUTHORITY_URL</computeroutput>
+                    <computeroutput>REACT_APP_AUTH_URL</computeroutput>
                 </listitem>
                 <listitem>
-                    <computeroutput>REACT_APP_AUTHORITY_CLIENT_ID</computeroutput>
+                    <computeroutput>REACT_APP_AUTH_CLIENT_ID</computeroutput>
                 </listitem>
                 <listitem>
-                    <computeroutput>REACT_APP_AUTHORITY_RESPONSE</computeroutput>
+                    <computeroutput>REACT_APP_AUTH_RESPONSE</computeroutput>
                 </listitem>
                 <listitem>
-                    <computeroutput>REACT_APP_AUTHORITY_SCOPE</computeroutput>
+                    <computeroutput>REACT_APP_AUTH_SCOPE</computeroutput>
+                </listitem>
+                <listitem>
+                    <computeroutput>REACT_APP_AUTH_AUDIENCE</computeroutput>
                 </listitem>
             </itemizedlist>
         </section>
@@ -285,20 +309,20 @@ vrm.security.registration-id:
             <itemizedlist>
                 <listitem>
                     <para>
-                        <computeroutput>REACT_APP_AUTHORITY_URL</computeroutput>
+                        <computeroutput>REACT_APP_AUTH_URL</computeroutput>
                         — The URL of the OAuth2/OIDC provider.
                     </para>
                 </listitem>
                 <listitem>
                     <para>
-                        <computeroutput>REACT_APP_AUTHORITY_CLIENT_ID</computeroutput>
+                        <computeroutput>REACT_APP_AUTH_CLIENT_ID</computeroutput>
                         — Client identifier of VRM frontend as registered with the
                         OAuth2/OIDC provider.
                     </para>
                 </listitem>
                 <listitem>
                     <para>
-                        <computeroutput>REACT_APP_AUTHORITY_RESPONSE</computeroutput>
+                        <computeroutput>REACT_APP_AUTH_RESPONSE</computeroutput>
                         — The type of response expected from the OAuth2/OIDC provider.
                         Default value is "<computeroutput>code</computeroutput>" which refers to Authorization Code Flow
                         with PKCE. In case of ECAS
@@ -309,9 +333,18 @@ vrm.security.registration-id:
                 </listitem>
                 <listitem>
                     <para>
-                        <computeroutput>REACT_APP_AUTHORITY_SCOPE</computeroutput>
+                        <computeroutput>REACT_APP_AUTH_SCOPE</computeroutput>
                         — The scope being requested from the OAuth2/OIDC provider. Default
                         value is "<computeroutput>openid profile email</computeroutput>".
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <computeroutput>REACT_APP_AUTH_AUDIENCE</computeroutput>
+                        — Client identifier of VRM backend as registered with the OAuth2/OIDC provider. Used when
+                        <computeroutput>REACT_APP_AUTH_RESPONSE</computeroutput> is set to Implicit Flow with
+                        Proof-of-Possession Tokens to obtain one-time access token for specific audience with every VRM
+                        backend API call.
                     </para>
                 </listitem>
             </itemizedlist>

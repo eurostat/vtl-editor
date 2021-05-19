@@ -27,6 +27,19 @@
         <maven.war.plugin.version>3.2.3</maven.war.plugin.version>
         <maven.exec.plugin.version>1.6.0</maven.exec.plugin.version>
         <maven.docbkx.plugin.version>2.0.17</maven.docbkx.plugin.version>
+        <!-- Dependency Versions End -->
+
+        <!-- Build Configuration -->
+        <deploy.host></deploy.host>
+        <deploy.path></deploy.path>
+        <deploy.sourcemap>false</deploy.sourcemap>
+        <deploy.api.url></deploy.api.url>
+        <authority.url></authority.url>
+        <authority.clientId></authority.clientId>
+        <authority.response>code</authority.response>
+        <authority.scope>openid profile email</authority.scope>
+        <authority.audience></authority.audience>
+        <!-- Build Configuration End -->
     </properties>
 
     <build>
@@ -266,14 +279,14 @@
                                 <argument>build</argument>
                             </arguments>
                             <environmentVariables>
-                                <PUBLIC_URL>${deploy.host}${deploy.port}${deploy.path}</PUBLIC_URL>
+                                <PUBLIC_URL>${deploy.host}${deploy.path}</PUBLIC_URL>
                                 <REACT_APP_ROUTER_BASE>${deploy.path}</REACT_APP_ROUTER_BASE>
                                 <REACT_APP_API_URL>${deploy.api.url}</REACT_APP_API_URL>
-                                <REACT_APP_AUTH_URL>${deploy.authority.url}</REACT_APP_AUTH_URL>
-                                <REACT_APP_AUTH_CLIENT_ID>${deploy.authority.clientId}</REACT_APP_AUTH_CLIENT_ID>
-                                <REACT_APP_AUTH_RESPONSE>${deploy.authority.response}</REACT_APP_AUTH_RESPONSE>
-                                <REACT_APP_AUTH_SCOPE>${deploy.authority.scope}</REACT_APP_AUTH_SCOPE>
-                                <REACT_APP_AUTH_AUDIENCE>${deploy.authority.audience}</REACT_APP_AUTH_AUDIENCE>
+                                <REACT_APP_AUTH_URL>${authority.url}</REACT_APP_AUTH_URL>
+                                <REACT_APP_AUTH_CLIENT_ID>${authority.clientId}</REACT_APP_AUTH_CLIENT_ID>
+                                <REACT_APP_AUTH_RESPONSE>${authority.response}</REACT_APP_AUTH_RESPONSE>
+                                <REACT_APP_AUTH_SCOPE>${authority.scope}</REACT_APP_AUTH_SCOPE>
+                                <REACT_APP_AUTH_AUDIENCE>${authority.audience}</REACT_APP_AUTH_AUDIENCE>
                                 <GENERATE_SOURCEMAP>${deploy.sourcemap}</GENERATE_SOURCEMAP>
                             </environmentVariables>
                         </configuration>
@@ -306,73 +319,6 @@
     </build>
 
     <profiles>
-        <profile>
-            <id>dev-tomcat</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <deploy.host>http://192.168.1.2</deploy.host>
-                <deploy.port>:8080</deploy.port>
-                <deploy.path>/vrm</deploy.path>
-                <deploy.sourcemap>true</deploy.sourcemap>
-                <deploy.api.url>http://192.168.1.2:8080/vrm-backend/api</deploy.api.url>
-                <deploy.authority.url>http://</deploy.authority.url>
-                <deploy.authority.clientId></deploy.authority.clientId>
-                <deploy.authority.response>code</deploy.authority.response>
-                <deploy.authority.scope>openid profile email</deploy.authority.scope>
-                <deploy.authority.audience></deploy.authority.audience>
-            </properties>
-        </profile>
-
-        <profile>
-            <id>dev-weblogic</id>
-            <properties>
-                <deploy.host>http://localhost</deploy.host>
-                <deploy.port>:7001</deploy.port>
-                <deploy.path>/vrm</deploy.path>
-                <deploy.sourcemsap>true</deploy.sourcemsap>
-                <deploy.api.url>http://localhost:7001/vrm-backend/api</deploy.api.url>
-                <deploy.authority.url>https://</deploy.authority.url>
-                <deploy.authority.clientId></deploy.authority.clientId>
-                <deploy.authority.response>code</deploy.authority.response>
-                <deploy.authority.scope>openid profile email</deploy.authority.scope>
-                <deploy.authority.audience></deploy.authority.audience>
-            </properties>
-        </profile>
-
-        <profile>
-            <id>prod-tomcat</id>
-            <properties>
-                <deploy.host>https://intragate.test.ec.europa.eu</deploy.host>
-                <deploy.port/>
-                <deploy.path>/vrm</deploy.path>
-                <deploy.sourcemap>false</deploy.sourcemap>
-                <deploy.api.url>https://intragate.test.ec.europa.eu/vrm-backend/api</deploy.api.url>
-                <deploy.authority.url>https://</deploy.authority.url>
-                <deploy.authority.clientId></deploy.authority.clientId>
-                <deploy.authority.response>code</deploy.authority.response>
-                <deploy.authority.scope>openid profile email</deploy.authority.scope>
-                <deploy.authority.audience></deploy.authority.audience>
-            </properties>
-        </profile>
-
-        <profile>
-            <id>prod-weblogic</id>
-            <properties>
-                <deploy.host>https://intragate.test.ec.europa.eu</deploy.host>
-                <deploy.port/>
-                <deploy.path>/vrm</deploy.path>
-                <deploy.sourcemap>false</deploy.sourcemap>
-                <deploy.api.url>https://intragate.test.ec.europa.eu/vrm-backend/api</deploy.api.url>
-                <deploy.authority.url>https://</deploy.authority.url>
-                <deploy.authority.clientId></deploy.authority.clientId>
-                <deploy.authority.response>id_token</deploy.authority.response>
-                <deploy.authority.scope>openid profile email</deploy.authority.scope>
-                <deploy.authority.audience></deploy.authority.audience>
-            </properties>
-        </profile>
-
         <profile>
             <id>install-packages</id>
             <build>

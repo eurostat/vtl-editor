@@ -1,7 +1,7 @@
-import { sendDeleteRequest, sendGetRequest, sendPostRequest, sendPutRequest } from "../../web-api/apiService";
-import { buildUrl, CTRL_URL, fetchEntities, FORMAT_EXTENDED } from "../controlService";
-import { GroupPayload, GroupTransfer, processGroupTransfers } from "../group/group";
-import { processUserTransfers, UserPayload, UserTransfer } from "../user/user";
+import {sendDeleteRequest, sendGetRequest, sendPostRequest, sendPutRequest} from "../../web-api/apiService";
+import {CTRL_URL, fetchEntities, FORMAT_EXTENDED} from "../controlService";
+import {GroupPayload, GroupTransfer, processGroupTransfers} from "../group/group";
+import {processUserTransfers, UserPayload, UserTransfer} from "../user/user";
 import {
     DomainPayload,
     DomainTransfer,
@@ -13,25 +13,26 @@ import {
 const DOMAIN_URL = CTRL_URL + "/domains";
 
 export async function fetchDomains(format: string = FORMAT_EXTENDED) {
-    return fetchEntities(buildUrl(`${DOMAIN_URL}`, {format: format}), "domains")
+    return fetchEntities(DOMAIN_URL, {format: format}, "domains")
         .then((received: DomainTransfer[]) => processDomainTransfers(received));
 }
 
 export async function fetchDomain(domainId: number, format: string = FORMAT_EXTENDED, references: boolean = true) {
-    const response = await sendGetRequest(
-        buildUrl(`${DOMAIN_URL}/${domainId}`, {format: format, references: references}));
+    const response = await sendGetRequest(`${DOMAIN_URL}/${domainId}`, {format: format, references: references});
     if (response && response.data) return processDomainTransfer(response.data);
     return Promise.reject();
 }
 
 export async function createDomain(payload: DomainPayload) {
-    const response = await sendPostRequest(`${DOMAIN_URL}`, simpleDomainPayload(payload), "application/json");
+    const response = await sendPostRequest(`${DOMAIN_URL}`, simpleDomainPayload(payload),
+        undefined, {"Content-Type": "application/json"});
     if (response && response.data) return processDomainTransfer(response.data);
     return Promise.reject();
 }
 
 export async function updateDomain(payload: DomainPayload) {
-    const response = await sendPutRequest(`${DOMAIN_URL}`, simpleDomainPayload(payload), "application/json");
+    const response = await sendPutRequest(`${DOMAIN_URL}`, simpleDomainPayload(payload),
+        undefined, {"Content-Type": "application/json"});
     if (response && response.data) return processDomainTransfer(response.data);
     return Promise.reject();
 }
@@ -41,12 +42,12 @@ export async function deleteDomain(domainId: number) {
 }
 
 export async function fetchDomainUsers(domainId: number) {
-    return fetchEntities(`${DOMAIN_URL}/${domainId}/users`, "users")
+    return fetchEntities(`${DOMAIN_URL}/${domainId}/users`, {}, "users")
         .then((received: UserTransfer[]) => processUserTransfers(received));
 }
 
 export async function fetchDomainGroups(domainId: number) {
-    return fetchEntities(`${DOMAIN_URL}/${domainId}/groups`, "groups")
+    return fetchEntities(`${DOMAIN_URL}/${domainId}/groups`, {}, "groups")
         .then((received: GroupTransfer[]) => processGroupTransfers(received));
 }
 
@@ -58,7 +59,8 @@ export async function updateDomainGroups(domainId: number, payload: GroupPayload
         const calls = groupIds.filter((id) => !payloadIds.includes(id)).map((id) =>
             sendDeleteRequest(`${DOMAIN_URL}/${domainId}/groups/${id}`));
         calls.push(...payloadIds.filter((id) => id && !groupIds.includes(id)).map((id) =>
-            sendPutRequest(`${DOMAIN_URL}/${domainId}/groups/${id}`, {}, "application/json")));
+            sendPutRequest(`${DOMAIN_URL}/${domainId}/groups/${id}`, {},
+                undefined, {"Content-Type": "application/json"})));
         return Promise.all(calls);
     } catch {
         return Promise.reject();
@@ -73,7 +75,8 @@ export async function updateDomainUsers(domainId: number, payload: UserPayload[]
         const calls = userIds.filter((id) => !payloadIds.includes(id)).map((id) =>
             sendDeleteRequest(`${DOMAIN_URL}/${domainId}/users/${id}`));
         calls.push(...payloadIds.filter((id) => id && !userIds.includes(id)).map((id) =>
-            sendPutRequest(`${DOMAIN_URL}/${domainId}/users/${id}`, {}, "application/json")));
+            sendPutRequest(`${DOMAIN_URL}/${domainId}/users/${id}`, {},
+                undefined, {"Content-Type": "application/json"})));
         return Promise.all(calls);
     } catch {
         return Promise.reject();

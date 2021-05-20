@@ -31,5 +31,6 @@
     <xi:include href="adminBuildingFrontend.xml"/>
     <xi:include href="adminBuildingBackend.xml"/>
     <xi:include href="adminDatabaseConfig.xml"/>
+    <xi:include href="adminSecurityConfig.xml"/>
     <xi:include href="adminRevisionHistory.xml"/>
 </book>

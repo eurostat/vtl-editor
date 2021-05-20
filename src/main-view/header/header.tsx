@@ -8,6 +8,7 @@ import { routerPath } from "../../utility/routerSlice";
 import userManager from "../../utility/userManager";
 import ToolItem, { ToolItemSettings } from "../toolbar/toolItem";
 import "./header.scss";
+import {publicKeyEncoded} from "../../utility/keystoreService";
 
 const Header = () => {
     const authenticated = useSelector(loggedIn);
@@ -17,7 +18,9 @@ const Header = () => {
 
     const login = async () => {
         try {
-            await userManager.signinRedirect({data: {path: path}})
+            const options: any = {data: {path: path}}
+            if (process.env.REACT_APP_AUTH_RESPONSE === "id_token") options.extraQueryParams = {req_cnf: publicKeyEncoded()};
+            await userManager.signinRedirect(options)
         } catch {
         }
     };

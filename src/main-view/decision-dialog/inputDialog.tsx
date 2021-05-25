@@ -9,7 +9,7 @@ export type DecisionModalInputProps = {
     close: any,
     title: string,
     text: string,
-    defaultValue?: string,
+    defaultValue?: any,
     subject?: any,
     acceptButton?: DecisionModalButton,
     cancelButton?: DecisionModalButton,

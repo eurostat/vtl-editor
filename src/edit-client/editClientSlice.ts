@@ -8,6 +8,7 @@ export interface EditClientState {
         definitions: DatasetDefinitionTransfer[],
         programs: ProgramTransfer[],
     },
+    hasCredentials: boolean,
 }
 
 const initialState = {
@@ -15,6 +16,7 @@ const initialState = {
         definitions: [],
         programs: [],
     },
+    hasCredentials: false,
 } as EditClientState;
 
 export const editClientSlice = createSlice({
@@ -45,6 +47,9 @@ export const editClientSlice = createSlice({
             const programs = state.data.programs.filter((item) => item.id !== action.payload.id);
             state.data.programs = sortByName(programs);
         },
+        credentialsChecked(state, action: PayloadAction<boolean>) {
+            state.hasCredentials = action.payload;
+        }
     }
 });
 
@@ -54,10 +59,11 @@ const sortByName = (list: any[]) => {
 
 export const {
     replaceDefinitions, addDefinition, expelDefinition,
-    replacePrograms, addProgram, expelProgram,
+    replacePrograms, addProgram, expelProgram, credentialsChecked
 } = editClientSlice.actions;
 
 export const definitionList = (state: RootState) => state.editClient.data.definitions;
 export const programList = (state: RootState) => state.editClient.data.programs;
+export const credentialsProvided = (state: RootState) => state.editClient.hasCredentials;
 
 export default editClientSlice.reducer;

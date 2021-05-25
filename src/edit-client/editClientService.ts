@@ -1,84 +1,76 @@
-import {sendDeleteRequest, sendPostRequest} from "../web-api/apiService";
-import {CredentialsPayload} from "./credentialsPayload";
+import {sendDeleteRequest, sendGetRequest, sendPostRequest} from "../web-api/apiService";
 import {DatasetDefinitionTransfer} from "./dataset-definition/datasetDefinitionTransfer";
 import {ProgramTransfer} from "./program/programTransfer";
-import {StoredItemPayload} from "../repository/entity/storedItemPayload";
 import {StoredItemType} from "../repository/entity/storedItemType";
+import {CredentialsPayload} from "./credentialsPayload";
+import {convertEntityDates} from "../web-api/apiUtility";
+import {StoredItemTransfer} from "../repository/entity/storedItemTransfer";
+import _ from "lodash";
 
 export const EDIT_URL = process.env.REACT_APP_API_URL + "/edit";
 export const DEFINITION_URL = EDIT_URL + "/definitions";
 export const PROGRAM_URL = EDIT_URL + "/programs";
 
-export function getEditCredentials() {
+export function buildCredentialsHeader(credentials: CredentialsPayload) {
     return {
-        username: "",
-        password: ""
-    } as CredentialsPayload
-}
-
-
-export function buildUrl(path: string, queryParams?: any): string {
-    if (!queryParams) return path;
-    const url = new URL(path);
-    const params = new URLSearchParams();
-    const values: { [key: string]: any } = queryParams;
-    Object.keys(values).forEach((key) => {
-        if (values[key] !== undefined) params.append(key, values[key]);
-    })
-    url.search = params.toString();
-    return url.toString();
-}
-
-export async function fetchEntities(url: string, dataField: string) {
-    const response = await sendPostRequest(url, getEditCredentials(), "application/json");
-    if (response && response.data) {
-        return response.data;
+        "edit-ws-username": credentials.username,
+        "edit-ws-password": credentials.password,
+        "edit-ws-domain": credentials.domain
     }
-    return Promise.reject();
 }
 
-export async function fetchDefinitions() {
-    return fetchEntities(buildUrl(`${DEFINITION_URL}/list`, {}), "definitions")
-        .then((received: DatasetDefinitionTransfer[]) => received);
+function fetchEditEntities(url: string, credentials: CredentialsPayload) {
+    return sendGetRequest(url, undefined, buildCredentialsHeader(credentials))
+        .then((response) => {
+            if (response && response.data) {
+                return response.data.map((definition: DatasetDefinitionTransfer) => convertEntityDates(definition)) as any[];
+            }
+            return Promise.reject();
+        });
 }
 
-export async function uploadPersonalDefinition(payload: StoredItemPayload, type: StoredItemType) {
-    return type === StoredItemType.FILE
-        ? sendPostRequest(`${DEFINITION_URL}/files/${payload.id}`,
-            getEditCredentials(), "application/json")
-        : Promise.reject();
+function uploadEditEntity(url: string, item: StoredItemTransfer, domainId: number | undefined, credentials: CredentialsPayload) {
+    if (item.type !== StoredItemType.FILE) return Promise.reject();
+    const payload = {
+        fileId: item.id,
+        domainId: domainId,
+        programName: item.name
+    }
+    const header = _.merge(buildCredentialsHeader(credentials), {"Content-Type": "application/json"});
+    return sendPostRequest(`${url}/files/${item.id}`, payload, undefined, header);
 }
 
-export async function uploadDomainDefinition(payload: StoredItemPayload, type: StoredItemType) {
-    return type === StoredItemType.FILE
-        ? sendPostRequest(`${DEFINITION_URL}/domains/${payload.parentId}/files/${payload.id}`,
-            getEditCredentials(), "application/json")
-        : Promise.reject();
+function deleteEditEntity(url: string, credentials: CredentialsPayload) {
+    return sendDeleteRequest(url, undefined,
+        undefined, buildCredentialsHeader(credentials));
 }
 
-export async function deleteDefinition(definitionId: number) {
-    return sendDeleteRequest(`${DEFINITION_URL}/${definitionId}`, getEditCredentials(), "application/json");
+export function fetchEditDefinitions(credentials: CredentialsPayload) {
+    return fetchEditEntities(DEFINITION_URL, credentials)
+        .then((data) => {
+            return data as DatasetDefinitionTransfer[];
+        });
 }
 
-export async function fetchPrograms() {
-    return fetchEntities(buildUrl(`${PROGRAM_URL}/list`, {}), "programs")
-        .then((received: ProgramTransfer[]) => received);
+export async function uploadEditDefinition(item: StoredItemTransfer, domainId: number | undefined, credentials: CredentialsPayload) {
+    return uploadEditEntity(DEFINITION_URL, item, domainId, credentials);
 }
 
-export async function uploadPersonalProgram(payload: StoredItemPayload, type: StoredItemType) {
-    return type === StoredItemType.FILE
-        ? sendPostRequest(`${PROGRAM_URL}/files/${payload.id}`,
-            getEditCredentials(), "application/json")
-        : Promise.reject();
+export async function deleteEditDefinition(definitionId: number, credentials: CredentialsPayload) {
+    return deleteEditEntity(`${DEFINITION_URL}/${definitionId}`, credentials);
 }
 
-export async function uploadDomainProgram(payload: StoredItemPayload, type: StoredItemType) {
-    return type === StoredItemType.FILE
-        ? sendPostRequest(`${PROGRAM_URL}/domains/${payload.parentId}/files/${payload.id}`,
-            getEditCredentials(), "application/json")
-        : Promise.reject();
+export function fetchEditPrograms(credentials: CredentialsPayload) {
+    return fetchEditEntities(PROGRAM_URL, credentials)
+        .then((data) => {
+            return data as ProgramTransfer[];
+        });
 }
 
-export async function deleteProgram(programId: number) {
-    return sendDeleteRequest(`${PROGRAM_URL}/${programId}`, getEditCredentials(), "application/json");
+export async function uploadEditProgram(item: StoredItemTransfer, domainId: number | undefined, credentials: CredentialsPayload) {
+    return uploadEditEntity(PROGRAM_URL, item, domainId, credentials);
+}
+
+export async function deleteEditProgram(programId: number, credentials: CredentialsPayload) {
+    return deleteEditEntity(`${DEFINITION_URL}/${programId}`, credentials);
 }

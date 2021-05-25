@@ -5,19 +5,23 @@ import MaterialTable, {MaterialTableProps} from "material-table";
 import {useSnackbar} from "notistack";
 import React, {useCallback, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {expelProgram, programList, replacePrograms} from "../editClientSlice";
+import {credentialsProvided, expelProgram, programList, replacePrograms} from "../editClientSlice";
 import {deleteEntityDialog} from "../../main-view/decision-dialog/decisionDialog";
 import {ProgramTransfer} from "./programTransfer";
 import {materialTableAction, materialTableTheme, materialTableTitle} from "../../utility/materialTable";
-import {deleteProgram, fetchPrograms} from "../editClientService";
+import {deleteEditProgram, fetchEditPrograms} from "../editClientService";
+import {getEditCredentials, useValidateEditCredentials} from "../credentialsService";
+import {CredentialsPayload} from "../credentialsPayload";
 
 export default function ProgramsTable() {
     const programs = _.cloneDeep(useSelector(programList));
+    const hasCredentials = useSelector(credentialsProvided);
+    const validatedCredentials = useValidateEditCredentials();
     const dispatch = useDispatch();
     const {enqueueSnackbar} = useSnackbar();
 
-    const loadPrograms = useCallback(() => {
-        return fetchPrograms().then((received: ProgramTransfer[]) => {
+    const loadPrograms = useCallback((credentials: CredentialsPayload) => {
+        return fetchEditPrograms(credentials).then((received: ProgramTransfer[]) => {
             dispatch(replacePrograms(received));
         }).catch(() => {
             enqueueSnackbar(`Failed to load programs.`, {variant: "error"});
@@ -26,34 +30,43 @@ export default function ProgramsTable() {
     }, [dispatch, enqueueSnackbar]);
 
     useEffect(() => {
-        loadPrograms().then().catch(() => {
-        });
-    }, [loadPrograms]);
+        if (hasCredentials) {
+            const credentials = validatedCredentials();
+            if (credentials) loadPrograms(credentials)
+                .then()
+                .catch(() => {
+                });
+        }
+    }, [hasCredentials, validatedCredentials, loadPrograms, enqueueSnackbar]);
 
-    const refreshPrograms = () => {
-        loadPrograms()
-            .then(() => enqueueSnackbar(`Programs refreshed successfully.`, {variant: "success"}))
-            .catch(() => {
-            });
+    const refreshPrograms = async () => {
+        try {
+            const credentials = await getEditCredentials();
+            loadPrograms(credentials)
+                .then(() => enqueueSnackbar(`Programs refreshed successfully.`, {variant: "success"}))
+                .catch(() => {
+                });
+        } catch {
+        }
     }
 
-    const removeProgram = (event: any, program: ProgramTransfer | ProgramTransfer[]) => {
+    const removeProgram = async (event: any, program: ProgramTransfer | ProgramTransfer[]) => {
         if (Array.isArray(program)) return;
-        deleteEntityDialog("program", program.name)
-            .then(() => {
-                deleteProgram(program.id)
-                    .then((response) => {
-                        if (response && response.success) {
-                            dispatch(expelProgram(program));
-                            enqueueSnackbar(`Program "${program.name}" deleted successfully.`, {variant: "success"});
-                        }
-                    })
-                    .catch(() => {
-                        enqueueSnackbar(`Failed to delete program "${program.name}".`, {variant: "error"});
-                    })
-            })
-            .catch(() => {
-            });
+        try {
+            await deleteEntityDialog("program", program.name);
+            const credentials = await getEditCredentials();
+            deleteEditProgram(program.id, credentials)
+                .then((response) => {
+                    if (response && response.success) {
+                        dispatch(expelProgram(program));
+                        enqueueSnackbar(`Program "${program.name}" deleted successfully.`, {variant: "success"});
+                    }
+                })
+                .catch(() => {
+                    enqueueSnackbar(`Failed to delete program "${program.name}".`, {variant: "error"});
+                })
+        } catch {
+        }
     }
 
     const tableProps = {
@@ -68,9 +81,6 @@ export default function ProgramsTable() {
         options: {
             showTitle: true,
             toolbarButtonAlignment: "left",
-        },
-        detailPanel: (program: ProgramTransfer) => {
-            return null
         },
         actions: [
             materialTableAction(<Cached/>, "toolbar", refreshPrograms, "Refresh"),

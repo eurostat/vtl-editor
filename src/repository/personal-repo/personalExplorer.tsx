@@ -57,7 +57,8 @@ import {useEffectOnce} from "../../utility/useEffectOnce";
 import {buildIncrementPayload} from "../entity/incrementVersionPayload";
 import {IncrementDialogResult} from "../incrementDialog";
 import {deleteEntityDialog} from "../../main-view/decision-dialog/decisionDialog";
-import {uploadPersonalDefinition, uploadPersonalProgram} from "../../edit-client/editClientService";
+import {uploadEditDefinition, uploadEditProgram,} from "../../edit-client/editClientService";
+import {getEditCredentials} from "../../edit-client/credentialsService";
 
 const PersonalExplorer = () => {
     const explorerPanelRef = useRef(null);
@@ -241,32 +242,40 @@ const PersonalExplorer = () => {
             });
     }
 
-    const sendDefinition = (item: StoredItemTransfer) => {
+    const sendDefinition = async (item: StoredItemTransfer) => {
         const descriptor = item.type.toLocaleLowerCase();
-        uploadPersonalDefinition(item, item.type)
-            .then((response) => {
-                    if (response) {
-                        enqueueSnackbar(`${descriptor} "${item.name}" uploaded successfully to EDIT as dataset definition.`,
-                            {variant: "success"});
+        try {
+            const credentials = await getEditCredentials();
+            uploadEditDefinition(item, undefined, credentials)
+                .then((response) => {
+                        if (response) {
+                            enqueueSnackbar(`${descriptor} "${item.name}" uploaded successfully to EDIT as dataset definition.`,
+                                {variant: "success"});
+                        }
                     }
-                }
-            )
-            .catch(() => enqueueSnackbar(`Failed to upload ${item.type.toLocaleLowerCase()} "${item.name}".`,
-                {variant: "error"}))
+                )
+                .catch(() => enqueueSnackbar(`Failed to upload ${item.type.toLocaleLowerCase()} "${item.name}".`,
+                    {variant: "error"}))
+        } catch {
+        }
     }
 
-    const sendProgram = (item: StoredItemTransfer) => {
+    const sendProgram = async (item: StoredItemTransfer) => {
         const descriptor = item.type.toLocaleLowerCase();
-        uploadPersonalProgram(item, item.type)
-            .then((response) => {
-                    if (response) {
-                        enqueueSnackbar(`${descriptor} "${item.name}" uploaded successfully to EDIT as program.`,
-                            {variant: "success"});
+        try {
+            const credentials = await getEditCredentials();
+            uploadEditProgram(item, undefined, credentials)
+                .then((response) => {
+                        if (response) {
+                            enqueueSnackbar(`${descriptor} "${item.name}" uploaded successfully to EDIT as program.`,
+                                {variant: "success"});
+                        }
                     }
-                }
-            )
-            .catch(() => enqueueSnackbar(`Failed to upload ${item.type.toLocaleLowerCase()} "${item.name}".`,
-                {variant: "error"}))
+                )
+                .catch(() => enqueueSnackbar(`Failed to upload ${item.type.toLocaleLowerCase()} "${item.name}".`,
+                    {variant: "error"}))
+        } catch {
+        }
     }
 
     const removeItem = (node: TreeNode) => {

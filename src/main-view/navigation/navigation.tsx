@@ -1,100 +1,91 @@
-import { faEdit, faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
-import { faCog } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Tooltip } from "@material-ui/core";
+import {faEdit, faQuestionCircle} from "@fortawesome/free-regular-svg-icons";
+import {faCog} from "@fortawesome/free-solid-svg-icons";
 import {AccountTreeOutlined, Domain, LineStyle, OpenInBrowserOutlined, SupervisorAccount} from "@material-ui/icons";
-import React, { useMemo, useState } from "react";
+import React, {useMemo} from "react";
 import ModalFactory from "react-modal-promise";
-import { useDispatch } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
-import { useManagerRole, useUserRole } from "../../control/authorized";
+import {useDispatch, useSelector} from "react-redux";
+import {useManagerRole, useUserRole} from "../../control/authorized";
 import PersonalExplorer from "../../repository/personal-repo/personalExplorer";
-import { MenuOption } from "../menuOption";
+import {MenuOption} from "../menuOption";
 import SettingsPane from "../settingsPane";
 import SidePane from "../side-pane/sidePane";
-import ToolItem, { AuthorizedToolItemSettings } from "../toolbar/toolItem";
-import { switchSidePane } from "../viewSlice";
+import ToolItem, {AuthorizedToolItemSettings} from "../toolbar/toolItem";
+import {sidePaneView, sidePaneVisible, switchSidePane} from "../viewSlice";
 import "./navigation.scss"
 import DomainExplorer from "../../repository/domain-repo/domainExplorer";
 
-type MenuContentMap = Record<string, AuthorizedToolItemSettings[]>;
-
 export default function Navigation() {
-    const [currentMenuElement, setCurrentMenuElement] = useState<MenuOption>(MenuOption.NONE);
-    const location = useLocation();
     const memoDomainExplorer = useMemo(() => <DomainExplorer/>, []);
     const memoPersonalExplorer = useMemo(() => <PersonalExplorer/>, []);
     const dispatch = useDispatch();
-
+    const sidePaneElement = useSelector(sidePaneView);
+    const sidePaneShown = useSelector(sidePaneVisible);
     const forManager = useManagerRole();
     const forUser = useUserRole();
 
     const toggleDomainRepo = () => {
         dispatch(switchSidePane(MenuOption.DOMAIN_REPO));
-        setCurrentMenuElement(MenuOption.DOMAIN_REPO);
     }
 
     const togglePersonalRepo = () => {
         dispatch(switchSidePane(MenuOption.PERSONAL_REPO));
-        setCurrentMenuElement(MenuOption.PERSONAL_REPO);
     }
 
     const settingsMenuClick = () => {
         dispatch(switchSidePane(MenuOption.SETTINGS));
-        setCurrentMenuElement(MenuOption.SETTINGS);
     }
 
-    const menuItems: Record<string, AuthorizedToolItemSettings> = {
-        "vtl-editor": {
+    const menuItems: AuthorizedToolItemSettings[] = [
+        {
             title: "Editor", key: "vtl-editor", link: "/",
             className: "fa-icon", faIcon: faEdit,
         },
-        "domain-repo": {
-            title: "Domain Repository", key: "domain-repo",
-            className: "domain-repo-pane mat-icon",
-            matIcon: <Domain/>, onClick: toggleDomainRepo,
+        {
+            title: "Import DSD", key: "import-dsd", link: "/sdmx",
+            className: "mat-icon", matIcon: <OpenInBrowserOutlined/>,
         },
-        "personal-repo": {
+        {
             title: "Personal Repository", key: "personal-repo",
             className: "personal-repo-pane mat-icon",
             matIcon: <AccountTreeOutlined/>, onClick: togglePersonalRepo,
             authCheck: forUser,
         },
-        "import-dsd": {
-            title: "Import DSD", key: "import-dsd", link: "/sdmx",
-            className: "mat-icon", matIcon: <OpenInBrowserOutlined/>,
+        {
+            title: "Domain Repository", key: "domain-repo",
+            className: "domain-repo-pane mat-icon",
+            matIcon: <Domain/>, onClick: toggleDomainRepo,
         },
-        "manage-domains": {
+        {
+            title: "EDIT Service", key: "edit-client", link: "/editclient",
+            className: "mat-icon", matIcon: <LineStyle/>,
+            authCheck: forUser,
+        },
+        {
             title: "Manage Domains", key: "manage-domains", link: "/manage",
             className: "mat-icon", matIcon: <SupervisorAccount/>,
             authCheck: forManager,
         },
-        "edit-client": {
-            title: "EDIT Service", key: "edit-client", link: "/editclient",
-            className: "mat-icon", matIcon: <LineStyle/>,
-            authCheck: forManager,
+        {
+            title: "Settings", key: "settings",
+            className: "settings-pane fa-icon",
+            faIcon: faCog, onClick: settingsMenuClick,
         },
-    }
+        {
+            title: "Help (Ctrl+F1)", key: "help",
+            link: "/manual", target: "_blank", rel: "noopener noreferrer",
+            className: "fa-icon",
+            faIcon: faQuestionCircle,
+        },
+    ];
 
-    const menuContentMap: MenuContentMap = {
-        "/": [menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["edit-client"], menuItems["manage-domains"]],
-        "/manual": [],
-        "/sdmx": [menuItems["vtl-editor"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["edit-client"], menuItems["manage-domains"]],
-        "/folder": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["edit-client"], menuItems["manage-domains"]],
-        "/versions": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["edit-client"], menuItems["manage-domains"]],
-        "/domainfolder": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["edit-client"], menuItems["manage-domains"]],
-        "/domainversions": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["edit-client"], menuItems["manage-domains"]],
-        "/diff": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["edit-client"], menuItems["manage-domains"]],
-        "/manage": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["edit-client"]],
-        "/profile": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["edit-client"], menuItems["manage-domains"]],
-        "/editclient": [menuItems["vtl-editor"], menuItems["import-dsd"], menuItems["personal-repo"], menuItems["domain-repo"], menuItems["manage-domains"]],
-    };
+    const sidePaneStyling = () => sidePaneShown ? `open-${sidePaneElement}` : "";
 
     return (
         <>
-            <div className="nav flex-column nav-pills left-nav" aria-orientation="vertical">
+            <div className={`nav flex-column nav-pills left-nav ${sidePaneStyling()}`}
+                 aria-orientation="vertical">
                 {
-                    menuContentMap[location.pathname]?.map((option) => {
+                    menuItems.map((option) => {
                             const component = <ToolItem key={option.key} itemSettings={option}/>;
                             return option.authCheck
                                 ? option.authCheck(component)
@@ -103,20 +94,8 @@ export default function Navigation() {
                     )
                     || []
                 }
-                <Tooltip title="Settings" placement="right" arrow>
-                    <button className="fa-icon" id="setting-icon" onClick={settingsMenuClick}>
-                        <FontAwesomeIcon icon={faCog}/>
-                    </button>
-                </Tooltip>
-                <Tooltip title="Help (Ctrl+F1)" placement="right" arrow>
-                    <Link to="/manual" target="_blank" rel="noopener noreferrer">
-                        <button className="fa-icon">
-                            <FontAwesomeIcon icon={faQuestionCircle}/>
-                        </button>
-                    </Link>
-                </Tooltip>
             </div>
-            <SidePane currentElement={currentMenuElement}>
+            <SidePane currentElement={sidePaneElement}>
                 <div title={MenuOption.SETTINGS}>
                     <SettingsPane/>
                 </div>

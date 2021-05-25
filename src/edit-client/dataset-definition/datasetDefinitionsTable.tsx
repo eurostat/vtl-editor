@@ -5,19 +5,23 @@ import MaterialTable, {MaterialTableProps} from "material-table";
 import {useSnackbar} from "notistack";
 import React, {useCallback, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {definitionList, expelDefinition, replaceDefinitions} from "../editClientSlice";
+import {credentialsProvided, definitionList, expelDefinition, replaceDefinitions} from "../editClientSlice";
 import {deleteEntityDialog} from "../../main-view/decision-dialog/decisionDialog";
 import {DatasetDefinitionTransfer} from "./datasetDefinitionTransfer";
 import {materialTableAction, materialTableTheme, materialTableTitle} from "../../utility/materialTable";
-import {deleteDefinition, fetchDefinitions} from "../editClientService";
+import {deleteEditDefinition, fetchEditDefinitions} from "../editClientService";
+import {CredentialsPayload} from "../credentialsPayload";
+import {getEditCredentials, useValidateEditCredentials} from "../credentialsService";
 
 export default function DatasetDefinitionsTable() {
     const definitions = _.cloneDeep(useSelector(definitionList));
     const dispatch = useDispatch();
+    const hasCredentials = useSelector(credentialsProvided);
+    const validatedCredentials = useValidateEditCredentials();
     const {enqueueSnackbar} = useSnackbar();
 
-    const loadDefinitions = useCallback(() => {
-        return fetchDefinitions().then((received: DatasetDefinitionTransfer[]) => {
+    const loadDefinitions = useCallback((credentials: CredentialsPayload) => {
+        return fetchEditDefinitions(credentials).then((received: DatasetDefinitionTransfer[]) => {
             dispatch(replaceDefinitions(received));
         }).catch(() => {
             enqueueSnackbar(`Failed to load dataset definitions.`, {variant: "error"});
@@ -26,34 +30,43 @@ export default function DatasetDefinitionsTable() {
     }, [dispatch, enqueueSnackbar]);
 
     useEffect(() => {
-        loadDefinitions().then().catch(() => {
-        });
-    }, [loadDefinitions]);
+        if (hasCredentials) {
+            const credentials = validatedCredentials();
+            if (credentials) loadDefinitions(credentials)
+                .then()
+                .catch(() => {
+                });
+        }
+    }, [hasCredentials, validatedCredentials, loadDefinitions, enqueueSnackbar]);
 
-    const refreshDefinitions = () => {
-        loadDefinitions()
-            .then(() => enqueueSnackbar(`Dataset definitions refreshed successfully.`, {variant: "success"}))
-            .catch(() => {
-            });
+    const refreshDefinitions = async () => {
+        try {
+            const credentials = await getEditCredentials();
+            loadDefinitions(credentials)
+                .then(() => enqueueSnackbar(`Dataset definitions refreshed successfully.`, {variant: "success"}))
+                .catch(() => {
+                });
+        } catch {
+        }
     }
 
-    const removeDefinition = (event: any, definition: DatasetDefinitionTransfer | DatasetDefinitionTransfer[]) => {
+    const removeDefinition = async (event: any, definition: DatasetDefinitionTransfer | DatasetDefinitionTransfer[]) => {
         if (Array.isArray(definition)) return;
-        deleteEntityDialog("dataset definition", definition.name)
-            .then(() => {
-                deleteDefinition(definition.id)
-                    .then((response) => {
-                        if (response && response.success) {
-                            dispatch(expelDefinition(definition));
-                            enqueueSnackbar(`Dataset definition "${definition.name}" deleted successfully.`, {variant: "success"});
-                        }
-                    })
-                    .catch(() => {
-                        enqueueSnackbar(`Failed to delete dataset definition "${definition.name}".`, {variant: "error"});
-                    })
-            })
-            .catch(() => {
-            });
+        try {
+            await deleteEntityDialog("dataset definition", definition.name)
+            const credentials = await getEditCredentials();
+            deleteEditDefinition(definition.id, credentials)
+                .then((response) => {
+                    if (response && response.success) {
+                        dispatch(expelDefinition(definition));
+                        enqueueSnackbar(`Dataset definition "${definition.name}" deleted successfully.`, {variant: "success"});
+                    }
+                })
+                .catch(() => {
+                    enqueueSnackbar(`Failed to delete dataset definition "${definition.name}".`, {variant: "error"});
+                })
+        } catch {
+        }
     }
 
     const tableProps = {
@@ -62,15 +75,13 @@ export default function DatasetDefinitionsTable() {
         columns: [
             {title: "Name", field: "name", defaultSort: "asc"},
             {title: "Description", field: "description"},
-            {title: "Creation Date", field: "createDate"},
-            {title: "Created By", field: "createdBy"},
+            {title: "Version", field: "version"},
+            {title: "Index", field: "index"},
+            {title: "Line", field: "line"},
         ],
         options: {
             showTitle: true,
             toolbarButtonAlignment: "left",
-        },
-        detailPanel: (definition: DatasetDefinitionTransfer) => {
-            return null
         },
         actions: [
             materialTableAction(<Cached/>, "toolbar", refreshDefinitions, "Refresh"),

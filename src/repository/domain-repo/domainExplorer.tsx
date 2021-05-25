@@ -50,7 +50,8 @@ import {buildIncrementPayload} from "../entity/incrementVersionPayload";
 import {IncrementDialogResult} from "../incrementDialog";
 import {useManagerRole, useRole} from "../../control/authorized";
 import {deleteEntityDialog} from "../../main-view/decision-dialog/decisionDialog";
-import {uploadDomainDefinition, uploadDomainProgram} from "../../edit-client/editClientService";
+import {uploadEditDefinition, uploadEditProgram} from "../../edit-client/editClientService";
+import {getEditCredentials} from "../../edit-client/credentialsService";
 
 const DomainExplorer = () => {
     const explorerPanelRef = useRef(null);
@@ -87,7 +88,7 @@ const DomainExplorer = () => {
 
     useEffectOnce(() => {
         if (!treeLoaded) loadRepositoryContents().catch(() =>
-            enqueueSnackbar(`Failed to load Domain Repository.`, {variant: "error"}));
+            enqueueSnackbar(`Failed to load domain repository.`, {variant: "error"}));
     });
 
     const onToggle = (node: TreeNode, toggled: boolean) => {
@@ -172,32 +173,40 @@ const DomainExplorer = () => {
             });
     }
 
-    const sendDefinition = (item: StoredItemTransfer) => {
+    const sendDefinition = async (item: StoredItemTransfer) => {
         const descriptor = item.type.toLocaleLowerCase();
-        uploadDomainDefinition(item, item.type)
-            .then((response) => {
-                    if (response) {
-                        enqueueSnackbar(`${descriptor} "${item.name}" uploaded successfully to EDIT as dataset definition.`,
-                            {variant: "success"});
+        try {
+            const credentials = await getEditCredentials();
+            uploadEditDefinition(item, item.parentId, credentials)
+                .then((response) => {
+                        if (response) {
+                            enqueueSnackbar(`${descriptor} "${item.name}" uploaded successfully to EDIT as dataset definition.`,
+                                {variant: "success"});
+                        }
                     }
-                }
-            )
-            .catch(() => enqueueSnackbar(`Failed to upload ${item.type.toLocaleLowerCase()} "${item.name}".`,
-                {variant: "error"}))
+                )
+                .catch(() => enqueueSnackbar(`Failed to upload ${item.type.toLocaleLowerCase()} "${item.name}".`,
+                    {variant: "error"}))
+        } catch {
+        }
     }
 
-    const sendProgram = (item: StoredItemTransfer) => {
+    const sendProgram = async (item: StoredItemTransfer) => {
         const descriptor = item.type.toLocaleLowerCase();
-        uploadDomainProgram(item, item.type)
-            .then((response) => {
-                    if (response) {
-                        enqueueSnackbar(`${descriptor} "${item.name}" uploaded successfully to EDIT as program.`,
-                            {variant: "success"});
+        try {
+            const credentials = await getEditCredentials();
+            uploadEditProgram(item, item.parentId, credentials)
+                .then((response) => {
+                        if (response) {
+                            enqueueSnackbar(`${descriptor} "${item.name}" uploaded successfully to EDIT as program.`,
+                                {variant: "success"});
+                        }
                     }
-                }
-            )
-            .catch(() => enqueueSnackbar(`Failed to upload ${item.type.toLocaleLowerCase()} "${item.name}".`,
-                {variant: "error"}))
+                )
+                .catch(() => enqueueSnackbar(`Failed to upload ${item.type.toLocaleLowerCase()} "${item.name}".`,
+                    {variant: "error"}))
+        } catch {
+        }
     }
 
     const removeItem = (node: TreeNode) => {

@@ -34,6 +34,7 @@
 	<xi:include href="userRepository.xml" />
     <xi:include href="domainRepository.xml" />
     <xi:include href="domainManagement.xml" />
+    <xi:include href="editService.xml" />
     <xi:include href="authorization.xml" />
 	<xi:include href="userSettings.xml" />
 	<xi:include href="userKeyboard.xml" />

@@ -512,7 +512,7 @@
                             <span class="docbook.bold"><strong>(7) Delete object</strong></span> &#8211;
                             button of quick action in the form of deleting a selected item from the database. The user will be asked to confirm the action.
                         </p></li><li class="docbook.listitem"><p>
-                            <span class="docbook.bold"><strong>(8) Delete object</strong></span> &#8211;
+                            <span class="docbook.bold"><strong>(8) List pagination</strong></span> &#8211;
                             here is a list from which we can choose the number of elements displayed at the same time, as well as page navigation, if there are any - otherwise the navigation will be grayed out.
                         </p></li></ul></div><p>
             </p></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h3 class="docbook.title"><a name="dm_domain_create"></a>Creating domain</h3></div></div></div><p>
@@ -697,8 +697,121 @@
                             Warning dialog window is displayed, prompting for confirmation. Click
                             <span class="docbook.bold"><strong>Yes</strong></span> button to confirm deletion.
                         </p></li></ol></div><p>
-            </p></div></div></div><div lang="en" class="docbook.chapter"><div class="docbook.titlepage"><div><div><h1 class="docbook.title"><a name="authorization"></a>Chapter&nbsp;7.&nbsp;Authorization</h1></div></div></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="auth_scheme"></a>Role scheme</h2></div></div></div><p>
-            </p><div class="docbook.figure"><a name="d0e1999"></a><p class="docbook.title"><b>Figure&nbsp;7.1.&nbsp;Role scheme</b></p><div class="docbook.figure-contents"><div class="docbook.mediaobject" align="center"><img src="./images/auth_scheme.png" align="middle" alt="Role scheme"></div></div></div><p><br class="docbook.figure-break">
+            </p></div></div></div><div lang="en" class="docbook.chapter"><div class="docbook.titlepage"><div><div><h1 class="docbook.title"><a name="chap_edit_service"></a>Chapter&nbsp;7.&nbsp;EDIT Service</h1></div></div></div><p>
+        </p><div class="docbook.figure"><a name="fig_es_icon"></a><p class="docbook.title"><b>Figure&nbsp;7.1.&nbsp;EDIT Service icon</b></p><div class="docbook.figure-contents"><div class="docbook.mediaobject" align="center"><img src="./images/es_icon.png" align="middle" alt="EDIT Service icon"></div></div></div><p><br class="docbook.figure-break">
+        Internal VRM service that allows you to add, delete and view items for two EDIT services:
+        Program Service and DatasetDefinition Service. The action of listing items and deleting takes place in the
+        tab of the appropriate service in the EDIT Service view.
+    </p><p>
+        In contrast to them, the action of adding an item is done by selecting the appropriate command from the file
+        after right-clicking the desired file. Adding file can be executed from Personal or Domain repository alike.
+    </p><p><a name="para_es_view_desc"></a>
+        </p><div class="docbook.figure"><a name="fig_es_view"></a><p class="docbook.title"><b>Figure&nbsp;7.2.&nbsp;EDIT Service view</b></p><div class="docbook.figure-contents"><div class="docbook.mediaobject" align="center"><img src="./images/es_main_view.png" align="middle" alt="EDIT Service view"></div></div></div><p><br class="docbook.figure-break">
+        The interface elements of this view will be described in detail below:
+        </p><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: disc; "><li class="docbook.listitem"><p>
+                    <span class="docbook.bold"><strong>(1) EDIT services tab</strong></span> &#8211;
+                    allows you to quickly move between views of services.
+                </p></li><li class="docbook.listitem"><p>
+                    <span class="docbook.bold"><strong>(2) Refresh</strong></span> &#8211;
+                    refreshes the view of service elements list.
+                </p></li><li class="docbook.listitem"><p>
+                    <span class="docbook.bold"><strong>(3) List search</strong></span> &#8211;
+                    quick search for elements of interest when we know the name.
+                </p></li><li class="docbook.listitem"><p><a name="p_es_delete_button"></a>
+                    <span class="docbook.bold"><strong>(4) Delete object</strong></span> &#8211;
+                    button of quick action in the form of requesting deletion of selected element from the EDIT database. The user will be asked to confirm the action.
+                </p></li><li class="docbook.listitem"><p>
+                    <span class="docbook.bold"><strong>(5) List pagination</strong></span> &#8211;
+                    here is a list from which we can choose the number of elements displayed at the same time, as well as page navigation, if there are any - otherwise the navigation will be grayed out.
+                </p></li></ul></div><p>
+    </p><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="es_credentials"></a>EDIT Service credentials</h2></div></div></div><p>
+            </p><div class="docbook.figure"><a name="d0e2051"></a><p class="docbook.title"><b>Figure&nbsp;7.3.&nbsp;Credentials input view</b></p><div class="docbook.figure-contents"><div class="docbook.mediaobject" align="center"><img src="./images/es_credentials_input.png" align="middle" alt="Credentials input view"></div></div></div><p><br class="docbook.figure-break">
+            Proper operation of EDIT Service requires <span class="docbook.bold"><strong>EDIT credentials</strong></span> of user.
+            If actual user will enter feature when credentials cache is empty, he will be prompted to fill username,
+            password and domain. Credentials can be filled earlier from level of
+            <span class="docbook.bold"><strong>Settings</strong></span>(gear icon on the left). See&nbsp;<a class="docbook.xref" href="#edit_credentials" title="EDIT Service Credentials">the section called &#8220;EDIT Service Credentials&#8221;</a>.
+        </p></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="es_program"></a>Program Service</h2></div></div></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h3 class="docbook.title"><a name="es_program_view"></a>Description</h3></div></div></div><p>
+                </p><div class="docbook.figure"><a name="fig_es_program_view"></a><p class="docbook.title"><b>Figure&nbsp;7.4.&nbsp;EDIT Program Service list view</b></p><div class="docbook.figure-contents"><div class="docbook.mediaobject" align="center"><img src="./images/es_program_view.png" align="middle" alt="EDIT Program Service list view"></div></div></div><p><br class="docbook.figure-break">
+                Program Service list contains such program details as:
+                </p><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: disc; "><li class="docbook.listitem"><p>Name</p></li><li class="docbook.listitem"><p>Description</p></li><li class="docbook.listitem"><p>Creation date</p></li><li class="docbook.listitem"><p>Created by</p></li></ul></div><p>
+            </p><p>
+                Please reference this <a class="docbook.link" href="#fig_es_view" title="Figure&nbsp;7.2.&nbsp;EDIT Service view">figure</a> and <a class="docbook.link" href="#para_es_view_desc">list</a>
+                for detailed description of the Program Service view.
+            </p></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h3 class="docbook.title"><a name="es_program_upload"></a>Add/upload program to service</h3></div></div></div><p>
+                </p><div class="docbook.figure"><a name="d0e2108"></a><p class="docbook.title"><b>Figure&nbsp;7.5.&nbsp;Upload program view</b></p><div class="docbook.figure-contents"><div class="docbook.mediaobject" align="center"><img src="./images/es_add_action.png" align="middle" alt="Upload program view"></div></div></div><p><br class="docbook.figure-break">
+                The following steps are required to upload program:
+                </p><div class="docbook.orderedlist"><ol class="docbook.orderedlist" type="1"><li class="docbook.listitem"><p>
+                            Open <span class="docbook.bold"><strong>File Explorer</strong></span> of any repository (Personal/Domain)
+                            if it's closed.
+                        </p></li><li class="docbook.listitem"><p>
+                            Right-click a file containing program that you would like to upload.
+                        </p></li><li class="docbook.listitem"><p>
+                            Choose from menu: Upload to EDIT &gt; As Program.
+                        </p></li><li class="docbook.listitem"><p>
+                            After a while, you should see a success/error message related to upload.
+                        </p></li><li class="docbook.listitem"><p>
+                            Move to <a class="docbook.link" href="#fig_es_icon" title="Figure&nbsp;7.1.&nbsp;EDIT Service icon">EDIT Service</a> if upload was successful.
+                        </p></li><li class="docbook.listitem"><p>
+                            Move to <span class="docbook.bold"><strong>Programs</strong></span> tab.
+                        </p></li><li class="docbook.listitem"><p>
+                            Uploaded program should be present on list, otherwise refresh it.
+                        </p></li></ol></div><p>
+            </p></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h3 class="docbook.title"><a name="es_program_delete"></a>Delete program</h3></div></div></div><p>
+                The following steps are required to delete program:
+                </p><div class="docbook.orderedlist"><ol class="docbook.orderedlist" type="1"><li class="docbook.listitem"><p>
+                            Open <a class="docbook.link" href="#fig_es_icon" title="Figure&nbsp;7.1.&nbsp;EDIT Service icon">EDIT Service</a> if it's closed.
+                        </p></li><li class="docbook.listitem"><p>
+                            Move to <span class="docbook.bold"><strong>Programs</strong></span> tab.
+                        </p></li><li class="docbook.listitem"><p>
+                            Click <a class="docbook.link" href="#p_es_delete_button">delete button</a> on target element from the list.
+                        </p></li><li class="docbook.listitem"><p>
+                            Warning dialog window is displayed, prompting for confirmation. Click
+                            <span class="docbook.bold"><strong>Yes</strong></span> button to confirm deletion.
+                        </p></li><li class="docbook.listitem"><p>
+                            Deleted program should be not present on list, otherwise refresh it.
+                        </p></li></ol></div><p>
+            </p></div></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="es_datasetDef"></a>DatasetDefinition Service</h2></div></div></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h3 class="docbook.title"><a name="es_datasetDef_view"></a>Description</h3></div></div></div><p>
+                </p><div class="docbook.figure"><a name="fig_es_datasetDef_view"></a><p class="docbook.title"><b>Figure&nbsp;7.6.&nbsp;EDIT DatasetDefinition Service list view</b></p><div class="docbook.figure-contents"><div class="docbook.mediaobject" align="center"><img src="./images/es_datasetdef_view.png" align="middle" alt="EDIT DatasetDefinition Service list view"></div></div></div><p><br class="docbook.figure-break">
+                DatasetDefinition Service list contains such dataset definition details as:
+                </p><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: disc; "><li class="docbook.listitem"><p>Name</p></li><li class="docbook.listitem"><p>Description</p></li><li class="docbook.listitem"><p>Version</p></li><li class="docbook.listitem"><p>Index</p></li><li class="docbook.listitem"><p>Line</p></li></ul></div><p>
+            </p><p>
+                Please reference this <a class="docbook.link" href="#fig_es_view" title="Figure&nbsp;7.2.&nbsp;EDIT Service view">figure</a> and <a class="docbook.link" href="#para_es_view_desc">list</a>
+                for detailed description of the DatasetDefinition Service view.
+            </p></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h3 class="docbook.title"><a name="es_datasetDef_upload"></a>Add/upload dataset definition</h3></div></div></div><p>
+                </p><div class="docbook.figure"><a name="d0e2226"></a><p class="docbook.title"><b>Figure&nbsp;7.7.&nbsp;Upload dataset definition view</b></p><div class="docbook.figure-contents"><div class="docbook.mediaobject" align="center"><img src="./images/es_add_action.png" align="middle" alt="Upload dataset definition view"></div></div></div><p><br class="docbook.figure-break">
+                The following steps are required to upload dataset definition:
+                </p><div class="docbook.orderedlist"><ol class="docbook.orderedlist" type="1"><li class="docbook.listitem"><p>
+                            Open <span class="docbook.bold"><strong>File Explorer</strong></span> of any repository (Personal/Domain)
+                            if it's closed.
+                        </p></li><li class="docbook.listitem"><p>
+                            Right-click a file containing dataset definition that you would like to upload.
+                        </p></li><li class="docbook.listitem"><p>
+                            Choose from menu: Upload to EDIT &gt; As Dataset Definition.
+                        </p></li><li class="docbook.listitem"><p>
+                            After a while, you should see a success/error message related to upload.
+                        </p></li><li class="docbook.listitem"><p>
+                            Move to <a class="docbook.link" href="#fig_es_icon" title="Figure&nbsp;7.1.&nbsp;EDIT Service icon">EDIT Service</a> if upload was successful.
+                        </p></li><li class="docbook.listitem"><p>
+                            Move to <span class="docbook.bold"><strong>Dataset Definitions</strong></span> tab.
+                        </p></li><li class="docbook.listitem"><p>
+                            Uploaded dataset definition should be present on list, otherwise refresh it.
+                        </p></li></ol></div><p>
+            </p></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h3 class="docbook.title"><a name="es_datasetDef_delete"></a>Delete dataset definition</h3></div></div></div><p>
+                The following steps are required to delete program:
+                </p><div class="docbook.orderedlist"><ol class="docbook.orderedlist" type="1"><li class="docbook.listitem"><p>
+                            Open <a class="docbook.link" href="#fig_es_icon" title="Figure&nbsp;7.1.&nbsp;EDIT Service icon">EDIT Service</a> if it's closed.
+                        </p></li><li class="docbook.listitem"><p>
+                            Move to <span class="docbook.bold"><strong>Dataset Definitions</strong></span> tab.
+                        </p></li><li class="docbook.listitem"><p>
+                            Click <a class="docbook.link" href="#p_es_delete_button">delete button</a> on target element from the list.
+                        </p></li><li class="docbook.listitem"><p>
+                            Warning dialog window is displayed, prompting for confirmation. Click
+                            <span class="docbook.bold"><strong>Yes</strong></span> button to confirm deletion.
+                        </p></li><li class="docbook.listitem"><p>
+                            Deleted dataset definition should be not present on list, otherwise refresh it.
+                        </p></li></ol></div><p>
+            </p></div></div></div><div lang="en" class="docbook.chapter"><div class="docbook.titlepage"><div><div><h1 class="docbook.title"><a name="authorization"></a>Chapter&nbsp;8.&nbsp;Authorization</h1></div></div></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="auth_scheme"></a>Role scheme</h2></div></div></div><p>
+            </p><div class="docbook.figure"><a name="d0e2308"></a><p class="docbook.title"><b>Figure&nbsp;8.1.&nbsp;Role scheme</b></p><div class="docbook.figure-contents"><div class="docbook.mediaobject" align="center"><img src="./images/auth_scheme.png" align="middle" alt="Role scheme"></div></div></div><p><br class="docbook.figure-break">
         </p></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="auth_role_desc"></a>Roles description</h2></div></div></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h3 class="docbook.title"><a name="auth_visitor"></a>Visitor</h3></div></div></div><p>
                 Visitor (user without any roles assigned) permissions:
                 </p><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: disc; "><li class="docbook.listitem"><p>Use VTL Editor, save files on disk, load files from disk.</p></li><li class="docbook.listitem"><p>Use SDMX registries, import Data Structure Definitions.</p></li><li class="docbook.listitem"><p>View all domains and items in the Domain Repository.</p></li></ul></div><p>
@@ -721,11 +834,11 @@
                 Administrator additional permissions:
                 </p><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: disc; "><li class="docbook.listitem"><p>View the Recycle Bin for the Domain Repository and delete items permanently.</p></li><li class="docbook.listitem"><p>Add, edit and remove users, domains, and groups.</p></li><li class="docbook.listitem"><p>Assign and remove user and group roles.</p></li><li class="docbook.listitem"><p>Add and remove users in all the domains and groups.</p></li></ul></div><p>
             </p></div></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="auth_user_profile"></a>User profile</h2></div></div></div><p>
-            </p><div class="docbook.figure"><a name="d0e2083"></a><p class="docbook.title"><b>Figure&nbsp;7.2.&nbsp;User profile view</b></p><div class="docbook.figure-contents"><div class="docbook.mediaobject" align="center"><img src="./images/auth_user_profile.png" align="middle" alt="User profile view"></div></div></div><p><br class="docbook.figure-break">
+            </p><div class="docbook.figure"><a name="d0e2392"></a><p class="docbook.title"><b>Figure&nbsp;8.2.&nbsp;User profile view</b></p><div class="docbook.figure-contents"><div class="docbook.mediaobject" align="center"><img src="./images/auth_user_profile.png" align="middle" alt="User profile view"></div></div></div><p><br class="docbook.figure-break">
             Access to the user profile is always available in the upper right corner of the application after pressing the button(1).
             A view(2) will open allowing the user to view all information related to his account.
             The user cannot edit his data himself, he must ask for it a user with appropriate permissions in the application.
-        </p></div></div><div lang="en" class="docbook.chapter"><div class="docbook.titlepage"><div><div><h1 class="docbook.title"><a name="settings"></a>Chapter&nbsp;8.&nbsp;Settings</h1></div></div></div><p>You can edit your preferences by clicking on <span class="docbook.bold"><strong>Settings</strong></span> in main menu,then will see all the following
+        </p></div></div><div lang="en" class="docbook.chapter"><div class="docbook.titlepage"><div><div><h1 class="docbook.title"><a name="settings"></a>Chapter&nbsp;9.&nbsp;Settings</h1></div></div></div><p>You can edit your preferences by clicking on <span class="docbook.bold"><strong>Settings</strong></span> in main menu,then will see all the following
         options:
     </p><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: disc; "><li class="docbook.listitem"><p>Change theme color</p></li><li class="docbook.listitem"><p>Switch VTL language version</p></li></ul></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="vrm_language_version"></a>Language Version</h2></div></div></div><p>You have possibility to change the <span class="docbook.bold"><strong>VTL language version</strong></span> in <span class="docbook.bold"><strong>Settings/ VTL Grammar Version</strong></span>. The
             highest (currently 2.0) will be added as a default option.
@@ -744,7 +857,12 @@
                         <span class="docbook.bold"><strong>High Contrast Dark</strong></span>
                         - high contrast
                     </p></li></ul></div><p>
-        </p></div></div><div lang="en" class="docbook.chapter"><div class="docbook.titlepage"><div><div><h1 class="docbook.title"><a name="usr_keyboard_shortcuts"></a>Chapter&nbsp;9.&nbsp;Keyboard Shortcuts</h1></div></div></div><p>The following commands are available when editing a file:</p><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: disc; "><li class="docbook.listitem"><p>
+        </p></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="edit_credentials"></a>EDIT Service Credentials</h2></div></div></div><p>
+            </p><div class="docbook.figure"><a name="d0e2465"></a><p class="docbook.title"><b>Figure&nbsp;9.1.&nbsp;EDIT Service Credentials view</b></p><div class="docbook.figure-contents"><div class="docbook.mediaobject" align="center"><img src="./images/es_creds_cache.png" align="middle" alt="EDIT Service Credentials view"></div></div></div><p><br class="docbook.figure-break">
+            Settings related to <a class="docbook.link" href="#chap_edit_service" title="Chapter&nbsp;7.&nbsp;EDIT Service">EDIT Service</a> credentials. Credentials can be changed there anytime
+            by clicking <span class="docbook.bold"><strong>Change</strong></span> button. Clearing a credentials cache requires only clicking
+            <span class="docbook.bold"><strong>Clear</strong></span> button.
+        </p></div></div><div lang="en" class="docbook.chapter"><div class="docbook.titlepage"><div><div><h1 class="docbook.title"><a name="usr_keyboard_shortcuts"></a>Chapter&nbsp;10.&nbsp;Keyboard Shortcuts</h1></div></div></div><p>The following commands are available when editing a file:</p><div class="docbook.itemizedlist"><ul class="docbook.itemizedlist" style="list-style-type: disc; "><li class="docbook.listitem"><p>
                 <span class="docbook.bold"><strong>F1 or Alt+F1</strong></span>&nbsp; Display the full list of commands
             </p></li><li class="docbook.listitem"><p>
                 <span class="docbook.bold"><strong>Ctrl-C</strong></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Copy the selected text to the
@@ -768,7 +886,7 @@
                 <span class="docbook.bold"><strong>Ctrl-P</strong></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Print active window
             </p></li><li class="docbook.listitem"><p>
                 <span class="docbook.bold"><strong>Ctrl-F</strong></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Find text
-            </p></li></ul></div></div><div lang="en" class="docbook.chapter"><div class="docbook.titlepage"><div><div><h1 class="docbook.title"><a name="accessibility"></a>Chapter&nbsp;10.&nbsp;Accessibility</h1></div></div></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="vrm_accessibility_help"></a>Accessibility Help</h2></div></div></div><p>You can press <span class="docbook.bold"><strong>Alt+F1</strong></span> or <span class="docbook.bold"><strong>Ctrl+F1</strong></span> in Microsoft Edge to trigger the <span class="docbook.bold"><strong>'Show Accessibility
+            </p></li></ul></div></div><div lang="en" class="docbook.chapter"><div class="docbook.titlepage"><div><div><h1 class="docbook.title"><a name="accessibility"></a>Chapter&nbsp;11.&nbsp;Accessibility</h1></div></div></div><div class="docbook.section"><div class="docbook.titlepage"><div><div><h2 class="docbook.title" style="clear: both"><a name="vrm_accessibility_help"></a>Accessibility Help</h2></div></div></div><p>You can press <span class="docbook.bold"><strong>Alt+F1</strong></span> or <span class="docbook.bold"><strong>Ctrl+F1</strong></span> in Microsoft Edge to trigger the <span class="docbook.bold"><strong>'Show Accessibility
             Help'
         </strong></span> dialog, while in an
             editor to find out the current position in the editor and to check the state of various accessibility

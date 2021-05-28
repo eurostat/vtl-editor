@@ -59,4 +59,21 @@
             </itemizedlist>
         </para>
     </section>
+
+    <section xml:id="edit_credentials">
+        <title>EDIT Service Credentials</title>
+        <para>
+            <figure>
+                <title>EDIT Service Credentials view</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="./images/es_creds_cache.png" align="center" contentwidth="60%"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+            Settings related to <link linkend="chap_edit_service">EDIT Service</link> credentials. Credentials can be changed there anytime
+            by clicking <emphasis role="bold">Change</emphasis> button. Clearing a credentials cache requires only clicking
+            <emphasis role="bold">Clear</emphasis> button.
+        </para>
+    </section>
 </chapter>

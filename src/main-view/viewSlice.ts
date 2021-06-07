@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { defaultTheme } from "../editor/settings";
 import { RootState } from "../utility/store";
-import { MenuOption } from "./MenuOption";
+import { MenuOption } from "./menuOption";
 
 const initialState = {
     theme: defaultTheme.code,

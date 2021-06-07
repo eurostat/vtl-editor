@@ -1,7 +1,7 @@
 export interface StoredItemPayload {
-    id?: number,
-    name: string,
-    parentFolderId?: number,
-    optLock?: number,
-    version?: number
+    id?: number
+    name: string
+    parentId?: number
+    optLock?: number
+    version?: string
 }

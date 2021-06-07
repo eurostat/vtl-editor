@@ -1,18 +1,19 @@
-import { MuiThemeProvider } from "@material-ui/core/styles";
-import { Cached, CloudDownloadOutlined, RestorePageOutlined } from "@material-ui/icons";
+import {MuiThemeProvider} from "@material-ui/core/styles";
+import {Cached, CloudDownloadOutlined, RestorePageOutlined} from "@material-ui/icons";
 import _ from "lodash";
 import MaterialTable from "material-table";
-import { useSnackbar } from "notistack";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { buildFile } from "../editor/editorFile";
-import { muiTheme } from "../utility/detailTable";
-import { FileVersionTransfer } from "./entity/fileVersionTransfer";
-import { StoredItemTransfer } from "./entity/storedItemTransfer";
-import { getFile, getFileVersions, getVersionContent, restoreFileVersion } from "./repositoryService";
-import { compareVersions, updateNode, versionedFile } from "./repositorySlice";
-import { storeLoaded } from "../editor/editorSlice";
+import {useSnackbar} from "notistack";
+import React, {useCallback, useEffect, useRef, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {useHistory} from "react-router-dom";
+import {buildTransferFile} from "../editor/editorFile";
+import {storeLoaded} from "../editor/editorSlice";
+import {detailTableTheme} from "./detailTableTheme";
+import {FileVersionTransfer, processVersionTransfer} from "./entity/fileVersionTransfer";
+import {StoredItemTransfer} from "./entity/storedItemTransfer";
+import {getFile, getFileVersions, getVersionContent, restoreFileVersion} from "./personal-repo/personalRepoService";
+import {compareVersions, updateNode, versionedFile} from "./personal-repo/personalRepoSlice";
+import {RepositoryType} from "./entity/repositoryType";
 
 const FileVersions = () => {
     const fileId = useSelector(versionedFile);
@@ -23,12 +24,6 @@ const FileVersions = () => {
     const dispatch = useDispatch();
     const {enqueueSnackbar} = useSnackbar();
     const history = useHistory();
-
-    const convertItem = (item: FileVersionTransfer) => {
-        const converted = Object.assign({} as any, item);
-        converted.updateDate = new Date(item.updateDate).toLocaleString();
-        return converted;
-    }
 
     const fetchFile = useCallback(() => {
         if (fileId) {
@@ -49,15 +44,17 @@ const FileVersions = () => {
 
     const fetchVersions = useCallback(() => {
         if (file) {
-            getFileVersions(file.id).then((response) => {
-                if (response && response.data) {
-                    const received: any[] = [];
-                    received.push(...response.data.map((item: FileVersionTransfer) => convertItem(item)));
-                    received.sort((a, b) => b.version - a.version);
-                    setVersions(received);
-                }
-            }).catch(() => {
-            });
+            getFileVersions(file.id)
+                .then((response) => {
+                    if (response && response.data) {
+                        const received: any[] = [];
+                        received.push(...response.data.map((item: FileVersionTransfer) => processVersionTransfer(item)));
+                        received.sort((a, b) => b.version.localeCompare(a.version));
+                        setVersions(received);
+                    }
+                })
+                .catch(() => {
+                });
         }
     }, [file]);
 
@@ -85,8 +82,8 @@ const FileVersions = () => {
     const onVersionCompare = () => {
         if (selected.length === 2) {
             const compare = [...selected];
-            compare.sort((a, b) => a.version - b.version);
-            dispatch(compareVersions({file: file, versions: compare}));
+            compare.sort((a, b) => a.version.localeCompare(b.version));
+            dispatch(compareVersions({file: file, versions: compare, repository: RepositoryType.PERSONAL}));
             history.push("/diff");
         } else {
             enqueueSnackbar(`Select two versions to compare.`, {variant: "warning"});
@@ -95,8 +92,8 @@ const FileVersions = () => {
 
     const onOpenVersion = (event: any, row: any) => {
         if (file) {
-            getVersionContent(file.id, row.version).then((content) => {
-                const loadedFile = buildFile(file.name, content, false, file.id, file.optLock, file.version);
+            getVersionContent(file, row.version).then((content) => {
+                const loadedFile = buildTransferFile(file, content, RepositoryType.PERSONAL);
                 dispatch(storeLoaded(loadedFile));
                 enqueueSnackbar(`Version "${row.version}" opened successfully.`, {variant: "success"});
                 history.push("/");
@@ -106,7 +103,7 @@ const FileVersions = () => {
 
     const onRestoreVersion = (event: any, row: any) => {
         if (file) {
-            restoreFileVersion(file.id, row.version, {version: file.version}).then(() => {
+            restoreFileVersion(file.id, row.version, {optLock: file.optLock}).then(() => {
                 fetchFile();
                 enqueueSnackbar(`Version "${row.version}" restored successfully.`, {variant: "success"});
             }).catch(() => enqueueSnackbar(`Failed to restore version "${row.version}".`, {variant: "error"}));
@@ -114,7 +111,7 @@ const FileVersions = () => {
     }
 
     return (
-        <MuiThemeProvider theme={muiTheme}>
+        <MuiThemeProvider theme={detailTableTheme}>
             <MaterialTable tableRef={tableRef}
                            title={`Version history: ${file?.name || "—"}`}
                            data={versions}
@@ -129,6 +126,7 @@ const FileVersions = () => {
                                selection: true,
                                showSelectAllCheckbox: false,
                                showTextRowsSelected: false,
+                               toolbarButtonAlignment: "left"
                            }}
                            onSelectionChange={onSelectionChange}
                            actions={[

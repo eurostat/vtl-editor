@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="./docbook.css" type="text/css"?>
+<chapter xml:id="adm_security_config" xml:lang="en" version="5.0"
+         xmlns="http://docbook.org/ns/docbook"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         xsi:schemaLocation="http://docbook.org/ns/docbook http://docbook.org/xml/5.0/xsd/docbook.xsd">
+    <title>Security Configuration</title>
+    <para>
+        This chapter describes how to configure OAuth2/OIDC authorization server in the VRM frontend and backend
+        applications. It assumes the reader has basic knowledge about OAuth2 and OIDC protocols and authorization flows.
+        Instructions how to configure VRM applications as clients in the authorization server aren't covered by the
+        scope of this chapter.
+    </para>
+    <para>
+        The instructions in this chapter apply to version 0.8.0 or later of the VRM.
+    </para>
+    <section>
+        <title>VRM Backend</title>
+        <para>
+            The VRM backend application uses built-in libraries from <link
+                xlink:href="https://spring.io/projects/spring-security">Spring Security
+        </link> framework to support OAuth2 and
+            OIDC protocols. The configuration parameters are defined in the <emphasis>application.yml</emphasis> configuration
+            files in the
+            <emphasis>vrm-backend-app</emphasis>
+            and <emphasis>vrm-backend-app</emphasis> modules and automatically applied in the <emphasis>
+            WebSecurityConfiguration
+        </emphasis> class
+            in the <emphasis>vrm-configuration</emphasis> module.
+        </para>
+        <para>
+            The VRM backend application has to be registered as both resource server (to validate incoming access tokens
+            at the authorization server introspection URI) and client application (to query userinfo URI when adding
+            newly authenticated user to the VRM database). All access tokens are treated as opaque and validated at
+            authorization server, even if they are JWT tokens that can be validated locally.
+        </para>
+        <note>
+            Roles for VRM users aren't defined in the authorization server, but in the VRM user database, and are
+            assigned manually by the VRM administrator using administrative interface in the VRM frontend application.
+            Since the VRM user database is empty after deployment, there isn't any user with administrator role. Such
+            role is granted to the first user that authenticates in the VRM.
+        </note>
+        <section>
+            <title>
+                Production Build
+            </title>
+            <para>
+                The <emphasis>application.yml</emphasis> file for the production build can be found in the <emphasis>
+                src/main/resources
+            </emphasis> directory in
+                the <emphasis>vrm-backend-app</emphasis> module. There are four sections related to security
+                configuration:
+                <computeroutput>spring.security.oauth2.client.registration</computeroutput>, <computeroutput>
+                spring.security.oauth2.client.provider</computeroutput>,
+                <computeroutput>spring.security.oauth2.resourceserver.opaque-token</computeroutput>,
+                and <computeroutput>vrm.security.registration-id</computeroutput>. The sections
+                contain configuration parameters described below.
+            </para>
+            <programlisting>
+                <![CDATA[
+spring.security.oauth2.client.registration:
+    <id>:
+        client-id:
+        client-secret:
+]]>
+            </programlisting>
+            <para>
+                Where:
+            </para>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        <computeroutput>id</computeroutput>
+                        — The identifier of specific OAuth2/OIDC provider (entered before colon) that uniquely
+                        identifies the client registration.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <computeroutput>client-id</computeroutput>
+                        — The client identifier of the VRM backend application assigned by the authorization
+                        server.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <computeroutput>client-secret</computeroutput>
+                        — The client secret of the VRM backend application assigned by the authorization
+                        server.
+                    </para>
+                </listitem>
+            </itemizedlist>
+            <programlisting>
+                <![CDATA[
+spring.security.oauth2.client.provider:
+    <id>:
+        issuer-uri:
+        user-info-uri:
+        user-name-attribute:
+]]>
+            </programlisting>
+            <para>
+                Where:
+            </para>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        <computeroutput>id</computeroutput>
+                        — The identifier of specific OAuth2/OIDC provider (entered before colon).
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <computeroutput>issuer-uri</computeroutput>
+                        — The issuer identifier URI for the OAuth2/OIDC provider.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <computeroutput>user-info-uri</computeroutput>
+                        — The userinfo endpoint URI used to access the claims/attributes of the
+                        authenticated end-user.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <computeroutput>user-name-attribute</computeroutput>
+                        — The name of the attribute returned in the userinfo response that
+                        references the name or identifier of the end-user.
+                    </para>
+                </listitem>
+            </itemizedlist>
+            <note>
+                The attribute listed in the <computeroutput>user-name-attribute</computeroutput> setting must be present
+                as a claim in the access token
+                received from the authorization server by the VRM frontend application and must contain user login.
+            </note>
+            <programlisting>
+                <![CDATA[
+spring.security.oauth2.resourceserver.opaque-token:
+    introspection-uri:
+
+vrm.security:
+    registration-id:
+    has-userinfo:
+]]>
+            </programlisting>
+            <para>
+                Where:
+            </para>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        <computeroutput>introspection-uri</computeroutput>
+                        — The Introspection Uri used to introspect the details of an opaque token.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <computeroutput>registration-id</computeroutput>
+                        — The identifier of currently used OAuth2/OIDC provider used in
+                        <computeroutput>registrations</computeroutput>
+                        and <computeroutput>provider</computeroutput> sections above (eg. ecas or keycloak).
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <computeroutput>has-userinfo</computeroutput>
+                        — Indicates that authorization provider has userinfo endpoint that can be queried.
+                    </para>
+                </listitem>
+            </itemizedlist>
+        </section>
+        <section>
+            <title>Development Build</title>
+            <para>
+                The <emphasis>application.yml</emphasis> file for the production build can be found in the <emphasis>
+                src/main/resources
+            </emphasis> directory in
+                the <emphasis>vrm-backend-app-dev</emphasis> module. The settings are the same as for the production
+                build.
+            </para>
+        </section>
+    </section>
+    <section>
+        <title>VRM Frontend</title>
+        <para>
+            The VRM frontend application uses
+            <link xlink:href="https://www.npmjs.com/package/oidc-client">oidc-client</link>
+            library (wrapped in
+            <link xlink:href="https://www.npmjs.com/package/redux-oidc">redux-oidc</link>
+            package),
+            which provides OAuth2
+            and OpenID Connect (OIDC) protocol support for client-side, browser-based JavaScript client applications.
+            Defined configuration parameters are applied in the <emphasis>userManager.ts</emphasis> file in the <emphasis>
+            /src/utility
+        </emphasis> directory of the
+            project.
+        </para>
+        <para>
+            The VRM frontend application has to be registered as public client (without a secret) in the authorization
+            server. If the access token received from the authorization server doesn't contain claim listed in
+            <computeroutput>user-name-attribute</computeroutput>
+            setting of the VRM backend application with the username value, you may need to add
+            related mapping in the authorization server configuration.
+        </para>
+        <section>
+            <title>Production Build</title>
+            <para>
+                Security configuration for the VRM frontend development build can be found in the <emphasis>pom.xml
+            </emphasis> file in the
+                root directory of the project. They are defined as profile properties that are converted to environment
+                variables during Maven compile phase. The following security properties are in
+                <computeroutput><![CDATA[<profiles>]]></computeroutput>
+                section:
+            </para>
+            <programlisting>
+                <![CDATA[
+<deploy.authority.url>https://</deploy.authority.url>
+<deploy.authority.clientId></deploy.authority.clientId>
+<deploy.authority.response>code</deploy.authority.response>
+<deploy.authority.scope>openid profile email</deploy.authority.scope>
+<deploy.authority.audience></deploy.authority.audience>
+]]>
+            </programlisting>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        <computeroutput>deploy.authority.url</computeroutput>
+                        — The URL of the OAuth2/OIDC provider.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <computeroutput>deploy.authority.clientId</computeroutput>
+                        — Client identifier of VRM frontend as registered with the OAuth2/OIDC
+                        provider.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <computeroutput>deploy.authority.response</computeroutput>
+                        — The type of response expected from the OAuth2/OIDC provider. Default
+                        value is "<computeroutput>code</computeroutput>" which refers to Authorization Code Flow with
+                        PKCE. In case of ECAS authorization
+                        server this value should be "<computeroutput>id_token</computeroutput>", as ECAS requires public
+                        applications to use <link
+                            xlink:href="https://citnet.tech.ec.europa.eu/CITnet/confluence/pages/viewpage.action?pageId=773853295">
+                        Implicit Flow with Proof-of-Possession Tokens</link>.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <computeroutput>deploy.authority.scope</computeroutput>
+                        — The scope being requested from the OAuth2/OIDC provider. Default value
+                        is "<computeroutput>openid profile email</computeroutput>".
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <computeroutput>deploy.authority.audience</computeroutput>
+                        — Client identifier of VRM backend as registered with the OAuth2/OIDC provider. Used when
+                        <computeroutput>deploy.authority.response</computeroutput>
+                        is set to Implicit Flow with
+                        Proof-of-Possession Tokens to obtain one-time access token for specific audience with every
+                        VRM backend API call.
+                    </para>
+                </listitem>
+            </itemizedlist>
+            <para>
+                The conversion to environment variables is performed by <emphasis>exec-maven-plugin</emphasis> configured
+                in
+                <![CDATA[<build><plugins>]]> section of the <emphasis>pom.xml</emphasis> file. The resulting variables
+                are respectively:
+            </para>
+            <itemizedlist>
+                <listitem>
+                    <computeroutput>REACT_APP_AUTH_URL</computeroutput>
+                </listitem>
+                <listitem>
+                    <computeroutput>REACT_APP_AUTH_CLIENT_ID</computeroutput>
+                </listitem>
+                <listitem>
+                    <computeroutput>REACT_APP_AUTH_RESPONSE</computeroutput>
+                </listitem>
+                <listitem>
+                    <computeroutput>REACT_APP_AUTH_SCOPE</computeroutput>
+                </listitem>
+                <listitem>
+                    <computeroutput>REACT_APP_AUTH_AUDIENCE</computeroutput>
+                </listitem>
+            </itemizedlist>
+        </section>
+        <section>
+            <title>Development Build</title>
+            <para>
+                Security configuration for the VRM frontend development build can be found in the <emphasis>.env
+            </emphasis> file in the root
+                directory of the project. Similar to production build, additional parameters are defined in the
+                <emphasis>userManager.ts</emphasis>
+                file in the <emphasis>/src/utility</emphasis> directory of the project.
+            </para>
+            <para>
+                The configuration parameters are stored in the environment variables consistent with the ones from
+                <emphasis>pom.xml</emphasis>
+                file used for the production build. They are as follows:
+            </para>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        <computeroutput>REACT_APP_AUTH_URL</computeroutput>
+                        — The URL of the OAuth2/OIDC provider.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <computeroutput>REACT_APP_AUTH_CLIENT_ID</computeroutput>
+                        — Client identifier of VRM frontend as registered with the
+                        OAuth2/OIDC provider.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <computeroutput>REACT_APP_AUTH_RESPONSE</computeroutput>
+                        — The type of response expected from the OAuth2/OIDC provider.
+                        Default value is "<computeroutput>code</computeroutput>" which refers to Authorization Code Flow
+                        with PKCE. In case of ECAS
+                        authorization server this value should be "<computeroutput>id_token</computeroutput>", as ECAS
+                        requires public applications to
+                        use Implicit Flow with Proof-of-Possession Tokens.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <computeroutput>REACT_APP_AUTH_SCOPE</computeroutput>
+                        — The scope being requested from the OAuth2/OIDC provider. Default
+                        value is "<computeroutput>openid profile email</computeroutput>".
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <computeroutput>REACT_APP_AUTH_AUDIENCE</computeroutput>
+                        — Client identifier of VRM backend as registered with the OAuth2/OIDC provider. Used when
+                        <computeroutput>REACT_APP_AUTH_RESPONSE</computeroutput> is set to Implicit Flow with
+                        Proof-of-Possession Tokens to obtain one-time access token for specific audience with every VRM
+                        backend API call.
+                    </para>
+                </listitem>
+            </itemizedlist>
+            <note>
+                Both VRM backend and frontend must access the authorization server using the same URL, as per OAuth2
+                protocol requirement.
+            </note>
+        </section>
+    </section>
+</chapter>

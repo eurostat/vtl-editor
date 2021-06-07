@@ -1,11 +1,10 @@
-import { memo, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { buildFile } from "../editor/editorFile";
-import { changeVtlVersion, appliedVtlVersion, editorFile, storeLoaded } from "../editor/editorSlice";
-import { appliedTheme, changeTheme, detailPaneVisible, showDetailPane } from "../main-view/viewSlice";
-import { SdmxStorage } from "../sdmx/SdmxStorage";
-import React from "react";
-import { Log } from "./log";
+import React, {memo, useEffect, useRef} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {EditorFile} from "../editor/editorFile";
+import {appliedVtlVersion, changeVtlVersion, editorFile, storeLoaded} from "../editor/editorSlice";
+import {appliedTheme, changeTheme, detailPaneVisible, showDetailPane} from "../main-view/viewSlice";
+import {SdmxStorage} from "../sdmx/SdmxStorage";
+import {Log} from "./log";
 
 export enum StorageKey {
     EDITOR = "editor",
@@ -14,7 +13,7 @@ export enum StorageKey {
 }
 
 const BrowserStorage = () => {
-    const [storageLoaded, setStorageLoaded] = useState(false);
+    const storageLoaded = useRef<boolean>(false);
     const dispatch = useDispatch();
     const editedFile = useSelector(editorFile);
     const vtlVersion = useSelector(appliedVtlVersion);
@@ -22,24 +21,23 @@ const BrowserStorage = () => {
     const theme = useSelector(appliedTheme);
 
     useEffect(() => {
-        if (!storageLoaded) {
+        if (!storageLoaded.current) {
             Log.info("Loading state from browser local storage.", "BrowserStorage");
             let storedValues = fromLocalStorage(StorageKey.EDITOR);
             if (storedValues.file) {
-                const {name, content, changed, remoteId, optLock, version} = storedValues.file;
-                dispatch(storeLoaded(buildFile(name, content, changed,
-                    remoteId, optLock, version)));
+                const storedFile: EditorFile = storedValues.file;
+                dispatch(storeLoaded(storedFile));
             }
             if (storedValues.vtlVersion) dispatch(changeVtlVersion(storedValues.vtlVersion));
             storedValues = fromLocalStorage(StorageKey.VIEW);
             if (storedValues.detailPaneVisible) dispatch(showDetailPane(storedValues.detailPaneVisible));
             if (storedValues.theme) dispatch(changeTheme(storedValues.theme));
-            setStorageLoaded(true);
+            storageLoaded.current = true;
         }
-    }, [storageLoaded]);
+    }, [dispatch]);
 
     useEffect(() => {
-        if (storageLoaded) {
+        if (storageLoaded.current) {
             toLocalStorage(StorageKey.EDITOR, {
                 ...fromLocalStorage(StorageKey.EDITOR),
                 file: editedFile,
@@ -72,6 +70,19 @@ const fromLocalStorage = (key: string): any => {
 
 const toLocalStorage = (key: string, value: any) => {
     window.localStorage.setItem(key, JSON.stringify(value));
+}
+
+export function fromSessionStorage(key: string): any {
+    const result = sessionStorage.getItem(key);
+    return result ? JSON.parse(result) : undefined;
+}
+
+export function toSessionStorage(key: string, value: any) {
+    sessionStorage.setItem(key, JSON.stringify(value));
+}
+
+export function clearSessionStorage(key: string) {
+    sessionStorage.removeItem(key);
 }
 
 export default memo(BrowserStorage);

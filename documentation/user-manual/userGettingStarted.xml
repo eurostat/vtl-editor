@@ -33,7 +33,7 @@
             <title>VRM main view</title>
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="./images/vrm_interface.png" align="center" width="90%" scalefit="1"/>
+                    <imagedata fileref="./images/vrm_interface.png" align="center" width="90%" scalefit="1" contentdepth="100%"/>
                 </imageobject>
             </mediaobject>
         </figure>
@@ -41,21 +41,43 @@
         <itemizedlist>
             <listitem>
                 <para>
-                    <emphasis role="bold">(1) Menu</emphasis>
-                    The options in menu are activated by clicking into the icons on the left part of the main window.
-                    The main menu contains all the following options:
+                    <emphasis role="bold">(1) Menu</emphasis> – options in menu are activated by clicking into the icons on the left part of the main window.
+                    The default – active Editor view – main menu contains all the following options from top to bottom:
                     <itemizedlist>
                         <listitem>
-                            <para>Save</para>
+                            <para>Import DSD</para>
                         </listitem>
                         <listitem>
-                            <para>Open</para>
+                            <para>File Explorer</para>
+                        </listitem>
+                        <listitem>
+                            <para>Manage Domains</para>
                         </listitem>
                         <listitem>
                             <para>Settings</para>
                         </listitem>
+                    </itemizedlist>
+                    Hovering over the above items, will display a label with the name. If VTL Editor is not active,
+                    it will appear as top option in application main menu.
+                </para>
+            </listitem>
+
+            <listitem>
+                <para>
+                    <emphasis role="bold">(2) VTL Editor Menu</emphasis> – The options in editor menu are activated by clicking into the icons above the top-left corner of the VTL Editor.
+                    The editor menu contains all the following options from left to right:
+                    <itemizedlist>
                         <listitem>
-                            <para>Help</para>
+                            <para>New File</para>
+                        </listitem>
+                        <listitem>
+                            <para>Open File</para>
+                        </listitem>
+                        <listitem>
+                            <para>Save File</para>
+                        </listitem>
+                        <listitem>
+                            <para>Upload File</para>
                         </listitem>
                     </itemizedlist>
                     Hovering over the above items, will display a label with the name.
@@ -64,15 +86,13 @@
 
             <listitem>
                 <para>
-                    <emphasis role="bold">(2) VTL Editor</emphasis>
-                    Here you can edit the contents of your VTL scripts. The VTL Editor supports syntax highlighting and autocomplete.
+                    <emphasis role="bold">(3) VTL Editor</emphasis> – here you can edit the contents of your VTL scripts. The VTL Editor supports syntax highlighting and autocomplete.
                 </para>
             </listitem>
 
             <listitem>
                 <para>
-                    <emphasis role="bold">(3) Status Bar</emphasis>
-                    Here you can see various helpful details while you are interacting with the <emphasis role="bold">VTL Editor</emphasis>:
+                    <emphasis role="bold">(4) Status Bar</emphasis> – here you can see various helpful details while you are interacting with the <emphasis role="bold">VTL Editor</emphasis>:
                     <itemizedlist>
                         <listitem>
                             <para>Arrow to expand the panel with details for errors</para>
@@ -87,8 +107,7 @@
                         </listitem>
                         <listitem>
                             <para>
-                                <emphasis role="bold">VTL language version</emphasis>
-                                number
+                                <emphasis role="bold">VTL language version</emphasis> number
                             </para>
                         </listitem>
                     </itemizedlist>
@@ -97,36 +116,31 @@
 
             <listitem>
                 <para>
-                    <emphasis role="bold">(4) Help</emphasis>
-                    This tab contains link to <emphasis role="bold">'User Manual'</emphasis> or will displayed in the content from application.
+                    <emphasis role="bold">(5) Help</emphasis> – this tab contains link to <emphasis role="bold">'User Manual'</emphasis> or will displayed in the content from application.
                 </para>
             </listitem>
 
             <listitem>
                 <para>
-                    <emphasis role="bold">(5) Mini Map</emphasis>(code outline) gives you a high-level overview of your source code, which is useful
+                    <emphasis role="bold">(6) Minimap</emphasis> (code outline) – gives you a high-level overview of your source code, which is useful
                     for quick navigation and code understanding.
                 </para>
             </listitem>
 
             <listitem>
                 <para>
-                    <emphasis role="bold">(6) Panel</emphasis>
-                    The panel displays potential errors with descriptions for the added code.
+                    <emphasis role="bold">(7) Panel</emphasis> – displays potential errors with descriptions for the added code.
                 </para>
             </listitem>
 
             <listitem>
                 <para>
-                    <emphasis role="bold">(7) Settings sidebar</emphasis>
-                    The panel displays a drop-down menu for changing the <emphasis role="bold">VTL version</emphasis> or theme color.
-
+                    <emphasis role="bold">(8) Settings sidebar</emphasis> – displays a drop-down menu for changing the <emphasis role="bold">VTL version</emphasis> or theme color.
                 </para>
             </listitem>
             <listitem>
                 <para>
-                    <emphasis role="bold">(8) Tab</emphasis>
-                    The panel displays the name of the current text file.
+                    <emphasis role="bold">(9) Tab</emphasis> – panel displays the name of the current text file.
                 </para>
             </listitem>
         </itemizedlist>

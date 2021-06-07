@@ -1,18 +1,22 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../utility/store";
-import { DEFAULT_FILENAME, EditorFile } from "./editorFile";
-import { defaultVtlVersion, VtlVersion } from "./settings";
-import { CursorPosition, VtlError } from "./vtl-editor";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {RootState} from "../utility/store";
+import {buildEmptyFile, EditorFile} from "./editorFile";
+import {defaultVtlVersion, VtlVersion} from "./settings";
+import {CursorPosition, VtlError} from "./vtl-editor";
+
+export interface EditorState {
+    file: EditorFile,
+    cursor: CursorPosition,
+    errors: VtlError[],
+    movedCursor: CursorPosition,
+    editedContent: string,
+    savedContent: string,
+    vtlVersion: VtlVersion,
+    loadedFile: EditorFile | undefined
+}
 
 const initialState = {
-    file: {
-        name: DEFAULT_FILENAME,
-        content: "",
-        changed: false,
-        remoteId: 0,
-        optLock: 0,
-        version: 0
-    },
+    file: buildEmptyFile(),
     cursor: {
         line: 1,
         column: 1
@@ -79,17 +83,6 @@ export const editorSlice = createSlice({
     }
 });
 
-export interface EditorState {
-    file: EditorFile,
-    cursor: CursorPosition,
-    errors: VtlError[],
-    movedCursor: CursorPosition,
-    editedContent: string,
-    savedContent: string,
-    vtlVersion: VtlVersion,
-    loadedFile: EditorFile | undefined
-}
-
 export const {
     updateContent, updateName, updateFileMeta, markChanged, markUnchanged, updateEdited, updateSaved,
     updateCursor, jumpCursor, listErrors, changeVtlVersion, storeLoaded, clearLoaded
@@ -100,7 +93,8 @@ export const editorFile = (state: RootState) => state.editor.file;
 export const fileName = (state: RootState) => state.editor.file.name;
 export const fileContent = (state: RootState) => state.editor.file.content;
 export const fileChanged = (state: RootState) => state.editor.file.changed;
-export const fileRemoteId = (state: RootState) => state.editor.file.remoteId;
+export const fileRepo = (state: RootState) => state.editor.file.repository;
+export const fileId = (state: RootState) => state.editor.file.id;
 export const fileVersion = (state: RootState) => state.editor.file.version;
 export const movedCursor = (state: RootState) => state.editor.movedCursor;
 export const editorErrors = (state: RootState) => state.editor.errors;

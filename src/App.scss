@@ -45,16 +45,7 @@ body {
 }
 
 
-.logo {
-  max-height: 46px;
-  float: left;
-}
 
-.header-container {
-  padding-left: 20px;
-  max-height: 50px;
-  width: 100%;
-}
 
 .navbar {
   height: 50px;
@@ -63,14 +54,6 @@ body {
 .navbar-brand {
   float: left;
   margin-right: 0;
-}
-
-.nav-button {
-  float: right;
-  padding-right: 30px;
-  min-width: 70px;
-  margin-top: 10px;
-  margin-bottom: 10px;
 }
 
 .btn {
@@ -126,14 +109,6 @@ body {
   font-weight: 200;
 }
 
-.bar {
-  width: 100%;
-  margin-top: 0;
-  margin-bottom: 0;
-  height: 4px;
-  background-color: $base-color;
-}
-
 button {
   background: transparent;
   border: none;
@@ -162,7 +137,7 @@ button {
   width: calc(#{$centerWidth} - #{$settingsNavWidth});
   height: calc(100vh - #{$navbarHeight} - #{$barHeight});
   position: relative;
-  overflow: auto;
+  overflow: hidden;
 }
 
 .vtl-box.vtl, .vtl-box.default {
@@ -270,17 +245,4 @@ button {
   right: 0;
   top: 0;
   padding-right: 20px;
-}
-
-.view-name-container {
-  text-align: left;
-  height: 50px;
-  background-color: $gray-background-color;
-  border-bottom: $gray-border-color 1px solid;
-
-  h3 {
-    padding-top: 10px;
-    padding-left: 20px;
-    font-size: 18px;
-  }
 }

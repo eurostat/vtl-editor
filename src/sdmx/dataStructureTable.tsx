@@ -1,6 +1,7 @@
 import { faSyncAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Tooltip } from "@material-ui/core";
+import { createMuiTheme, Tooltip } from "@material-ui/core";
+import { MuiThemeProvider } from "@material-ui/core/styles";
 import _ from "lodash";
 import MaterialTable from "material-table";
 import { useSnackbar } from "notistack";
@@ -115,9 +116,7 @@ const DataStructureTable = forwardRef(({
         if (dataStructure) {
             setCodeListLoading(true)
         } else {
-            enqueueSnackbar(`Choose data structure from the list!`, {
-                variant: "error"
-            });
+            enqueueSnackbar(`Choose data structure from the list.`, {variant: "error"});
         }
     }
 
@@ -165,48 +164,65 @@ const DataStructureTable = forwardRef(({
         return result;
     }
 
+    const muiTableTheme = createMuiTheme({
+        overrides: {
+            MuiTableCell: {
+                root: {
+                    padding: "10px",
+                },
+            },
+            MuiIconButton: {
+                root: {
+                    padding: "10px",
+                },
+            },
+        }
+    });
+
     return (
         <>
             <Container>
                 <Row className="justify-content-xs-center">
                     <Col xs={12} className="sdmx-table">
-                        <MaterialTable
-                            tableRef={tableRef}
-                            columns={dataStructuresColumns}
-                            data={filteredDataStructures}
-                            options={{
-                                selection: true,
-                                showSelectAllCheckbox: false,
-                                showTextRowsSelected: false,
-                                showTitle: false
-                            }}
-                            onSelectionChange={onDataStructureSelect}
-                            detailPanel={(rowData: DataStructure) => {
-                                return (<DataStructureDetailPanel
-                                    registry={registry!}
-                                    dataStructure={rowData}
-                                    showCodeListPreview={false}
-                                />)
-                            }}
-                            actions={[
-                                {
-                                    icon: () => <FontAwesomeIcon icon={faSyncAlt}
-                                                                 className="refresh-icon"
-                                                                 style={{fontSize: "18.2px"}}/>,
-                                    tooltip: 'Refresh definition list',
-                                    position: 'toolbar',
-                                    onClick: onDataStructuresRefresh
-                                },
-                                {
-                                    icon: () => <FontAwesomeIcon icon={faSyncAlt}
-                                                                 className="refresh-icon"
-                                                                 style={{fontSize: "18.2px"}}/>,
-                                    tooltip: 'Refresh definition list',
-                                    position: 'toolbarOnSelect',
-                                    onClick: onDataStructuresRefresh
-                                }
-                            ]}
-                        />
+                        <MuiThemeProvider theme={muiTableTheme}>
+                            <MaterialTable
+                                tableRef={tableRef}
+                                columns={dataStructuresColumns}
+                                data={filteredDataStructures}
+                                options={{
+                                    selection: true,
+                                    showSelectAllCheckbox: false,
+                                    showTextRowsSelected: false,
+                                    showTitle: false
+                                }}
+                                onSelectionChange={onDataStructureSelect}
+                                detailPanel={(rowData: DataStructure) => {
+                                    return (<DataStructureDetailPanel
+                                        registry={registry!}
+                                        dataStructure={rowData}
+                                        showCodeListPreview={false}
+                                    />)
+                                }}
+                                actions={[
+                                    {
+                                        icon: () => <FontAwesomeIcon icon={faSyncAlt}
+                                                                     className="refresh-icon"
+                                                                     style={{fontSize: "18.2px"}}/>,
+                                        tooltip: 'Refresh definition list',
+                                        position: 'toolbar',
+                                        onClick: onDataStructuresRefresh
+                                    },
+                                    {
+                                        icon: () => <FontAwesomeIcon icon={faSyncAlt}
+                                                                     className="refresh-icon"
+                                                                     style={{fontSize: "18.2px"}}/>,
+                                        tooltip: 'Refresh definition list',
+                                        position: 'toolbarOnSelect',
+                                        onClick: onDataStructuresRefresh
+                                    }
+                                ]}
+                            />
+                        </MuiThemeProvider>
                     </Col>
                 </Row>
                 <Row style={{marginBottom: "20px"}}>

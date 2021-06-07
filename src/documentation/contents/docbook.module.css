@@ -105,6 +105,10 @@ div.synopsis {
 	font-family: monospace;
 }
 
+.docbook\.mediaobject {
+	width: 90vw;
+}
+
 /*
  * FreeBSD-specific formatting
  */
@@ -220,6 +224,13 @@ body hr {
 	border-width: 0 0 1px 0;
 	border-style: solid;
 	border-color: #cecece;
+}
+
+/* Image to scale down if it has to, but never scale up to be larger than its original size */
+img {
+	max-width: 90%;
+	width: auto;
+	height: auto;
 }
 
 body img.navheader {

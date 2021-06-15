@@ -10,15 +10,25 @@ const BASE_URL = process.env.REACT_APP_API_URL;
 const REPO_URL = BASE_URL + "/repo";
 
 export async function getFolder(folderId: number) {
-    const response = await sendGetRequest(`${REPO_URL}/folders/${folderId}`);
-    if (response && response.data) return response.data as StoredItemTransfer;
-    return Promise.reject();
+    try {
+        const response = await sendGetRequest(`${REPO_URL}/folders/${folderId}`);
+        if (response && response.data) return response.data as StoredItemTransfer;
+        return Promise.reject();
+    } catch (response) {
+        return Promise.reject(response.error)
+    }
 }
 
 export async function getFolderContents(folderId?: number) {
-    return folderId
-        ? sendGetRequest(`${REPO_URL}/folders/${folderId}/contents`)
-        : sendGetRequest(REPO_URL);
+    try {
+        const response = folderId
+            ? await sendGetRequest(`${REPO_URL}/folders/${folderId}/contents`)
+            : await sendGetRequest(REPO_URL);
+        if (response && response.data) return response.data;
+        return Promise.reject();
+    } catch (response) {
+        return Promise.reject(response.error)
+    }
 }
 
 export async function createFolder(payload: StoredItemPayload) {
@@ -27,9 +37,13 @@ export async function createFolder(payload: StoredItemPayload) {
 }
 
 export async function getFile(fileId: number) {
-    const response = await sendGetRequest(`${REPO_URL}/files/${fileId}`);
-    if (response && response.data) return response.data as StoredItemTransfer;
-    return Promise.reject();
+    try {
+        const response = await sendGetRequest(`${REPO_URL}/files/${fileId}`);
+        if (response && response.data) return response.data as StoredItemTransfer;
+        return Promise.reject();
+    } catch (response) {
+        return Promise.reject(response.error)
+    }
 }
 
 export async function createFile(payload: StoredItemPayload) {
@@ -43,12 +57,16 @@ export async function updateFile(payload: StoredItemPayload) {
 }
 
 export async function getFileContent(fileId: number) {
-    const response = await sendGetRequest(`${REPO_URL}/files/${fileId}/content`);
-    if (response && response.data) {
-        const content = atob(response.data.content);
-        if (content !== undefined) return content;
+    try {
+        const response = await sendGetRequest(`${REPO_URL}/files/${fileId}/content`);
+        if (response && response.data) {
+            const content = atob(response.data.content);
+            if (content !== undefined) return content;
+        }
+        return Promise.reject();
+    } catch (response) {
+        return Promise.reject(response.error)
     }
-    return Promise.reject();
 }
 
 export async function updateFileContent(file: EditorFile) {
@@ -56,28 +74,48 @@ export async function updateFileContent(file: EditorFile) {
         optLock: file.optLock,
         content: btoa(file.content)
     } as ScriptContentPayload;
-    return sendPutRequest(`${REPO_URL}/files/${file.id}/content`, payload,
-        undefined, {"Content-Type": "application/json"});
+    try {
+        const response = await sendPutRequest(`${REPO_URL}/files/${file.id}/content`, payload,
+            undefined, {"Content-Type": "application/json"});
+        if (response && response.data) return response.data;
+        return Promise.reject();
+    } catch (response) {
+        return Promise.reject(response.error)
+    }
 }
 
 export async function getFileVersions(fileId: number) {
-    return sendGetRequest(`${REPO_URL}/files/${fileId}/versions`);
+    try {
+        const response = await sendGetRequest(`${REPO_URL}/files/${fileId}/versions`);
+        if (response && response.data) return response.data;
+        return Promise.reject();
+    } catch (response) {
+        return Promise.reject(response.error)
+    }
 }
 
 export async function getVersionContent(file: StoredItemTransfer, versionId: string) {
-    const response = await sendGetRequest(`${REPO_URL}/files/${file.id}/versions/${versionId}`);
-    if (response && response.data) {
-        const content = atob(response.data.content);
-        if (content !== undefined) return content;
+    try {
+        const response = await sendGetRequest(`${REPO_URL}/files/${file.id}/versions/${versionId}`);
+        if (response && response.data) {
+            const content = atob(response.data.content);
+            if (content !== undefined) return content;
+        }
+        return Promise.reject();
+    } catch (response) {
+        return Promise.reject(response.error)
     }
-    return Promise.reject();
 }
 
 export async function restoreFileVersion(fileId: number, versionId: string, payload: { optLock: number }) {
-    const response = await sendPutRequest(`${REPO_URL}/files/${fileId}/versions/${versionId}/restore`,
-        payload, undefined, {"Content-Type": "application/json"});
-    if (response && response.data) return response.data;
-    return Promise.reject();
+    try {
+        const response = await sendPutRequest(`${REPO_URL}/files/${fileId}/versions/${versionId}/restore`,
+            payload, undefined, {"Content-Type": "application/json"});
+        if (response && response.data) return response.data;
+        return Promise.reject();
+    } catch (response) {
+        return Promise.reject(response.error)
+    }
 }
 
 export async function updateItem(payload: StoredItemPayload, type: StoredItemType) {
@@ -97,10 +135,16 @@ export async function updateItem(payload: StoredItemPayload, type: StoredItemTyp
 }
 
 export async function incrementFileVersion(item: StoredItemTransfer, payload: IncrementVersionPayload) {
-    return item.type === StoredItemType.FILE
-        ? sendPutRequest(`${REPO_URL}/files/${item.id}/versions/increment`,
-            payload, undefined, {"Content-Type": "application/json"})
-        : Promise.reject();
+    if (item.type === StoredItemType.FILE) {
+        try {
+            const response = await sendPutRequest(`${REPO_URL}/files/${item.id}/versions/increment`,
+                payload, undefined, {"Content-Type": "application/json"})
+            if (response && response.data) return response.data;
+        } catch (response) {
+            return Promise.reject(response.error)
+        }
+    }
+    return Promise.reject();
 }
 
 export async function publishFile(payload: StoredItemPayload, type: StoredItemType) {

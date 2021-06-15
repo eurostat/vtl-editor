@@ -19,17 +19,19 @@ export function buildCredentialsHeader(credentials: CredentialsPayload) {
     }
 }
 
-function fetchEditEntities(url: string, credentials: CredentialsPayload) {
-    return sendGetRequest(url, undefined, buildCredentialsHeader(credentials))
-        .then((response) => {
-            if (response && response.data) {
-                return response.data.map((definition: DatasetDefinitionTransfer) => convertEntityDates(definition)) as any[];
-            }
-            return Promise.reject();
-        });
+async function fetchEditEntities(url: string, credentials: CredentialsPayload) {
+    try {
+        const response = await  sendGetRequest(url, undefined, buildCredentialsHeader(credentials));
+        if (response && response.data) {
+            return response.data.map((definition: DatasetDefinitionTransfer) => convertEntityDates(definition)) as any[];
+        }
+        return Promise.reject();
+    } catch(response) {
+        return Promise.reject(response.error)
+    }
 }
 
-function uploadEditEntity(url: string, item: StoredItemTransfer, domainId: number | undefined, credentials: CredentialsPayload) {
+async function uploadEditEntity(url: string, item: StoredItemTransfer, domainId: number | undefined, credentials: CredentialsPayload) {
     if (item.type !== StoredItemType.FILE) return Promise.reject();
     const payload = {
         fileId: item.id,
@@ -37,12 +39,24 @@ function uploadEditEntity(url: string, item: StoredItemTransfer, domainId: numbe
         programName: item.name
     }
     const header = _.merge(buildCredentialsHeader(credentials), {"Content-Type": "application/json"});
-    return sendPostRequest(`${url}/files/${item.id}`, payload, undefined, header);
+    try {
+        const response = await sendPostRequest(`${url}/files/${item.id}`, payload, undefined, header);
+        if (response && response.success) return response.success;
+        return Promise.reject();
+    } catch (response) {
+        return Promise.reject(response.error)
+    }
 }
 
-function deleteEditEntity(url: string, credentials: CredentialsPayload) {
-    return sendDeleteRequest(url, undefined,
-        undefined, buildCredentialsHeader(credentials));
+async function deleteEditEntity(url: string, credentials: CredentialsPayload) {
+    try {
+        const response = await sendDeleteRequest(url, undefined,
+            undefined, buildCredentialsHeader(credentials));
+        if (response && response.success) return response.success;
+        return Promise.reject();
+    } catch (response) {
+        return Promise.reject(response.error)
+    }
 }
 
 export function fetchEditDefinitions(credentials: CredentialsPayload) {
@@ -52,11 +66,11 @@ export function fetchEditDefinitions(credentials: CredentialsPayload) {
         });
 }
 
-export async function uploadEditDefinition(item: StoredItemTransfer, domainId: number | undefined, credentials: CredentialsPayload) {
+export function uploadEditDefinition(item: StoredItemTransfer, domainId: number | undefined, credentials: CredentialsPayload) {
     return uploadEditEntity(DEFINITION_URL, item, domainId, credentials);
 }
 
-export async function deleteEditDefinition(definitionId: number, credentials: CredentialsPayload) {
+export function deleteEditDefinition(definitionId: number, credentials: CredentialsPayload) {
     return deleteEditEntity(`${DEFINITION_URL}/${definitionId}`, credentials);
 }
 
@@ -67,10 +81,10 @@ export function fetchEditPrograms(credentials: CredentialsPayload) {
         });
 }
 
-export async function uploadEditProgram(item: StoredItemTransfer, domainId: number | undefined, credentials: CredentialsPayload) {
+export function uploadEditProgram(item: StoredItemTransfer, domainId: number | undefined, credentials: CredentialsPayload) {
     return uploadEditEntity(PROGRAM_URL, item, domainId, credentials);
 }
 
-export async function deleteEditProgram(programId: number, credentials: CredentialsPayload) {
-    return deleteEditEntity(`${DEFINITION_URL}/${programId}`, credentials);
+export function deleteEditProgram(programId: number, credentials: CredentialsPayload) {
+    return deleteEditEntity(`${PROGRAM_URL}/${programId}`, credentials);
 }

@@ -29,8 +29,8 @@ export const domainRepoSlice = createSlice({
     name: "domainRepo",
     initialState: initialState,
     reducers: {
-        clearDomainRepoTree(state) {
-            state = initialState;
+        clearDomainRepoTree() {
+            return initialState;
         },
         addToDomainRepoTree(state, action: PayloadAction<TreePayload>) {
             const nodes = action.payload.nodes;
@@ -160,6 +160,7 @@ export const {
 export const domainRepoTree = (state: RootState) => {
     const stateDomains = state.domainRepo.domains
         .map((domain) => _.merge(_.cloneDeep(domain), {children: [] as TreeNode[]}));
+    stateDomains.sort((a, b) => a.name.localeCompare(b.name));
     const stateContainers = state.domainRepo.containers
         .map((container) => _.merge(_.cloneDeep(container), {children: [] as TreeNode[]}));
     const stateScripts = state.domainRepo.scripts
@@ -172,6 +173,7 @@ export const domainRepoTree = (state: RootState) => {
             const scripts = stateScripts.filter((script) => container.childType === NodeType.SCRIPT && script.parentId === domain.id);
             const binneds = stateBinned.filter((binned) => container.childType === NodeType.BINNED && binned.parentId === domain.id);
             container.children.push(...scripts, ...binneds);
+            container.children.sort((a, b) => a.name.localeCompare(b.name));
         })
         domain.children.push(...containers);
     });

@@ -46,8 +46,7 @@ export default function DomainEdit() {
     const confirmDomain = async () => {
         try {
             if (domain) {
-                const call = (domainId ? () => updateDomain(domain) : () => createDomain(domain));
-                const response = await call();
+                const response = domainId ? await updateDomain(domain) : await createDomain(domain);
                 await Promise.all([
                     updateDomainUsers(response.id, domain.users),
                     updateDomainGroups(response.id, domain.groups)

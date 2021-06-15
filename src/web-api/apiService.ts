@@ -1,7 +1,6 @@
 import {Log} from "../utility/log";
 import {accessToken} from "../utility/authSlice";
 import {readState} from "../utility/store";
-import {ApiError, ApiResponse} from './apiResponse';
 import {fetchAccessToken} from "../utility/authService";
 
 export enum RequestMethod {
@@ -13,6 +12,16 @@ export enum RequestMethod {
     POST = "POST",
     PUT = "PUT",
     TRACE = "TRACE"
+}
+
+export interface ApiResponse<T> {
+    timestamp?: string,
+    success: boolean,
+    status: number,
+    data?: T,
+    message?: string,
+    error?: string,
+    path?: string
 }
 
 function buildUrl(path: string, queryParams?: any): string {
@@ -94,41 +103,55 @@ async function sendRequest(method: RequestMethod, url: string, headers?: Headers
     try {
         const response: Response = await fetch(url, init);
         const data = await parseData(response);
-        if (response.bodyUsed && data === undefined) return Promise.reject(handleError(new Error("Unknown response body received")));
-        return response.ok
-            ? handleResponse(response, data)
-            : Promise.reject(handleError(
-                new Error(response.status + " " + response.statusText + " " + (data?.error || "Unknown response body received"))));
+        const result = handleResponse(response, data);
+        return result.success
+            ? result
+            : Promise.reject(result);
     } catch (error) {
         return Promise.reject(handleError(error));
     }
 }
 
-export async function parseData(response: Response) {
+async function parseData(response: Response) {
     const contentType = response.headers.get("content-type") || "";
     const hasJson = contentType.indexOf("application/json") !== -1;
     const hasBlob = contentType.indexOf("application/octet-stream") !== -1;
-    return hasJson
-        ? await response.json()
-        : hasBlob
-            ? await response.blob()
-            : undefined;
+    if (hasJson) return response.json();
+    if (hasBlob) return response.blob();
+    return undefined;
 }
 
-export function handleResponse(response: Response, data: any) {
+function handleResponse(response: Response, data: any) {
+    if (!response) return {} as ApiResponse<any>;
     const result: ApiResponse<any> = Object.assign({}, {
         success: response.ok,
         status: response.status,
         message: response.statusText
     });
-    if (response.ok) result.data = data;
-    else result.error = data;
+    if (response.ok) {
+        if (response.bodyUsed && data === undefined) {
+            result.success = false;
+            result.error = "Unknown response body received";
+        } else {
+            result.data = data;
+        }
+    } else {
+        result.error = errorMessage(response, data);
+    }
     return result;
 }
 
-export function handleError(error: Error): ApiResponse<any> {
+function errorMessage(response: Response, data: any) {
+    const responseError = response && response.status === 403 ? `Insufficient rights ` : "";
+    const dataMessage = data && data.message ? `${data.message} ` : "";
+    const dataError = data && data.error ? ` ${data.error}` : "";
+    const statusText = response && response.statusText ? ` ${response.statusText}` : dataError;
+    return responseError + `${dataMessage}(${response.status}${statusText})`;
+}
+
+function handleError(error: Error): ApiResponse<any> {
     return {
         success: false,
-        error: {message: "API call failed. " + error} as ApiError
+        error: "API call failed. " + error,
     } as ApiResponse<any>;
 }

@@ -2,7 +2,6 @@ import {MuiThemeProvider} from "@material-ui/core/styles";
 import {Cached, Clear} from "@material-ui/icons";
 import _ from "lodash";
 import MaterialTable, {MaterialTableProps} from "material-table";
-import {useSnackbar} from "notistack";
 import React, {useCallback, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {credentialsProvided, definitionList, expelDefinition, replaceDefinitions} from "../editClientSlice";
@@ -12,40 +11,40 @@ import {materialTableAction, materialTableTheme, materialTableTitle} from "../..
 import {deleteEditDefinition, fetchEditDefinitions} from "../editClientService";
 import {CredentialsPayload} from "../credentialsPayload";
 import {getEditCredentials, useValidateEditCredentials} from "../credentialsService";
+import {useErrorNotice, useSuccessNotice} from "../../utility/useNotification";
 
 export default function DatasetDefinitionsTable() {
     const definitions = _.cloneDeep(useSelector(definitionList));
-    const dispatch = useDispatch();
     const hasCredentials = useSelector(credentialsProvided);
     const validatedCredentials = useValidateEditCredentials();
-    const {enqueueSnackbar} = useSnackbar();
+    const dispatch = useDispatch();
+    const showSuccess = useSuccessNotice();
+    const showError = useErrorNotice();
 
-    const loadDefinitions = useCallback((credentials: CredentialsPayload) => {
-        return fetchEditDefinitions(credentials).then((received: DatasetDefinitionTransfer[]) => {
+    const loadDefinitions = useCallback(async (credentials: CredentialsPayload) => {
+        try {
+            const received = await fetchEditDefinitions(credentials);
             dispatch(replaceDefinitions(received));
-        }).catch(() => {
-            enqueueSnackbar(`Failed to load dataset definitions.`, {variant: "error"});
+        } catch(error) {
+            showError("Failed to load dataset definitions.", error);
             return Promise.reject();
-        });
-    }, [dispatch, enqueueSnackbar]);
+        }
+    }, [dispatch, showError]);
 
     useEffect(() => {
         if (hasCredentials) {
             const credentials = validatedCredentials();
-            if (credentials) loadDefinitions(credentials)
-                .then()
-                .catch(() => {
-                });
+            if (credentials) loadDefinitions(credentials).catch(() => {
+                // ignored
+            });
         }
-    }, [hasCredentials, validatedCredentials, loadDefinitions, enqueueSnackbar]);
+    }, [hasCredentials, validatedCredentials, loadDefinitions]);
 
     const refreshDefinitions = async () => {
         try {
             const credentials = await getEditCredentials();
-            loadDefinitions(credentials)
-                .then(() => enqueueSnackbar(`Dataset definitions refreshed successfully.`, {variant: "success"}))
-                .catch(() => {
-                });
+            await loadDefinitions(credentials);
+            showSuccess("Dataset definitions refreshed successfully.");
         } catch {
         }
     }
@@ -57,13 +56,13 @@ export default function DatasetDefinitionsTable() {
             const credentials = await getEditCredentials();
             deleteEditDefinition(definition.id, credentials)
                 .then((response) => {
-                    if (response && response.success) {
+                    if (response) {
                         dispatch(expelDefinition(definition));
-                        enqueueSnackbar(`Dataset definition "${definition.name}" deleted successfully.`, {variant: "success"});
+                        showSuccess(`Dataset definition "${definition.name}" deleted successfully.`);
                     }
                 })
-                .catch(() => {
-                    enqueueSnackbar(`Failed to delete dataset definition "${definition.name}".`, {variant: "error"});
+                .catch((error) => {
+                    showError(`Failed to delete dataset definition "${definition.name}".`, error);
                 })
         } catch {
         }

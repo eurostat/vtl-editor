@@ -1,6 +1,5 @@
 import {faFile, faFolderOpen, faSave} from "@fortawesome/free-regular-svg-icons";
 import {faCloudUploadAlt} from "@fortawesome/free-solid-svg-icons";
-import {useSnackbar} from "notistack";
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useUserRole} from "../../control/authorized";
@@ -28,13 +27,16 @@ import {
 import "./topBar.scss";
 import {RepositoryType} from "../../repository/entity/repositoryType";
 import {updateScriptContent} from "../../repository/domain-repo/domainRepoService";
+import {useErrorNotice, useInfoNotice, useSuccessNotice} from "../../utility/useNotification";
 
 export default function TopBar() {
     const [showDialog, setShowDialog] = useState(false);
     const dispatch = useDispatch();
     const name = useSelector(fileName);
     const changed = useSelector(fileChanged);
-    const {enqueueSnackbar} = useSnackbar();
+    const showSuccess = useSuccessNotice();
+    const showInfo = useInfoNotice();
+    const showError = useErrorNotice();
     const forUser = useUserRole();
 
     useEffect(() => {
@@ -152,47 +154,46 @@ export default function TopBar() {
     const updateContent = async (file: EditorFile) => {
         const call = file.repository === RepositoryType.DOMAIN ? updateScriptContent : updateFileContent;
         await call(file).then((response) => {
-            if (response && response.data) {
-                enqueueSnackbar(`File "${file.name}" saved successfully.`, {variant: "success"});
+            if (response) {
+                showSuccess(`File "${file.name}" saved successfully.`);
                 file = Object.assign({}, file,
-                    {changed: false, version: response.data.version, optLock: response.data.optLock});
+                    {changed: false, version: response.version, optLock: response.optLock});
                 dispatch(updateFileMeta(file));
                 dispatch(updateSaved(file.content));
                 dispatch(markUnchanged());
             }
-        }).catch(() => enqueueSnackbar(`Failed to save file "${file.name}".`, {variant: "error"}));
+        }).catch((error) => showError(`Failed to save file "${file.name}".`, error));
     }
 
     const uploadFile = async () => {
         let file = readState(editorFile);
         if (file.id > 0) {
             if (!file.changed) {
-                enqueueSnackbar(`File "${file.name}" has not been changed. Skipping save.`,
-                    {variant: "info"});
+                showInfo(`File "${file.name}" has not been changed. Skipping save.`);
                 return;
             }
             await updateContent(file);
         } else {
             const parentId = readState(selectedFolder);
             const path = readState(selectedFolderPath);
-            await uploadFileDialog(path, file.name)
-                .then((filename: string) => {
-                    const payload: StoredItemPayload = {name: filename, parentId: parentId};
-                    createFile(payload).then((response) => {
-                        if (response && response.data) {
-                            const saved: StoredItemTransfer = response.data;
-                            dispatch(addFileToTree(buildFileNode(saved)));
-                            file = Object.assign({}, file,
-                                {
-                                    name: saved.name, id: saved.id,
-                                    optLock: saved.optLock, version: saved.version
-                                });
-                            dispatch(updateFileMeta(file));
-                            updateContent(file);
-                        }
-                    }).catch(() => enqueueSnackbar(`Failed to save file "${file.name}".`, {variant: "error"}));
-                }).catch(() => {
-                });
+            try {
+                const filename = await uploadFileDialog(path, file.name)
+                const payload: StoredItemPayload = {name: filename, parentId: parentId};
+                createFile(payload).then((response) => {
+                    if (response && response.data) {
+                        const saved: StoredItemTransfer = response.data;
+                        dispatch(addFileToTree(buildFileNode(saved)));
+                        file = Object.assign({}, file,
+                            {
+                                name: saved.name, id: saved.id,
+                                optLock: saved.optLock, version: saved.version
+                            });
+                        dispatch(updateFileMeta(file));
+                        updateContent(file);
+                    }
+                }).catch((error) => showError(`Failed to save file "${file.name}".`, error));
+            } catch {
+            }
         }
     };
 

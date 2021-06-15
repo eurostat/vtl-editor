@@ -1,5 +1,4 @@
 import _ from "lodash";
-import {useSnackbar} from "notistack";
 import React, {useCallback, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
@@ -59,10 +58,12 @@ import {IncrementDialogResult} from "../incrementDialog";
 import {deleteEntityDialog} from "../../main-view/decision-dialog/decisionDialog";
 import {uploadEditDefinition, uploadEditProgram,} from "../../edit-client/editClientService";
 import {getEditCredentials} from "../../edit-client/credentialsService";
+import {useErrorNotice, useSuccessNotice} from "../../utility/useNotification";
 
 const PersonalExplorer = () => {
     const explorerPanelRef = useRef(null);
-    const {enqueueSnackbar} = useSnackbar();
+    const showSuccess = useSuccessNotice();
+    const showError = useErrorNotice();
     const dispatch = useDispatch();
     const treeItems = useSelector(personalRepoTree);
     const treeLoaded = useSelector(personalRepoLoaded);
@@ -81,10 +82,10 @@ const PersonalExplorer = () => {
         let files: TreeNode[] = [];
         return getFolderContents(folderId)
             .then((contents) => {
-                if (contents && contents.data) {
-                    folders = contents.data.folders.map(
+                if (contents) {
+                    folders = contents.folders.map(
                         (folder: StoredItemTransfer) => buildFolderNode(folder));
-                    files = contents.data.files.map(
+                    files = contents.files.map(
                         (file: StoredItemTransfer) => buildFileNode(file));
                 }
                 return {folders: folders, files: files};
@@ -94,7 +95,7 @@ const PersonalExplorer = () => {
     useEffectOnce(() => {
         if (!treeLoaded) fetchFolderContents()
             .then((contents) => dispatch(replaceTree(contents)))
-            .catch(() => enqueueSnackbar(`Failed to load contents.`, {variant: "error"}));
+            .catch((error) => showError(`Failed to load contents.`, error));
     });
 
     const onToggle = (node: TreeNode, toggled: boolean) => {
@@ -107,7 +108,7 @@ const PersonalExplorer = () => {
                         dispatch(updateNode(fetchUpdate));
                         dispatch(addToTree(response));
                     })
-                    .catch(() => enqueueSnackbar(`Failed to load folder contents.`, {variant: "error"}));
+                    .catch((error) => showError(`Failed to load folder contents.`, error));
             }
             dispatch(updateNode(baseUpdate));
         }
@@ -140,32 +141,36 @@ const PersonalExplorer = () => {
     const createNewFolder = (parentId?: number) => {
         createItemDialog(StoredItemType.FOLDER)
             .then(async (name: string) => {
-                const response = await createFolder({name: name, parentId: parentId} as StoredItemPayload)
-                    .catch(() => {
-                        enqueueSnackbar(`Failed to create folder "${name}".`, {variant: "error"});
-                    });
-                if (response && response.data) {
-                    dispatch(addFolderToTree(buildFolderNode(response.data)));
-                    enqueueSnackbar(`Folder "${response.data.name}" created successfully.`, {variant: "success"});
+                try {
+                    const response = await createFolder({name: name, parentId: parentId} as StoredItemPayload);
+                    if (response && response.data) {
+                        dispatch(addFolderToTree(buildFolderNode(response.data)));
+                        showSuccess(`Folder "${response.data.name}" created successfully.`);
+                    }
+                } catch (error) {
+                    showError(`Failed to create folder "${name}".`, error);
                 }
             })
             .catch(() => {
+                // ignored
             });
     }
 
     const createNewFile = (parentId?: number) => {
         createItemDialog(StoredItemType.FILE)
             .then(async (name: string) => {
-                const response = await createFile({name: name, parentId: parentId} as StoredItemPayload)
-                    .catch(() => {
-                        enqueueSnackbar(`Failed to create file "${name}".`, {variant: "error"});
-                    });
-                if (response && response.data) {
-                    dispatch(addFileToTree(buildFileNode(response.data)));
-                    enqueueSnackbar(`File "${response.data.name}" created successfully.`, {variant: "success"});
+                try {
+                    const response = await createFile({name: name, parentId: parentId} as StoredItemPayload);
+                    if (response && response.data) {
+                        dispatch(addFileToTree(buildFileNode(response.data)));
+                        showSuccess(`File "${response.data.name}" created successfully.`);
+                    }
+                } catch (error) {
+                    showError(`Failed to create file "${name}".`, error);
                 }
             })
             .catch(() => {
+                // ignored
             });
     }
 
@@ -177,10 +182,10 @@ const PersonalExplorer = () => {
                 dispatch(updateNode(nodeUpdate));
                 const loadedFile = buildTransferFile(file, content, RepositoryType.PERSONAL);
                 dispatch(storeLoaded(loadedFile));
-                enqueueSnackbar(`File "${file.name}" opened successfully.`, {variant: "success"});
+                showSuccess(`File "${file.name}" opened successfully.`);
                 history.push("/");
-            }).catch(() => () => enqueueSnackbar(`Failed to load file "${entity.name}".`, {variant: "error"}))
-        }).catch(() => enqueueSnackbar(`Failed to load file "${entity.name}".`, {variant: "error"}))
+            }).catch((error) => () => showError(`Failed to load file "${entity.name}".`, error))
+        }).catch((error) => showError(`Failed to load file "${entity.name}".`, error))
     }
 
     const renameItem = (item: StoredItemTransfer) => {
@@ -188,16 +193,18 @@ const PersonalExplorer = () => {
             .then(async (name: string) => {
                 const descriptor = item.type[0] + item.type.slice(1).toLocaleLowerCase();
                 const payload: StoredItemPayload = Object.assign({}, item, {name: name});
-                const response = await updateItem(payload, item.type)
-                    .catch(() => {
-                        enqueueSnackbar(`Failed to rename ${item.type.toLocaleLowerCase()} "${item.name}".`, {variant: "error"});
-                    });
-                if (response && response.data) {
-                    dispatch(replaceNode(buildNode(response.data)));
-                    enqueueSnackbar(`${descriptor} "${item.name}" renamed successfully.`, {variant: "success"});
+                try {
+                    const response = await updateItem(payload, item.type);
+                    if (response && response.data) {
+                        dispatch(replaceNode(buildNode(response.data)));
+                        showSuccess(`${descriptor} "${item.name}" renamed successfully.`);
+                    }
+                } catch (error) {
+                    showError(`Failed to rename ${item.type.toLocaleLowerCase()} "${item.name}".`, error);
                 }
             })
             .catch(() => {
+                // ignored
             });
     }
 
@@ -208,14 +215,15 @@ const PersonalExplorer = () => {
                 const payload = buildIncrementPayload(target.version, item.optLock, target.squash);
                 try {
                     const response = await incrementFileVersion(item, payload);
-                    if (response && response.data) {
-                        enqueueSnackbar(`Version of ${descriptor} "${item.name}" incremented successfully.`, {variant: "success"});
+                    if (response) {
+                        showSuccess(`Version of ${descriptor} "${item.name}" incremented successfully.`);
                     }
-                } catch {
-                    enqueueSnackbar(`Failed to increment version of ${descriptor} "${item.name}".`, {variant: "error"});
+                } catch (error) {
+                    showError(`Failed to increment version of ${descriptor} "${item.name}".`, error);
                 }
             })
             .catch(() => {
+                // ignored
             });
     }
 
@@ -229,16 +237,17 @@ const PersonalExplorer = () => {
                     name: target.name,
                     parentId: target.domainId
                 });
-                const response = await publishFile(payload, item.type)
-                    .catch(() => {
-                        enqueueSnackbar(`Failed to publish ${item.type.toLocaleLowerCase()} "${target.name}".`, {variant: "error"});
-                    });
-                if (response && response.data) {
-                    // dispatch(replaceNode(buildNode(response.data)));
-                    enqueueSnackbar(`${descriptor} "${item.name}" published successfully.`, {variant: "success"});
+                try {
+                    const response = await publishFile(payload, item.type);
+                    if (response && response.data) {
+                        showSuccess(`${descriptor} "${item.name}" published successfully.`);
+                    }
+                } catch (error) {
+                    showError(`Failed to publish ${item.type.toLocaleLowerCase()} "${target.name}".`, error);
                 }
             })
             .catch(() => {
+                // ignored
             });
     }
 
@@ -248,14 +257,11 @@ const PersonalExplorer = () => {
             const credentials = await getEditCredentials();
             uploadEditDefinition(item, undefined, credentials)
                 .then((response) => {
-                        if (response) {
-                            enqueueSnackbar(`${descriptor} "${item.name}" uploaded successfully to EDIT as dataset definition.`,
-                                {variant: "success"});
-                        }
+                    if (response) {
+                        showSuccess(`${descriptor} "${item.name}" uploaded successfully to EDIT as dataset definition.`);
                     }
-                )
-                .catch(() => enqueueSnackbar(`Failed to upload ${item.type.toLocaleLowerCase()} "${item.name}".`,
-                    {variant: "error"}))
+                })
+                .catch((error) => showError(`Failed to upload ${item.type.toLocaleLowerCase()} "${item.name}".`, error))
         } catch {
         }
     }
@@ -266,14 +272,11 @@ const PersonalExplorer = () => {
             const credentials = await getEditCredentials();
             uploadEditProgram(item, undefined, credentials)
                 .then((response) => {
-                        if (response) {
-                            enqueueSnackbar(`${descriptor} "${item.name}" uploaded successfully to EDIT as program.`,
-                                {variant: "success"});
-                        }
+                    if (response) {
+                        showSuccess(`${descriptor} "${item.name}" uploaded successfully to EDIT as program.`);
                     }
-                )
-                .catch(() => enqueueSnackbar(`Failed to upload ${item.type.toLocaleLowerCase()} "${item.name}".`,
-                    {variant: "error"}))
+                })
+                .catch((error) => showError(`Failed to upload ${item.type.toLocaleLowerCase()} "${item.name}".`, error))
         } catch {
         }
     }
@@ -284,16 +287,18 @@ const PersonalExplorer = () => {
             .then(async () => {
                 const descriptor = item.type[0] + item.type.slice(1).toLocaleLowerCase();
                 const payload: StoredItemPayload = Object.assign({}, item);
-                const response = await deleteItem(payload, item.type)
-                    .catch(() => {
-                        enqueueSnackbar(`Failed to delete ${item.type.toLocaleLowerCase()} "${item.name}".`, {variant: "error"});
-                    });
-                if (response && response.success) {
-                    dispatch(deleteNode(node));
-                    enqueueSnackbar(`${descriptor} "${item.name}" deleted successfully.`, {variant: "success"});
+                try {
+                    const response = await deleteItem(payload, item.type);
+                    if (response && response.success) {
+                        dispatch(deleteNode(node));
+                        showSuccess(`${descriptor} "${item.name}" deleted successfully.`);
+                    }
+                } catch (error) {
+                    showError(`Failed to delete ${item.type.toLocaleLowerCase()} "${item.name}".`, error);
                 }
             })
             .catch(() => {
+                // ignored
             });
     }
 
@@ -303,9 +308,9 @@ const PersonalExplorer = () => {
                 fetchFolderContents()
                     .then((response) => {
                         dispatch(replaceTree(response));
-                        enqueueSnackbar(`Contents refreshed successfully.`, {variant: "success"});
+                        showSuccess("Contents refreshed successfully.");
                     })
-                    .catch(() => enqueueSnackbar(`Failed to refresh contents.`, {variant: "error"}));
+                    .catch((error) => showError("Failed to refresh contents.", error));
                 break;
             }
             case ContextMenuEventType.NewFolder: {

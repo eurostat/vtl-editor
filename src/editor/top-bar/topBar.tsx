@@ -180,8 +180,8 @@ export default function TopBar() {
                 const filename = await uploadFileDialog(path, file.name)
                 const payload: StoredItemPayload = {name: filename, parentId: parentId};
                 createFile(payload).then((response) => {
-                    if (response && response.data) {
-                        const saved: StoredItemTransfer = response.data;
+                    if (response) {
+                        const saved: StoredItemTransfer = response;
                         dispatch(addFileToTree(buildFileNode(saved)));
                         file = Object.assign({}, file,
                             {

@@ -143,9 +143,9 @@ const PersonalExplorer = () => {
             .then(async (name: string) => {
                 try {
                     const response = await createFolder({name: name, parentId: parentId} as StoredItemPayload);
-                    if (response && response.data) {
-                        dispatch(addFolderToTree(buildFolderNode(response.data)));
-                        showSuccess(`Folder "${response.data.name}" created successfully.`);
+                    if (response) {
+                        dispatch(addFolderToTree(buildFolderNode(response)));
+                        showSuccess(`Folder "${response.name}" created successfully.`);
                     }
                 } catch (error) {
                     showError(`Failed to create folder "${name}".`, error);
@@ -161,9 +161,9 @@ const PersonalExplorer = () => {
             .then(async (name: string) => {
                 try {
                     const response = await createFile({name: name, parentId: parentId} as StoredItemPayload);
-                    if (response && response.data) {
-                        dispatch(addFileToTree(buildFileNode(response.data)));
-                        showSuccess(`File "${response.data.name}" created successfully.`);
+                    if (response) {
+                        dispatch(addFileToTree(buildFileNode(response)));
+                        showSuccess(`File "${response.name}" created successfully.`);
                     }
                 } catch (error) {
                     showError(`Failed to create file "${name}".`, error);
@@ -195,8 +195,8 @@ const PersonalExplorer = () => {
                 const payload: StoredItemPayload = Object.assign({}, item, {name: name});
                 try {
                     const response = await updateItem(payload, item.type);
-                    if (response && response.data) {
-                        dispatch(replaceNode(buildNode(response.data)));
+                    if (response) {
+                        dispatch(replaceNode(buildNode(response)));
                         showSuccess(`${descriptor} "${item.name}" renamed successfully.`);
                     }
                 } catch (error) {
@@ -239,7 +239,7 @@ const PersonalExplorer = () => {
                 });
                 try {
                     const response = await publishFile(payload, item.type);
-                    if (response && response.data) {
+                    if (response) {
                         showSuccess(`${descriptor} "${item.name}" published successfully.`);
                     }
                 } catch (error) {

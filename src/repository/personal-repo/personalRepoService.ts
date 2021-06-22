@@ -32,8 +32,14 @@ export async function getFolderContents(folderId?: number) {
 }
 
 export async function createFolder(payload: StoredItemPayload) {
-    return sendPostRequest(`${REPO_URL}/folders`, payload,
-        undefined, {"Content-Type": "application/json"});
+    try {
+        const response = await sendPostRequest(`${REPO_URL}/folders`, payload,
+            undefined, {"Content-Type": "application/json"});
+        if (response && response.data) return response.data as StoredItemTransfer;
+        return Promise.reject();
+    } catch (response) {
+        return Promise.reject(response.error)
+    }
 }
 
 export async function getFile(fileId: number) {
@@ -47,8 +53,14 @@ export async function getFile(fileId: number) {
 }
 
 export async function createFile(payload: StoredItemPayload) {
-    return sendPostRequest(`${REPO_URL}/files`, payload,
-        undefined, {"Content-Type": "application/json"});
+    try {
+        const response = await sendPostRequest(`${REPO_URL}/files`, payload,
+            undefined, {"Content-Type": "application/json"});
+        if (response && response.data) return response.data as StoredItemTransfer;
+        return Promise.reject();
+    } catch (response) {
+        return Promise.reject(response.error)
+    }
 }
 
 export async function updateFile(payload: StoredItemPayload) {
@@ -119,18 +131,24 @@ export async function restoreFileVersion(fileId: number, versionId: string, payl
 }
 
 export async function updateItem(payload: StoredItemPayload, type: StoredItemType) {
-    switch (type) {
-        case StoredItemType.FOLDER: {
-            return sendPutRequest(`${REPO_URL}/folders`, payload,
-                undefined, {"Content-Type": "application/json"});
+    try {
+        let response;
+        switch (type) {
+            case StoredItemType.FOLDER: {
+                response = await sendPutRequest(`${REPO_URL}/folders`, payload,
+                    undefined, {"Content-Type": "application/json"});
+                break;
+            }
+            case StoredItemType.FILE: {
+                response = await sendPutRequest(`${REPO_URL}/files`, payload,
+                    undefined, {"Content-Type": "application/json"});
+                break;
+            }
         }
-        case StoredItemType.FILE: {
-            return sendPutRequest(`${REPO_URL}/files`, payload,
-                undefined, {"Content-Type": "application/json"});
-        }
-        default: {
-            return Promise.reject();
-        }
+        if (response && response.data) return response.data as StoredItemTransfer;
+        return Promise.reject();
+    } catch (response) {
+        return Promise.reject(response.error)
     }
 }
 
@@ -148,10 +166,16 @@ export async function incrementFileVersion(item: StoredItemTransfer, payload: In
 }
 
 export async function publishFile(payload: StoredItemPayload, type: StoredItemType) {
-    return type === StoredItemType.FILE
-        ? sendPostRequest(`${REPO_URL}/files/${payload.id}/publish/${payload.parentId}`,
-            {name: payload.name}, undefined, {"Content-Type": "application/json"})
-        : Promise.reject();
+    if (type === StoredItemType.FILE) {
+        try {
+            const response = await sendPostRequest(`${REPO_URL}/files/${payload.id}/publish/${payload.parentId}`,
+                {name: payload.name}, undefined, {"Content-Type": "application/json"});
+            if (response && response.data) return response.data as StoredItemTransfer;
+        } catch (response) {
+            return Promise.reject(response.error)
+        }
+    }
+    return Promise.reject();
 }
 
 export async function deleteItem(payload: StoredItemPayload, type: StoredItemType) {

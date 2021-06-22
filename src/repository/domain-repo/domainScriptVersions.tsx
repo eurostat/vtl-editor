@@ -31,6 +31,7 @@ const DomainScriptVersions = () => {
     const forUser = useUserRole();
 
     const loadScript = useCallback(async () => {
+        setScript(undefined);
         if (!scriptNode || !scriptNode.entity) return Promise.reject();
         try {
             const received = await fetchScript(scriptNode.entity);
@@ -44,8 +45,9 @@ const DomainScriptVersions = () => {
     }, [scriptNode, dispatch, showError]);
 
     const loadVersions = useCallback(async () => {
+        setVersions([]);
+        setSelected([]);
         if (!scriptNode || !scriptNode.entity) {
-            showWarning("No script selected. Select script first.");
             return Promise.reject();
         }
         try {
@@ -60,11 +62,9 @@ const DomainScriptVersions = () => {
             showError("Failed to load versions.", error);
             return Promise.reject();
         }
-    }, [scriptNode, showWarning, showError]);
+    }, [scriptNode, showError]);
 
     useEffect(() => {
-        setVersions([]);
-        setSelected([]);
         Promise.all([loadScript(), loadVersions()]).catch(() => {
             // ignored
         });
@@ -72,8 +72,6 @@ const DomainScriptVersions = () => {
 
     const refreshVersions = async () => {
         try {
-            setVersions([]);
-            setSelected([]);
             await Promise.all([loadScript(), loadVersions()]);
             showSuccess("Versions refreshed successfully.");
         } catch {

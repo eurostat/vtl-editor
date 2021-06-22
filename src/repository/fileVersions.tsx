@@ -28,6 +28,7 @@ const FileVersions = () => {
     const history = useHistory();
 
     const fetchFile = useCallback(async () => {
+        setFile(undefined);
         if (!fileId) return Promise.reject();
         try {
             const received = await getFile(fileId);
@@ -41,8 +42,9 @@ const FileVersions = () => {
     }, [fileId, dispatch, showError]);
 
     const fetchVersions = useCallback(async () => {
+        setVersions([]);
+        setSelected([]);
         if (!fileId) {
-            showWarning("No file selected. Select file first.");
             return Promise.reject();
         }
         try {
@@ -57,11 +59,9 @@ const FileVersions = () => {
             showError("Failed to load versions.", error);
             return Promise.reject();
         }
-    }, [fileId, showWarning, showError]);
+    }, [fileId, showError]);
 
     useEffect(() => {
-        setVersions([]);
-        setSelected([]);
         Promise.all([fetchFile(), fetchVersions()]).catch(() => {
             // ignored
         });
@@ -69,8 +69,6 @@ const FileVersions = () => {
 
     const refreshVersions = async () => {
         try {
-            setVersions([]);
-            setSelected([]);
             await Promise.all([fetchFile(), fetchVersions()]);
             showSuccess("Versions refreshed successfully.");
         } catch {

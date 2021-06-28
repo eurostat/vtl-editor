@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="./docbook.css" type="text/css"?>
+<chapter xml:id="chap_edit_service" xml:lang="en" version="5.0"
+         xmlns="http://docbook.org/ns/docbook"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://docbook.org/ns/docbook http://docbook.org/xml/5.0/xsd/docbook.xsd">
+
+    <title>EDIT Service</title>
+    <para>
+        <figure xml:id="fig_es_icon">
+            <title>EDIT Service icon</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="./images/es_icon.png" align="center" contentwidth="60%"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
+        Internal VRM service that allows you to add, delete and view items for two EDIT services:
+        Program Service and DatasetDefinition Service. The action of listing items and deleting takes place in the
+        tab of the appropriate service in the EDIT Service view.
+    </para>
+    <para>
+        In contrast to them, the action of adding an item is done by selecting the appropriate command from the file
+        after right-clicking the desired file. Adding file can be executed from Personal or Domain repository alike.
+    </para>
+    <para xml:id="para_es_view_desc">
+        <figure xml:id="fig_es_view">
+            <title>EDIT Service view</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="./images/es_main_view.png" align="center" width="90%" scalefit="1"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
+        The interface elements of this view will be described in detail below:
+        <itemizedlist>
+            <listitem>
+                <para>
+                    <emphasis role="bold">(1) EDIT services tab</emphasis> –
+                    allows you to quickly move between views of services.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    <emphasis role="bold">(2) Refresh</emphasis> –
+                    refreshes the view of service elements list.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    <emphasis role="bold">(3) List search</emphasis> –
+                    quick search for elements of interest when we know the name.
+                </para>
+            </listitem>
+            <listitem>
+                <para xml:id="p_es_delete_button">
+                    <emphasis role="bold">(4) Delete object</emphasis> –
+                    button of quick action in the form of requesting deletion of selected element from the EDIT database. The user will be asked to confirm the action.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    <emphasis role="bold">(5) List pagination</emphasis> –
+                    here is a list from which we can choose the number of elements displayed at the same time, as well as page navigation, if there are any - otherwise the navigation will be grayed out.
+                </para>
+            </listitem>
+        </itemizedlist>
+    </para>
+    <section xml:id="es_credentials">
+        <title>EDIT Service credentials</title>
+        <para>
+            <figure>
+                <title>Credentials input view</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="./images/es_credentials_input.png" align="center" contentwidth="60%"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+            Proper operation of EDIT Service requires <emphasis role="bold">EDIT credentials</emphasis> of user.
+            If actual user will enter feature when credentials cache is empty, he will be prompted to fill username,
+            password and domain. Credentials can be filled earlier from level of
+            <emphasis role="bold">Settings</emphasis>(gear icon on the left). See&#xa0;<xref linkend="edit_credentials"/>.
+        </para>
+    </section>
+    <section xml:id="es_program">
+        <title>Program Service</title>
+        <section xml:id="es_program_view">
+            <title>Description</title>
+            <para>
+                <figure xml:id="fig_es_program_view">
+                    <title>EDIT Program Service list view</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="./images/es_program_view.png" align="center" width="90%" scalefit="1"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+                Program Service list contains such program details as:
+                <itemizedlist>
+                    <listitem>
+                        <para>Name</para>
+                    </listitem>
+                    <listitem>
+                        <para>Description</para>
+                    </listitem>
+                    <listitem>
+                        <para>Creation date</para>
+                    </listitem>
+                    <listitem>
+                        <para>Created by</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                Please reference this <link linkend="fig_es_view">figure</link> and <link linkend="para_es_view_desc">list</link>
+                for detailed description of the Program Service view.
+            </para>
+        </section>
+        <section xml:id="es_program_upload">
+            <title>Add/upload program to service</title>
+            <para>
+                <figure>
+                    <title>Upload program view</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="./images/es_add_action.png" align="center" contentwidth="60%"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+                The following steps are required to upload program:
+                <orderedlist>
+                    <listitem>
+                        <para>
+                            Open <emphasis role="bold">File Explorer</emphasis> of any repository (Personal/Domain)
+                            if it's closed.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Right-click a file containing program that you would like to upload.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Choose from menu: Upload to EDIT > As Program.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            After a while, you should see a success/error message related to upload.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Move to <link linkend="fig_es_icon">EDIT Service</link> if upload was successful.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Move to <emphasis role="bold">Programs</emphasis> tab.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Uploaded program should be present on list, otherwise refresh it.
+                        </para>
+                    </listitem>
+                </orderedlist>
+            </para>
+        </section>
+        <section xml:id="es_program_delete">
+            <title>Delete program</title>
+            <para>
+                The following steps are required to delete program:
+                <orderedlist>
+                    <listitem>
+                        <para>
+                            Open <link linkend="fig_es_icon">EDIT Service</link> if it's closed.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Move to <emphasis role="bold">Programs</emphasis> tab.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Click <link linkend="p_es_delete_button">delete button</link> on target element from the list.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Warning dialog window is displayed, prompting for confirmation. Click
+                            <emphasis role="bold">Yes</emphasis> button to confirm deletion.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Deleted program should be not present on list, otherwise refresh it.
+                        </para>
+                    </listitem>
+                </orderedlist>
+            </para>
+        </section>
+    </section>
+    <section xml:id="es_datasetDef">
+        <title>DatasetDefinition Service</title>
+        <section xml:id="es_datasetDef_view">
+            <title>Description</title>
+            <para>
+                <figure xml:id="fig_es_datasetDef_view">
+                    <title>EDIT DatasetDefinition Service list view</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="./images/es_datasetdef_view.png" align="center" width="90%" scalefit="1"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+                DatasetDefinition Service list contains such dataset definition details as:
+                <itemizedlist>
+                    <listitem>
+                        <para>Name</para>
+                    </listitem>
+                    <listitem>
+                        <para>Description</para>
+                    </listitem>
+                    <listitem>
+                        <para>Version</para>
+                    </listitem>
+                    <listitem>
+                        <para>Index</para>
+                    </listitem>
+                    <listitem>
+                        <para>Line</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                Please reference this <link linkend="fig_es_view">figure</link> and <link linkend="para_es_view_desc">list</link>
+                for detailed description of the DatasetDefinition Service view.
+            </para>
+        </section>
+        <section xml:id="es_datasetDef_upload">
+            <title>Add/upload dataset definition</title>
+            <para>
+                <figure>
+                    <title>Upload dataset definition view</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="./images/es_add_action.png" align="center" contentwidth="60%"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+                The following steps are required to upload dataset definition:
+                <orderedlist>
+                    <listitem>
+                        <para>
+                            Open <emphasis role="bold">File Explorer</emphasis> of any repository (Personal/Domain)
+                            if it's closed.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Right-click a file containing dataset definition that you would like to upload.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Choose from menu: Upload to EDIT > As Dataset Definition.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            After a while, you should see a success/error message related to upload.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Move to <link linkend="fig_es_icon">EDIT Service</link> if upload was successful.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Move to <emphasis role="bold">Dataset Definitions</emphasis> tab.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Uploaded dataset definition should be present on list, otherwise refresh it.
+                        </para>
+                    </listitem>
+                </orderedlist>
+            </para>
+        </section>
+        <section xml:id="es_datasetDef_delete">
+            <title>Delete dataset definition</title>
+            <para>
+                The following steps are required to delete program:
+                <orderedlist>
+                    <listitem>
+                        <para>
+                            Open <link linkend="fig_es_icon">EDIT Service</link> if it's closed.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Move to <emphasis role="bold">Dataset Definitions</emphasis> tab.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Click <link linkend="p_es_delete_button">delete button</link> on target element from the list.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Warning dialog window is displayed, prompting for confirmation. Click
+                            <emphasis role="bold">Yes</emphasis> button to confirm deletion.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Deleted dataset definition should be not present on list, otherwise refresh it.
+                        </para>
+                    </listitem>
+                </orderedlist>
+            </para>
+        </section>
+    </section>
+</chapter>

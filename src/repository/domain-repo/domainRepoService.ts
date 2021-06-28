@@ -31,40 +31,55 @@ export async function fetchDomainRepository() {
 
 export async function fetchDomainScripts(domain: TreeNode) {
     if (domain.entity && domain.entity.id) {
-        const response = await sendGetRequest(`${REPO_URL}/${domain.entity.id}/files`);
-        if (response && response.data)
-            return response.data
-                .map((script: StoredItemTransfer) => buildScriptNode(script, domain.id)) as TreeNode[];
+        try {
+            const response = await sendGetRequest(`${REPO_URL}/${domain.entity.id}/files`);
+            if (response && response.data) {
+                return response.data.map((script: StoredItemTransfer) => buildScriptNode(script, domain.id)) as TreeNode[];
+            }
+       } catch (response) {
+            return Promise.reject(response.error)
+        }
     }
     return Promise.reject();
 }
 
 export async function fetchDomainBinned(domain: TreeNode) {
     if (domain.entity && domain.entity.id) {
-        const response = await sendGetRequest(`${REPO_URL}/${domain.entity.id}/bin/files`);
-        if (response && response.data)
-            return response.data
-                .map((script: StoredItemTransfer) => buildBinnedNode(script, domain.id)) as TreeNode[];
+        try {
+            const response = await sendGetRequest(`${REPO_URL}/${domain.entity.id}/bin/files`);
+            if (response && response.data) {
+                return response.data.map((script: StoredItemTransfer) => buildBinnedNode(script, domain.id)) as TreeNode[];
+            }
+        } catch (response) {
+            if (response && response.status === 403) return [] as TreeNode[];
+            return Promise.reject(response.error)
+        }
     }
     return Promise.reject();
 }
 
 export async function fetchScript(script: StoredItemTransfer) {
     if (script.id && script.parentId) {
-        const response =
-            await sendGetRequest(`${REPO_URL}/${script.parentId}/files/${script.id}`);
-        if (response && response.data) return response.data as StoredItemTransfer;
+        try {
+            const response = await sendGetRequest(`${REPO_URL}/${script.parentId}/files/${script.id}`);
+            if (response && response.data) return response.data as StoredItemTransfer;
+        } catch (response) {
+            return Promise.reject(response.error)
+        }
     }
     return Promise.reject();
 }
 
 export async function fetchScriptContent(script: StoredItemTransfer) {
     if (script.id && script.parentId) {
-        const response =
-            await sendGetRequest(`${REPO_URL}/${script.parentId}/files/${script.id}/content`);
-        if (response && response.data) {
-            const content = atob(response.data.content);
-            if (content !== undefined) return content;
+        try {
+            const response = await sendGetRequest(`${REPO_URL}/${script.parentId}/files/${script.id}/content`);
+            if (response && response.data) {
+                const content = atob(response.data.content);
+                if (content !== undefined) return content;
+            }
+        } catch (response) {
+            return Promise.reject(response.error)
         }
     }
     return Promise.reject();
@@ -75,79 +90,126 @@ export async function updateScriptContent(file: EditorFile) {
         optLock: file.optLock,
         content: btoa(file.content)
     } as ScriptContentPayload;
-    return sendPutRequest(`${REPO_URL}/${file.parentId}/files/${file.id}/content`, payload,
-        undefined, {"Content-Type": "application/json"});
+    try {
+        const response = await sendPutRequest(`${REPO_URL}/${file.parentId}/files/${file.id}/content`, payload,
+            undefined, {"Content-Type": "application/json"});
+        if (response && response.data) return response.data;
+        return Promise.reject();
+    } catch (response) {
+        return Promise.reject(response.error)
+    }
 }
 
 export async function fetchScriptVersions(script: StoredItemTransfer) {
     if (script.id && script.parentId) {
-        return sendGetRequest(`${REPO_URL}/${script.parentId}/files/${script.id}/versions`);
+        try {
+            const response = await sendGetRequest(`${REPO_URL}/${script.parentId}/files/${script.id}/versions`);
+            if (response && response.data) return response.data;
+        } catch (response) {
+            return Promise.reject(response.error)
+        }
     }
     return Promise.reject();
 }
 
 export async function fetchScriptVersionContent(script: StoredItemTransfer, versionId: string) {
     if (script.id && script.parentId) {
-        const response = await sendGetRequest(`${REPO_URL}/${script.parentId}/files/${script.id}/versions/${versionId}`);
-        if (response && response.data) {
-            const content = atob(response.data.content);
-            if (content !== undefined) return content;
+        try {
+            const response = await sendGetRequest(`${REPO_URL}/${script.parentId}/files/${script.id}/versions/${versionId}`);
+            if (response && response.data) {
+                const content = atob(response.data.content);
+                if (content !== undefined) return content;
+            }
+        } catch (response) {
+            return Promise.reject(response.error)
         }
     }
     return Promise.reject();
 }
 
 export async function restoreScriptVersion(script: StoredItemTransfer, versionId: string) {
-    const response = await sendPutRequest(`${REPO_URL}/${script.parentId}/files/${script.id}/versions/${versionId}/restore`,
-        {optLock: script.optLock}, undefined, {"Content-Type": "application/json"});
-    if (response && response.data) return response.data;
-    return Promise.reject();
+    try {
+        const response = await sendPutRequest(`${REPO_URL}/${script.parentId}/files/${script.id}/versions/${versionId}/restore`,
+            {optLock: script.optLock}, undefined, {"Content-Type": "application/json"});
+        if (response && response.data) return response.data;
+        return Promise.reject();
+    } catch (response) {
+        return Promise.reject(response.error)
+    }
 }
 
 export async function incrementScriptVersion(item: StoredItemTransfer, payload: IncrementVersionPayload) {
-    return item.type === StoredItemType.FILE
-        ? sendPutRequest(`${REPO_URL}/${item.parentId}/files/${item.id}/versions/increment`,
-            payload, undefined, {"Content-Type": "application/json"})
-        : Promise.reject();
+    if (item.type === StoredItemType.FILE) {
+        try {
+            const response = await sendPutRequest(`${REPO_URL}/${item.parentId}/files/${item.id}/versions/increment`,
+                payload, undefined, {"Content-Type": "application/json"});
+            if (response && response.data) return response.data;
+        } catch (response) {
+            return Promise.reject(response.error)
+        }
+    }
+    return Promise.reject();
 }
 
 export async function finalizeScriptVersion(item: StoredItemTransfer) {
-    return item.type === StoredItemType.FILE
-        ? sendPutRequest(`${REPO_URL}/${item.parentId}/files/${item.id}/versions/finalize`,
-            {optLock: item.optLock}, undefined, {"Content-Type": "application/json"})
-        : Promise.reject();
+    if (item.type === StoredItemType.FILE) {
+        try {
+            const response = await sendPutRequest(`${REPO_URL}/${item.parentId}/files/${item.id}/versions/finalize`,
+                {optLock: item.optLock}, undefined, {"Content-Type": "application/json"});
+            if (response && response.data) return response.data;
+        } catch (response) {
+            return Promise.reject(response.error)
+        }
+    }
+    return Promise.reject();
 }
 
 export async function deleteDomainItem(node: TreeNode) {
-    if (node.entity && node.entity.id && node.entity.type && node.entity.parentId) {
-        const item: StoredItemTransfer = node.entity;
-        return item.type === StoredItemType.FILE
-            ? sendDeleteRequest(`${REPO_URL}/${item.parentId}/files/${item.id}`,
+    if (node.entity && node.entity.id && node.entity.type === StoredItemType.FILE && node.entity.parentId) {
+        try {
+            const item: StoredItemTransfer = node.entity;
+            const response = await sendDeleteRequest(`${REPO_URL}/${item.parentId}/files/${item.id}`,
                 {optLock: item.optLock}, undefined,
-                {"Content-Type": "application/json"})
-            : Promise.reject();
+                {"Content-Type": "application/json"});
+            if (response && response.data) {
+                return buildBinnedNode(response.data, item.parentId.toString());
+            }
+        } catch (response) {
+            return Promise.reject(response.error)
+        }
     }
+    return Promise.reject();
 }
 
 export async function deleteBinnedItem(node: TreeNode) {
-    if (node.type && node.entity && node.entity.id && node.entity.type && node.entity.parentId) {
-        const item: StoredItemTransfer = node.entity;
-        return node.type === NodeType.BINNED
-            ? sendDeleteRequest(`${REPO_URL}/${item.parentId}/bin/files/${item.id}`,
+    if (node.type === NodeType.BINNED && node.entity && node.entity.id && node.entity.type && node.entity.parentId) {
+        try {
+            const item: StoredItemTransfer = node.entity;
+            const response = await sendDeleteRequest(`${REPO_URL}/${item.parentId}/bin/files/${item.id}`,
                 {optLock: item.optLock}, undefined,
-                {"Content-Type": "application/json"})
-            : Promise.reject();
+                {"Content-Type": "application/json"});
+            if (response && response.success) return Promise.resolve();
+        } catch (response) {
+            return Promise.reject(response.error)
+        }
     }
+    return Promise.reject();
 }
 
 export async function restoreBinnedItem(node: TreeNode) {
-    if (node.type && node.entity && node.entity.id && node.entity.type && node.entity.parentId) {
-        const item: StoredItemTransfer = node.entity;
-        return node.type === NodeType.BINNED
-            ? sendPutRequest(`${REPO_URL}/${item.parentId}/bin/files/${item.id}/restore`,
-                {optLock: item.optLock}, undefined, {"Content-Type": "application/json"})
-            : Promise.reject();
+    if (node.type === NodeType.BINNED && node.entity && node.entity.id && node.entity.type && node.entity.parentId) {
+        try {
+            const item: StoredItemTransfer = node.entity;
+            const response = await sendPutRequest(`${REPO_URL}/${item.parentId}/bin/files/${item.id}/restore`,
+                {optLock: item.optLock}, undefined, {"Content-Type": "application/json"});
+            if (response && response.data) {
+                return buildScriptNode(response.data, item.parentId.toString());
+            }
+        } catch (response) {
+            return Promise.reject(response.error)
+        }
     }
+    return Promise.reject();
 }
 
 export const buildDomainNode = (domain: StoredItemTransfer) => {

@@ -47,8 +47,7 @@ export default function UserEdit() {
     const confirmUser = async () => {
         try {
             if (user) {
-                const call = (userId ? () => updateUser(user) : () => createUser(user));
-                const response = await call();
+                const response = userId ? await updateUser(user) : await createUser(user);
                 await Promise.all([
                     updateUserDomains(response.id, user.domains),
                     updateUserGroups(response.id, user.groups)

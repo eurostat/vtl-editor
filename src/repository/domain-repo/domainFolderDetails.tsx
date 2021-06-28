@@ -8,17 +8,22 @@ import {detailTableTheme} from "../detailTableTheme";
 import {NodeType} from "../tree-explorer/nodeType";
 import {fetchDomainBinned, fetchDomainScripts} from "./domainRepoService";
 import {TreeNode} from "react-treebeard";
-import {useSnackbar} from "notistack";
 import {processItemTransfer} from "../entity/storedItemTransfer";
+import {useErrorNotice, useSuccessNotice, useWarningNotice} from "../../utility/useNotification";
 
 const DomainFolderDetails = () => {
     const folder = useSelector(domainDetailedFolder);
     const [contents, setContents] = useState<any[]>([]);
     const path: string = useSelector(domainDetailedFolderPath);
-    const {enqueueSnackbar} = useSnackbar();
+    const showSuccess = useSuccessNotice();
+    const showWarning = useWarningNotice();
+    const showError = useErrorNotice();
 
-    const loadContents = useCallback(() => {
-        if (!folder || !folder.childType) return;
+    const loadContents = useCallback(async () => {
+        if (!folder || !folder.childType) {
+            showWarning("No folder selected. Select folder first.");
+            return Promise.reject();
+        }
         let call;
         switch (folder.childType) {
             case NodeType.SCRIPT: {
@@ -33,19 +38,31 @@ const DomainFolderDetails = () => {
                 return;
             }
         }
-        call(folder)
-            .then((response) => {
-                if (response) {
-                    const received = response.map((node: TreeNode) => processItemTransfer(node.entity));
-                    setContents(received);
-                }
-            })
-            .catch(() => enqueueSnackbar(`Failed to load contents.`, {variant: "error"}));
-    }, [folder, enqueueSnackbar]);
+        try {
+            const response = await call(folder);
+            if (response) {
+                const received = response.map((node: TreeNode) => processItemTransfer(node.entity));
+                setContents(received);
+            }
+        } catch (error) {
+            showError("Failed to load contents.", error);
+            return Promise.reject();
+        }
+    }, [folder, showWarning, showError]);
 
     useEffect(() => {
-        loadContents();
+        loadContents().catch(() => {
+            // ignored
+        });
     }, [folder, loadContents]);
+
+    const refreshContents = async () => {
+        try {
+            await loadContents();
+            showSuccess("Contents refreshed successfully.");
+        } catch {
+        }
+    }
 
     return (
         <MuiThemeProvider theme={detailTableTheme}>
@@ -69,13 +86,13 @@ const DomainFolderDetails = () => {
                                    icon: () => <Cached/>,
                                    tooltip: 'Refresh',
                                    position: 'toolbar',
-                                   onClick: loadContents
+                                   onClick: refreshContents
                                },
                                {
                                    icon: () => <Cached/>,
                                    tooltip: 'Refresh',
                                    position: 'toolbarOnSelect',
-                                   onClick: loadContents
+                                   onClick: refreshContents
                                }
                            ]}
             />

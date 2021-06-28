@@ -1,32 +1,33 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { SnackbarProvider } from "notistack";
-import React, { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Redirect, Route, Switch } from "react-router-dom";
+import {SnackbarProvider} from "notistack";
+import React, {useCallback, useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {Redirect, Route, Switch} from "react-router-dom";
 import './App.scss';
-import Authorized, { useManagerRole, useUserRole } from "./control/authorized";
-import { fetchProfileRoles } from "./control/controlService";
+import Authorized, {useManagerRole, useUserRole} from "./control/authorized";
+import {fetchProfileRoles} from "./control/controlService";
 import ManagementView from "./control/managementView";
 import Profile from "./control/profile/profile";
 import EditorView from "./editor/editorView";
-import { decisionDialog } from "./main-view/decision-dialog/decisionDialog";
+import {decisionDialog} from "./main-view/decision-dialog/decisionDialog";
 import Header from "./main-view/header/header";
 import Navigation from "./main-view/navigation/navigation";
-import { detailPaneVisible, sidePaneView, sidePaneVisible } from "./main-view/viewSlice";
+import {detailPaneVisible, sidePaneVisible} from "./main-view/viewSlice";
 import DirectoryPreview from "./repository/directoryPreview";
 import FileVersions from "./repository/fileVersions";
 import DiffEditor from "./repository/diffEditor";
-import { Agency } from "./sdmx/entity/Agency";
-import { DataStructure, FinalStructureEnum } from "./sdmx/entity/DataStructure";
-import { SdmxRegistry } from "./sdmx/entity/SdmxRegistry";
-import { SdmxResult } from "./sdmx/entity/SdmxResult";
+import {Agency} from "./sdmx/entity/Agency";
+import {DataStructure, FinalStructureEnum} from "./sdmx/entity/DataStructure";
+import {SdmxRegistry} from "./sdmx/entity/SdmxRegistry";
+import {SdmxResult} from "./sdmx/entity/SdmxResult";
 import SdmxDownloadScreen from "./sdmx/loading-screen/SdmxDownloadScreen";
-import { SdmxStorage } from "./sdmx/SdmxStorage";
+import {SdmxStorage} from "./sdmx/SdmxStorage";
 import SdmxView from "./sdmx/sdmxView";
-import { loggedIn, provideRoles } from "./utility/authSlice";
-import BrowserStorage, { getSdmxStoredValues, setSdmxStorageValue } from "./utility/browserStorage";
+import {loggedIn, provideRoles} from "./utility/authSlice";
+import BrowserStorage, {getSdmxStoredValues, setSdmxStorageValue} from "./utility/browserStorage";
 import DomainFolderDetails from "./repository/domain-repo/domainFolderDetails";
 import DomainScriptVersions from "./repository/domain-repo/domainScriptVersions";
+import EditClientView from "./edit-client/editClientView";
 
 export default function App() {
     /*SDMX STATES */
@@ -38,9 +39,8 @@ export default function App() {
     const [importDSD, setImportDSD] = useState<boolean>(false);
     const [sdmxResult, setSdmxResult] = useState<SdmxResult | undefined>(undefined);
 
-    const detailPane = useSelector(detailPaneVisible);
-    const sidePane = useSelector(sidePaneVisible);
-    const sidePaneMode = useSelector(sidePaneView);
+    const sidePaneShown = useSelector(sidePaneVisible);
+    const detailPaneShown = useSelector(detailPaneVisible);
     const authenticated = useSelector(loggedIn);
     const dispatch = useDispatch();
 
@@ -98,8 +98,8 @@ export default function App() {
 
     const getStyles = () => {
         let styling = "App";
-        styling += sidePane ? ` open-${sidePaneMode}` : " hide-settings-nav";
-        styling += detailPane ? "" : " hide-error-box";
+        styling += !sidePaneShown ? " hide-settings-nav" : "";
+        styling += detailPaneShown ? "" : " hide-error-box";
         return styling;
     };
 
@@ -150,6 +150,7 @@ export default function App() {
                             <Route exact path="/domainfolder"><DomainFolderDetails/></Route>
                             <Route exact path="/domainversions"><DomainScriptVersions/></Route>
                             {forUser(<Route exact path="/diff"><DiffEditor/></Route>)}
+                            {forUser(<Route exact path="/editclient"><EditClientView/></Route>)}
                             {forManager(<Route exact path="/manage"><ManagementView/></Route>)}
                             <Route exact path="/profile"><Profile/></Route>
                             <Redirect to="/"/>

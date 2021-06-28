@@ -6,10 +6,11 @@ import { useSnackbar } from "notistack";
 import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { expelUser, replaceUsers, startUserEdit, userList } from "../controlSlice";
-import { controlTableAction, controlTableTheme, controlTableTitle, deleteEntityDialog } from "../managementView";
 import { UserTransfer } from "./user";
 import { deleteUser, fetchUsers } from "./userService";
 import UserView from "./userView";
+import {deleteEntityDialog} from "../../main-view/decision-dialog/decisionDialog";
+import {materialTableAction, materialTableTheme, materialTableTitle} from "../../utility/materialTable";
 
 export default function UsersTable() {
     const users = _.cloneDeep(useSelector(userList));
@@ -66,7 +67,7 @@ export default function UsersTable() {
     }
 
     const tableProps = {
-        title: controlTableTitle("VRM User", "VRM Users", users.length),
+        title: materialTableTitle("VRM User", "VRM Users", users.length),
         data: users,
         columns: [
             {title: "Name", field: "name", defaultSort: "asc"},
@@ -82,18 +83,18 @@ export default function UsersTable() {
             return (<UserView userId={user.id}/>)
         },
         actions: [
-            controlTableAction(<AddCircleOutline/>, "toolbar", createUser, "New User"),
-            controlTableAction(<AddCircleOutline/>, "toolbarOnSelect", createUser, "New User"),
-            controlTableAction(<Cached/>, "toolbar", refreshUsers, "Refresh"),
-            controlTableAction(<Cached/>, "toolbarOnSelect", refreshUsers, "Refresh"),
-            controlTableAction(<Edit/>, "row", editUser, "Edit User"),
-            controlTableAction(<Clear/>, "row", removeUser, "Delete User"),
+            materialTableAction(<AddCircleOutline/>, "toolbar", createUser, "New User"),
+            materialTableAction(<AddCircleOutline/>, "toolbarOnSelect", createUser, "New User"),
+            materialTableAction(<Cached/>, "toolbar", refreshUsers, "Refresh"),
+            materialTableAction(<Cached/>, "toolbarOnSelect", refreshUsers, "Refresh"),
+            materialTableAction(<Edit/>, "row", editUser, "Edit User"),
+            materialTableAction(<Clear/>, "row", removeUser, "Delete User"),
         ],
     } as MaterialTableProps<any>;
 
     return (
         <>
-            <MuiThemeProvider theme={controlTableTheme}>
+            <MuiThemeProvider theme={materialTableTheme}>
                 <div className="entities-table">
                     <MaterialTable {...tableProps}/>
                 </div>

@@ -1,5 +1,4 @@
 import _ from "lodash";
-import {useSnackbar} from "notistack";
 import React, {useCallback, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
@@ -17,6 +16,7 @@ import "../tree-explorer/treeExplorer.scss";
 import {RepositoryType} from "../entity/repositoryType";
 import {ContextMenuEvent, ContextMenuEventType} from "../tree-explorer/contextMenuEvent";
 import {
+    addDomainRepoNode,
     addToDomainRepoTree,
     clearDomainRepoTree,
     deleteDomainRepoNode,
@@ -35,7 +35,8 @@ import {
     fetchDomainRepository,
     fetchDomainScripts,
     fetchScript,
-    fetchScriptContent, finalizeScriptVersion,
+    fetchScriptContent,
+    finalizeScriptVersion,
     incrementScriptVersion,
     restoreBinnedItem
 } from "./domainRepoService";
@@ -44,19 +45,19 @@ import DomainExplorerMenu from "./domainExplorerMenu";
 import DomainItemContainer from "./domainItemContainer";
 import {TreePayload} from "../repositorySlice";
 import {useEffectOnce} from "../../utility/useEffectOnce";
-import {
-    deleteItemDialog,
-    finalizeVersionDialog,
-    incrementVersionDialog,
-    restoreItemDialog
-} from "../tree-explorer/treeExplorerService";
+import {finalizeVersionDialog, incrementVersionDialog, restoreItemDialog} from "../tree-explorer/treeExplorerService";
 import {buildIncrementPayload} from "../entity/incrementVersionPayload";
 import {IncrementDialogResult} from "../incrementDialog";
 import {useManagerRole, useRole} from "../../control/authorized";
+import {deleteEntityDialog} from "../../main-view/decision-dialog/decisionDialog";
+import {uploadEditDefinition, uploadEditProgram} from "../../edit-client/editClientService";
+import {getEditCredentials} from "../../edit-client/credentialsService";
+import {useErrorNotice, useSuccessNotice} from "../../utility/useNotification";
 
 const DomainExplorer = () => {
     const explorerPanelRef = useRef(null);
-    const {enqueueSnackbar} = useSnackbar();
+    const showSuccess = useSuccessNotice();
+    const showError = useErrorNotice();
     const dispatch = useDispatch();
     const treeItems = useSelector(domainRepoTree);
     const treeLoaded = useSelector(domainRepoLoaded);
@@ -88,8 +89,8 @@ const DomainExplorer = () => {
     }, [hasRole, dispatch]);
 
     useEffectOnce(() => {
-        if (!treeLoaded) loadRepositoryContents().catch(() =>
-            enqueueSnackbar(`Failed to load Domain Repository.`, {variant: "error"}));
+        if (!treeLoaded) loadRepositoryContents()
+            .catch((error) => showError("Failed to load domain repository.", error));
     });
 
     const onToggle = (node: TreeNode, toggled: boolean) => {
@@ -103,13 +104,13 @@ const DomainExplorer = () => {
                             const fetchUpdate: any = {id: node.id, type: node.type, loading: false};
                             dispatch(updateDomainRepoNode(fetchUpdate));
                         })
-                        .catch(() => enqueueSnackbar(`Failed to load scripts.`, {variant: "error"}));
+                        .catch((error) => showError("Failed to load scripts.", error));
                     if (forManager(true)) {
                         fetchDomainBinned(node)
                             .then((results) => {
                                 dispatch(addToDomainRepoTree({type: NodeType.BINNED, nodes: results}));
                             })
-                            .catch(() => enqueueSnackbar(`Failed to load recycle bin.`, {variant: "error"}));
+                            .catch((error) => showError("Failed to load recycle bin.", error));
                     }
                 }
             }
@@ -131,10 +132,10 @@ const DomainExplorer = () => {
                 dispatch(updateDomainRepoNode(nodeUpdate));
                 const loadedFile = buildTransferFile(file, content, RepositoryType.DOMAIN);
                 dispatch(storeLoaded(loadedFile));
-                enqueueSnackbar(`Script "${file.name}" opened successfully.`, {variant: "success"});
+                showSuccess(`Script "${file.name}" opened successfully.`);
                 history.push("/");
-            }).catch(() => () => enqueueSnackbar(`Failed to load script "${script.name}".`, {variant: "error"}))
-        }).catch(() => enqueueSnackbar(`Failed to load script "${script.name}".`, {variant: "error"}))
+            }).catch((error) => () => showError(`Failed to load script "${script.name}".`, error))
+        }).catch((error) => showError(`Failed to load script "${script.name}".`, error))
     }
 
     const incrementVersion = (item: StoredItemTransfer) => {
@@ -143,15 +144,14 @@ const DomainExplorer = () => {
                 const descriptor = item.type.toLocaleLowerCase();
                 const payload = buildIncrementPayload(target.version, item.optLock, target.squash);
                 try {
-                    const response = await incrementScriptVersion(item, payload);
-                    if (response && response.data) {
-                        enqueueSnackbar(`Version of ${descriptor} "${item.name}" incremented successfully.`, {variant: "success"});
-                    }
-                } catch {
-                    enqueueSnackbar(`Failed to increment version of ${descriptor} "${item.name}".`, {variant: "error"});
+                    await incrementScriptVersion(item, payload);
+                    showSuccess(`Version of ${descriptor} "${item.name}" incremented successfully.`);
+                } catch (error) {
+                    showError(`Failed to increment version of ${descriptor} "${item.name}".`, error);
                 }
             })
             .catch(() => {
+                // ignored
             });
     }
 
@@ -160,37 +160,66 @@ const DomainExplorer = () => {
             .then(async () => {
                 const descriptor = item.type.toLocaleLowerCase();
                 try {
-                    const response = await finalizeScriptVersion(item);
-                    if (response && response.data) {
-                        enqueueSnackbar(`Version ${item.version} of ${descriptor} "${item.name}" finalized successfully.`,
-                            {variant: "success"});
-                    }
-                } catch {
-                    enqueueSnackbar(`Failed to finalize version ${item.version} of ${descriptor} "${item.name}".`,
-                        {variant: "error"});
+                    await finalizeScriptVersion(item);
+                    showSuccess(`Version ${item.version} of ${descriptor} "${item.name}" finalized successfully.`);
+                } catch (error) {
+                    showError(`Failed to finalize version ${item.version} of ${descriptor} "${item.name}".`, error);
                 }
             })
             .catch(() => {
+                // ignored
             });
+    }
+
+    const sendDefinition = async (item: StoredItemTransfer) => {
+        const descriptor = item.type.toLocaleLowerCase();
+        try {
+            const credentials = await getEditCredentials();
+            uploadEditDefinition(item, item.parentId, credentials)
+                .then((response) => {
+                    if (response) {
+                        showSuccess(`${descriptor} "${item.name}" uploaded successfully to EDIT as dataset definition.`);
+                    }
+                })
+                .catch((error) => showError(`Failed to upload ${item.type.toLocaleLowerCase()} "${item.name}".`, error));
+        } catch {
+        }
+    }
+
+    const sendProgram = async (item: StoredItemTransfer) => {
+        const descriptor = item.type.toLocaleLowerCase();
+        try {
+            const credentials = await getEditCredentials();
+            uploadEditProgram(item, item.parentId, credentials)
+                .then((response) => {
+                    if (response) {
+                        showSuccess(`${descriptor} "${item.name}" uploaded successfully to EDIT as program.`);
+                    }
+                })
+                .catch((error) => showError(`Failed to upload ${item.type.toLocaleLowerCase()} "${item.name}".`, error));
+        } catch {
+        }
     }
 
     const removeItem = (node: TreeNode) => {
         if (!node || !node.entity || !node.type || !node.entity.type) return;
         const item = node.entity;
-        deleteItemDialog(item.type)
+        deleteEntityDialog(item.type.toString(), item.name)
             .then(async () => {
                 const descriptor = item.type[0] + item.type.slice(1).toLocaleLowerCase();
-                const call = node.type === NodeType.BINNED ? deleteBinnedItem : deleteDomainItem;
-                const response = await call(node)
-                    .catch(() => {
-                        enqueueSnackbar(`Failed to delete ${item.type.toLocaleLowerCase()} "${item.name}".`, {variant: "error"});
-                    });
-                if (response && response.success) {
+                try {
+                    const response = node.type === NodeType.BINNED
+                        ? await deleteBinnedItem(node)
+                        : await deleteDomainItem(node);
                     dispatch(deleteDomainRepoNode(node));
-                    enqueueSnackbar(`${descriptor} "${item.name}" deleted successfully.`, {variant: "success"});
+                    if (response) dispatch(addDomainRepoNode(response));
+                    showSuccess(`${descriptor} "${item.name}" deleted successfully.`);
+                } catch (error) {
+                    showError(`Failed to delete ${item.type.toLocaleLowerCase()} "${item.name}".`, error);
                 }
             })
             .catch(() => {
+                // ignored
             });
     }
 
@@ -200,16 +229,19 @@ const DomainExplorer = () => {
         restoreItemDialog(item.type)
             .then(async () => {
                 const descriptor = item.type[0] + item.type.slice(1).toLocaleLowerCase();
-                const response = await restoreBinnedItem(node)
-                    .catch(() => {
-                        enqueueSnackbar(`Failed to restore ${item.type.toLocaleLowerCase()} "${item.name}".`, {variant: "error"});
-                    });
-                if (response && response.success) {
-                    dispatch(deleteDomainRepoNode(node));
-                    enqueueSnackbar(`${descriptor} "${item.name}" restored successfully.`, {variant: "success"});
+                try {
+                    const response = await restoreBinnedItem(node);
+                    if (response) {
+                        dispatch(deleteDomainRepoNode(node));
+                        dispatch(addDomainRepoNode(response));
+                        showSuccess(`${descriptor} "${item.name}" restored successfully.`);
+                    }
+                } catch (error) {
+                    showError(`Failed to restore ${item.type.toLocaleLowerCase()} "${item.name}".`, error);
                 }
             })
             .catch(() => {
+                // ignored
             });
     }
 
@@ -217,18 +249,12 @@ const DomainExplorer = () => {
         switch (event.type) {
             case ContextMenuEventType.Refresh: {
                 loadRepositoryContents()
-                    .then(() =>
-                        enqueueSnackbar(`Contents refreshed successfully.`, {variant: "success"}))
-                    .catch(() =>
-                        enqueueSnackbar(`Failed to refresh contents.`, {variant: "error"}));
+                    .then(() => showSuccess("Contents refreshed successfully."))
+                    .catch((error) => showError("Failed to refresh contents.", error));
                 break;
             }
             case ContextMenuEventType.OpenFile: {
                 if (event.payload) return loadScriptContents(event.payload);
-                break;
-            }
-            case ContextMenuEventType.RenameItem: {
-                // if (event.payload) return renameItem(event.payload);
                 break;
             }
             case ContextMenuEventType.DeleteItem: {
@@ -265,6 +291,14 @@ const DomainExplorer = () => {
             }
             case ContextMenuEventType.FinalizeVersion: {
                 if (event.payload) return finalizeVersion(event.payload);
+                break;
+            }
+            case ContextMenuEventType.SendDefinition: {
+                if (event.payload) return sendDefinition(event.payload);
+                break;
+            }
+            case ContextMenuEventType.SendProgram: {
+                if (event.payload) return sendProgram(event.payload);
                 break;
             }
         }

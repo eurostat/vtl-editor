@@ -1,13 +1,12 @@
 import _ from "lodash";
-import { ApiResponse } from "../web-api/apiResponse";
-import { sendGetRequest } from "../web-api/apiService";
-import { ApiCache } from "./apiCache";
-import { Agency } from "./entity/Agency";
-import { CodeList } from "./entity/CodeList";
-import { DataStructure } from "./entity/DataStructure";
-import { DataStructureDefinition } from "./entity/DataStructureDefinition";
-import { SdmxRegistry } from "./entity/SdmxRegistry";
-import { SdmxRequest } from "./entity/SdmxRequest";
+import {ApiResponse, sendGetRequest} from "../web-api/apiService";
+import {ApiCache} from "./apiCache";
+import {Agency} from "./entity/Agency";
+import {CodeList} from "./entity/CodeList";
+import {DataStructure} from "./entity/DataStructure";
+import {DataStructureDefinition} from "./entity/DataStructureDefinition";
+import {SdmxRegistry} from "./entity/SdmxRegistry";
+import {SdmxRequest} from "./entity/SdmxRequest";
 
 const BASE_URL = process.env.REACT_APP_API_URL;
 const SDMX_URL = BASE_URL + "/sdmx";

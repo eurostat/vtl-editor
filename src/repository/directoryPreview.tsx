@@ -7,45 +7,58 @@ import {detailTableTheme} from "./detailTableTheme";
 import {processItemTransfer, StoredItemTransfer} from "./entity/storedItemTransfer";
 import {getFolder, getFolderContents} from "./personal-repo/personalRepoService";
 import {detailedFolder, detailedFolderPath, updateNode} from "./personal-repo/personalRepoSlice";
+import {useErrorNotice, useSuccessNotice} from "../utility/useNotification";
 
 const DirectoryPreview = () => {
     const folderId = useSelector(detailedFolder);
     const [contents, setContents] = useState<any[]>([]);
     const path: string = useSelector(detailedFolderPath);
     const dispatch = useDispatch();
+    const showSuccess = useSuccessNotice();
+    const showError = useErrorNotice();
 
-    const fetchFolder = useCallback(() => {
-        if (folderId) {
-            getFolder(folderId)
-                .then((received) => {
-                    const nodeUpdate: any = {id: folderId, entity: received};
-                    dispatch(updateNode(nodeUpdate));
-                })
-                .catch(() => {
-                });
+    const fetchFolder = useCallback(async () => {
+        if (!folderId) return Promise.resolve();
+        try {
+            const received = await getFolder(folderId);
+            const nodeUpdate: any = {id: folderId, entity: received};
+            dispatch(updateNode(nodeUpdate));
+        } catch (error) {
+            showError("Failed to load folder information.", error);
+            return Promise.reject();
         }
-    }, [folderId, dispatch]);
+    }, [folderId, dispatch, showError]);
 
-    const fetchContents = useCallback(() => {
-        getFolderContents(folderId)
-            .then((response) => {
-                if (response && response.data) {
-                    const received: any[] = [];
-                    received.push(
-                        ...response.data.folders.map((item: StoredItemTransfer) => processItemTransfer(item)),
-                        ...response.data.files.map((item: StoredItemTransfer) => processItemTransfer(item))
-                    );
-                    setContents(received);
-                }
-            })
-            .catch(() => {
-            });
-    }, [folderId]);
+    const fetchContents = useCallback(async () => {
+        try {
+            const response = await getFolderContents(folderId);
+            if (response) {
+                const received: any[] = [];
+                received.push(
+                    ...response.folders.map((item: StoredItemTransfer) => processItemTransfer(item)),
+                    ...response.files.map((item: StoredItemTransfer) => processItemTransfer(item))
+                );
+                setContents(received);
+            }
+        } catch (error) {
+            showError("Failed to load folder contents.", error);
+            return Promise.reject();
+        }
+    }, [folderId, showError]);
 
     useEffect(() => {
-        fetchFolder();
-        fetchContents();
+        Promise.all([fetchFolder(), fetchContents()]).catch(() => {
+            // ignored
+        });
     }, [folderId, fetchFolder, fetchContents]);
+
+    const refreshFolder = async () => {
+        try {
+            await Promise.all([fetchFolder(), fetchContents()]);
+            showSuccess("Folder refreshed successfully.");
+        } catch {
+        }
+    }
 
     return (
         <MuiThemeProvider theme={detailTableTheme}>
@@ -68,13 +81,13 @@ const DirectoryPreview = () => {
                                    icon: () => <Cached/>,
                                    tooltip: 'Refresh',
                                    position: 'toolbar',
-                                   onClick: fetchFolder
+                                   onClick: refreshFolder
                                },
                                {
                                    icon: () => <Cached/>,
                                    tooltip: 'Refresh',
                                    position: 'toolbarOnSelect',
-                                   onClick: fetchFolder
+                                   onClick: refreshFolder
                                }
                            ]}
             />

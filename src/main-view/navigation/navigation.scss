@@ -46,7 +46,7 @@
   }
 }
 
-.hide-settings-nav #setting-icon {
+.hide-settings-nav .settings-pane {
   border: none;
 
   & > svg {
@@ -54,7 +54,7 @@
   }
 }
 
-.open-settings #setting-icon, .open-domain-repo .domain-repo-pane, .open-personal-repo .personal-repo-pane {
+.open-settings .settings-pane, .open-domain-repo .domain-repo-pane, .open-personal-repo .personal-repo-pane {
   border-left: 1px solid #1276ff;
 
   & > svg {
@@ -69,12 +69,11 @@
 
   .group-container {
     text-align: left;
-    margin: 0 auto 10px;
+    margin: 30px auto 20px;
     width: 70%;
   }
 
   label {
-    margin-top: 35px;
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     color: #e8e6e6;
     font-size: 0.95em;
@@ -83,11 +82,38 @@
     letter-spacing: 0.00938em;
   }
 
+  button {
+    margin: 0;
+
+    &:focus {
+      border-color: #80bdff !important;
+      outline: 0 !important;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+    }
+
+    &.left-button {
+      width: calc(50% - 5px);
+      margin-right: 5px;
+    }
+
+    &.right-button {
+      width: calc(50% - 5px);
+      margin-left: 5px;
+    }
+  }
+
   select {
     background-color: #36393c;
     color: #a2a8ad;
     border: 1px solid #46494d;
   }
+
+  input {
+    background-color: #36393c;
+    color: #a2a8ad;
+    border: 1px solid #46494d;
+  }
+
 
   option {
     background-color: #22282c;

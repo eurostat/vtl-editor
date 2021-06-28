@@ -2,7 +2,6 @@ import {MuiThemeProvider} from "@material-ui/core/styles";
 import {Cached, CloudDownloadOutlined, RestorePageOutlined} from "@material-ui/icons";
 import _ from "lodash";
 import MaterialTable, {Action} from "material-table";
-import {useSnackbar} from "notistack";
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
@@ -16,6 +15,7 @@ import {buildTransferFile} from "../../editor/editorFile";
 import {RepositoryType} from "../entity/repositoryType";
 import {storeLoaded} from "../../editor/editorSlice";
 import {useUserRole} from "../../control/authorized";
+import {useErrorNotice, useSuccessNotice, useWarningNotice} from "../../utility/useNotification";
 
 const DomainScriptVersions = () => {
     const scriptNode = useSelector(domainVersionedScript);
@@ -24,44 +24,59 @@ const DomainScriptVersions = () => {
     const [selected, setSelected] = useState<any[]>([]);
     const tableRef = useRef<any>();
     const dispatch = useDispatch();
-    const {enqueueSnackbar} = useSnackbar();
+    const showSuccess = useSuccessNotice();
+    const showWarning = useWarningNotice();
+    const showError = useErrorNotice();
     const history = useHistory();
     const forUser = useUserRole();
 
-    const loadScript = useCallback(() => {
-        if (!scriptNode || !scriptNode.entity) return;
-        fetchScript(scriptNode.entity).then((received) => {
+    const loadScript = useCallback(async () => {
+        setScript(undefined);
+        if (!scriptNode || !scriptNode.entity) return Promise.reject();
+        try {
+            const received = await fetchScript(scriptNode.entity);
             const nodeUpdate: any = {id: scriptNode.id, type: scriptNode.type, entity: received};
             dispatch(updateDomainRepoNode(nodeUpdate));
             setScript(received);
-        }).catch(() => {
-        });
-    }, [scriptNode, dispatch]);
+        } catch (error) {
+            showError("Failed to load script information.", error);
+            return Promise.reject();
+        }
+    }, [scriptNode, dispatch, showError]);
 
-    useEffect(() => {
+    const loadVersions = useCallback(async () => {
         setVersions([]);
         setSelected([]);
-        loadScript();
-    }, [scriptNode, loadScript]);
-
-    const loadVersions = useCallback(() => {
-        if (!script) return;
-        fetchScriptVersions(script)
-            .then((response) => {
-                if (response && response.data) {
-                    const received: any[] = [];
-                    received.push(...response.data.map((item: FileVersionTransfer) => processVersionTransfer(item)));
-                    received.sort((a, b) => b.version.localeCompare(a.version, undefined, {numeric: true}));
-                    setVersions(received);
-                }
-            })
-            .catch(() => enqueueSnackbar(`Failed to load versions.`, {variant: "error"}));
-    }, [script, enqueueSnackbar]);
+        if (!scriptNode || !scriptNode.entity) {
+            return Promise.reject();
+        }
+        try {
+            const response = await fetchScriptVersions(scriptNode.entity);
+            if (response) {
+                const received: any[] = [];
+                received.push(...response.map((item: FileVersionTransfer) => processVersionTransfer(item)));
+                received.sort((a, b) => b.version.localeCompare(a.version, undefined, {numeric: true}));
+                setVersions(received);
+            }
+        } catch (error) {
+            showError("Failed to load versions.", error);
+            return Promise.reject();
+        }
+    }, [scriptNode, showError]);
 
     useEffect(() => {
-        setSelected([]);
-        loadVersions();
-    }, [script, loadVersions]);
+        Promise.all([loadScript(), loadVersions()]).catch(() => {
+            // ignored
+        });
+    }, [scriptNode, loadScript, loadVersions]);
+
+    const refreshVersions = async () => {
+        try {
+            await Promise.all([loadScript(), loadVersions()]);
+            showSuccess("Versions refreshed successfully.");
+        } catch {
+        }
+    }
 
     const onSelectionChange = (rows: any[], row?: any) => {
         if (row) {
@@ -86,27 +101,32 @@ const DomainScriptVersions = () => {
             dispatch(compareVersions({file: script, versions: compare, repository: RepositoryType.DOMAIN}));
             history.push("/diff");
         } else {
-            enqueueSnackbar(`Select two versions to compare.`, {variant: "warning"});
+            showWarning(`Select two versions to compare.`);
         }
     }
 
-    const onOpenVersion = (event: any, row: any) => {
-        if (script) {
-            fetchScriptVersionContent(script, row.version).then((content) => {
-                const loadedFile = buildTransferFile(script, content, RepositoryType.DOMAIN);
-                dispatch(storeLoaded(loadedFile));
-                enqueueSnackbar(`Version "${row.version}" opened successfully.`, {variant: "success"});
-                history.push("/");
-            }).catch(() => enqueueSnackbar(`Failed to load version "${row.version}".`, {variant: "error"}));
+    const onOpenVersion = async (event: any, row: any) => {
+        if (!script) return;
+        try {
+            const content = await fetchScriptVersionContent(script, row.version);
+            const loadedFile = buildTransferFile(script, content, RepositoryType.DOMAIN);
+            loadedFile.version = row.version;
+            dispatch(storeLoaded(loadedFile));
+            showSuccess(`Version "${row.version}" opened successfully.`);
+            history.push("/");
+        } catch (error) {
+            showError(`Failed to load version "${row.version}".`, error);
         }
     }
 
-    const onRestoreVersion = (event: any, row: any) => {
-        if (script) {
-            restoreScriptVersion(script, row.version).then(() => {
-                loadScript();
-                enqueueSnackbar(`Version "${row.version}" restored successfully.`, {variant: "success"});
-            }).catch(() => enqueueSnackbar(`Failed to restore version "${row.version}".`, {variant: "error"}));
+    const onRestoreVersion = async (event: any, row: any) => {
+        if (!script) return;
+        try {
+            await restoreScriptVersion(script, row.version);
+            await Promise.all([loadScript(), loadVersions()]);
+            showSuccess(`Version "${row.version}" restored successfully.`);
+        } catch (error) {
+            showError(`Failed to restore version "${row.version}".`, error)
         }
     }
 
@@ -152,13 +172,13 @@ const DomainScriptVersions = () => {
                                    icon: Cached,
                                    tooltip: 'Refresh',
                                    position: 'toolbar',
-                                   onClick: loadScript
+                                   onClick: refreshVersions
                                },
                                {
                                    icon: Cached,
                                    tooltip: 'Refresh',
                                    position: 'toolbarOnSelect',
-                                   onClick: loadScript
+                                   onClick: refreshVersions
                                }
                            ].filter((action: any) => action !== null) as Action<any>[]}
             />

@@ -7,7 +7,7 @@ const PersonalExplorerMenu = ({onMenuEvent}: TreeExplorerMenuProps) => {
     const [showNewMenu, setShowNewMenu] = useState(false);
 
     const subMenuOperation = (event: any) => {
-        event.preventDefault();
+        if (!showNewMenu) event.preventDefault();
         setShowNewMenu(!showNewMenu);
     }
 

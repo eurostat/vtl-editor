@@ -13,7 +13,9 @@ export enum ContextMenuEventType {
     FileVersions,
     PublishItem,
     IncrementVersion,
-    FinalizeVersion
+    FinalizeVersion,
+    SendDefinition,
+    SendProgram
 }
 
 export interface ContextMenuEvent {

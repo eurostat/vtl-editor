@@ -222,7 +222,7 @@
                     </listitem>
                     <listitem>
                         <para>
-                            <emphasis role="bold">(8) Delete object</emphasis> –
+                            <emphasis role="bold">(8) List pagination</emphasis> –
                             here is a list from which we can choose the number of elements displayed at the same time, as well as page navigation, if there are any - otherwise the navigation will be grayed out.
                         </para>
                     </listitem>

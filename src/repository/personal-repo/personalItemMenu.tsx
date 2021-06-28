@@ -10,16 +10,16 @@ type ItemMenuProps = {
 }
 
 const PersonalItemMenu = ({node, onMenuEvent}: ItemMenuProps) => {
-    // const [showSortMenu, setShowSortMenu] = useState(false);
+    const [showEditSendMenu, setShowEditSendMenu] = useState(false);
     const [showNewMenu, setShowNewMenu] = useState(false);
 
-    // const toggleSortMenu = (event: any) => {
-    //     event.preventDefault();
-    //     setShowSortMenu(!showSortMenu);
-    // }
+    const toggleEditSendMenu = (event: any) => {
+        if (!showEditSendMenu) event.preventDefault();
+        setShowEditSendMenu(!showEditSendMenu);
+    }
 
     const toggleNewMenu = (event: any) => {
-        event.preventDefault();
+        if (!showNewMenu) event.preventDefault();
         setShowNewMenu(!showNewMenu);
     }
 
@@ -91,6 +91,18 @@ const PersonalItemMenu = ({node, onMenuEvent}: ItemMenuProps) => {
         }
     }
 
+    const onSendDefinition = () => {
+        if (node && node.entity) {
+            dispatchMenuEvent({type: ContextMenuEventType.SendDefinition, payload: node.entity});
+        }
+    }
+
+    const onSendProgram = () => {
+        if (node && node.entity) {
+            dispatchMenuEvent({type: ContextMenuEventType.SendProgram, payload: node.entity});
+        }
+    }
+
     return (
         <ul className="menu">
             <li className="with-submenu" onClick={toggleNewMenu}>
@@ -108,6 +120,16 @@ const PersonalItemMenu = ({node, onMenuEvent}: ItemMenuProps) => {
                     <li onClick={onOpenFile}>Open</li>
                     <li onClick={onIncrementVersion}>Increment Version</li>
                     <li onClick={onPublishItem}>Publish</li>
+                    <li className="with-submenu" onClick={toggleEditSendMenu}>
+                        <span>Upload To EDIT</span>
+                        <div className="position-right">
+                            <FontAwesomeIcon icon={faCaretRight}/>
+                        </div>
+                        <ul className={showEditSendMenu ? "submenu visible-menu" : "submenu hide-menu"}>
+                            <li onClick={onSendDefinition}>As Dataset Definition</li>
+                            <li onClick={onSendProgram}>As Program</li>
+                        </ul>
+                    </li>
                 </>
                 : null}
             <li onClick={onRenameItem}>Rename</li>
@@ -115,17 +137,6 @@ const PersonalItemMenu = ({node, onMenuEvent}: ItemMenuProps) => {
             {node.children
                 ? <li onClick={onFolderDetails}>Detailed List</li>
                 : <li onClick={onFileVersions}>Versions</li>}
-            {/*<hr/>*/}
-            {/*<li className="with-submenu" onClick={toggleSortMenu}>*/}
-            {/*    <span>Sort</span>*/}
-            {/*    <div className="position-right">*/}
-            {/*        <FontAwesomeIcon icon={faCaretRight}/>*/}
-            {/*    </div>*/}
-            {/*    <ul className={showSortMenu ? "submenu visible-menu" : "submenu hide-menu"}>*/}
-            {/*        <li>Name</li>*/}
-            {/*        <li>Date</li>*/}
-            {/*    </ul>*/}
-            {/*</li>*/}
             <hr/>
             <li onClick={onDeleteItem}>Delete</li>
         </ul>

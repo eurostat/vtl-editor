@@ -2,7 +2,6 @@ import {MuiThemeProvider} from "@material-ui/core/styles";
 import {Cached, CloudDownloadOutlined, RestorePageOutlined} from "@material-ui/icons";
 import _ from "lodash";
 import MaterialTable from "material-table";
-import {useSnackbar} from "notistack";
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
@@ -14,6 +13,7 @@ import {StoredItemTransfer} from "./entity/storedItemTransfer";
 import {getFile, getFileVersions, getVersionContent, restoreFileVersion} from "./personal-repo/personalRepoService";
 import {compareVersions, updateNode, versionedFile} from "./personal-repo/personalRepoSlice";
 import {RepositoryType} from "./entity/repositoryType";
+import {useErrorNotice, useSuccessNotice, useWarningNotice} from "../utility/useNotification";
 
 const FileVersions = () => {
     const fileId = useSelector(versionedFile);
@@ -22,46 +22,58 @@ const FileVersions = () => {
     const [selected, setSelected] = useState<any[]>([]);
     const tableRef = useRef<any>();
     const dispatch = useDispatch();
-    const {enqueueSnackbar} = useSnackbar();
+    const showSuccess = useSuccessNotice();
+    const showWarning = useWarningNotice();
+    const showError = useErrorNotice();
     const history = useHistory();
 
-    const fetchFile = useCallback(() => {
-        if (fileId) {
-            getFile(fileId).then((received) => {
-                const nodeUpdate: any = {id: fileId, entity: received};
-                dispatch(updateNode(nodeUpdate));
-                setFile(received);
-            }).catch(() => {
-            });
+    const fetchFile = useCallback(async () => {
+        setFile(undefined);
+        if (!fileId) return Promise.reject();
+        try {
+            const received = await getFile(fileId);
+            const nodeUpdate: any = {id: fileId, entity: received};
+            dispatch(updateNode(nodeUpdate));
+            setFile(received);
+        } catch (error) {
+            showError("Failed to load file information.", error);
+            return Promise.reject();
         }
-    }, [fileId, dispatch]);
+    }, [fileId, dispatch, showError]);
 
-    useEffect(() => {
+    const fetchVersions = useCallback(async () => {
         setVersions([]);
         setSelected([]);
-        fetchFile();
-    }, [fileId, fetchFile]);
-
-    const fetchVersions = useCallback(() => {
-        if (file) {
-            getFileVersions(file.id)
-                .then((response) => {
-                    if (response && response.data) {
-                        const received: any[] = [];
-                        received.push(...response.data.map((item: FileVersionTransfer) => processVersionTransfer(item)));
-                        received.sort((a, b) => b.version.localeCompare(a.version));
-                        setVersions(received);
-                    }
-                })
-                .catch(() => {
-                });
+        if (!fileId) {
+            return Promise.reject();
         }
-    }, [file]);
+        try {
+            const response = await getFileVersions(fileId);
+            if (response) {
+                const received: any[] = [];
+                received.push(...response.map((item: FileVersionTransfer) => processVersionTransfer(item)));
+                received.sort((a, b) => b.version.localeCompare(a.version));
+                setVersions(received);
+            }
+        } catch (error) {
+            showError("Failed to load versions.", error);
+            return Promise.reject();
+        }
+    }, [fileId, showError]);
 
     useEffect(() => {
-        setSelected([]);
-        fetchVersions();
-    }, [file, fetchVersions]);
+        Promise.all([fetchFile(), fetchVersions()]).catch(() => {
+            // ignored
+        });
+    }, [fileId, fetchFile, fetchVersions]);
+
+    const refreshVersions = async () => {
+        try {
+            await Promise.all([fetchFile(), fetchVersions()]);
+            showSuccess("Versions refreshed successfully.");
+        } catch {
+        }
+    }
 
     const onSelectionChange = (rows: any[], row?: any) => {
         if (row) {
@@ -86,27 +98,32 @@ const FileVersions = () => {
             dispatch(compareVersions({file: file, versions: compare, repository: RepositoryType.PERSONAL}));
             history.push("/diff");
         } else {
-            enqueueSnackbar(`Select two versions to compare.`, {variant: "warning"});
+            showWarning("Select two versions to compare.");
         }
     }
 
-    const onOpenVersion = (event: any, row: any) => {
-        if (file) {
-            getVersionContent(file, row.version).then((content) => {
-                const loadedFile = buildTransferFile(file, content, RepositoryType.PERSONAL);
-                dispatch(storeLoaded(loadedFile));
-                enqueueSnackbar(`Version "${row.version}" opened successfully.`, {variant: "success"});
-                history.push("/");
-            }).catch(() => enqueueSnackbar(`Failed to load version "${row.version}".`, {variant: "error"}));
+    const onOpenVersion = async (event: any, row: any) => {
+        if (!file) return;
+        try {
+            const content = await getVersionContent(file, row.version);
+            const loadedFile = buildTransferFile(file, content, RepositoryType.PERSONAL);
+            loadedFile.version = row.version;
+            dispatch(storeLoaded(loadedFile));
+            showSuccess(`Version "${row.version}" opened successfully.`);
+            history.push("/");
+        } catch (error) {
+            showError(`Failed to load version "${row.version}".`, error);
         }
     }
 
-    const onRestoreVersion = (event: any, row: any) => {
-        if (file) {
-            restoreFileVersion(file.id, row.version, {optLock: file.optLock}).then(() => {
-                fetchFile();
-                enqueueSnackbar(`Version "${row.version}" restored successfully.`, {variant: "success"});
-            }).catch(() => enqueueSnackbar(`Failed to restore version "${row.version}".`, {variant: "error"}));
+    const onRestoreVersion = async (event: any, row: any) => {
+        if (!file) return;
+        try {
+            await restoreFileVersion(file.id, row.version, {optLock: file.optLock});
+            await Promise.all([fetchFile(), fetchVersions()]);
+            showSuccess(`Version "${row.version}" restored successfully.`);
+        } catch (error) {
+            showError(`Failed to restore version "${row.version}".`, error);
         }
     }
 
@@ -151,13 +168,13 @@ const FileVersions = () => {
                                    icon: Cached,
                                    tooltip: 'Refresh',
                                    position: 'toolbar',
-                                   onClick: fetchFile
+                                   onClick: refreshVersions
                                },
                                {
                                    icon: Cached,
                                    tooltip: 'Refresh',
                                    position: 'toolbarOnSelect',
-                                   onClick: fetchFile
+                                   onClick: refreshVersions
                                }
                            ]}
             />

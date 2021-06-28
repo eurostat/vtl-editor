@@ -7,10 +7,11 @@ import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAdminRole } from "../authorized";
 import { expelGroup, groupList, replaceGroups, startGroupEdit } from "../controlSlice";
-import { controlTableAction, controlTableTheme, controlTableTitle, deleteEntityDialog } from "../managementView";
 import { GroupTransfer } from "./group";
 import { deleteGroup, fetchGroups } from "./groupService";
 import GroupView from "./groupView";
+import {deleteEntityDialog} from "../../main-view/decision-dialog/decisionDialog";
+import {materialTableAction, materialTableTheme, materialTableTitle} from "../../utility/materialTable";
 
 export default function GroupsTable() {
     const groups = _.cloneDeep(useSelector(groupList));
@@ -69,7 +70,7 @@ export default function GroupsTable() {
     }
 
     const tableProps = {
-        title: controlTableTitle("VRM Group", "VRM Groups", groups.length),
+        title: materialTableTitle("VRM Group", "VRM Groups", groups.length),
         data: groups,
         columns: [
             {title: "Name", field: "name", defaultSort: "asc"},
@@ -85,18 +86,18 @@ export default function GroupsTable() {
             return (<GroupView groupId={group.id}/>)
         },
         actions: [
-            forAdmin(controlTableAction(<AddCircleOutline/>, "toolbar", createGroup, "New Group")),
-            forAdmin(controlTableAction(<AddCircleOutline/>, "toolbarOnSelect", createGroup, "New Group")),
-            controlTableAction(<Cached/>, "toolbar", refreshGroups, "Refresh"),
-            controlTableAction(<Cached/>, "toolbarOnSelect", refreshGroups, "Refresh"),
-            controlTableAction(<Edit/>, "row", editGroup, "Edit Group"),
-            forAdmin(controlTableAction(<Clear/>, "row", removeGroup, "Delete Group")),
+            forAdmin(materialTableAction(<AddCircleOutline/>, "toolbar", createGroup, "New Group")),
+            forAdmin(materialTableAction(<AddCircleOutline/>, "toolbarOnSelect", createGroup, "New Group")),
+            materialTableAction(<Cached/>, "toolbar", refreshGroups, "Refresh"),
+            materialTableAction(<Cached/>, "toolbarOnSelect", refreshGroups, "Refresh"),
+            materialTableAction(<Edit/>, "row", editGroup, "Edit Group"),
+            forAdmin(materialTableAction(<Clear/>, "row", removeGroup, "Delete Group")),
         ].filter((action) => action !== null),
     } as MaterialTableProps<any>;
 
     return (
         <>
-            <MuiThemeProvider theme={controlTableTheme}>
+            <MuiThemeProvider theme={materialTableTheme}>
                 <div className="entities-table">
                     <MaterialTable {...tableProps}/>
                 </div>

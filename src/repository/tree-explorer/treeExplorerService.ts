@@ -22,24 +22,6 @@ export const createItemDialog = (type: StoredItemType, input?: string) => {
     return decision();
 }
 
-export const deleteItemDialog = (type: StoredItemType) => {
-    const decision = async () => {
-        const descriptor = type.toLocaleLowerCase();
-        const result = await decisionDialog({
-            title: "Warning",
-            text: `Do you really want to delete this ${descriptor}?`,
-            buttons: [
-                {key: "yes", text: "Yes", color: "primary"},
-                {key: "no", text: "No", color: "secondary"}
-            ]
-        });
-        return result === "yes"
-            ? Promise.resolve()
-            : Promise.reject();
-    }
-    return decision();
-}
-
 export const restoreItemDialog = (type: StoredItemType) => {
     const decision = async () => {
         const descriptor = type.toLocaleLowerCase();

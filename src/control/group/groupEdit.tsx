@@ -55,8 +55,7 @@ export default function GroupEdit() {
                         roles: _.cloneDeep(forAdmin(group.roles)),
                         completeRoles: _.cloneDeep(forAdmin(group.completeRoles)),
                     });
-                const call = (groupId ? () => updateGroup(groupPayload) : () => createGroup(groupPayload));
-                const response = await call();
+                const response = groupId ? await updateGroup(groupPayload) : await createGroup(groupPayload);
                 await Promise.all([
                     updateGroupUsers(response.id, group.users),
                     updateGroupDomains(response.id, group.domains)

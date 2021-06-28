@@ -7,10 +7,11 @@ import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAdminRole } from "../authorized";
 import { domainList, expelDomain, replaceDomains, startDomainEdit } from "../controlSlice";
-import { controlTableAction, controlTableTheme, controlTableTitle, deleteEntityDialog } from "../managementView";
 import { DomainTransfer } from "./domain";
 import { deleteDomain, fetchDomains } from "./domainService";
 import DomainView from "./domainView";
+import {materialTableAction, materialTableTheme, materialTableTitle} from "../../utility/materialTable";
+import {deleteEntityDialog} from "../../main-view/decision-dialog/decisionDialog";
 
 export default function DomainsTable() {
     const domains = _.cloneDeep(useSelector(domainList));
@@ -69,7 +70,7 @@ export default function DomainsTable() {
     }
 
     const tableProps = {
-        title: controlTableTitle("VRM Domain", "VRM Domains", domains.length),
+        title: materialTableTitle("VRM Domain", "VRM Domains", domains.length),
         data: domains,
         columns: [
             {title: "Name", field: "name", defaultSort: "asc"},
@@ -85,18 +86,18 @@ export default function DomainsTable() {
             return (<DomainView domainId={domain.id}/>)
         },
         actions: [
-            forAdmin(controlTableAction(<AddCircleOutline/>, "toolbar", createDomain, "New Domain")),
-            forAdmin(controlTableAction(<AddCircleOutline/>, "toolbarOnSelect", createDomain, "New Domain")),
-            controlTableAction(<Cached/>, "toolbar", refreshDomains, "Refresh"),
-            controlTableAction(<Cached/>, "toolbarOnSelect", refreshDomains, "Refresh"),
-            controlTableAction(<Edit/>, "row", editDomain, "Edit Domain"),
-            forAdmin(controlTableAction(<Clear/>, "row", removeDomain, "Delete Domain")),
+            forAdmin(materialTableAction(<AddCircleOutline/>, "toolbar", createDomain, "New Domain")),
+            forAdmin(materialTableAction(<AddCircleOutline/>, "toolbarOnSelect", createDomain, "New Domain")),
+            materialTableAction(<Cached/>, "toolbar", refreshDomains, "Refresh"),
+            materialTableAction(<Cached/>, "toolbarOnSelect", refreshDomains, "Refresh"),
+            materialTableAction(<Edit/>, "row", editDomain, "Edit Domain"),
+            forAdmin(materialTableAction(<Clear/>, "row", removeDomain, "Delete Domain")),
         ].filter((action) => action !== null),
     } as MaterialTableProps<any>;
 
     return (
         <>
-            <MuiThemeProvider theme={controlTableTheme}>
+            <MuiThemeProvider theme={materialTableTheme}>
                 <div className="entities-table">
                     <MaterialTable {...tableProps}/>
                 </div>

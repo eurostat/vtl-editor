@@ -1,14 +1,18 @@
 import React from "react";
-import { Form } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { appliedVtlVersion, changeVtlVersion } from "../editor/editorSlice";
-import { languageVersions, themes } from "../editor/settings";
-import { appliedTheme, changeTheme } from "./viewSlice";
+import {Button, Form} from "react-bootstrap";
+import {useDispatch, useSelector} from "react-redux";
+import {appliedVtlVersion, changeVtlVersion} from "../editor/editorSlice";
+import {languageVersions, themes} from "../editor/settings";
+import {appliedTheme, changeTheme} from "./viewSlice";
+import {useClearEditCredentials, useProvideEditCredentials} from "../edit-client/credentialsService";
+import {decisionDialog} from "./decision-dialog/decisionDialog";
 
-const SettingsPane = () => {
+export default function SettingsPane() {
     const dispatch = useDispatch();
     const vtlVersion = useSelector(appliedVtlVersion);
     const theme = useSelector((appliedTheme));
+    const provideEditCredentials = useProvideEditCredentials();
+    const clearEditCredentials = useClearEditCredentials();
 
     const onChangeVersion = (event: any) => {
         return dispatch(changeVtlVersion(findElementByName(languageVersions, event.target.value)));
@@ -34,6 +38,25 @@ const SettingsPane = () => {
         return array.find(e => e.code === value).name || "";
     };
 
+    async function onChangeEditCredentials() {
+        provideEditCredentials();
+    }
+
+    async function onClearEditCredentials() {
+        try {
+            const result = await decisionDialog({
+                title: "Warning",
+                text: `Do you really want to clear EDIT service credentials?`,
+                buttons: [
+                    {key: "yes", text: "Yes", color: "primary"},
+                    {key: "no", text: "No", color: "secondary"}
+                ]
+            });
+            if (result === "yes") clearEditCredentials();
+        } catch {
+        }
+    }
+
     return (<Form>
         <Form.Group controlId="version-select">
             <div className="group-container">
@@ -57,7 +80,16 @@ const SettingsPane = () => {
                 </Form.Control>
             </div>
         </Form.Group>
+        <Form.Group>
+            <div className="group-container">
+                <Form.Label>EDIT Service Credentials</Form.Label>
+                <Button className="left-button" variant="secondary" onClick={onChangeEditCredentials}>
+                    Change
+                </Button>
+                <Button className="right-button" variant="secondary" onClick={onClearEditCredentials}>
+                    Clear
+                </Button>
+            </div>
+        </Form.Group>
     </Form>)
 }
-
-export default SettingsPane

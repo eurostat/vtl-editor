@@ -1,6 +1,6 @@
 {
   "name": "vrm-frontend",
-  "version": "0.7.1-SNAPSHOT",
+  "version": "1.0.0-SNAPSHOT",
   "private": true,
   "homepage": "./",
   "dependencies": {

@@ -1,6 +1,15 @@
 ## Version 0.7.1.210222-a
 Date: 2021-02-22
 
+### New Features
+- Implemented user log in feature compatible with authentication providers supporting OAuth2/OIDC, including ECAS. [VRM-296]
+- User access and privileges are now granted according to authorization matrix with four user roles: Visitor, User, Domain Manager, and Administrator. [VRM-297]
+- New Domain Repository allows to share scripts with other users of the VRM instance. Domains in the repository are managed by Domain Managers. [VRM-298]
+- Users with CONVAL/EDIT account can upload dataset definitions and programs from the VRM to EDIT, list uploaded items, and delete them. [VRM-353][VRM-354]
+
+## Version 0.7.1.210222-a
+Date: 2021-02-22
+
 ### Fixes
 - Trying to browse agencies and data structure definitions in the Euro SDMX Registry resulted in SdmxSyntaxException and internal server error (500).
   The registry server responded with 404 status and HTML message "Not found". The reason was incorrect case in the resource name in the SDMX REST API path -

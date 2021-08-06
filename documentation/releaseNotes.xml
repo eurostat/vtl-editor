@@ -28,6 +28,56 @@
         </authorgroup>
     </info>
 
+
+    <chapter xml:id="VRM-1.0.0" xreflabel="VRM-1.0.0">
+        <title>Version 1.0.0.210806-rc</title>
+        <para>Date: 2021-08-06</para>
+        <section>
+            <title>New Features</title>
+            <itemizedlist>
+                <listitem>
+                    <simpara>
+                        Implemented user log in feature compatible with authentication providers supporting OAuth2/OIDC,
+                        including ECAS.
+                        <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-296">
+                            [VRM-296]
+                        </link>
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        User access and privileges are now granted according to authorization matrix with four user
+                        roles: Visitor, User, Domain Manager, and Administrator.
+                        <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-297">
+                            [VRM-297]
+                        </link>
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        New Domain Repository allows to share scripts with other users of the VRM instance. Domains
+                        in the repository are managed by Domain Managers.
+                        <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-298">
+                            [VRM-298]
+                        </link>
+                    </simpara>
+                </listitem>
+                <listitem>
+                    <simpara>
+                        Users with CONVAL/EDIT account can upload dataset definitions and programs from the VRM to EDIT,
+                        list uploaded items, and delete them.
+                        <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-353">
+                            [VRM-353]
+                        </link>
+                        <link xlink:show="new" xlink:href="https://citnet.tech.ec.europa.eu/CITnet/jira/browse/VRM-354">
+                            [VRM-354]
+                        </link>
+                    </simpara>
+                </listitem>
+            </itemizedlist>
+        </section>
+    </chapter>
+
     <chapter xml:id="VRM-0.7.1" xreflabel="VRM-0.7.1">
         <title>Version 0.7.1.210222-a</title>
         <para>Date: 2021-02-22</para>
@@ -117,6 +167,8 @@
                             [VRM-199]
                         </link>
                     </simpara>
+                </listitem>
+                <listitem>
                     <simpara>
                         It is possible to filter list of DSDs by agency name and final status. A detailed preview of
                         specific DSD is available in the list.
@@ -124,6 +176,8 @@
                             [VRM-214]
                         </link>
                     </simpara>
+                </listitem>
+                <listitem>
                     <simpara>
                         When user selects desired DSD and confirms import, the DSD contents are downloaded to the
                         application.
@@ -136,6 +190,8 @@
                             [VRM-218]
                         </link>
                     </simpara>
+                </listitem>
+                <listitem>
                     <simpara>
                         Elements from imported DSD are available in the VTL Editor as suggestions in autocomplete window
                         and are highlighted in the edited code.
@@ -155,6 +211,8 @@
                             [VRM-245]
                         </link>
                     </simpara>
+                </listitem>
+                <listitem>
                     <simpara>
                         Using the File Explorer available in the Navigation side bar it is possible to create, rename,
                         and delete folders and files.
@@ -167,6 +225,8 @@
                             [VRM-250]
                         </link>
                     </simpara>
+                </listitem>
+                <listitem>
                     <simpara>
                         Each save of the script creates a new version with subsequent number. All previous versions are
                         preserved in the repository.

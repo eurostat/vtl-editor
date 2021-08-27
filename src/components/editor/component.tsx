@@ -23,6 +23,7 @@ type EditorProps = {
     onCursorChange: (position: CursorPosition) => void;
     onListErrors?: (errors: Error[]) => void;
     movedCursor?: CursorPosition;
+    resizeLayout?: any;
 };
 
 const Editor = ({
@@ -37,11 +38,16 @@ const Editor = ({
     onListErrors,
     movedCursor,
     readOnly,
+    resizeLayout,
 }: EditorProps) => {
     const [vars, setVars] = useState(buildVariables(variables));
     const [ready, setReady] = useState(false);
 
     const monacoRef = useRef<MonacoEditor>(null);
+
+    useEffect(() => {
+        monacoRef?.current?.editor?.layout();
+    }, [resizeLayout]);
 
     useEffect(() => {
         if (movedCursor) {

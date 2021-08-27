@@ -16,6 +16,7 @@ export type AntlrEditorProps = {
     onCursorChange?: (position: CursorPosition) => void;
     onListErrors?: (errors: Error[]) => void;
     movedCursor?: CursorPosition;
+    resizeLayout?: any;
 };
 
 export const AntlrEditor = (props: AntlrEditorProps) => {
@@ -33,6 +34,7 @@ export const AntlrEditor = (props: AntlrEditorProps) => {
         onCursorChange,
         onListErrors,
         movedCursor,
+        resizeLayout,
     } = props;
 
     const {
@@ -59,13 +61,14 @@ export const AntlrEditor = (props: AntlrEditorProps) => {
             tools={customTools}
             script={script}
             setScript={setScript}
-            sdmxResult={sdmxResult}
             readOnly={readOnly}
             onListErrors={onListErrors}
             movedCursor={movedCursor || cursor}
             onCursorChange={onCursorChange || setCursor}
             variables={variables}
             variableURLs={variableURLs}
+            sdmxResult={sdmxResult}
+            resizeLayout={resizeLayout}
             options={options}
         />
     );

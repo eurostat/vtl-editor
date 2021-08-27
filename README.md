@@ -64,6 +64,7 @@ export default Editor;
 | onListErrors   |    Function     |   undefined   |
 | movedCursor    |     object      |   undefined   |
 | onCursorChange |    Function     |   undefined   |
+| resizeLayout   |       any       |       -       |
 | options        |   Options \*    |      {}       |
 
 See details about \* props below

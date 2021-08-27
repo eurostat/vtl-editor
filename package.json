@@ -1,7 +1,7 @@
 {
     "name": "@eurostat/vtl-editor",
-    "version": "0.0.1",
-    "description": "Antlr editor based on Monaco",
+    "version": "0.1.0",
+    "description": "VTL editor based on Monaco",
     "repository": {
         "type": "git",
         "url": "https://github.com/eurostat/vtl-editor.git"

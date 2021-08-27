@@ -16,12 +16,12 @@ yarn typescript add @eurostat/vtl-editor antlr4ts monaco-editor react-monaco-edi
 ### VTLEditor
 
 ```bash
-yarn add
+yarn add vtl-2-0-antlr-tools-ts
 ```
 
 ```javascript
 import React, { useState } from "react";
-import { VTLEditor } from "@eurostat/vtl-editor";
+import { AntlrEditor as VTLEditor } from "@eurostat/vtl-editor";
 import * as VTLTools from "vtl-2-0-antlr-tools-ts";
 import { getSuggestions } from "./custom-suggestions";
 

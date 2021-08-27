@@ -1,0 +1,1488 @@
+{
+    "dataStructure": {
+        "agencyId": "ESTAT",
+        "id": "CPI",
+        "version": "1.2",
+        "name": "Consumer Price Index DSD",
+        "isFinal": "TRUE",
+        "tableData": {
+            "id": 0,
+            "checked": true
+        }
+    },
+    "dataStructureInfo": {
+        "id": "CPI",
+        "name": "Consumer Price Index DSD"
+    },
+    "dimension": {
+        "texts": [
+            {
+                "id": "BASE_PER",
+                "name": "Base period",
+                "position": 6,
+                "structureType": {
+                    "type": "text",
+                    "textType": "OBSERVATIONAL_TIME_PERIOD"
+                }
+            }
+        ],
+        "codeLists": [
+            {
+                "structureId": "FREQ",
+                "name": "Frequency of observation",
+                "agencyId": "SDMX",
+                "id": "CL_FREQ",
+                "version": "2.0",
+                "page": 0,
+                "totalPages": 0,
+                "codes": [
+                    {
+                        "id": "A",
+                        "value": "Annual"
+                    },
+                    {
+                        "id": "S",
+                        "value": "Half-yearly, semester"
+                    },
+                    {
+                        "id": "Q",
+                        "value": "Quarterly"
+                    },
+                    {
+                        "id": "M",
+                        "value": "Monthly"
+                    },
+                    {
+                        "id": "W",
+                        "value": "Weekly"
+                    },
+                    {
+                        "id": "D",
+                        "value": "Daily"
+                    },
+                    {
+                        "id": "H",
+                        "value": "Hourly"
+                    },
+                    {
+                        "id": "B",
+                        "value": "Daily – businessweek"
+                    },
+                    {
+                        "id": "N",
+                        "value": "Minutely"
+                    }
+                ]
+            },
+            {
+                "structureId": "SEASONAL_ADJUST",
+                "name": "Seasonal adjustment",
+                "agencyId": "ESTAT",
+                "id": "CL_SEASON_ADJUST",
+                "version": "1.0",
+                "page": 0,
+                "totalPages": 0,
+                "codes": [
+                    {
+                        "id": "C",
+                        "value": "Trend-cycle data, calendar adjusted"
+                    },
+                    {
+                        "id": "I",
+                        "value": "Irregular component"
+                    },
+                    {
+                        "id": "K",
+                        "value": "Calendar component"
+                    },
+                    {
+                        "id": "M",
+                        "value": "Seasonal and calendar components"
+                    },
+                    {
+                        "id": "N",
+                        "value": "Neither seasonally adjusted nor calendar adjusted data"
+                    },
+                    {
+                        "id": "R",
+                        "value": "Trend-cycle data, not calendar adjusted"
+                    },
+                    {
+                        "id": "S",
+                        "value": "Seasonally adjusted data, not calendar adjusted"
+                    },
+                    {
+                        "id": "T",
+                        "value": "Trend"
+                    },
+                    {
+                        "id": "W",
+                        "value": "Calendar adjusted data, not seasonally adjusted"
+                    },
+                    {
+                        "id": "X",
+                        "value": "Seasonal component"
+                    },
+                    {
+                        "id": "Y",
+                        "value": "Calendar and seasonally adjusted data"
+                    }
+                ]
+            },
+            {
+                "structureId": "IND_TYPE",
+                "name": "Indicator type",
+                "agencyId": "ESTAT",
+                "id": "CL_IND_TYPE",
+                "version": "1.1",
+                "page": 0,
+                "totalPages": 0,
+                "codes": [
+                    {
+                        "id": "AP",
+                        "value": "Administered price"
+                    },
+                    {
+                        "id": "CW",
+                        "value": "Country weight"
+                    },
+                    {
+                        "id": "CW_R_6O",
+                        "value": "Country weight in OECD"
+                    },
+                    {
+                        "id": "CW_R_B0",
+                        "value": "Country weight in EU (changing composition)"
+                    },
+                    {
+                        "id": "CW_R_B2",
+                        "value": "Country weight in EU15"
+                    },
+                    {
+                        "id": "CW_R_B3",
+                        "value": "Country weight in EU25"
+                    },
+                    {
+                        "id": "CW_R_B4",
+                        "value": "Country weight in EU27"
+                    },
+                    {
+                        "id": "CW_R_B5",
+                        "value": "Country weight in EU28"
+                    },
+                    {
+                        "id": "CW_R_G0",
+                        "value": "Country weight in EEA"
+                    },
+                    {
+                        "id": "CW_R_I1",
+                        "value": "Country weight in Euro area 11"
+                    },
+                    {
+                        "id": "CW_R_I2",
+                        "value": "Country weight in Euro area 12"
+                    },
+                    {
+                        "id": "CW_R_I3",
+                        "value": "Country weight in Euro area 13"
+                    },
+                    {
+                        "id": "CW_R_I4",
+                        "value": "Country weight in Euro area 15"
+                    },
+                    {
+                        "id": "CW_R_I5",
+                        "value": "Country weight in Euro area 16"
+                    },
+                    {
+                        "id": "CW_R_I6",
+                        "value": "Country weight in Euro area 17"
+                    },
+                    {
+                        "id": "CW_R_I7",
+                        "value": "Country weight in Euro area 18"
+                    },
+                    {
+                        "id": "CW_R_I8",
+                        "value": "Country weight in Euro area 19"
+                    },
+                    {
+                        "id": "CW_R_R22",
+                        "value": "Country weight in G20"
+                    },
+                    {
+                        "id": "CW_R_U2",
+                        "value": "Country weight in Euro area (changing composition)"
+                    },
+                    {
+                        "id": "DT",
+                        "value": "Distribution"
+                    },
+                    {
+                        "id": "FE",
+                        "value": "Flash estimate"
+                    },
+                    {
+                        "id": "IW",
+                        "value": "Item weight"
+                    },
+                    {
+                        "id": "IX",
+                        "value": "Index"
+                    },
+                    {
+                        "id": "MV",
+                        "value": "Monetary value"
+                    },
+                    {
+                        "id": "PW",
+                        "value": "Product weight [deprecated]"
+                    },
+                    {
+                        "id": "RA",
+                        "value": "Rate"
+                    }
+                ]
+            },
+            {
+                "structureId": "IDX_TYPE",
+                "name": "Index type",
+                "agencyId": "ESTAT",
+                "id": "CL_IDX_TYPE",
+                "version": "1.0",
+                "page": 0,
+                "totalPages": 0,
+                "codes": [
+                    {
+                        "id": "CPI",
+                        "value": "Consumer price index"
+                    },
+                    {
+                        "id": "HICP",
+                        "value": "Harmonised index of consumer prices"
+                    },
+                    {
+                        "id": "HICP_CT",
+                        "value": "Harmonised index of consumer prices at constant taxes"
+                    },
+                    {
+                        "id": "HPI_OO",
+                        "value": "Owner-occupied housing price index"
+                    },
+                    {
+                        "id": "INF_TRG_L",
+                        "value": "Inflation target - lower range"
+                    },
+                    {
+                        "id": "INF_TRG_S",
+                        "value": "Inflation target - single value"
+                    },
+                    {
+                        "id": "INF_TRG_U",
+                        "value": "Inflation target - upper value"
+                    }
+                ]
+            },
+            {
+                "structureId": "COVERAGE_GEO",
+                "name": "Geographical coverage",
+                "agencyId": "ESTAT",
+                "id": "CL_COVERAGE_GEO",
+                "version": "1.0",
+                "page": 0,
+                "totalPages": 0,
+                "codes": [
+                    {
+                        "id": "_T",
+                        "value": "Total (national) or not applicable"
+                    },
+                    {
+                        "id": "_TXCAP",
+                        "value": "All country, excluding capital city"
+                    },
+                    {
+                        "id": "BCITY_MET",
+                        "value": "Main cities or metropolitan areas"
+                    },
+                    {
+                        "id": "CAP",
+                        "value": "Capital city"
+                    },
+                    {
+                        "id": "CAP_MET",
+                        "value": "Main city or metropolitan area"
+                    },
+                    {
+                        "id": "CAP_SURB",
+                        "value": "Capital city including suburbs"
+                    },
+                    {
+                        "id": "CTYB",
+                        "value": "Big cities"
+                    },
+                    {
+                        "id": "CTYBM",
+                        "value": "Big and medium cities"
+                    },
+                    {
+                        "id": "CTYM",
+                        "value": "Medium cities"
+                    },
+                    {
+                        "id": "CTYMS",
+                        "value": "Medium and small cities"
+                    },
+                    {
+                        "id": "CTYS",
+                        "value": "Small cities"
+                    },
+                    {
+                        "id": "RUR",
+                        "value": "Rural areas"
+                    },
+                    {
+                        "id": "URB",
+                        "value": "Urban areas only"
+                    }
+                ]
+            },
+            {
+                "structureId": "COVERAGE_POP",
+                "name": "Population coverage",
+                "agencyId": "ESTAT",
+                "id": "CL_COVERAGE_POP",
+                "version": "1.0",
+                "page": 0,
+                "totalPages": 0,
+                "codes": [
+                    {
+                        "id": "_T",
+                        "value": "Total (national) or not applicable"
+                    },
+                    {
+                        "id": "AFR",
+                        "value": "Africans"
+                    },
+                    {
+                        "id": "EUR",
+                        "value": "Europeans"
+                    },
+                    {
+                        "id": "INCH",
+                        "value": "High income group"
+                    },
+                    {
+                        "id": "INCL",
+                        "value": "Low income group"
+                    },
+                    {
+                        "id": "INCM",
+                        "value": "Middle income group"
+                    },
+                    {
+                        "id": "NMAN",
+                        "value": "Non-manual employees"
+                    },
+                    {
+                        "id": "WAGE",
+                        "value": "Wage earners"
+                    },
+                    {
+                        "id": "WRKA",
+                        "value": "Agricultural workers"
+                    },
+                    {
+                        "id": "WRKG",
+                        "value": "Government official"
+                    },
+                    {
+                        "id": "WRKI",
+                        "value": "Industrial workers"
+                    }
+                ]
+            },
+            {
+                "structureId": "TRANSFORMATION",
+                "name": "Time transformation",
+                "agencyId": "ESTAT",
+                "id": "CL_TRANSFORMATION",
+                "version": "1.4",
+                "page": 0,
+                "totalPages": 0,
+                "codes": [
+                    {
+                        "id": "_Z",
+                        "value": "Not applicable"
+                    },
+                    {
+                        "id": "A1",
+                        "value": "Average, period on period"
+                    },
+                    {
+                        "id": "A12",
+                        "value": "12-period moving average"
+                    },
+                    {
+                        "id": "A3",
+                        "value": "3-period moving average"
+                    },
+                    {
+                        "id": "A4",
+                        "value": "4-period moving average"
+                    },
+                    {
+                        "id": "A6",
+                        "value": "6-period moving average"
+                    },
+                    {
+                        "id": "ACR",
+                        "value": "Annual rate of change corrected for the effect of methodological changes where applicable"
+                    },
+                    {
+                        "id": "AS1999",
+                        "value": "Average since 1999"
+                    },
+                    {
+                        "id": "AW12",
+                        "value": "Weighted average, over 12 periods"
+                    },
+                    {
+                        "id": "C12",
+                        "value": "12-period cumulated sum"
+                    },
+                    {
+                        "id": "C16",
+                        "value": "16 period cumulated sum"
+                    },
+                    {
+                        "id": "C3",
+                        "value": "3-period cumulated sum"
+                    },
+                    {
+                        "id": "C4",
+                        "value": "4-period cumulated sum"
+                    },
+                    {
+                        "id": "C4G",
+                        "value": "Growth rate, period on period, over 4-period cumulated sum"
+                    },
+                    {
+                        "id": "C6",
+                        "value": "6-period cumulated sum"
+                    },
+                    {
+                        "id": "CY",
+                        "value": "Cumulated sum, over 1 year"
+                    },
+                    {
+                        "id": "D1",
+                        "value": "Differences, period on period, first order"
+                    },
+                    {
+                        "id": "D1D1",
+                        "value": "Differences, period on period, second order"
+                    },
+                    {
+                        "id": "D4",
+                        "value": "Difference period on 4 periods, first order"
+                    },
+                    {
+                        "id": "DY",
+                        "value": "Difference, over 1 year"
+                    },
+                    {
+                        "id": "ECX",
+                        "value": "Monthly index, backdated, ECU (to 1989) and fixed euro conversion rate (from 1990) used for weights"
+                    },
+                    {
+                        "id": "EPX",
+                        "value": "Monthly index, backdated, PPP exchange rates used for weights"
+                    },
+                    {
+                        "id": "ERX",
+                        "value": "Monthly index, backdated, fixed euro conversion rate used for weights"
+                    },
+                    {
+                        "id": "F1",
+                        "value": "Growth rate, flow over stock, period on period"
+                    },
+                    {
+                        "id": "F12",
+                        "value": "Growth rate, flow over stock over 12 periods"
+                    },
+                    {
+                        "id": "F3",
+                        "value": "Growth rate, flow over stock, over 3 periods"
+                    },
+                    {
+                        "id": "F4",
+                        "value": "Growth rate, flow over stock, over 4 periods"
+                    },
+                    {
+                        "id": "F6",
+                        "value": "Growth rate, flow over stock over 6 periods"
+                    },
+                    {
+                        "id": "FO1",
+                        "value": "Contribution to growth rate, flow over stock, period on period"
+                    },
+                    {
+                        "id": "FO12",
+                        "value": "Contribution to growth rate, flow over stock, over 12  periods"
+                    },
+                    {
+                        "id": "FO16",
+                        "value": "Contribution to growth rate, flow over stock, over 16 periods"
+                    },
+                    {
+                        "id": "FO3",
+                        "value": "Contribution to growth rate, flow over stock, over 3 periods"
+                    },
+                    {
+                        "id": "FO4",
+                        "value": "Contribution to growth rate, flow over stock, over 4 periods"
+                    },
+                    {
+                        "id": "FO6",
+                        "value": "Contribution to growth rate, flow over stock, over 6 periods"
+                    },
+                    {
+                        "id": "FY",
+                        "value": "Growth rate, flow over stock, over 1 year"
+                    },
+                    {
+                        "id": "G1",
+                        "value": "Growth rate, period on period"
+                    },
+                    {
+                        "id": "G10",
+                        "value": "Growth rate, over 10 periods"
+                    },
+                    {
+                        "id": "G12",
+                        "value": "Growth rate, over 12 periods"
+                    },
+                    {
+                        "id": "G3",
+                        "value": "Growth rate, over 3 periods"
+                    },
+                    {
+                        "id": "G3Y",
+                        "value": "Growth rate, over 3 years"
+                    },
+                    {
+                        "id": "G4",
+                        "value": "Growth rate, over 4 periods"
+                    },
+                    {
+                        "id": "G4Y",
+                        "value": "Growth rate, over 4 years"
+                    },
+                    {
+                        "id": "G6",
+                        "value": "Growth rate, over 6 periods"
+                    },
+                    {
+                        "id": "GC10Y",
+                        "value": "Compound growth rate, over 10 years"
+                    },
+                    {
+                        "id": "GC5Y",
+                        "value": "Compound growth rate, over 5 years"
+                    },
+                    {
+                        "id": "GO1",
+                        "value": "Contribution to growth rate, period on period"
+                    },
+                    {
+                        "id": "GO12",
+                        "value": "Contribution to growth rate, over 12 periods"
+                    },
+                    {
+                        "id": "GO3",
+                        "value": "Contribution to growth rate, over 3 periods"
+                    },
+                    {
+                        "id": "GO4",
+                        "value": "Contribution to growth rate, over  4 periods"
+                    },
+                    {
+                        "id": "GO6",
+                        "value": "Contribution to growth rate, over 6 periods"
+                    },
+                    {
+                        "id": "GOY",
+                        "value": "Contribution to growth rate, over 1 year"
+                    },
+                    {
+                        "id": "GR",
+                        "value": "Growth rate, over reference year"
+                    },
+                    {
+                        "id": "GY",
+                        "value": "Growth rate, over 1 year"
+                    },
+                    {
+                        "id": "LA",
+                        "value": "Annual levels"
+                    },
+                    {
+                        "id": "N",
+                        "value": "Non transformed data"
+                    },
+                    {
+                        "id": "R1",
+                        "value": "Revisions, difference to last transmission period"
+                    },
+                    {
+                        "id": "GYA3",
+                        "value": "Growth rate, over 1 year, based on 3-period average"
+                    },
+                    {
+                        "id": "GYA12",
+                        "value": "Growth rate, over 1 year, based on 12-period average"
+                    }
+                ]
+            },
+            {
+                "structureId": "CUST_BREAKDOWN",
+                "name": "Custom breakdown",
+                "agencyId": "ESTAT",
+                "id": "CL_CUST_BREAKDOWN",
+                "version": "1.0",
+                "page": 0,
+                "totalPages": 0,
+                "codes": [
+                    {
+                        "id": "_T",
+                        "value": "Total"
+                    },
+                    {
+                        "id": "C01",
+                        "value": "Custom 01"
+                    },
+                    {
+                        "id": "C02",
+                        "value": "Custom 02"
+                    },
+                    {
+                        "id": "C03",
+                        "value": "Custom 03"
+                    },
+                    {
+                        "id": "C04",
+                        "value": "Custom 04"
+                    },
+                    {
+                        "id": "C05",
+                        "value": "Custom 05"
+                    },
+                    {
+                        "id": "C06",
+                        "value": "Custom 06"
+                    },
+                    {
+                        "id": "C07",
+                        "value": "Custom 07"
+                    },
+                    {
+                        "id": "C08",
+                        "value": "Custom 08"
+                    },
+                    {
+                        "id": "C09",
+                        "value": "Custom 09"
+                    },
+                    {
+                        "id": "C10",
+                        "value": "Custom 10"
+                    },
+                    {
+                        "id": "C11",
+                        "value": "Custom 11"
+                    },
+                    {
+                        "id": "C12",
+                        "value": "Custom 12"
+                    },
+                    {
+                        "id": "C13",
+                        "value": "Custom 13"
+                    },
+                    {
+                        "id": "C14",
+                        "value": "Custom 14"
+                    },
+                    {
+                        "id": "C15",
+                        "value": "Custom 15"
+                    },
+                    {
+                        "id": "C16",
+                        "value": "Custom 16"
+                    },
+                    {
+                        "id": "C17",
+                        "value": "Custom 17"
+                    },
+                    {
+                        "id": "C18",
+                        "value": "Custom 18"
+                    },
+                    {
+                        "id": "C19",
+                        "value": "Custom 19"
+                    },
+                    {
+                        "id": "C20",
+                        "value": "Custom 20"
+                    },
+                    {
+                        "id": "C21",
+                        "value": "Custom 21"
+                    },
+                    {
+                        "id": "C22",
+                        "value": "Custom 22"
+                    },
+                    {
+                        "id": "C23",
+                        "value": "Custom 23"
+                    },
+                    {
+                        "id": "C24",
+                        "value": "Custom 24"
+                    },
+                    {
+                        "id": "C25",
+                        "value": "Custom 25"
+                    },
+                    {
+                        "id": "C26",
+                        "value": "Custom 26"
+                    },
+                    {
+                        "id": "C27",
+                        "value": "Custom 27"
+                    },
+                    {
+                        "id": "C28",
+                        "value": "Custom 28"
+                    },
+                    {
+                        "id": "C29",
+                        "value": "Custom 29"
+                    },
+                    {
+                        "id": "C30",
+                        "value": "Custom 30"
+                    },
+                    {
+                        "id": "C31",
+                        "value": "Custom 31"
+                    },
+                    {
+                        "id": "C32",
+                        "value": "Custom 32"
+                    },
+                    {
+                        "id": "C33",
+                        "value": "Custom 33"
+                    },
+                    {
+                        "id": "C34",
+                        "value": "Custom 34"
+                    },
+                    {
+                        "id": "C35",
+                        "value": "Custom 35"
+                    },
+                    {
+                        "id": "C36",
+                        "value": "Custom 36"
+                    },
+                    {
+                        "id": "C37",
+                        "value": "Custom 37"
+                    },
+                    {
+                        "id": "C38",
+                        "value": "Custom 38"
+                    },
+                    {
+                        "id": "C39",
+                        "value": "Custom 39"
+                    },
+                    {
+                        "id": "C40",
+                        "value": "Custom 40"
+                    },
+                    {
+                        "id": "C41",
+                        "value": "Custom 41"
+                    },
+                    {
+                        "id": "C42",
+                        "value": "Custom 42"
+                    },
+                    {
+                        "id": "C43",
+                        "value": "Custom 43"
+                    },
+                    {
+                        "id": "C44",
+                        "value": "Custom 44"
+                    },
+                    {
+                        "id": "C45",
+                        "value": "Custom 45"
+                    },
+                    {
+                        "id": "C46",
+                        "value": "Custom 46"
+                    },
+                    {
+                        "id": "C47",
+                        "value": "Custom 47"
+                    },
+                    {
+                        "id": "C48",
+                        "value": "Custom 48"
+                    },
+                    {
+                        "id": "C49",
+                        "value": "Custom 49"
+                    },
+                    {
+                        "id": "C50",
+                        "value": "Custom 50"
+                    },
+                    {
+                        "id": "C51",
+                        "value": "Custom 51"
+                    },
+                    {
+                        "id": "C52",
+                        "value": "Custom 52"
+                    },
+                    {
+                        "id": "C53",
+                        "value": "Custom 53"
+                    },
+                    {
+                        "id": "C54",
+                        "value": "Custom 54"
+                    },
+                    {
+                        "id": "C55",
+                        "value": "Custom 55"
+                    },
+                    {
+                        "id": "C56",
+                        "value": "Custom 56"
+                    },
+                    {
+                        "id": "C57",
+                        "value": "Custom 57"
+                    },
+                    {
+                        "id": "C58",
+                        "value": "Custom 58"
+                    },
+                    {
+                        "id": "C59",
+                        "value": "Custom 59"
+                    },
+                    {
+                        "id": "C60",
+                        "value": "Custom 60"
+                    },
+                    {
+                        "id": "C61",
+                        "value": "Custom 61"
+                    },
+                    {
+                        "id": "C62",
+                        "value": "Custom 62"
+                    },
+                    {
+                        "id": "C63",
+                        "value": "Custom 63"
+                    },
+                    {
+                        "id": "C64",
+                        "value": "Custom 64"
+                    },
+                    {
+                        "id": "C65",
+                        "value": "Custom 65"
+                    },
+                    {
+                        "id": "C66",
+                        "value": "Custom 66"
+                    },
+                    {
+                        "id": "C67",
+                        "value": "Custom 67"
+                    },
+                    {
+                        "id": "C68",
+                        "value": "Custom 68"
+                    },
+                    {
+                        "id": "C69",
+                        "value": "Custom 69"
+                    },
+                    {
+                        "id": "C70",
+                        "value": "Custom 70"
+                    },
+                    {
+                        "id": "C71",
+                        "value": "Custom 71"
+                    },
+                    {
+                        "id": "C72",
+                        "value": "Custom 72"
+                    },
+                    {
+                        "id": "C73",
+                        "value": "Custom 73"
+                    },
+                    {
+                        "id": "C74",
+                        "value": "Custom 74"
+                    },
+                    {
+                        "id": "C75",
+                        "value": "Custom 75"
+                    },
+                    {
+                        "id": "C76",
+                        "value": "Custom 76"
+                    },
+                    {
+                        "id": "C77",
+                        "value": "Custom 77"
+                    },
+                    {
+                        "id": "C78",
+                        "value": "Custom 78"
+                    },
+                    {
+                        "id": "C79",
+                        "value": "Custom 79"
+                    },
+                    {
+                        "id": "C80",
+                        "value": "Custom 80"
+                    },
+                    {
+                        "id": "C81",
+                        "value": "Custom 81"
+                    },
+                    {
+                        "id": "C82",
+                        "value": "Custom 82"
+                    },
+                    {
+                        "id": "C83",
+                        "value": "Custom 83"
+                    },
+                    {
+                        "id": "C84",
+                        "value": "Custom 84"
+                    },
+                    {
+                        "id": "C85",
+                        "value": "Custom 85"
+                    },
+                    {
+                        "id": "C86",
+                        "value": "Custom 86"
+                    },
+                    {
+                        "id": "C87",
+                        "value": "Custom 87"
+                    },
+                    {
+                        "id": "C88",
+                        "value": "Custom 88"
+                    },
+                    {
+                        "id": "C89",
+                        "value": "Custom 89"
+                    },
+                    {
+                        "id": "C90",
+                        "value": "Custom 90"
+                    },
+                    {
+                        "id": "C91",
+                        "value": "Custom 91"
+                    },
+                    {
+                        "id": "C92",
+                        "value": "Custom 92"
+                    },
+                    {
+                        "id": "C93",
+                        "value": "Custom 93"
+                    },
+                    {
+                        "id": "C94",
+                        "value": "Custom 94"
+                    },
+                    {
+                        "id": "C95",
+                        "value": "Custom 95"
+                    },
+                    {
+                        "id": "C96",
+                        "value": "Custom 96"
+                    },
+                    {
+                        "id": "C97",
+                        "value": "Custom 97"
+                    },
+                    {
+                        "id": "C98",
+                        "value": "Custom 98"
+                    },
+                    {
+                        "id": "C99",
+                        "value": "Custom 99"
+                    }
+                ]
+            }
+        ]
+    },
+    "attribute": {
+        "texts": [
+            {
+                "id": "DATA_COMP",
+                "name": "Data compilation",
+                "structureType": {
+                    "type": "text",
+                    "textType": "STRING"
+                }
+            },
+            {
+                "id": "PRE_BREAK_VALUE",
+                "name": "Observation pre-break value",
+                "structureType": {
+                    "type": "text",
+                    "textType": "DOUBLE"
+                }
+            },
+            {
+                "id": "LAST_UPDATE",
+                "name": "Data Update – Last Update",
+                "structureType": {
+                    "type": "text",
+                    "textType": "DATE_TIME"
+                }
+            },
+            {
+                "id": "UNIT_MULT",
+                "name": "Unit multiplier",
+                "structureType": {
+                    "type": "text",
+                    "textType": "INTEGER"
+                }
+            },
+            {
+                "id": "TITLE",
+                "name": "Title",
+                "structureType": {
+                    "type": "text",
+                    "textType": "STRING"
+                }
+            },
+            {
+                "id": "DECIMALS",
+                "name": "Decimals",
+                "structureType": {
+                    "type": "text",
+                    "textType": "INTEGER"
+                }
+            },
+            {
+                "id": "COMMENT_TS",
+                "name": "Comments on series level",
+                "structureType": {
+                    "type": "text",
+                    "textType": "STRING"
+                }
+            },
+            {
+                "id": "COMMENT_OBS",
+                "name": "Comments to the observation value",
+                "structureType": {
+                    "type": "text",
+                    "textType": "STRING"
+                }
+            },
+            {
+                "id": "COMMENT_DSET",
+                "name": "Comments on dataset level",
+                "structureType": {
+                    "type": "text",
+                    "textType": "STRING"
+                }
+            },
+            {
+                "id": "REPYEAREND",
+                "name": "Reporting year end day",
+                "structureType": {
+                    "type": "text",
+                    "textType": "MONTH_DAY"
+                }
+            },
+            {
+                "id": "REPYEARSTART",
+                "name": "Reporting year start day",
+                "structureType": {
+                    "type": "text",
+                    "textType": "MONTH_DAY"
+                }
+            },
+            {
+                "id": "EMBARGO_TIME",
+                "name": "Embargo  time",
+                "structureType": {
+                    "type": "text",
+                    "textType": "DATE_TIME"
+                }
+            },
+            {
+                "id": "CUST_BREAKDOWN_LB",
+                "name": "Custom breakdown label",
+                "structureType": {
+                    "type": "text",
+                    "textType": "STRING"
+                }
+            },
+            {
+                "id": "IND_BASE_PER",
+                "name": "Base period of the weight",
+                "structureType": {
+                    "type": "text",
+                    "textType": "OBSERVATIONAL_TIME_PERIOD"
+                }
+            },
+            {
+                "id": "BASE_PER_START",
+                "name": "Base period start",
+                "structureType": {
+                    "type": "text",
+                    "textType": "OBSERVATIONAL_TIME_PERIOD"
+                }
+            },
+            {
+                "id": "BASE_PER_END",
+                "name": "Base period end",
+                "structureType": {
+                    "type": "text",
+                    "textType": "OBSERVATIONAL_TIME_PERIOD"
+                }
+            }
+        ],
+        "codeLists": [
+            {
+                "structureId": "TIME_PER_COLLECT",
+                "name": "Time period collection",
+                "agencyId": "IMF",
+                "id": "CL_TIME_COLLECT",
+                "version": "1.0",
+                "page": 0,
+                "totalPages": 0,
+                "codes": [
+                    {
+                        "id": "A",
+                        "value": "Average of observations through period"
+                    },
+                    {
+                        "id": "B",
+                        "value": "Beginning of period"
+                    },
+                    {
+                        "id": "E",
+                        "value": "End of period"
+                    },
+                    {
+                        "id": "H",
+                        "value": "Highest in period"
+                    },
+                    {
+                        "id": "L",
+                        "value": "Lowest in period"
+                    },
+                    {
+                        "id": "M",
+                        "value": "Middle of period"
+                    },
+                    {
+                        "id": "S",
+                        "value": "Summed through period"
+                    },
+                    {
+                        "id": "U",
+                        "value": "Unknown"
+                    },
+                    {
+                        "id": "V",
+                        "value": "Other"
+                    },
+                    {
+                        "id": "Y",
+                        "value": "Annualised summed"
+                    }
+                ]
+            },
+            {
+                "structureId": "TIME_FORMAT",
+                "name": "Time format",
+                "agencyId": "SDMX",
+                "id": "CL_TIME_FORMAT",
+                "version": "1.0",
+                "page": 0,
+                "totalPages": 0,
+                "codes": [
+                    {
+                        "id": "203",
+                        "value": "CCYYMMDDhhmm"
+                    },
+                    {
+                        "id": "102",
+                        "value": "CCYYMMDD"
+                    },
+                    {
+                        "id": "616",
+                        "value": "CCYYWW"
+                    },
+                    {
+                        "id": "610",
+                        "value": "CCYYMM"
+                    },
+                    {
+                        "id": "608",
+                        "value": "CCYYQ"
+                    },
+                    {
+                        "id": "604",
+                        "value": "CCYYS"
+                    },
+                    {
+                        "id": "602",
+                        "value": "CCYY"
+                    },
+                    {
+                        "id": "719",
+                        "value": "CCYYMMDDhhmmCCYYMMDDhhmm"
+                    },
+                    {
+                        "id": "711",
+                        "value": "CCYYMMDDCCYYMMDD"
+                    },
+                    {
+                        "id": "716",
+                        "value": "CCYYWWCCYYWW"
+                    },
+                    {
+                        "id": "710",
+                        "value": "CCYYMMCCYYMM"
+                    },
+                    {
+                        "id": "708",
+                        "value": "CCYYQCCYYQ"
+                    },
+                    {
+                        "id": "704",
+                        "value": "CCYYSCCYYS"
+                    },
+                    {
+                        "id": "702",
+                        "value": "CCYYCCYY"
+                    },
+                    {
+                        "id": "P1D",
+                        "value": "Daily (or Business)"
+                    },
+                    {
+                        "id": "P1M",
+                        "value": "Monthly"
+                    },
+                    {
+                        "id": "P1Y",
+                        "value": "Annual"
+                    },
+                    {
+                        "id": "P3M",
+                        "value": "Quarterly"
+                    },
+                    {
+                        "id": "P6M",
+                        "value": "Half-yearly, semester"
+                    },
+                    {
+                        "id": "P7D",
+                        "value": "Weekly"
+                    },
+                    {
+                        "id": "PT1M",
+                        "value": "Minutely"
+                    }
+                ]
+            },
+            {
+                "structureId": "OBS_STATUS",
+                "name": "Observation status",
+                "agencyId": "ESTAT",
+                "id": "CL_OBS_STATUS",
+                "version": "2.2",
+                "page": 0,
+                "totalPages": 0,
+                "codes": [
+                    {
+                        "id": "A",
+                        "value": "Normal"
+                    },
+                    {
+                        "id": "B",
+                        "value": "Time series break"
+                    },
+                    {
+                        "id": "D",
+                        "value": "Definition differs"
+                    },
+                    {
+                        "id": "E",
+                        "value": "Estimated value"
+                    },
+                    {
+                        "id": "F",
+                        "value": "Forecast value"
+                    },
+                    {
+                        "id": "G",
+                        "value": "Experimental value"
+                    },
+                    {
+                        "id": "H",
+                        "value": "Missing value; holiday or weekend"
+                    },
+                    {
+                        "id": "I",
+                        "value": "Imputed value (CCSA definition)"
+                    },
+                    {
+                        "id": "J",
+                        "value": "Derogation"
+                    },
+                    {
+                        "id": "K",
+                        "value": "Data included in another category"
+                    },
+                    {
+                        "id": "L",
+                        "value": "Missing value; data exist but were not collected"
+                    },
+                    {
+                        "id": "M",
+                        "value": "Missing value; data cannot exist"
+                    },
+                    {
+                        "id": "N",
+                        "value": "Not significant"
+                    },
+                    {
+                        "id": "O",
+                        "value": "Missing value"
+                    },
+                    {
+                        "id": "P",
+                        "value": "Provisional value"
+                    },
+                    {
+                        "id": "Q",
+                        "value": "Missing value; suppressed"
+                    },
+                    {
+                        "id": "R",
+                        "value": "Revised value"
+                    },
+                    {
+                        "id": "S",
+                        "value": "Strike and other special events"
+                    },
+                    {
+                        "id": "U",
+                        "value": "Low reliability"
+                    },
+                    {
+                        "id": "V",
+                        "value": "Unvalidated value"
+                    }
+                ]
+            },
+            {
+                "structureId": "CONF_STATUS",
+                "name": "Confidentiality status",
+                "agencyId": "SDMX",
+                "id": "CL_CONF_STATUS",
+                "version": "1.2",
+                "page": 0,
+                "totalPages": 0,
+                "codes": [
+                    {
+                        "id": "F",
+                        "value": "Free (free for publication)"
+                    },
+                    {
+                        "id": "N",
+                        "value": "Not for publication, restricted for internal use only"
+                    },
+                    {
+                        "id": "C",
+                        "value": "Confidential statistical information"
+                    },
+                    {
+                        "id": "D",
+                        "value": "Secondary confidentiality set by the sender, not for publication"
+                    },
+                    {
+                        "id": "S",
+                        "value": "Secondary confidentiality set and managed by the receiver, not for publication"
+                    },
+                    {
+                        "id": "A",
+                        "value": "Primary confidentiality due to small counts"
+                    },
+                    {
+                        "id": "O",
+                        "value": "Primary confidentiality due to dominance by one unit"
+                    },
+                    {
+                        "id": "T",
+                        "value": "Primary confidentiality due to dominance by two units"
+                    },
+                    {
+                        "id": "G",
+                        "value": "Primary confidentiality due to dominance by one or two units"
+                    },
+                    {
+                        "id": "M",
+                        "value": "Primary confidentiality due to data declared confidential based on other measures of concentration"
+                    },
+                    {
+                        "id": "E",
+                        "value": "Not for publication, restricted for internal use only (equivalent to the code N) until the embargo time elapses; Free for publication (equivalent to the code F) after the embargo time elapses."
+                    }
+                ]
+            }
+        ]
+    },
+    "timeDimension": "TIME_PERIOD",
+    "primaryMeasure": "OBS_VALUE"
+}

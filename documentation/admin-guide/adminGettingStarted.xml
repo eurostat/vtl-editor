@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet href="./docbook.css" type="text/css"?>
-<chapter xml:id="adm_getting_started" xml:lang="en" version="5.0"
-         xmlns="http://docbook.org/ns/docbook"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://docbook.org/ns/docbook http://docbook.org/xml/5.0/xsd/docbook.xsd">
-    <title>Getting started</title>
-    <para>These instructions were created to guide in the process of application build and deployment actions.</para>
-</chapter>

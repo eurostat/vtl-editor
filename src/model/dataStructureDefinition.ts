@@ -13,7 +13,7 @@ interface Dimension extends BaseStruct {
     position: number;
 }
 
-type Attribute = BaseStruct
+type Attribute = BaseStruct;
 
 export interface StructureType {
     type: string;

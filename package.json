@@ -1,5 +1,5 @@
 {
-    "name": "vtl-editor",
+    "name": "@eurostat/vtl-editor",
     "version": "0.0.1",
     "description": "Antlr editor based on Monaco",
     "repository": {
@@ -31,7 +31,7 @@
             "pre-commit": "lint-staged -v"
         }
     },
-    "author": "u/eurostat",
+    "author": "u/Eurostat",
     "license": "EUPL-1.2",
     "files": [
         "src/",
@@ -41,6 +41,7 @@
         "!dist/tsconfig.tsbuildinfo"
     ],
     "keywords": [
+        "vtl",
         "antlr",
         "monaco"
     ],

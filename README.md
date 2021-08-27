@@ -13,7 +13,7 @@ See example into deployed [Storybook](https://eurostat.github.io/vtl-editor/inde
 yarn typescript add @eurostat/vtl-editor antlr4ts monaco-editor react-monaco-editor
 ```
 
-### VTLEditor for VTL
+### VTLEditor
 
 ```bash
 yarn add
@@ -34,10 +34,13 @@ const Editor = ({}) => {
             <VTLEditor
                 script={script}
                 setScript={setScript}
-                languageVersion="my-language"
-                setErrors={setErrors}
                 variables={{}}
                 variableURLs={[]}
+                sdmxResults={{}}
+                readOnly={false}
+                onListErrors={console.log}
+                movedCursor={{}}
+                onCursorChange={console.log}
                 tools={customTools}
             />
             {errors.length > 0 && <div>{`Errors: ${errors.join(" - ")}`}</div>}
@@ -50,17 +53,18 @@ export default Editor;
 
 ### VTLEditor Props
 
-| Name            |      Type       | Default value |
-| --------------- | :-------------: | :-----------: |
-| script          |     string      |       -       |
-| setScript       |    Function     |       -       |
-| languageVersion |     string      |       -       |
-| setErrors       |    Function     |       -       |
-| tools           |    Tools \*     |       -       |
-| theme           |     string      |    vs-dark    |
-| variables       |  Variables \*   |      { }      |
-| variableURLs    | VariableURLs \* |      [ ]      |
-| options         |   Options \*    |      {}       |
+| Name           |      Type       | Default value |
+| -------------- | :-------------: | :-----------: |
+| script         |     string      |       -       |
+| setScript      |    Function     |       -       |
+| tools          |    Tools \*     |       -       |
+| variables      |  Variables \*   |      { }      |
+| variableURLs   | VariableURLs \* |      [ ]      |
+| sdmxResult     |  SdmxResult \*  |   undefined   |
+| onListErrors   |    Function     |   undefined   |
+| movedCursor    |     object      |   undefined   |
+| onCursorChange |    Function     |   undefined   |
+| options        |   Options \*    |      {}       |
 
 See details about \* props below
 
@@ -111,6 +115,10 @@ The shape of each fetched resources has to be:
 ]
 ```
 
+#### SdmxResult
+
+See an example [here]()
+
 #### Options
 
 The shape of `options` props has to be:
@@ -118,7 +126,7 @@ The shape of `options` props has to be:
 ```json
 {
     "minimap": "Values: true | false - Default: true",
-    "theme": "Values: 'vs-dark' | 'vs-light - Default: 'vs-dark'",
+    "theme": "Values: 'vs-dark' | 'vs-light' - Default: 'vs-dark'",
     "hideLines": "Values: true | false - Default: false",
     "style": {
         "cssProperty": "value",

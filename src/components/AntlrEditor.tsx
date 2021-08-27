@@ -1,38 +1,39 @@
 import { useState } from "react";
-import * as EditorApi from "monaco-editor/esm/vs/editor/editor.api";
-import { Position } from "monaco-editor";
 import Editor from "./editor";
 import monarchDefinition from "./monarch.json";
-import { Options, Tools, Variables } from "../model";
+import { CursorPosition, Error, Options, SdmxResult, Tools, Variables } from "../model";
 import { getDefaultSuggestionsFromRange } from "./default-suggestions";
 
 export type AntlrEditorProps = {
     script: string;
     setScript: (value: string) => void;
-    setScriptChanged?: (value: boolean) => void;
-    languageVersion: string;
-    setErrors: (array: EditorApi.editor.IMarkerData[]) => void;
+    sdmxResult?: SdmxResult;
+    readOnly?: boolean;
     variables?: Variables;
     variableURLs?: string[];
     tools: Tools;
     options?: Options;
+    onCursorChange?: (position: CursorPosition) => void;
+    onListErrors?: (errors: Error[]) => void;
+    movedCursor?: CursorPosition;
 };
 
 export const AntlrEditor = (props: AntlrEditorProps) => {
+    const [cursor, setCursor] = useState({ line: 1, column: 1 });
+
     const {
         script,
         setScript,
-        setScriptChanged = () => false,
-        languageVersion,
-        setErrors,
+        readOnly,
         variables = {},
         variableURLs = [],
+        sdmxResult,
         tools,
         options = {},
+        onCursorChange,
+        onListErrors,
+        movedCursor,
     } = props;
-
-    const setCursorPosition = useState(new Position(0, 0))[1];
-    const [tempCursor] = useState(new Position(0, 0));
 
     const {
         id = "default-id",
@@ -56,14 +57,13 @@ export const AntlrEditor = (props: AntlrEditorProps) => {
     return (
         <Editor
             tools={customTools}
-            resizeLayout={[false, true, 100]}
             script={script}
             setScript={setScript}
-            setScriptChanged={setScriptChanged}
-            languageVersion={languageVersion}
-            setCursorPosition={setCursorPosition}
-            tempCursor={tempCursor}
-            setErrors={setErrors}
+            sdmxResult={sdmxResult}
+            readOnly={readOnly}
+            onListErrors={onListErrors}
+            movedCursor={movedCursor || cursor}
+            onCursorChange={onCursorChange || setCursor}
             variables={variables}
             variableURLs={variableURLs}
             options={options}

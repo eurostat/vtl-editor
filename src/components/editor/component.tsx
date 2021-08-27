@@ -1,67 +1,117 @@
-import { useState, useEffect, useRef } from "react";
-import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
+import { useState, useEffect, useRef, useCallback } from "react";
+import * as EditorApi from "monaco-editor/esm/vs/editor/editor.api";
 import { Position } from "monaco-editor/esm/vs/editor/editor.api";
 import MonacoEditor from "react-monaco-editor";
+import { SdmxResult } from "../../model";
 import { getEditorWillMount } from "./utils/providers";
 import { validate } from "./utils/ParserFacade";
-import { CustomTools, Options, Variables } from "../../model";
+import { CursorPosition, CustomTools, Error, Options, Variables } from "../../model";
 import { buildVariables, buildUniqueVariables } from "./utils/variables";
 import { buildCustomOptions, buildStyle } from "./utils/customization";
 
 import "./editor.css";
 
-declare const window: any;
-
 type EditorProps = {
-    resizeLayout: any[];
     script: string;
     setScript: (value: string) => void;
-    setScriptChanged: (value: boolean) => void;
-    setCursorPosition: (e: Position) => void;
-    tempCursor: Position;
-    setErrors: (array: monaco.editor.IMarkerData[]) => void;
+    sdmxResult?: SdmxResult;
+    readOnly?: boolean;
     variables: Variables;
     variableURLs: string[];
     tools: CustomTools;
-    languageVersion: string;
     options: Options;
+    onCursorChange: (position: CursorPosition) => void;
+    onListErrors?: (errors: Error[]) => void;
+    movedCursor?: CursorPosition;
 };
 
-let errors: any = { value: "" };
-
 const Editor = ({
-    resizeLayout = [false, true, 100],
     script,
     setScript,
-    setScriptChanged,
-    setCursorPosition,
-    tempCursor,
-    setErrors,
+    sdmxResult,
     variables,
     variableURLs,
     tools,
     options,
+    onCursorChange,
+    onListErrors,
+    movedCursor,
+    readOnly,
 }: EditorProps) => {
     const [vars, setVars] = useState(buildVariables(variables));
     const [ready, setReady] = useState(false);
 
-    const monacoRef = useRef(null);
+    const monacoRef = useRef<MonacoEditor>(null);
 
     useEffect(() => {
-        if (monacoRef && monacoRef.current) {
-            // @ts-ignore
-            monacoRef.current.editor.layout();
+        if (movedCursor) {
+            monacoRef?.current?.editor?.focus();
+            monacoRef?.current?.editor?.setPosition(new Position(movedCursor.line, movedCursor.column));
         }
-    }, [resizeLayout]);
+    }, [movedCursor]);
 
+    // TODO: better handle tool updates
     useEffect(() => {
-        if (monacoRef && monacoRef.current) {
-            // @ts-ignore
-            monacoRef.current.editor.focus();
-            // @ts-ignore
-            monacoRef.current.editor.setPosition(new Position(tempCursor.lineNumber, tempCursor.column));
-        }
-    }, [tempCursor]);
+        parseContent(tools);
+    }, []);
+
+    const parseContent = useCallback(
+        (t: CustomTools) => {
+            const editor = monacoRef?.current?.editor;
+            if (editor) {
+                const monacoErrors: EditorApi.editor.IMarkerData[] = validate(t)(editor.getValue()).map(
+                    (error: any) => {
+                        return {
+                            startLineNumber: error.startLine,
+                            startColumn: error.startCol,
+                            endLineNumber: error.endLine,
+                            endColumn: error.endCol,
+                            message: error.message,
+                            severity: EditorApi.MarkerSeverity.Error,
+                        } as EditorApi.editor.IMarkerData;
+                    },
+                );
+                const model = editor.getModel();
+                if (model) EditorApi.editor.setModelMarkers(model, "owner", monacoErrors);
+                if (onListErrors) {
+                    onListErrors(
+                        monacoErrors.map(error => {
+                            return {
+                                line: error.startLineNumber,
+                                column: error.startColumn,
+                                message: error.message,
+                            } as Error;
+                        }),
+                    );
+                }
+            }
+        },
+        [tools],
+    );
+
+    const didMount = (editor: EditorApi.editor.IStandaloneCodeEditor, t: CustomTools) => {
+        let parseContentTO: NodeJS.Timeout;
+        let contentChangeTO: NodeJS.Timeout | undefined;
+        editor.onDidChangeModelContent(() => {
+            if (setScript) {
+                if (parseContentTO) clearTimeout(parseContentTO);
+                parseContentTO = setTimeout(() => parseContent(t), 0);
+                if (!contentChangeTO) {
+                    contentChangeTO = setTimeout(() => {
+                        setScript(editor.getValue());
+                        contentChangeTO = undefined;
+                    }, 200);
+                }
+            }
+        });
+
+        editor.onDidChangeCursorPosition(() => {
+            if (onCursorChange) {
+                const position = editor.getPosition();
+                if (position) onCursorChange({ line: position.lineNumber, column: position.column });
+            }
+        });
+    };
 
     useEffect(() => {
         if (!Array.isArray(variableURLs) || variableURLs.length === 0) setReady(true);
@@ -79,50 +129,8 @@ const Editor = ({
         }
     }, [variableURLs]);
 
-    const didMount = (editor: monaco.editor.IStandaloneCodeEditor, monaco: any, customTools: any) => {
-        let to: NodeJS.Timeout;
-        const onDidChangeTimout = () => {
-            to = setTimeout(() => onDidChange(), 2000);
-        };
-
-        const onDidChange = () => {
-            const { lexer, parser, initialRule } = customTools;
-            const syntaxErrors = validate({ lexer, parser, initialRule })(editor.getValue());
-            const monacoErrors = [];
-            for (const e of syntaxErrors) {
-                monacoErrors.push({
-                    startLineNumber: e.startLine,
-                    startColumn: e.startCol,
-                    endLineNumber: e.endLine,
-                    endColumn: e.endCol,
-                    message: e.message,
-                    severity: monaco.MarkerSeverity.Error,
-                });
-            }
-            const errorsString = monacoErrors.map(e => e.message).reduce((e1, e2) => e1 + ", " + e2, "");
-            if (editor.getValue()) {
-                setErrors([]);
-                errors = { value: "" };
-            } else if (errorsString !== errors.value) {
-                setErrors(monacoErrors);
-                errors = { value: errorsString };
-            }
-            window.syntaxErrors = syntaxErrors;
-            const model = monaco.editor.getModels()[0];
-            monaco.editor.setModelMarkers(model, "owner", monacoErrors);
-        };
-        editor.onDidChangeModelContent(() => {
-            if (to) clearTimeout(to);
-            return onDidChangeTimout();
-        });
-        editor.onDidChangeCursorPosition((e: monaco.editor.ICursorPositionChangedEvent) =>
-            setCursorPosition(e.position),
-        );
-    };
-
     const onChange = (newValue: string) => {
         setScript(newValue);
-        setScriptChanged(true);
     };
 
     if (!ready) return null;
@@ -131,12 +139,12 @@ const Editor = ({
         <div className="editor-container" style={buildStyle(options)}>
             <MonacoEditor
                 ref={monacoRef}
-                editorWillMount={getEditorWillMount(tools)(vars)}
-                editorDidMount={(e, m) => didMount(e, m, tools)}
+                editorWillMount={getEditorWillMount(tools)({ variables: vars, sdmxResult })}
+                editorDidMount={e => didMount(e, tools)}
                 language={tools.id}
                 theme={options?.theme || "vs-dark"}
                 defaultValue=""
-                options={buildCustomOptions(options)}
+                options={buildCustomOptions({ ...options, readOnly })}
                 value={script}
                 onChange={onChange}
             />

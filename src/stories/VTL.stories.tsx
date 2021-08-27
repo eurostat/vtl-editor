@@ -3,6 +3,7 @@ import { EditorForStory, StorybookEditorProps } from "./Editor";
 import * as VtlTools from "vtl-2-0-antlr-tools-ts";
 import { getSuggestions } from "./vtl-suggestions";
 import { VariableType, VariableRole } from "../model";
+import sdmxResult from "./sdmxResult.json";
 
 export default {
     title: "Editor/VTL 2.0",
@@ -26,6 +27,7 @@ const defDefault = (
 export const Default = Template.bind({});
 Default.args = {
     initialScript: "a := 1 + 2;",
+    readOnly: false,
     tools: { ...VtlTools, getSuggestionsFromRange: getSuggestions },
     languageVersion: "vtl-2-0",
     def: defDefault,
@@ -40,6 +42,7 @@ Default.args = {
 export const Custom = Template.bind({});
 Custom.args = {
     initialScript: "a := 1 + 2;",
+    readOnly: false,
     tools: { ...VtlTools, getSuggestionsFromRange: getSuggestions },
     languageVersion: "vtl-2-0",
     def: defDefault,
@@ -70,6 +73,7 @@ const defVariables = (
 export const Variables = Template.bind({});
 Variables.args = {
     initialScript: "a := 1 + 2;",
+    readOnly: false,
     tools: { ...VtlTools, getSuggestionsFromRange: getSuggestions },
     variables: {
         "name": { type: VariableType.STRING, role: VariableRole.IDENTIFIER },
@@ -95,6 +99,7 @@ const defVariableURLs = (
 export const VariablesURL = Template.bind({});
 VariablesURL.args = {
     initialScript: "a := 1 + 2;",
+    readOnly: false,
     tools: { ...VtlTools, getSuggestionsFromRange: getSuggestions },
     variableURLs: [
         "https://inseefrlab.github.io/VTL-Lab-Resources/metadata/fideli/structure.json",
@@ -102,5 +107,28 @@ VariablesURL.args = {
     ],
     languageVersion: "vtl-2-0",
     def: defVariableURLs,
+    options: {},
+};
+
+const defSdmx = (
+    <>
+        <h3>
+            Insert VTL 2.0 script (VTL operators suggestion, highlighting & validation are automatically
+            provided)
+        </h3>
+        <h4>
+            Injected <i>SdmxResult</i> provide lots of variable auto-suggestions: XXX
+        </h4>
+    </>
+);
+
+export const Sdmx = Template.bind({});
+Sdmx.args = {
+    initialScript: "a := 1 + 2;",
+    readOnly: false,
+    tools: { ...VtlTools, getSuggestionsFromRange: getSuggestions },
+    sdmxResult,
+    languageVersion: "vtl-2-0",
+    def: defSdmx,
     options: {},
 };

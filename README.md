@@ -1,7 +1,7 @@
 # Antlr Editor
 
-[![ci](https://github.com/eurostat/vtl-editor/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/eurostat/vtl-editor/actions/workflows/ci.yaml)
-[![npm version](https://badge.fury.io/js/vtl-editor.svg)](https://badge.fury.io/js/vtl-editor)
+[![ci](https://github.com/eurostat/vtl-editor/actions/workflows/ci.yaml/badge.svg)](https://github.com/eurostat/vtl-editor/actions/workflows/ci.yaml)
+[![npm version](https://badge.fury.io/js/%40eurostat%2Fvtl-editor.svg)](https://badge.fury.io/js/%40eurostat%2Fvtl-editor)
 
 See example into deployed [Storybook](https://eurostat.github.io/vtl-editor/index.html)
 

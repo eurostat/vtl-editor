@@ -27,6 +27,7 @@ export const EditorForStory: React.FC<StorybookEditorProps> = ({
 }) => {
     const [script, setScript] = useState(initialScript);
     const [errors, setErrors] = useState([]);
+    console.log(errors);
     return (
         <>
             {def && <div>{def}</div>}

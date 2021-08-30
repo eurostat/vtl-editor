@@ -14,6 +14,7 @@ import "./editor.css";
 type EditorProps = {
     script: string;
     setScript: (value: string) => void;
+    customFetcher?: (url: string) => Promise<any>;
     sdmxResult?: SdmxResult;
     sdmxResultURL?: string;
     readOnly?: boolean;
@@ -30,6 +31,7 @@ type EditorProps = {
 const Editor = ({
     script,
     setScript,
+    customFetcher,
     sdmxResult,
     sdmxResultURL,
     variables,
@@ -125,8 +127,9 @@ const Editor = ({
     useEffect(() => {
         if ((!Array.isArray(variableURLs) || variableURLs.length === 0) && !sdmxResultURL)
             setReady(true);
-        else if (sdmxResultURL)
-            fetch(sdmxResultURL)
+        const f = customFetcher || fetch;
+        if (sdmxResultURL && !ready)
+            f(sdmxResultURL)
                 .then(res => res.json())
                 .then(res => {
                     setSdmxRes(res);
@@ -135,8 +138,8 @@ const Editor = ({
                 .catch(() => {
                     setReady(true);
                 });
-        else {
-            Promise.all(variableURLs.map(v => fetch(v)))
+        if (variableURLs.length > 0 && !ready) {
+            Promise.all(variableURLs.map(v => f(v)))
                 .then(res =>
                     Promise.all(res.map(r => r.json())).then(res => {
                         setVars(buildUniqueVariables(res));

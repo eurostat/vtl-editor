@@ -5,6 +5,7 @@ import { Options, Tools, Variables } from "../model";
 
 export interface StorybookEditorProps {
     initialScript: string;
+    customFetcher?: (url: string) => Promise<any>;
     readOnly: boolean;
     tools: Tools;
     variables?: Variables;
@@ -18,6 +19,7 @@ export interface StorybookEditorProps {
 
 export const EditorForStory: React.FC<StorybookEditorProps> = ({
     initialScript,
+    customFetcher,
     readOnly,
     tools,
     variables = {},
@@ -36,6 +38,7 @@ export const EditorForStory: React.FC<StorybookEditorProps> = ({
             <AntlrEditor
                 script={script}
                 setScript={setScript}
+                customFetcher={customFetcher}
                 readOnly={readOnly}
                 variables={variables}
                 variableURLs={variableURLs}

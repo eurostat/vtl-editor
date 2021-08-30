@@ -56,6 +56,7 @@ export default Editor;
 | -------------- | :-------------: | :-----------: |
 | script         |     string      |       -       |
 | setScript      |    Function     |       -       |
+| customFetcher  |   Function \*   |       -       |
 | tools          |    Tools \*     |       -       |
 | variables      |  Variables \*   |      { }      |
 | variableURLs   | VariableURLs \* |      [ ]      |
@@ -85,6 +86,16 @@ See details about \* props below
 | getSuggestionsFromRange |     func      |   () => []    |
 
 Have a look to [VTL 2.0 Antlr Tools](https://github.com/NicoLaval/vtl-2-0-antlr-tools-ts) for example.
+
+#### `customFetcher`
+
+`customFetcher` enable to provide a custom fetch, adding Authorization header for instance:
+
+```javascript
+u => fetch(u, headers:{ Authorization: 'Bearer XXX'})
+```
+
+This function will be used to fetch `variableURLs` & `sdmxResultURL` props.
 
 #### `variables`
 
@@ -116,15 +127,15 @@ The shape of each fetched resources has to be:
 ]
 ```
 
-#### SdmxResult
+#### `sdmxResult`
 
 See an example [here](https://github.com/eurostat/vtl-editor/blob/master/src/stories/sdmxResult.json)
 
-#### SdmxResultURL
+#### `sdmxResultURL`
 
 Has to be an URL string to fetch, returning a SdmxResult.
 
-#### Options
+#### `options`
 
 The shape of `options` props has to be:
 

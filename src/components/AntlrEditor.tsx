@@ -7,6 +7,7 @@ import { getDefaultSuggestionsFromRange } from "./default-suggestions";
 export type AntlrEditorProps = {
     script: string;
     setScript: (value: string) => void;
+    customFetcher?: (url: string) => Promise<any>;
     sdmxResult?: SdmxResult;
     sdmxResultURL?: string;
     readOnly?: boolean;
@@ -25,6 +26,7 @@ export const AntlrEditor = (props: AntlrEditorProps) => {
     const {
         script,
         setScript,
+        customFetcher,
         readOnly,
         variables = {},
         variableURLs = [],
@@ -62,6 +64,7 @@ export const AntlrEditor = (props: AntlrEditorProps) => {
             tools={customTools}
             script={script}
             setScript={setScript}
+            customFetcher={customFetcher}
             readOnly={readOnly}
             onListErrors={onListErrors}
             movedCursor={movedCursor || cursor}

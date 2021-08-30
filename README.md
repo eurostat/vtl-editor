@@ -34,13 +34,11 @@ const Editor = ({}) => {
             <VTLEditor
                 script={script}
                 setScript={setScript}
+                onListErrors={setErrors}
                 variables={{}}
                 variableURLs={[]}
                 sdmxResults={{}}
                 readOnly={false}
-                onListErrors={console.log}
-                movedCursor={{}}
-                onCursorChange={console.log}
                 tools={customTools}
             />
             {errors.length > 0 && <div>{`Errors: ${errors.join(" - ")}`}</div>}
@@ -118,7 +116,7 @@ The shape of each fetched resources has to be:
 
 #### SdmxResult
 
-See an example [here]()
+See an example [here](https://github.com/eurostat/vtl-editor/blob/master/src/stories/sdmxResult.json)
 
 #### Options
 

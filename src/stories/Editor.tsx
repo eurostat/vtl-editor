@@ -26,6 +26,7 @@ export const EditorForStory: React.FC<StorybookEditorProps> = ({
     options,
 }) => {
     const [script, setScript] = useState(initialScript);
+    const [errors, setErrors] = useState([]);
     return (
         <>
             {def && <div>{def}</div>}
@@ -38,6 +39,7 @@ export const EditorForStory: React.FC<StorybookEditorProps> = ({
                 sdmxResult={sdmxResult}
                 tools={tools}
                 options={options}
+                onListErrors={setErrors}
             />
         </>
     );

@@ -8,6 +8,7 @@ export type AntlrEditorProps = {
     script: string;
     setScript: (value: string) => void;
     sdmxResult?: SdmxResult;
+    sdmxResultURL?: string;
     readOnly?: boolean;
     variables?: Variables;
     variableURLs?: string[];
@@ -21,7 +22,6 @@ export type AntlrEditorProps = {
 
 export const AntlrEditor = (props: AntlrEditorProps) => {
     const [cursor, setCursor] = useState({ line: 1, column: 1 });
-
     const {
         script,
         setScript,
@@ -29,6 +29,7 @@ export const AntlrEditor = (props: AntlrEditorProps) => {
         variables = {},
         variableURLs = [],
         sdmxResult,
+        sdmxResultURL,
         tools,
         options = {},
         onCursorChange,
@@ -68,6 +69,7 @@ export const AntlrEditor = (props: AntlrEditorProps) => {
             variables={variables}
             variableURLs={variableURLs}
             sdmxResult={sdmxResult}
+            sdmxResultURL={sdmxResultURL}
             resizeLayout={resizeLayout}
             options={options}
         />

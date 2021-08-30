@@ -132,3 +132,27 @@ Sdmx.args = {
     def: defSdmx,
     options: {},
 };
+
+const defSdmxURL = (
+    <>
+        <h3>
+            Insert VTL 2.0 script (VTL operators suggestion, highlighting & validation are automatically
+            provided)
+        </h3>
+        <h4>
+            Injected <i>SdmxResultURL</i> provide lots of variable auto-suggestions: XXX
+        </h4>
+    </>
+);
+
+export const SdmxURL = Template.bind({});
+SdmxURL.args = {
+    initialScript: "a := 1 + 2;",
+    readOnly: false,
+    tools: { ...VtlTools, getSuggestionsFromRange: getSuggestions },
+    languageVersion: "vtl-2-0",
+    def: defSdmxURL,
+    sdmxResultURL:
+        "https://raw.githubusercontent.com/eurostat/vtl-editor/master/src/stories/sdmxResult.json",
+    options: {},
+};

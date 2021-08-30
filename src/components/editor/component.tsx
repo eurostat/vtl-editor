@@ -15,6 +15,7 @@ type EditorProps = {
     script: string;
     setScript: (value: string) => void;
     sdmxResult?: SdmxResult;
+    sdmxResultURL?: string;
     readOnly?: boolean;
     variables: Variables;
     variableURLs: string[];
@@ -30,6 +31,7 @@ const Editor = ({
     script,
     setScript,
     sdmxResult,
+    sdmxResultURL,
     variables,
     variableURLs,
     tools,
@@ -41,6 +43,7 @@ const Editor = ({
     resizeLayout,
 }: EditorProps) => {
     const [vars, setVars] = useState(buildVariables(variables));
+    const [sdmxRes, setSdmxRes] = useState(sdmxResult);
     const [ready, setReady] = useState(false);
 
     const monacoRef = useRef<MonacoEditor>(null);
@@ -120,7 +123,18 @@ const Editor = ({
     };
 
     useEffect(() => {
-        if (!Array.isArray(variableURLs) || variableURLs.length === 0) setReady(true);
+        if ((!Array.isArray(variableURLs) || variableURLs.length === 0) && !sdmxResultURL)
+            setReady(true);
+        else if (sdmxResultURL)
+            fetch(sdmxResultURL)
+                .then(res => res.json())
+                .then(res => {
+                    setSdmxRes(res);
+                    setReady(true);
+                })
+                .catch(() => {
+                    setReady(true);
+                });
         else {
             Promise.all(variableURLs.map(v => fetch(v)))
                 .then(res =>
@@ -145,7 +159,7 @@ const Editor = ({
         <div className="editor-container" style={buildStyle(options)}>
             <MonacoEditor
                 ref={monacoRef}
-                editorWillMount={getEditorWillMount(tools)({ variables: vars, sdmxResult })}
+                editorWillMount={getEditorWillMount(tools)({ variables: vars, sdmxResult: sdmxRes })}
                 editorDidMount={e => didMount(e, tools)}
                 language={tools.id}
                 theme={options?.theme || "vs-dark"}

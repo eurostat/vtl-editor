@@ -10,6 +10,7 @@ export interface StorybookEditorProps {
     variables?: Variables;
     variableURLs?: string[];
     sdmxResult?: SdmxResult;
+    sdmxResultURL?: string;
     languageVersion: string;
     def?: Element;
     options?: Options;
@@ -22,6 +23,7 @@ export const EditorForStory: React.FC<StorybookEditorProps> = ({
     variables = {},
     variableURLs = [],
     sdmxResult,
+    sdmxResultURL,
     def = "",
     options,
 }) => {
@@ -38,6 +40,7 @@ export const EditorForStory: React.FC<StorybookEditorProps> = ({
                 variables={variables}
                 variableURLs={variableURLs}
                 sdmxResult={sdmxResult}
+                sdmxResultURL={sdmxResultURL}
                 tools={tools}
                 options={options}
                 onListErrors={setErrors}

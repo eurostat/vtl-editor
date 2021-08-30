@@ -10,7 +10,7 @@ See example into deployed [Storybook](https://eurostat.github.io/vtl-editor/inde
 ### Install
 
 ```bash
-yarn typescript add @eurostat/vtl-editor antlr4ts monaco-editor react-monaco-editor
+yarn add typescript @eurostat/vtl-editor antlr4ts monaco-editor react-monaco-editor
 ```
 
 ### VTLEditor
@@ -37,7 +37,8 @@ const Editor = ({}) => {
                 onListErrors={setErrors}
                 variables={{}}
                 variableURLs={[]}
-                sdmxResults={{}}
+                sdmxResult={{}}
+                sdmxResultURL={""}
                 readOnly={false}
                 tools={customTools}
             />
@@ -59,6 +60,7 @@ export default Editor;
 | variables      |  Variables \*   |      { }      |
 | variableURLs   | VariableURLs \* |      [ ]      |
 | sdmxResult     |  SdmxResult \*  |   undefined   |
+| sdmxResultURL  |    string \*    |   undefined   |
 | onListErrors   |    Function     |   undefined   |
 | movedCursor    |     object      |   undefined   |
 | onCursorChange |    Function     |   undefined   |
@@ -118,6 +120,10 @@ The shape of each fetched resources has to be:
 
 See an example [here](https://github.com/eurostat/vtl-editor/blob/master/src/stories/sdmxResult.json)
 
+#### SdmxResultURL
+
+Has to be an URL string to fetch, returning a SdmxResult.
+
 #### Options
 
 The shape of `options` props has to be:
@@ -129,8 +135,8 @@ The shape of `options` props has to be:
     "hideLines": "Values: true | false - Default: false",
     "style": {
         "cssProperty": "value",
-        ...
-        // Style props are applied to editor container
+        "...": "...",
+        "comment": "Style props are applied to editor container"
     }
 }
 ```

@@ -12,6 +12,7 @@ export default {
         tools: { table: { disable: true } },
         def: { table: { disable: true } },
         initialScript: { table: { disable: true } },
+        customFetcher: { table: { disable: true } },
         languageVersion: { table: { disable: true } },
     },
 } as Meta;
@@ -131,4 +132,54 @@ Sdmx.args = {
     languageVersion: "vtl-2-0",
     def: defSdmx,
     options: {},
+};
+
+const defSdmxURL = (
+    <>
+        <h3>
+            Insert VTL 2.0 script (VTL operators suggestion, highlighting & validation are automatically
+            provided)
+        </h3>
+        <h4>
+            Injected <i>SdmxResultURL</i> provide lots of variable auto-suggestions: XXX
+        </h4>
+    </>
+);
+
+export const SdmxURL = Template.bind({});
+SdmxURL.args = {
+    initialScript: "a := 1 + 2;",
+    readOnly: false,
+    tools: { ...VtlTools, getSuggestionsFromRange: getSuggestions },
+    languageVersion: "vtl-2-0",
+    def: defSdmxURL,
+    sdmxResultURL:
+        "https://raw.githubusercontent.com/eurostat/vtl-editor/master/src/stories/sdmxResult.json",
+    options: {},
+};
+
+const defSdmxURLFetch = (
+    <>
+        <h3>
+            Insert VTL 2.0 script (VTL operators suggestion, highlighting & validation are automatically
+            provided)
+        </h3>
+        <h4>
+            Injected <i>SdmxResultURL</i> provide lots of variable auto-suggestions: XXX
+        </h4>
+        <h4>Have a look to request headers to see the customFetcher props effect (add Accept header)</h4>
+    </>
+);
+
+export const SdmxURLFetch = Template.bind({});
+SdmxURLFetch.args = {
+    initialScript: "a := 1 + 2;",
+    readOnly: false,
+    tools: { ...VtlTools, getSuggestionsFromRange: getSuggestions },
+    languageVersion: "vtl-2-0",
+    def: defSdmxURLFetch,
+    sdmxResultURL:
+        "https://raw.githubusercontent.com/eurostat/vtl-editor/master/src/stories/sdmxResult.json",
+    options: {},
+    customFetcher: u => fetch(u, { headers: { Accept: "application/json" } }),
 };

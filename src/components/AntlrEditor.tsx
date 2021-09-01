@@ -7,7 +7,9 @@ import { getDefaultSuggestionsFromRange } from "./default-suggestions";
 export type AntlrEditorProps = {
     script: string;
     setScript: (value: string) => void;
+    customFetcher?: (url: string) => Promise<any>;
     sdmxResult?: SdmxResult;
+    sdmxResultURL?: string;
     readOnly?: boolean;
     variables?: Variables;
     variableURLs?: string[];
@@ -21,14 +23,15 @@ export type AntlrEditorProps = {
 
 export const AntlrEditor = (props: AntlrEditorProps) => {
     const [cursor, setCursor] = useState({ line: 1, column: 1 });
-
     const {
         script,
         setScript,
+        customFetcher,
         readOnly,
         variables = {},
         variableURLs = [],
         sdmxResult,
+        sdmxResultURL,
         tools,
         options = {},
         onCursorChange,
@@ -61,6 +64,7 @@ export const AntlrEditor = (props: AntlrEditorProps) => {
             tools={customTools}
             script={script}
             setScript={setScript}
+            customFetcher={customFetcher}
             readOnly={readOnly}
             onListErrors={onListErrors}
             movedCursor={movedCursor || cursor}
@@ -68,6 +72,7 @@ export const AntlrEditor = (props: AntlrEditorProps) => {
             variables={variables}
             variableURLs={variableURLs}
             sdmxResult={sdmxResult}
+            sdmxResultURL={sdmxResultURL}
             resizeLayout={resizeLayout}
             options={options}
         />

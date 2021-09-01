@@ -14,7 +14,9 @@ import "./editor.css";
 type EditorProps = {
     script: string;
     setScript: (value: string) => void;
+    customFetcher?: (url: string) => Promise<any>;
     sdmxResult?: SdmxResult;
+    sdmxResultURL?: string;
     readOnly?: boolean;
     variables: Variables;
     variableURLs: string[];
@@ -29,7 +31,9 @@ type EditorProps = {
 const Editor = ({
     script,
     setScript,
+    customFetcher,
     sdmxResult,
+    sdmxResultURL,
     variables,
     variableURLs,
     tools,
@@ -41,6 +45,7 @@ const Editor = ({
     resizeLayout,
 }: EditorProps) => {
     const [vars, setVars] = useState(buildVariables(variables));
+    const [sdmxRes, setSdmxRes] = useState(sdmxResult);
     const [ready, setReady] = useState(false);
 
     const monacoRef = useRef<MonacoEditor>(null);
@@ -120,9 +125,21 @@ const Editor = ({
     };
 
     useEffect(() => {
-        if (!Array.isArray(variableURLs) || variableURLs.length === 0) setReady(true);
-        else {
-            Promise.all(variableURLs.map(v => fetch(v)))
+        if ((!Array.isArray(variableURLs) || variableURLs.length === 0) && !sdmxResultURL)
+            setReady(true);
+        const f = customFetcher || fetch;
+        if (sdmxResultURL && !ready)
+            f(sdmxResultURL)
+                .then(res => res.json())
+                .then(res => {
+                    setSdmxRes(res);
+                    setReady(true);
+                })
+                .catch(() => {
+                    setReady(true);
+                });
+        if (variableURLs.length > 0 && !ready) {
+            Promise.all(variableURLs.map(v => f(v)))
                 .then(res =>
                     Promise.all(res.map(r => r.json())).then(res => {
                         setVars(buildUniqueVariables(res));
@@ -145,7 +162,7 @@ const Editor = ({
         <div className="editor-container" style={buildStyle(options)}>
             <MonacoEditor
                 ref={monacoRef}
-                editorWillMount={getEditorWillMount(tools)({ variables: vars, sdmxResult })}
+                editorWillMount={getEditorWillMount(tools)({ variables: vars, sdmxResult: sdmxRes })}
                 editorDidMount={e => didMount(e, tools)}
                 language={tools.id}
                 theme={options?.theme || "vs-dark"}

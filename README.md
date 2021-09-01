@@ -10,7 +10,7 @@ See example into deployed [Storybook](https://eurostat.github.io/vtl-editor/inde
 ### Install
 
 ```bash
-yarn typescript add @eurostat/vtl-editor antlr4ts monaco-editor react-monaco-editor
+yarn add typescript @eurostat/vtl-editor antlr4ts monaco-editor react-monaco-editor
 ```
 
 ### VTLEditor
@@ -34,13 +34,12 @@ const Editor = ({}) => {
             <VTLEditor
                 script={script}
                 setScript={setScript}
+                onListErrors={setErrors}
                 variables={{}}
                 variableURLs={[]}
-                sdmxResults={{}}
+                sdmxResult={{}}
+                sdmxResultURL={""}
                 readOnly={false}
-                onListErrors={console.log}
-                movedCursor={{}}
-                onCursorChange={console.log}
                 tools={customTools}
             />
             {errors.length > 0 && <div>{`Errors: ${errors.join(" - ")}`}</div>}
@@ -57,10 +56,12 @@ export default Editor;
 | -------------- | :-------------: | :-----------: |
 | script         |     string      |       -       |
 | setScript      |    Function     |       -       |
+| customFetcher  |   Function \*   |       -       |
 | tools          |    Tools \*     |       -       |
 | variables      |  Variables \*   |      { }      |
 | variableURLs   | VariableURLs \* |      [ ]      |
 | sdmxResult     |  SdmxResult \*  |   undefined   |
+| sdmxResultURL  |    string \*    |   undefined   |
 | onListErrors   |    Function     |   undefined   |
 | movedCursor    |     object      |   undefined   |
 | onCursorChange |    Function     |   undefined   |
@@ -85,6 +86,16 @@ See details about \* props below
 | getSuggestionsFromRange |     func      |   () => []    |
 
 Have a look to [VTL 2.0 Antlr Tools](https://github.com/NicoLaval/vtl-2-0-antlr-tools-ts) for example.
+
+#### `customFetcher`
+
+`customFetcher` enable to provide a custom fetch, adding Authorization header for instance:
+
+```javascript
+u => fetch(u, headers:{ Authorization: 'Bearer XXX'})
+```
+
+This function will be used to fetch `variableURLs` & `sdmxResultURL` props.
 
 #### `variables`
 
@@ -116,11 +127,15 @@ The shape of each fetched resources has to be:
 ]
 ```
 
-#### SdmxResult
+#### `sdmxResult`
 
-See an example [here]()
+See an example [here](https://github.com/eurostat/vtl-editor/blob/master/src/stories/sdmxResult.json)
 
-#### Options
+#### `sdmxResultURL`
+
+Has to be an URL string to fetch, returning a SdmxResult.
+
+#### `options`
 
 The shape of `options` props has to be:
 
@@ -131,8 +146,8 @@ The shape of `options` props has to be:
     "hideLines": "Values: true | false - Default: false",
     "style": {
         "cssProperty": "value",
-        ...
-        // Style props are applied to editor container
+        "...": "...",
+        "comment": "Style props are applied to editor container"
     }
 }
 ```

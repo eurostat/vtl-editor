@@ -1,4 +1,4 @@
-name: ci
+name: VTL Editor CI
 on:
   push:
     branches:
@@ -56,6 +56,26 @@ jobs:
       run: |
         npm ci                                                                                                                                                                                        
         npm run build
+  
+  deploy_storybook:
+    name: Deploy Storybook on Github Pages
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.3.1
+        with:
+          ref: ${{ github.ref }}
+      - uses: actions/setup-node@v2.1.3
+      - name: Build
+        run: |
+          yarn
+          yarn build-storybook
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@4.1.5
+        with:
+          branch: gh-pages
+          folder: storybook-static
 
   check_if_version_upgraded:
     name: Check if version upgrade
@@ -71,27 +91,6 @@ jobs:
       id: step1
       with: 
         action_name: is_package_json_version_upgraded
-  
-  deploy_storybook:
-    name: Deploy Storybook on Github Pages
-    needs: check_if_version_upgraded
-    if: needs.check_if_version_upgraded.outputs.is_upgraded_version == 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2.3.1
-        with:
-          ref: ${{ github.ref }}
-      - uses: actions/setup-node@v2.1.3
-      - name: Build
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-        run: |
-          yarn
-          yarn build-storybook
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@4.1.3
-        with:
-          branch: gh-pages
-          folder: storybook-static
 
   update_changelog:
     runs-on: ubuntu-latest

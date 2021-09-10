@@ -56,11 +56,11 @@ jobs:
       run: |
         npm ci                                                                                                                                                                                        
         npm run build
-  
-  deploy_storybook:
-    name: Deploy Storybook on Github Pages
+
+  build_storybook:
+    name: Build Storybook app 
     needs: test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    # if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2.3.1
@@ -71,11 +71,27 @@ jobs:
         run: |
           yarn
           yarn build-storybook
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@4.1.5
+      - name: Upload Storybook artifact
+        uses: actions/upload-artifact@v2
         with:
-          branch: gh-pages
-          folder: storybook-static
+          name: storybook-static
+          path: storybook-static/  
+  
+  deploy_storybook:
+    name: Deploy Storybook on Github Pages
+    needs: build_storybook
+    # if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Storybook artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: storybook-static
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
 
   check_if_version_upgraded:
     name: Check if version upgrade

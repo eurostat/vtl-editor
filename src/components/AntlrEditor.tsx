@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Editor from "./editor";
 import monarchDefinition from "./monarch.json";
 import { CursorPosition, Error, Options, SdmxResult, Tools, Variables } from "../model";
@@ -15,14 +14,15 @@ export type AntlrEditorProps = {
     variableURLs?: string[];
     tools: Tools;
     options?: Options;
-    onCursorChange?: (position: CursorPosition) => void;
+    // To Fix
+    // onCursorChange?: (position: CursorPosition) => void;
+    onCursorChange?: any;
     onListErrors?: (errors: Error[]) => void;
     movedCursor?: CursorPosition;
     resizeLayout?: any;
 };
 
 export const AntlrEditor = (props: AntlrEditorProps) => {
-    const [cursor, setCursor] = useState({ line: 1, column: 1 });
     const {
         script,
         setScript,
@@ -67,8 +67,8 @@ export const AntlrEditor = (props: AntlrEditorProps) => {
             customFetcher={customFetcher}
             readOnly={readOnly}
             onListErrors={onListErrors}
-            movedCursor={movedCursor || cursor}
-            onCursorChange={onCursorChange || setCursor}
+            movedCursor={movedCursor}
+            onCursorChange={onCursorChange}
             variables={variables}
             variableURLs={variableURLs}
             sdmxResult={sdmxResult}

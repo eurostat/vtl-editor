@@ -59,7 +59,7 @@ const Editor = ({
             monacoRef?.current?.editor?.focus();
             monacoRef?.current?.editor?.setPosition(new Position(movedCursor.line, movedCursor.column));
         }
-    }, [movedCursor]);
+    }, [movedCursor?.line, movedCursor?.column]);
 
     // TODO: better handle tool updates
     useEffect(() => {

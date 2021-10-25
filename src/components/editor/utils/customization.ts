@@ -7,14 +7,14 @@ export const buildCustomOptions = (options: Record<string, any>): Record<string,
             "lineDecorationsWidth": 0,
             "lineNumbersMinChars": 0,
             minimap: {
-                enabled: options?.minimap || true,
+                enabled: options?.minimap === false ? false : true,
             },
             automaticLayout: true,
             readOnly: options.readOnly,
         };
     return {
         minimap: {
-            enabled: options?.minimap || true,
+            enabled: options?.minimap === false ? false : true,
         },
         automaticLayout: true,
         readOnly: options.readOnly,

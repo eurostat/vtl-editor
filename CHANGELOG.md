@@ -1,3 +1,23 @@
+### **0.1.2** (2021-10-25)  
+  
+- Merge pull request #10 from eurostat/Fix/cursor-selection
+
+Fix/cursor selection  
+- v0.1.2  
+- Upgrade dependencies  
+- Fix selection issue  
+- Upgrade dependencies  
+- Merge pull request #9 from eurostat/Fix/CI
+
+Update CI  
+- Update CI  
+- Merge pull request #8 from eurostat/Feat/CI
+
+Update CI  
+- Fix CI issue  
+- Update README  
+- Update CI    
+  
 ### **0.1.1** (2021-09-01)  
   
 - Merge pull request #7 from eurostat/Feat/add-props

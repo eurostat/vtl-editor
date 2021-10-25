@@ -1,3 +1,16 @@
+### **0.1.3** (2021-10-25)  
+  
+- Merge pull request #12 from eurostat/Fix/monaco
+
+v1.0.3  
+- v1.0.3  
+- Merge pull request #11 from eurostat/Fix/monaco
+
+Fix/monaco  
+- Update webpack config  
+- Fix minimap issue  
+- Upgrade dependencies    
+  
 ### **0.1.2** (2021-10-25)  
   
 - Merge pull request #10 from eurostat/Fix/cursor-selection

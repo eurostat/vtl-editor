@@ -28,6 +28,7 @@ const defDefault = (
 export const Default = Template.bind({});
 Default.args = {
     initialScript: "a := 1 + 2;",
+    initialScriptExpr: "(1 + 2) * cast(true, integer) <> 0",
     readOnly: false,
     tools: { ...VtlTools, getSuggestionsFromRange: getSuggestions },
     languageVersion: "vtl-2-0",
@@ -43,6 +44,7 @@ Default.args = {
 export const Custom = Template.bind({});
 Custom.args = {
     initialScript: "a := 1 + 2;",
+    initialScriptExpr: "(1 + 2) * cast(true, integer) <> 0",
     readOnly: false,
     tools: { ...VtlTools, getSuggestionsFromRange: getSuggestions },
     languageVersion: "vtl-2-0",
@@ -74,6 +76,7 @@ const defVariables = (
 export const Variables = Template.bind({});
 Variables.args = {
     initialScript: "a := 1 + 2;",
+    initialScriptExpr: "(1 + 2) * cast(true, integer) <> 0",
     readOnly: false,
     tools: { ...VtlTools, getSuggestionsFromRange: getSuggestions },
     variables: {
@@ -100,6 +103,7 @@ const defVariableURLs = (
 export const VariablesURL = Template.bind({});
 VariablesURL.args = {
     initialScript: "a := 1 + 2;",
+    initialScriptExpr: "(1 + 2) * cast(true, integer) <> 0",
     readOnly: false,
     tools: { ...VtlTools, getSuggestionsFromRange: getSuggestions },
     variableURLs: [
@@ -126,6 +130,7 @@ const defSdmx = (
 export const Sdmx = Template.bind({});
 Sdmx.args = {
     initialScript: "a := 1 + 2;",
+    initialScriptExpr: "(1 + 2) * cast(true, integer) <> 0",
     readOnly: false,
     tools: { ...VtlTools, getSuggestionsFromRange: getSuggestions },
     sdmxResult,
@@ -149,6 +154,7 @@ const defSdmxURL = (
 export const SdmxURL = Template.bind({});
 SdmxURL.args = {
     initialScript: "a := 1 + 2;",
+    initialScriptExpr: "(1 + 2) * cast(true, integer) <> 0",
     readOnly: false,
     tools: { ...VtlTools, getSuggestionsFromRange: getSuggestions },
     languageVersion: "vtl-2-0",
@@ -174,6 +180,7 @@ const defSdmxURLFetch = (
 export const SdmxURLFetch = Template.bind({});
 SdmxURLFetch.args = {
     initialScript: "a := 1 + 2;",
+    initialScriptExpr: "(1 + 2) * cast(true, integer) <> 0",
     readOnly: false,
     tools: { ...VtlTools, getSuggestionsFromRange: getSuggestions },
     languageVersion: "vtl-2-0",

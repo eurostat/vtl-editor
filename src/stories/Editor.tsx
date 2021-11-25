@@ -4,7 +4,8 @@ import { SdmxResult } from "../model";
 import { Options, Tools, Variables } from "../model";
 
 export interface StorybookEditorProps {
-    initialScript: string;
+    initialScript?: string;
+    initialScriptExpr: string;
     customFetcher?: (url: string) => Promise<any>;
     readOnly: boolean;
     tools: Tools;
@@ -19,6 +20,7 @@ export interface StorybookEditorProps {
 
 export const EditorForStory: React.FC<StorybookEditorProps> = ({
     initialScript,
+    initialScriptExpr,
     customFetcher,
     readOnly,
     tools,
@@ -30,11 +32,14 @@ export const EditorForStory: React.FC<StorybookEditorProps> = ({
     options,
 }) => {
     const [script, setScript] = useState(initialScript);
+    const [scriptExpr, setScriptExpr] = useState(initialScriptExpr);
     const [errors, setErrors] = useState([]);
+    const [errorsExpr, setErrorsExpr] = useState([]);
     console.log(errors);
     return (
         <>
             {def && <div>{def}</div>}
+            {initialScriptExpr && <h4>Start level</h4>}
             <AntlrEditor
                 script={script}
                 setScript={setScript}
@@ -48,6 +53,24 @@ export const EditorForStory: React.FC<StorybookEditorProps> = ({
                 options={options}
                 onListErrors={setErrors}
             />
+            {initialScriptExpr && (
+                <>
+                    <h4>Expr level</h4>
+                    <AntlrEditor
+                        script={scriptExpr}
+                        setScript={setScriptExpr}
+                        customFetcher={customFetcher}
+                        readOnly={readOnly}
+                        variables={variables}
+                        variableURLs={variableURLs}
+                        sdmxResult={sdmxResult}
+                        sdmxResultURL={sdmxResultURL}
+                        tools={{ ...tools, initialRule: "expr" }}
+                        options={options}
+                        onListErrors={setErrorsExpr}
+                    />
+                </>
+            )}
         </>
     );
 };
